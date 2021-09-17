@@ -9,7 +9,7 @@
 
 #### Diagrama Entidad Relación  `db_inmobiliaria`
 
-![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/tree/master/documentacion/db_inmobiliaria_DER.png)
+![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/db_inmobiliaria_DER.png)
 
 </br>
 

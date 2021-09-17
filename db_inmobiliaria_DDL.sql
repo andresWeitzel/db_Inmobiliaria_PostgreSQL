@@ -15,7 +15,15 @@ https://www.tutorialesprogramacionya.com/postgresqlya/temarios/descripcion.php?i
 drop table if exists inmuebles_descripciones;
 drop table if exists inmuebles_medidas;
 drop table if exists inmuebles;
+drop table if exists administracion; -- planeacion, organizacion, etc
+drop table if exists gerencia;-- metas y procedimientos, control administracion
+drop table if exists vendedores;-- ventas inmuebles, entrevistas, etc
+drop table if exists empleados;
 drop table if exists oficinas;
+
+
+-- ---------------------------------------------------------------------------
+
 
 -- ---------------------------------------------------------------------------
 
@@ -50,6 +58,7 @@ alter table oficinas
 add constraint UNIQUE_oficinas_telefono
 unique(telefono);
 
+-- ---------------------------------------------------------------------------
 
 
 -- ---------------------------------------------------------------------------
@@ -81,13 +90,14 @@ add constraint FK_inmuebles_id_oficina
 foreign key(id_oficina)
 references oficinas(id);
 
+-- ---------------------------------------------------------------------------
 
 
 -- ---------------------------------------------------------------------------
 
 
 -- ======= TABLA INMUEBLES DESCRIPCIONES ===========
--- Notar que 
+
 
 create table inmuebles_descripciones(
 	
@@ -158,6 +168,7 @@ alter table inmuebles_descripciones
 add constraint CHECK_inmuebles_descripciones_antiguedad
 check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
 
+-- ---------------------------------------------------------------------------
 
 -- ---------------------------------------------------------------------------
 
@@ -194,9 +205,212 @@ add constraint FK_inmuebles_medidas_id_inmueble
 foreign key(id_inmueble)
 references inmuebles(id);
 
+-- ---------------------------------------------------------------------------
 
 
 -- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA EMPLEADOS ===========
+
+create table empleados(
+	
+id int primary key,
+id_oficina int not null,
+nombre varchar(30) not null,
+apellido varchar(30) not null,
+edad int not null,
+fecha_nacimiento date not null,
+nro_documento varchar(20) not null,
+direccion varchar(40) not null, 
+telefono varchar(40) not null,
+email varchar(40),
+cargo varchar(40) not null,
+antiguedad int,
+fecha_ingreso date not null,
+salario_anual float not null
+
+
+);
+
+-- ======= Restricciones Tabla Empleados ===========
+
+-- UNIQUE ID
+alter table empleados 
+add constraint UNIQUE_empleados_id
+unique(id);
+
+-- FK ID_OFICINA
+alter table empleados 
+add constraint FK_empleados_id_oficina
+foreign key(id_oficina)
+references oficinas(id);
+
+
+-- UNIQUE NOMBRE/APELLIDO
+alter table empleados 
+add constraint UNIQUE_empleados_nombre_apellido
+unique(nombre,apellido);
+
+
+-- CHECK EDAD
+alter table empleados 
+add constraint CHECK_empleados_edad
+check (edad >= 18);
+
+-- CHECK ANTIGUEDAD
+alter table empleados 
+add constraint CHECK_empleados_antiguedad
+check (antiguedad >= 0 or antiguedad=null);
+
+
+-- CHECK FECHA_NACIMIENTO Y FECHA_INGRESO
+alter table empleados 
+add constraint CHECK_empleados_fecha_nacimiento_ingreso
+check (current_date > fecha_nacimiento and current_date >= fecha_ingreso );
+
+-- CHECK SALARIO_ANUAL
+alter table empleados 
+add constraint CHECK_empleados_salario_anual
+check (salario_anual > 300);
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA ADMINISTRACION ===========
+
+create table administracion(
+	
+id int primary key,
+id_empleado int not null,
+tipo_inmueble varchar(20),-- casa, depto, etc
+certificaciones varchar(50),-- administracion zonas residenciales, rurales, etc
+experiencia varchar(30),-- bueno,alto,excelente
+cualidades varchar(50)-- flexibilidad, confianza,etc
+
+);
+
+-- ======= Restricciones Tabla Administracion ===========
+
+-- UNIQUE ID
+alter table administracion 
+add constraint UNIQUE_administracion_id
+unique(id);
+
+-- FK ID_EMPLEADO
+alter table administracion 
+add constraint FK_administracion_id_empleado
+foreign key(id_empleado)
+references empleados(id);
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA GERENCIA ===========
+
+create table gerencia(-- Cargo de Directores, etc
+	
+id int primary key,
+id_empleado int not null,
+titulo varchar(30) not null,
+experiencia_laboral float not null, -- 1.2 años, etc
+competencias varchar(50),-- planeamiento Estrategico, comunicacion efectiva, liderazgo, trabajo en equipo, orientacion a resultados,etc  
+beneficios varchar(100),--Viajes, Horario flexible, home office,etc 
+monto_adicional_anual float not null
+
+);
+
+-- ======= Restricciones Tabla Gerencia ===========
+
+-- UNIQUE ID
+alter table gerencia 
+add constraint UNIQUE_gerencia_id
+unique(id);
+
+-- FK ID_EMPLEADO
+alter table gerencia 
+add constraint FK_gerencia_id_empleado
+foreign key(id_empleado)
+references empleados(id);
+
+
+-- CHECK EXPERIENCIA_LABORAL
+alter table gerencia 
+add constraint CHECK_gerencia_expericia_laboral
+check ( experiencia_laboral >= 2);-- 2 años
+
+
+-- CHECK MONTO_ADICIONAL
+alter table gerencia 
+add constraint CHECK_gerencia_monto_adicional_anual
+check ( monto_adicional_anual >= 100);-- 100 dolares
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA VENDEDORES ===========
+
+create table vendedores(
+	
+id int primary key,
+id_empleado int not null,
+cantidad_ventas int not null,
+bonificacion_ventas float,
+puntuacion_ventas varchar(20),-- buena, normal, excelente
+orientacion_tipo_inmueble varchar(20),-- casa, depto, etc
+cualidades varchar(50)-- flexibilidad, confianza,etc
+
+);
+
+-- ======= Restricciones Tabla Vendedores ===========
+
+-- UNIQUE ID
+alter table vendedores 
+add constraint UNIQUE_vendedores_id
+unique(id);
+
+-- FK ID_EMPLEADO
+alter table vendedores 
+add constraint FK_vendedores_id_empleado
+foreign key(id_empleado)
+references empleados(id);
+
+
+-- CHECK CANTIDAD_VENTAS
+alter table vendedores 
+add constraint CHECK_vendedores_cantidad_ventas
+check ( cantidad_ventas >= 0);
+
+-- CHECK BONIFICACION_VENTAS
+alter table vendedores 
+add constraint CHECK_vendedores_bonificacion_ventas
+check ( bonificacion_ventas >= 0);
+
+
+-- ---------------------------------------------------------------------------
+
+
+
+-- ---------------------------------------------------------------------------
+
 
 
 select * from pg_catalog.pg_tables 
@@ -209,5 +423,9 @@ select * from oficinas;
 select * from inmuebles;
 select * from inmuebles_descripciones;
 select * from inmuebles_medidas;
+select * from empleados;
+select * from administracion;
+select * from gerencia;
+select * from vendedores;
 
 

@@ -14,12 +14,19 @@ https://www.tutorialesprogramacionya.com/postgresqlya/temarios/descripcion.php?i
 
 drop table if exists inmuebles_descripciones;
 drop table if exists inmuebles_medidas;
+drop table if exists facturas;
+drop table if exists ventas;
 drop table if exists inmuebles;
-drop table if exists administracion; -- planeacion, organizacion, etc
-drop table if exists gerencia;-- metas y procedimientos, control administracion
+drop table if exists propietarios_inmuebles;
+drop table if exists administradores; -- planeacion, organizacion, etc
+drop table if exists gerentes;-- metas y procedimientos, control administracion
 drop table if exists vendedores;-- ventas inmuebles, entrevistas, etc
+drop table if exists compradores;
+drop table if exists clientes;
 drop table if exists empleados;
 drop table if exists oficinas;
+
+
 
 
 -- ---------------------------------------------------------------------------
@@ -60,6 +67,62 @@ unique(telefono);
 
 -- ---------------------------------------------------------------------------
 
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA PROPIETARIOS_INMUEBLES ===========
+
+
+create table propietarios_inmuebles(
+
+id int primary key,
+nombre varchar(30) not null,
+apellido varchar(30) not null,
+edad int not null,
+fecha_nacimiento date not null,
+tipo_documento varchar(20) not null,
+nro_documento varchar(20) not null,
+direccion varchar(40) not null, 
+telefono_principal varchar(40) not null,
+telefono_secundario varchar(40),
+email varchar(40)
+
+);
+
+-- ======= Restricciones Tabla propietarios_inmuebles ===========
+
+-- UNIQUE ID
+alter table propietarios_inmuebles 
+add constraint UNIQUE_propietarios_inmuebles_id
+unique(id);
+
+
+
+-- UNIQUE NOMBRE/APELLIDO
+alter table propietarios_inmuebles 
+add constraint UNIQUE_propietarios_inmuebles_nombre_apellido
+unique(nombre,apellido);
+
+
+-- CHECK EDAD
+alter table propietarios_inmuebles 
+add constraint CHECK_propietarios_inmuebles_edad
+check (edad >= 18);
+
+
+-- CHECK FECHA_NACIMIENTO
+alter table propietarios_inmuebles 
+add constraint CHECK_propietarios_inmuebles_fecha_nacimiento
+check (current_date > fecha_nacimiento);
+
+
+--- UNIQUE NRO_DOCUMENTO
+alter table propietarios_inmuebles 
+add constraint UNIQUE_propietarios_inmuebles_nro_documento
+unique(nro_documento);
+
+
+
+-- ---------------------------------------------------------------------------
 
 -- ---------------------------------------------------------------------------
 
@@ -68,6 +131,7 @@ unique(telefono);
 create table inmuebles(
 	
 id int primary key,
+id_propietario_inmueble int not null,
 id_oficina int not null,
 descripcion varchar(40) not null,-- ej: semipiso de 3 Amb en Palermo
 tipo varchar(20) not null, -- depto, casa, etc
@@ -83,6 +147,12 @@ sitioWeb varchar(40)-- link de la pag de la descripcion
 alter table inmuebles 
 add constraint UNIQUE_inmuebles_id
 unique(id);
+
+--FK ID_PROPIETARIO_INMUEBLE
+alter table inmuebles 
+add constraint FK_inmuebles_id_propietario_inmueble
+foreign key(id_propietario_inmueble)
+references propietarios_inmuebles(id);
 
 --FK ID_OFICINA
 alter table inmuebles 
@@ -221,9 +291,11 @@ nombre varchar(30) not null,
 apellido varchar(30) not null,
 edad int not null,
 fecha_nacimiento date not null,
+tipo_documento varchar(20) not null,
 nro_documento varchar(20) not null,
 direccion varchar(40) not null, 
-telefono varchar(40) not null,
+telefono_principal varchar(40) not null,
+telefono_secundario varchar(40),
 email varchar(40),
 cargo varchar(40) not null,
 antiguedad int,
@@ -263,6 +335,11 @@ alter table empleados
 add constraint CHECK_empleados_antiguedad
 check (antiguedad >= 0 or antiguedad=null);
 
+--- UNIQUE NRO_DOCUMENTO
+alter table empleados 
+add constraint UNIQUE_empleados_nro_documento
+unique(nro_documento);
+
 
 -- CHECK FECHA_NACIMIENTO Y FECHA_INGRESO
 alter table empleados 
@@ -283,9 +360,9 @@ check (salario_anual > 300);
 -- ---------------------------------------------------------------------------
 
 
--- ======= TABLA ADMINISTRACION ===========
+-- ======= TABLA ADMINISTRADORES ===========
 
-create table administracion(
+create table administradores(
 	
 id int primary key,
 id_empleado int not null,
@@ -296,16 +373,16 @@ cualidades varchar(50)-- flexibilidad, confianza,etc
 
 );
 
--- ======= Restricciones Tabla Administracion ===========
+-- ======= Restricciones Tabla Administradores ===========
 
 -- UNIQUE ID
-alter table administracion 
-add constraint UNIQUE_administracion_id
+alter table administradores 
+add constraint UNIQUE_administradores_id
 unique(id);
 
 -- FK ID_EMPLEADO
-alter table administracion 
-add constraint FK_administracion_id_empleado
+alter table administradores
+add constraint FK_administradores_id_empleado
 foreign key(id_empleado)
 references empleados(id);
 
@@ -318,9 +395,9 @@ references empleados(id);
 -- ---------------------------------------------------------------------------
 
 
--- ======= TABLA GERENCIA ===========
+-- ======= TABLA GERENTES ===========
 
-create table gerencia(-- Cargo de Directores, etc
+create table gerentes(-- Cargo de Directores, etc
 	
 id int primary key,
 id_empleado int not null,
@@ -332,29 +409,29 @@ monto_adicional_anual float not null
 
 );
 
--- ======= Restricciones Tabla Gerencia ===========
+-- ======= Restricciones Tabla Gerentes ===========
 
 -- UNIQUE ID
-alter table gerencia 
-add constraint UNIQUE_gerencia_id
+alter table gerentes 
+add constraint UNIQUE_gerentes_id
 unique(id);
 
 -- FK ID_EMPLEADO
-alter table gerencia 
-add constraint FK_gerencia_id_empleado
+alter table gerentes
+add constraint FK_gerentes_id_empleado
 foreign key(id_empleado)
 references empleados(id);
 
 
 -- CHECK EXPERIENCIA_LABORAL
-alter table gerencia 
-add constraint CHECK_gerencia_expericia_laboral
+alter table gerentes 
+add constraint CHECK_gerentes_expericia_laboral
 check ( experiencia_laboral >= 2);-- 2 años
 
 
 -- CHECK MONTO_ADICIONAL
-alter table gerencia 
-add constraint CHECK_gerencia_monto_adicional_anual
+alter table gerentes
+add constraint CHECK_gerentes_monto_adicional_anual
 check ( monto_adicional_anual >= 100);-- 100 dolares
 
 
@@ -407,6 +484,248 @@ check ( bonificacion_ventas >= 0);
 
 -- ---------------------------------------------------------------------------
 
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA CLIENTES ===========
+
+create table clientes(
+	
+id int primary key,
+nombre varchar(30) not null,
+apellido varchar(30) not null,
+edad int not null,
+fecha_nacimiento date not null,
+tipo_documento varchar(20) not null,
+nro_documento varchar(20) not null,
+direccion varchar(40) not null, 
+telefono_principal varchar(40) not null,
+telefono_secundario varchar(40),
+email varchar(40),
+fecha_alta date not null
+
+
+);
+
+-- ======= Restricciones Tabla Clientes ===========
+
+-- UNIQUE ID
+alter table clientes 
+add constraint UNIQUE_clientes_id
+unique(id);
+
+-- UNIQUE NOMBRE/APELLIDO
+alter table clientes 
+add constraint UNIQUE_clientes_nombre_apellido
+unique(nombre,apellido);
+
+
+-- CHECK EDAD
+alter table clientes 
+add constraint CHECK_clientes_edad
+check (edad >= 18);
+
+
+--- UNIQUE NRO_DOCUMENTO
+alter table clientes 
+add constraint UNIQUE_clientes_nro_documento
+unique(nro_documento);
+
+
+-- CHECK FECHA_NACIMIENTO Y FECHA_ALTA
+alter table clientes 
+add constraint CHECK_clientes_fecha_nacimiento_alta
+check (current_date > fecha_nacimiento and current_date >= fecha_alta );
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA COMPRADORES ===========
+
+create table compradores(
+	
+id int primary key,
+id_cliente int,
+cantidad_inmuebles_comprados int not null,
+importe_maximo_por_compra float not null,
+importe_total_compra float not null,
+beneficios_compras varchar(60) not null,
+descuento_cliente float not null
+);
+
+-- ======= Restricciones Tabla Compradores ===========
+
+-- UNIQUE ID
+alter table compradores
+add constraint UNIQUE_compradores_id
+unique(id);
+
+-- FK ID_CLIENTE
+alter table compradores 
+add constraint FK_compradores_id_cliente
+foreign key(id_cliente)
+references clientes(id);
+
+
+-- CHECK CANTIDAD_INMUEBLES_COMPRADOS
+alter table compradores 
+add constraint CHECK_compradores_cantidad_inmuebles_comprados
+check ( cantidad_inmuebles_comprados > 0);
+
+-- CHECK IMPORTE_MAXIMO_POR_COMPRA
+alter table compradores
+add constraint CHECK_compradores_importe_maximo_por_compra
+check ( importe_maximo_por_compra > 0);
+
+
+-- CHECK IMPORTE_TOTAL_COMPRA
+alter table compradores
+add constraint CHECK_compradores_importe_total_compra
+check ( importe_total_compra > 0);
+
+
+
+-- CHECK DESCUENTO_CLIENTE
+alter table compradores
+add constraint CHECK_compradores_descuento_cliente
+check ( descuento_cliente >= 0);
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA VENTAS ===========
+
+create table ventas(
+	
+id int primary key,
+id_vendedor int not null,
+id_comprador int not null,
+id_inmueble int not null,
+fecha_venta timestamp not null
+
+);
+
+-- ======= Restricciones Tabla Ventas ===========
+
+-- UNIQUE ID
+alter table ventas 
+add constraint UNIQUE_ventas_id
+unique(id);
+
+-- FK ID_VENDEDOR
+alter table ventas 
+add constraint FK_ventas_id_vendedor
+foreign key(id_vendedor)
+references vendedores(id);
+
+-- FK ID_COMPRADOR
+alter table ventas 
+add constraint FK_ventas_id_comprador
+foreign key(id_comprador)
+references compradores(id);
+
+-- FK ID_INMUEBLE
+alter table ventas 
+add constraint FK_ventas_id_inmuebles
+foreign key(id_inmueble)
+references inmuebles(id);
+
+
+-- CHECK FECHA_VENTA
+alter table ventas 
+add constraint CHECK_ventas_fecha_venta
+check (fecha_venta >= current_date );
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+-- Los enumerados deben estar declarados fuera de la creacion de tabla 
+
+drop type if exists tipoFactura;
+drop type if exists tipoPago;
+
+create type tipoFactura as enum('A','B','C','D');
+create type tipoPago as enum('EFECTIVO','CHEQUE','TARJETA');
+-- ======= TABLA FACTURAS ===========
+
+create table facturas(
+	
+id int primary key,
+id_venta int not null,
+tipo tipoFactura not null,
+nro_factura int not null,
+fecha_emision timestamp not null,
+cantidad_inmuebles int not null,
+descripcion_factura varchar(60) not null,-- venta departamento inscripto en la partida N° 14567..
+precio_unitario float not null,
+valor_venta float not null,-- iva + extra + etc
+total_venta float not null, -- + impuestos + costos + etc
+medioDePago tipoPago not null,
+descripcion_pago varchar(40) not null
+
+);
+
+-- ======= Restricciones Tabla Facturas ===========
+
+-- UNIQUE ID
+alter table facturas 
+add constraint UNIQUE_facturas_id
+unique(id);
+
+-- FK ID_VENTA
+alter table facturas 
+add constraint FK_facturas_id_venta
+foreign key(id_venta)
+references ventas(id);
+
+-- UNIQUE NRO_FACTURA 
+alter table facturas 
+add constraint UNIQUE_nro_factura
+unique(nro_factura);
+
+-- CHECK FECHA_EMISION
+alter table facturas 
+add constraint CHECK_facturas_fecha_emision
+check (fecha_emision >= current_date );
+
+-- CHECK CANTIDAD_INMUEBLES
+alter table facturas
+add constraint CHECK_facturas_cantidad_inmuebles
+check (cantidad_inmuebles > 0);
+
+-- CHECK PRECIO_UNITARIO
+alter table facturas
+add constraint CHECK_facturas_precio_unitario
+check( precio_unitario < total_venta and precio_unitario > 0);
+
+-- CHECK VALOR_VENTA
+alter table facturas
+add constraint CHECK_facturas_valor_venta
+check ( valor_venta < total_venta and valor_venta > 0);
+
+-- CHECK TOTAL_VENTA
+alter table facturas
+add constraint CHECK_facturas_total_venta
+check ( total_venta > precio_unitario and total_venta > 0);
+
+
+-- ---------------------------------------------------------------------------
+
+
 
 
 -- ---------------------------------------------------------------------------
@@ -423,9 +742,19 @@ select * from oficinas;
 select * from inmuebles;
 select * from inmuebles_descripciones;
 select * from inmuebles_medidas;
+select * from propietarios_inmuebles;
 select * from empleados;
-select * from administracion;
-select * from gerencia;
+select * from clientes;
+select * from administradores;
+select * from gerentes;
 select * from vendedores;
+select * from compradores;
+select * from ventas;
+select * from facturas;
+
+
+
+
+
 
 

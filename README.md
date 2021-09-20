@@ -1,8 +1,8 @@
 # Administracion_Gestion_BasesDeDatos_PostgreSQL
 
 
-* En Este Proyecto se pone en práctica Modelado, Desarrollo, Gestión y Administración de una Base de Datos con el SGBD PostgreSQL.
-* Este Proyecto surgió a partir de un pequeño desarrollo obsoleto de un libro, el mismo me orientó en lo básico en desarrollo de una db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiandome por las informaciones y carácteristicas del mercado inmobiliario en Argentina(valores, medidas, lexico, etc).
+* En Este Proyecto se pone en práctica el Modelado, Desarrollo, Gestión y Administración de una Base de Datos con el SGBD PostgreSQL.
+* Este Proyecto surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiandome por las informaciones y carácteristicas del mercado inmobiliario en Argentina(valores, precios, medidas, lexico, etc).Se incluye el pdf guía del proyecto dentro de la documentacion.
 
 
 </br>

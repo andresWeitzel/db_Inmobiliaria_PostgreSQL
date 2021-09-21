@@ -11,16 +11,16 @@
 https://www.tutorialesprogramacionya.com/postgresqlya/temarios/descripcion.php?inicio=0&cod=159&punto=1
 */
 
-
+drop table if exists inmuebles;
 drop table if exists inmuebles_descripciones;
 drop table if exists inmuebles_medidas;
 drop table if exists facturas;
 drop table if exists ventas;
-drop table if exists inmuebles;
 drop table if exists propietarios_inmuebles;
 drop table if exists administradores; -- planeacion, organizacion, etc
 drop table if exists gerentes;-- metas y procedimientos, control administracion
 drop table if exists vendedores;-- ventas inmuebles, entrevistas, etc
+drop table if exists compradores_clientes;
 drop table if exists compradores;
 drop table if exists clientes;
 drop table if exists empleados;
@@ -124,44 +124,6 @@ unique(nro_documento);
 
 -- ---------------------------------------------------------------------------
 
--- ---------------------------------------------------------------------------
-
--- ======= TABLA INMUEBLES ===========
-
-create table inmuebles(
-	
-id int primary key,
-id_propietario_inmueble int not null,
-id_oficina int not null,
-descripcion varchar(40) not null,-- ej: semipiso de 3 Amb en Palermo
-tipo varchar(20) not null, -- depto, casa, etc
-direccion varchar(40) not null,-- San sarasa 123
-ubicacion varchar(40) not null, -- zona:palermo, recoleta, etc
-sitioWeb varchar(40)-- link de la pag de la descripcion
-
-);
-
--- ======= Restricciones Tabla Inmuebles ===========
-
--- UNIQUE ID
-alter table inmuebles 
-add constraint UNIQUE_inmuebles_id
-unique(id);
-
---FK ID_PROPIETARIO_INMUEBLE
-alter table inmuebles 
-add constraint FK_inmuebles_id_propietario_inmueble
-foreign key(id_propietario_inmueble)
-references propietarios_inmuebles(id);
-
---FK ID_OFICINA
-alter table inmuebles 
-add constraint FK_inmuebles_id_oficina
-foreign key(id_oficina)
-references oficinas(id);
-
--- ---------------------------------------------------------------------------
-
 
 -- ---------------------------------------------------------------------------
 
@@ -192,11 +154,6 @@ alter table inmuebles_descripciones
 add constraint UNIQUE_inmuebles_descripciones_id
 unique(id);
 
--- FK ID_INMUEBLE
-alter table inmuebles_descripciones
-add constraint FK_inmuebles_descripciones_id_inmueble
-foreign key(id_inmueble)
-references inmuebles(id);
 
 -- CHECK SUPERFICIE_TOTAL
 alter table inmuebles_descripciones
@@ -250,7 +207,6 @@ check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
 create table inmuebles_medidas(-- ALTO X ANCHO
 
 id int primary key,
-id_inmueble int not null,
 living_comedor varchar(100),-- ej: 8,05 x 3,4
 cocina varchar(100), -- Cocina 1: 3,25 x 1,55
 dormitorio varchar(100), -- Dormitorio 1: 23 x 2,9 | Dormitorio 2: 43 x 1,9
@@ -269,11 +225,65 @@ alter table inmuebles_medidas
 add constraint UNIQUE_inmuebles_medidas_id
 unique(id);
 
--- FK ID_INMUEBLES
-alter table inmuebles_medidas
-add constraint FK_inmuebles_medidas_id_inmueble
-foreign key(id_inmueble)
-references inmuebles(id);
+
+
+-- ---------------------------------------------------------------------------
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA INMUEBLES ===========
+
+create table inmuebles(
+	
+id int primary key,
+id_propietario_inmueble int not null,
+id_inmueble_medidas int not null,
+id_inmueble_descripcion int not null,
+id_oficina int not null,
+descripcion varchar(40) not null,-- ej: semipiso de 3 Amb en Palermo
+tipo varchar(20) not null, -- depto, casa, etc
+direccion varchar(40) not null,-- San sarasa 123
+ubicacion varchar(40) not null, -- zona:palermo, recoleta, etc
+sitioWeb varchar(40)-- link de la pag de la descripcion
+
+);
+
+-- ======= Restricciones Tabla Inmuebles ===========
+
+-- UNIQUE ID
+alter table inmuebles 
+add constraint UNIQUE_inmuebles_id
+unique(id);
+
+--FK ID_PROPIETARIO_INMUEBLE
+alter table inmuebles 
+add constraint FK_inmuebles_id_propietario_inmueble
+foreign key(id_propietario_inmueble)
+references propietarios_inmuebles(id);
+
+-- FK ID_INMUEBLES_MEDIDAS
+alter table inmuebles
+add constraint FK_inmuebles_id_inmueble_medidas
+foreign key(id_inmueble_medidas)
+references inmuebles_medidas(id);
+
+-- FK ID_INMUEBLE_DESCRIPCIONES
+alter table inmuebles
+add constraint FK_inmuebles_id_inmueble_descripciones
+foreign key(id_inmueble_descripcion)
+references inmuebles_descripciones(id);
+
+
+
+--FK ID_OFICINA
+alter table inmuebles 
+add constraint FK_inmuebles_id_oficina
+foreign key(id_oficina)
+references oficinas(id);
+
+
 
 -- ---------------------------------------------------------------------------
 
@@ -550,7 +560,6 @@ check (current_date > fecha_nacimiento and current_date >= fecha_alta );
 create table compradores(
 	
 id int primary key,
-id_cliente int,
 cantidad_inmuebles_comprados int not null,
 importe_maximo_por_compra float not null,
 importe_total_compra float not null,
@@ -564,12 +573,6 @@ descuento_cliente float not null
 alter table compradores
 add constraint UNIQUE_compradores_id
 unique(id);
-
--- FK ID_CLIENTE
-alter table compradores 
-add constraint FK_compradores_id_cliente
-foreign key(id_cliente)
-references clientes(id);
 
 
 -- CHECK CANTIDAD_INMUEBLES_COMPRADOS
@@ -598,6 +601,41 @@ check ( descuento_cliente >= 0);
 
 
 
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA COMPRADORES_CLIENTES ===========
+
+create table compradores_clientes(
+	
+id int primary key,
+id_cliente int,
+id_compradores int
+
+);
+
+-- ======= Restricciones Tabla compradores_clientes ===========
+
+-- UNIQUE ID
+alter table compradores_clientes
+add constraint UNIQUE_compradores_clientes_id
+unique(id);
+
+-- FK ID_CLIENTE
+alter table compradores_clientes
+add constraint FK_compradores_clientes_id_cliente
+foreign key(id_cliente)
+references clientes(id);
+
+
+-- FK ID_COMPRADOR
+alter table compradores_clientes 
+add constraint FK_compradores_clientes_id_ccomprador
+foreign key(id_compradores)
+references compradores(id);
 
 -- ---------------------------------------------------------------------------
 
@@ -749,6 +787,7 @@ select * from administradores;
 select * from gerentes;
 select * from vendedores;
 select * from compradores;
+select * from compradores_clientes;
 select * from ventas;
 select * from facturas;
 

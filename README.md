@@ -13,6 +13,29 @@
 
 </br>
 
+
+#### Tabla Descriptiva Entidad-Relación
+
+| **Entidades** | **Relaciones** |               
+| ------------- | ------------- |
+| Ventas(1)-Facturas(N) | 1:N (Uno a Muchos)   |
+| Compradores(1)-Ventas(N) | 1:N (Uno a Muchos)   |
+| Compradores(1)-Compradores_Clientes(N) | 1:N (Uno a Muchos)   |
+| Clientes(1)-Compradores_Clientes(N) | 1:N (Uno a Muchos)   |
+| Vendedores(1)-Ventas(N) | 1:N (Uno a Muchos)   |
+| Inmuebles(1)-Ventas(N) | 1:N (Uno a Muchos)   |
+| Propietarios_Inmuebles(1)-Inmuebles(N) | 1:N (Uno a Muchos)   |
+| Oficinas(1)-Inmuebles(N) | 1:N (Uno a Muchos)   |
+| Oficinas(1)-Empleados(N) | 1:N (Uno a Muchos)   |
+| Empleados(1)-Vendedores(N) | 1:N (Uno a Muchos)   |
+| Empleados(1)-Administradores(N) | 1:N (Uno a Muchos)   |
+| Empleados(1)-Gerentes(N) | 1:N (Uno a Muchos)   |
+| Inmuebles_Descripciones(1)-Inmuebles(N) | 1:N (Uno a Muchos)   |
+| Inmuebles_Medidas(1)-Inmuebles(N) | 1:N (Uno a Muchos)   |
+
+
+
+
 <hr>
 
 ## Más Información

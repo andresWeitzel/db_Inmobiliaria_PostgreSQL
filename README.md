@@ -47,7 +47,7 @@
 | ------------- | ------------- | ------------- |
 | Git Bash | 2.29.1.windows.1  | Control de Versiones |
 | PostgreSQL | 13.4  | SGDB  |
-| DBeaver | 21.1  | Gestor de Base de Datos | 
+| DBVisualizer | 12.1.3  | Gestor de Base de Datos | 
 
 </br>
 
@@ -55,7 +55,65 @@
 ## Descarga y documentacion de las Tecnologías empleadas:
 #### Git:                              https://git-scm.com/docs
 #### PostgreSQL:                            https://www.postgresql.org/download/
-#### DBeaver:                         https://dbeaver.io/
+#### DBVisualizer:                         https://www.dbvis.com/download/
+
+</br>
+
+<hr>
+
+## `Documentación Del Proyecto`
+#### (Esta Documentación que Desarrollé es para la Creación, Configuración, Posibles Errores, Manejo de la Base de Datos db_inmuebles con PostgreSQL en DBVisualizer. Recomiendo Leerla y Realizar todo paso a paso como se indica en la misma, cualquier aporte o sugerencia, informar al respecto).
+
+## Indice
+- [Creación y Configuraciones de un Proyecto Spring Boot con Maven en Spring Tool Suite 4.](#creación-de-un-proyecto-spring-boot-con-maven-en-spring-tool-suite-4-y-configuraciones-iniciales)
+
+- [Configuración del Servidor de Despliegue (Wildfly).](#configuración-del-servidor-de-despliegue-wildfly)
+- [Herramienta Cygwin para el uso de Git.](#uso-de-cygwin)
+
+
+</br>
+
+## Configuración y Puesta en Marcha de la Base de Datos db_inmuebles.
+#### (Primeramente deberás descargate PostgreSQL como SGDB, luego DBVisualizer como GDB y crear la db ).
+
+#### 1) Descarga de DBVisualizer
+* --> https://www.dbvis.com/download/
+* --> Descargar, Ejecutar e Instalar (Siguiente, Siguiente).
+
+
+#### 2) Descarga de PostgreSQL
+* -->  https://www.postgresql.org/download/
+* --> Descargar, Ejecutar e Instalar (Siguiente, Siguiente).
+
+
+#### 3) Configuración de PostgreSQL en DBVisualizer (Conexión a PostgreSQL).
+* --> Click Der sobre Database Connection.
+* --> Create Database Connection.
+* --> Posicionarnos en la pestaña llamada Connection.
+* --> Para la sección Connection, en Name escribimos PostgreSQL, notes lo dejamos vacio.
+* --> Para la sección Database configuramos el Database Type, buscamos PostgreSQL.
+* --> En Driver(jdbc) buscamos también PostgreSQL
+* --> Automáticamente se te debería haber creado por defecto los otros campos de conexión(Port, Server, etc), dejamos todo por defecto
+* --> Para la sección Authentication, en Database Userid colocamos postgre y en Password postgre.
+* --> Connect y ya está PostgreSQL Configurado.
+
+
+#### 4) Creación de nuestra DB db_inmuebles.
+* --> Se debería haber desplegado la Conexión PostgreSQL, sino desplagar para visualizar 
+* --> Click Der sobre Databases
+* --> Create Database
+* --> En New Database Name colocamos db_inmobiliaria.
+* --> En owner Seleccionamos postgres.
+* --> Template vacío.
+* --> En Encoding Seleccionamos UTF8.
+* --> Max Connections dejamos en -1
+* --> El resto vacío
+* --> Execute y Listo.
+
+
+
+
+
 
 
 </br>

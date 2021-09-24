@@ -110,6 +110,23 @@
 * --> El resto vacío
 * --> Execute y Listo.
 
+</br>
+
+## Implementación de los Scripts .sql
+#### (Vamos a trabajar con los Archivos sql dentro de dbvisualizer).
+
+#### 1) Primeramente asegurate de haber descargado este Repositorio
+
+#### 2) Importamos los Archivos SQL a DBVisualizer
+* --> Click sobre File (Barra Superior)
+* --> Open
+* --> Se abre el Gestor de Archivos y buscar la ubicación del Repositorio Descargado.
+* --> Seleccionas los .sql y Open.
+* --> Listo
+
+#### 3) Orden de Ejecución de los Scripts
+* --> 1) db_inmobiliaria_DDL.sql
+
 
 
 

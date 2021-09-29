@@ -11,21 +11,22 @@
 https://www.tutorialesprogramacionya.com/postgresqlya/temarios/descripcion.php?inicio=0&cod=159&punto=1
 */
 
-drop table if exists inmuebles;
-drop table if exists inmuebles_descripciones;
-drop table if exists inmuebles_medidas;
-drop table if exists facturas;
-drop table if exists ventas;
-drop table if exists propietarios_inmuebles;
-drop table if exists administradores; -- planeacion, organizacion, etc
-drop table if exists gerentes;-- metas y procedimientos, control administracion
-drop table if exists vendedores;-- ventas inmuebles, entrevistas, etc
-drop table if exists compradores_clientes;
-drop table if exists compradores;
-drop table if exists clientes;
-drop table if exists empleados;
-drop table if exists oficinas;
+drop table if exists inmuebles cascade;
+drop table if exists inmuebles_descripciones cascade;
+drop table if exists inmuebles_medidas cascade;
+drop table if exists facturas cascade;
+drop table if exists ventas cascade;
+drop table if exists propietarios_inmuebles cascade;
+drop table if exists administradores cascade; -- planeacion, organizacion, etc
+drop table if exists gerentes cascade;-- metas y procedimientos, control administracion
+drop table if exists vendedores cascade;-- ventas inmuebles, entrevistas, etc
+drop table if exists compradores_clientes cascade;
+drop table if exists compradores cascade;
+drop table if exists clientes cascade;
+drop table if exists empleados cascade;
+drop table if exists oficinas cascade;
 
+drop sequence if exists id_seq;
 
 
 
@@ -524,6 +525,7 @@ alter table clientes
 add constraint UNIQUE_clientes_id
 unique(id);
 
+
 -- UNIQUE NOMBRE/APELLIDO
 alter table clientes 
 add constraint UNIQUE_clientes_nombre_apellido
@@ -559,7 +561,7 @@ check (current_date > fecha_nacimiento and current_date >= fecha_alta );
 
 create table compradores(
 	
-id int primary key,
+id int primary key ,
 cantidad_inmuebles_comprados int not null,
 importe_maximo_por_compra float not null,
 importe_total_compra float not null,
@@ -568,6 +570,10 @@ descuento_cliente float not null
 );
 
 -- ======= Restricciones Tabla Compradores ===========
+
+-- ID AUTO_INCREMENT
+CREATE SEQUENCE id_seq;
+ALTER TABLE compradores ALTER id SET DEFAULT NEXTVAL('id_seq');
 
 -- UNIQUE ID
 alter table compradores
@@ -612,8 +618,8 @@ check ( descuento_cliente >= 0);
 create table compradores_clientes(
 	
 id int primary key,
-id_cliente int,
-id_compradores int
+id_cliente int ,
+id_comprador int 
 
 );
 
@@ -624,6 +630,18 @@ alter table compradores_clientes
 add constraint UNIQUE_compradores_clientes_id
 unique(id);
 
+-- UNIQUE ID_CLIENTE
+alter table compradores_clientes
+add constraint UNIQUE_compradores_clientes_id_cliente
+unique(id_cliente);
+
+
+-- UNIQUE ID_CLIENTE
+alter table compradores_clientes
+add constraint UNIQUE_compradores_clientes_id_comprador
+unique(id_comprador);
+
+
 -- FK ID_CLIENTE
 alter table compradores_clientes
 add constraint FK_compradores_clientes_id_cliente
@@ -631,10 +649,11 @@ foreign key(id_cliente)
 references clientes(id);
 
 
+
 -- FK ID_COMPRADOR
 alter table compradores_clientes 
 add constraint FK_compradores_clientes_id_ccomprador
-foreign key(id_compradores)
+foreign key(id_comprador)
 references compradores(id);
 
 -- ---------------------------------------------------------------------------

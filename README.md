@@ -115,11 +115,7 @@
 
 #### 2) Importamos los Archivos SQL a DBeaver
 * --> Click sobre Archivo (Barra Superior)
-* --> Importar
-* --> Directorio General
-* --> Sistema de Archivos
-* --> Click en Examinar
-* --> Se abre el Gestor de Archivos y buscar la ubicación del Repositorio Descargado.
+* --> Buscar Archivo Denominado..
 * --> Seleccionas los .sql y Open.
 * --> Listo
 

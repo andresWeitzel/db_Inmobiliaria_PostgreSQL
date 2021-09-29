@@ -2,7 +2,7 @@
 
 
 * En Este Proyecto se pone en práctica el Modelado, Desarrollo, Gestión y Administración de una Base de Datos con el SGBD PostgreSQL.
-* Este Proyecto surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiandome por las informaciones y carácteristicas del mercado inmobiliario en Argentina(valores, precios, medidas, lexico, etc).Se incluye el pdf guía del proyecto dentro de la documentacion.
+* El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiandome por las informaciones y carácteristicas del mercado inmobiliario en Argentina(valores, precios, medidas, lexico, etc). Se incluye el pdf guía del proyecto dentro de la documentacion.
 
 
 </br>
@@ -11,7 +11,41 @@
 
 ![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/db_inmobiliaria_DER.png)
 
+* DBeaver implementa la notación IDEF1X para el Diagrama Entidad Relación. En la doc que anexa DBeaver(https://dbeaver.com/docs/wiki/ER-Diagrams/) no está del todo claro la relación que implementa. Investigando sobre las mismas, se puede concluir que la Relación Diamante y Circulo entre línea Punteada se declara como relaciónes Opcionales. Por ende debajo de la siguiente Imagen está detallado las Relaciones entre Entidades.
+
+![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/relacionDeTablas.png)
+
 </br>
+
+
+#### Tabla Descriptiva Entidad-Relación Uno a Muchos (1:N).
+
+| **Entidad-Relacion** | **Entidad-Relacion** |               
+| ------------- | ------------- |
+| ventas(1) | facturas(N)   |
+| compradores(1) | ventas(N)  |
+| vendedores(1) | ventas(N)  |
+| inmuebles(1) | ventas(N)  |
+| propietarios_inmuebles(1) | inmuebles(N)   |
+| oficinas(1) | inmuebles(N)  |
+| oficinas(1) | empleados(N)  |
+| empleados(1) | vendedores(N) |
+| empleados(1) | administradores(N) |
+| empleados(1) | gerentes(N)  |
+| inmuebles_descripciones(1) | inmuebles(N) |
+| inmuebles_medidas(1) | inmuebles(N) |
+
+</br>
+
+#### Tabla Descriptiva Entidad-Relación Uno a Uno (1:1).
+| **Entidad-Relacion** | **Entidad-Relacion** |               
+| ------------- | ------------- |
+| compradores(1) | compradores_clientes(1)  |
+| clientes(1) | compradores_clientes(1)  |
+
+* Las FK de la Tabla compradores_clientes se restringuen como Unique para que no hayan duplicados
+* Las PK de las Tablas compradores y clientes se restringuen con Unique para que no hayan duplicados
+
 
 <hr>
 
@@ -33,6 +67,76 @@
 #### Git:                              https://git-scm.com/docs
 #### PostgreSQL:                            https://www.postgresql.org/download/
 #### DBeaver:                         https://dbeaver.io/
+
+</br>
+
+<hr>
+
+## `Documentación Del Proyecto`
+#### (Esta Documentación que Desarrollé es para la Creación, Configuración, Posibles Errores, Manejo de la Base de Datos db_inmuebles con PostgreSQL en DBeaver. Recomiendo Leerla y Realizar todo paso a paso como se indica en la misma, cualquier aporte o sugerencia, informar al respecto).
+
+## Indice
+- [Creación y Configuraciones de un Proyecto Spring Boot con Maven en Spring Tool Suite 4.](#creación-de-un-proyecto-spring-boot-con-maven-en-spring-tool-suite-4-y-configuraciones-iniciales)
+
+- [Configuración del Servidor de Despliegue (Wildfly).](#configuración-del-servidor-de-despliegue-wildfly)
+- [Herramienta Cygwin para el uso de Git.](#uso-de-cygwin)
+
+
+</br>
+
+## Configuración y Puesta en Marcha de la Base de Datos db_inmuebles.
+#### (Primeramente deberás descargate PostgreSQL como SGDB, luego DBeaver como GDB y crear la db ).
+
+#### 1) Descarga de DBeaver
+* --> https://dbeaver.io/
+* --> Descargar, Ejecutar e Instalar (Siguiente, Siguiente).
+
+
+#### 2) Descarga de PostgreSQL
+* -->  https://www.postgresql.org/download/
+* --> Descargar, Ejecutar e Instalar (Siguiente, Siguiente).
+
+
+#### 3) Configuración de PostgreSQL en DBeaver (Conexión a PostgreSQL).
+* --> Click sobre la Pestaña Archivo.
+* --> Nuevo
+* --> Database Connection, Siguiente.
+* --> Seleccionar el SGDB PostgreSQL, Siguiente.
+* --> En Propiedades de Conexión dejamos todo por defecto ( Host, Port, Database, etc ).
+* --> Finalizar, ya está la conexión configurada.
+
+
+#### 4) Creación de nuestra DB db_inmuebles.
+* --> Se debería haber desplegado la Conexión PostgreSQL, sino desplagar para visualizar 
+* --> Click Der sobre postgres
+* --> Crear, Base de Datos
+* --> En Database Name colocamos db_inmobiliaria.
+* --> En owner Seleccionamos postgres o dejarlo seleccionado por defecto.
+* --> Template database vacío.
+* --> En Encoding Seleccionamos UTF8 o dejarlo seleccionado por defecto.
+* --> Tablespace pg_default o dejarlo seleccionado por defecto.
+* --> Aceptar, ya está la db creada.
+
+</br>
+
+## Uso y Ejecución de los Scripts .sql
+#### (Vamos a trabajar con los Archivos sql dentro de DBeaver).
+
+#### 1) Primeramente asegurate de haber descargado este Repositorio
+
+#### 2) Importamos los Archivos SQL a DBeaver
+* --> Click sobre Archivo (Barra Superior)
+* --> Buscar Archivo Denominado..
+* --> Seleccionas los .sql y Open.
+* --> Listo
+
+#### 3) Orden de Ejecución de los Scripts
+* --> 1) db_inmobiliaria_DDL.sql
+
+
+
+
+
 
 
 </br>

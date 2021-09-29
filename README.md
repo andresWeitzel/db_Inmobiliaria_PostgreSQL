@@ -11,27 +11,31 @@
 
 ![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/db_inmobiliaria_DER.png)
 
+* DBeaver implementa la notación IDEF1X para el Diagrama Entidad Relación. En la doc que anexa DBeaver(https://dbeaver.com/docs/wiki/ER-Diagrams/) no está del todo claro la relación que implementa. Investigando sobre las mismas, se puede concluir que la Relación Diamante y Circulo entre línea Punteada se declara como relaciónes Opcionales. Por ende debajo de la siguiente Imagen está detallado las Relaciones entre Entidades.
+
+![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/relacionDeTablas.png)
+
 </br>
 
 
-#### Tabla Descriptiva Entidad-Relación
+#### Tabla Descriptiva Entidad-Relación Uno a Muchos (1:N).
 
-| **Entidades** | **Relaciones** |               
+| **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
-| Ventas(1)-Facturas(N) | 1:N (Uno a Muchos)   |
-| Compradores(1)-Ventas(N) | 1:N (Uno a Muchos)   |
-| Compradores(1)-Compradores_Clientes(N) | 1:N (Uno a Muchos)   |
-| Clientes(1)-Compradores_Clientes(N) | 1:N (Uno a Muchos)   |
-| Vendedores(1)-Ventas(N) | 1:N (Uno a Muchos)   |
-| Inmuebles(1)-Ventas(N) | 1:N (Uno a Muchos)   |
-| Propietarios_Inmuebles(1)-Inmuebles(N) | 1:N (Uno a Muchos)   |
-| Oficinas(1)-Inmuebles(N) | 1:N (Uno a Muchos)   |
-| Oficinas(1)-Empleados(N) | 1:N (Uno a Muchos)   |
-| Empleados(1)-Vendedores(N) | 1:N (Uno a Muchos)   |
-| Empleados(1)-Administradores(N) | 1:N (Uno a Muchos)   |
-| Empleados(1)-Gerentes(N) | 1:N (Uno a Muchos)   |
-| Inmuebles_Descripciones(1)-Inmuebles(N) | 1:N (Uno a Muchos)   |
-| Inmuebles_Medidas(1)-Inmuebles(N) | 1:N (Uno a Muchos)   |
+| Ventas(1) | Facturas(N)   |
+| Compradores(1) | Ventas(N)  |
+| Compradores(1) | Compradores_Clientes(N)  |
+| Clientes(1) | Compradores_Clientes(N)  |
+| Vendedores(1) | Ventas(N)  |
+| Inmuebles(1) | Ventas(N)  |
+| Propietarios_Inmuebles(1) | Inmuebles(N)   |
+| Oficinas(1) | Inmuebles(N)  |
+| Oficinas(1) | Empleados(N)  |
+| Empleados(1) | Vendedores(N) |
+| Empleados(1) | Administradores(N) |
+| Empleados(1) | Gerentes(N)  |
+| Inmuebles_Descripciones(1) | Inmuebles(N) |
+| Inmuebles_Medidas(1) | Inmuebles(N) |
 
 
 

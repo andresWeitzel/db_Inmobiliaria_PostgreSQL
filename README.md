@@ -22,22 +22,28 @@
 
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
-| Ventas(1) | Facturas(N)   |
-| Compradores(1) | Ventas(N)  |
-| Compradores(1) | Compradores_Clientes(N)  |
-| Clientes(1) | Compradores_Clientes(N)  |
-| Vendedores(1) | Ventas(N)  |
-| Inmuebles(1) | Ventas(N)  |
-| Propietarios_Inmuebles(1) | Inmuebles(N)   |
-| Oficinas(1) | Inmuebles(N)  |
-| Oficinas(1) | Empleados(N)  |
-| Empleados(1) | Vendedores(N) |
-| Empleados(1) | Administradores(N) |
-| Empleados(1) | Gerentes(N)  |
-| Inmuebles_Descripciones(1) | Inmuebles(N) |
-| Inmuebles_Medidas(1) | Inmuebles(N) |
+| ventas(1) | facturas(N)   |
+| compradores(1) | ventas(N)  |
+| vendedores(1) | ventas(N)  |
+| inmuebles(1) | ventas(N)  |
+| propietarios_inmuebles(1) | inmuebles(N)   |
+| oficinas(1) | inmuebles(N)  |
+| oficinas(1) | empleados(N)  |
+| empleados(1) | vendedores(N) |
+| empleados(1) | administradores(N) |
+| empleados(1) | gerentes(N)  |
+| inmuebles_descripciones(1) | inmuebles(N) |
+| inmuebles_medidas(1) | inmuebles(N) |
 
 
+### Tabla Descriptiva Entidad-Relación Uno a Uno (1:1).
+| **Entidad-Relacion** | **Entidad-Relacion** |               
+| ------------- | ------------- |
+| compradores(1) | compradores_clientes(1)  |
+| clientes(1) | compradores_clientes(1)  |
+
+* Las FK de la Tabla compradores_clientes se restringuen como Unique para que no hayan duplicados
+* Las PK de las Tablas compradores y clientes se restringuen coo Unique para que no hayan duplicados
 
 
 <hr>

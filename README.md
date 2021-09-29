@@ -35,15 +35,16 @@
 | inmuebles_descripciones(1) | inmuebles(N) |
 | inmuebles_medidas(1) | inmuebles(N) |
 
+</br>
 
-### Tabla Descriptiva Entidad-Relación Uno a Uno (1:1).
+#### Tabla Descriptiva Entidad-Relación Uno a Uno (1:1).
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
 | compradores(1) | compradores_clientes(1)  |
 | clientes(1) | compradores_clientes(1)  |
 
 * Las FK de la Tabla compradores_clientes se restringuen como Unique para que no hayan duplicados
-* Las PK de las Tablas compradores y clientes se restringuen coo Unique para que no hayan duplicados
+* Las PK de las Tablas compradores y clientes se restringuen con Unique para que no hayan duplicados
 
 
 <hr>

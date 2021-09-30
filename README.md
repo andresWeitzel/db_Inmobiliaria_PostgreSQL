@@ -22,10 +22,10 @@
 
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
-| ventas(1) | facturas(N)   |
-| compradores(1) | ventas(N)  |
-| vendedores(1) | ventas(N)  |
-| inmuebles(1) | ventas(N)  |
+| ventas_compras(1) | facturas(N)   |
+| compradores(1) | ventas_compras(N)  |
+| vendedores(1) | ventas_compras(N)  |
+| inmuebles(1) | ventas_compras(N)  |
 | propietarios_inmuebles(1) | inmuebles(N)   |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |
@@ -34,6 +34,7 @@
 </br>
 
 #### Tabla Descriptiva Entidad-Relación Uno a Uno (1:1).
+
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
 | compradores(1) | compradores_clientes(1)  |
@@ -49,14 +50,15 @@
 
 | **Tabla** | **Campo** |               
 | ------------- | ------------- |
-| compradores_clientes | FK id_cliente  |
-| compradores_clientes | FK id_comprador |
-| vendedores | FK id_empleado |
-| administradores | FK id_empleado |
-| gerentes | FK id_empleado |
-| inmuebles | FK id_inmueble_medidas | 
-| inmuebles | FK id_inmueble_descripcion | 
+| compradores_clientes | FK id_cliente UNIQUE |
+| compradores_clientes | FK id_comprador UNIQUE |
+| vendedores | FK id_empleado UNIQUE |
+| administradores | FK id_empleado UNIQUE |
+| gerentes | FK id_empleado UNIQUE |
+| inmuebles | FK id_inmueble_medidas UNIQUE | 
+| inmuebles | FK id_inmueble_descripcion UNIQUE | 
 
+</br>
 
 <hr>
 

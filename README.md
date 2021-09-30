@@ -44,7 +44,8 @@
 | empleados(1) | vendedores(1) |
 
 
-* Restricciones de tipo Check Unique para relación (1:1)
+#### Restricciones de tipo Check Unique para relación (1:1)
+
 | **Tabla** | **Campo** |               
 | ------------- | ------------- |
 | compradores_clientes | FK id_cliente  |

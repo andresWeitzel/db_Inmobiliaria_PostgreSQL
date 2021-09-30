@@ -29,8 +29,7 @@
 | propietarios_inmuebles(1) | inmuebles(N)   |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |
-| inmuebles_descripciones(1) | inmuebles(N) |
-| inmuebles_medidas(1) | inmuebles(N) |
+
 
 </br>
 
@@ -42,6 +41,8 @@
 | empleados(1) | vendedores(1) |
 | empleados(1) | administradores(1) |
 | empleados(1) | gerentes(1)  |
+| inmuebles(1) | inmuebles_descripciones(1) |
+| inmuebles(1) | inmuebles_medidas(1) |
 
 
 #### Restricciones de tipo CHECK UNIQUE para relación (1:1)
@@ -53,6 +54,8 @@
 | vendedores | FK id_empleado |
 | administradores | FK id_empleado |
 | gerentes | FK id_empleado |
+| inmuebles | FK id_inmueble_medidas | 
+| inmuebles | FK id_inmueble_descripcion | 
 
 
 <hr>

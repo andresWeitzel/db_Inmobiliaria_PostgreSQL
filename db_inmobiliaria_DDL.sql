@@ -15,7 +15,7 @@ drop table if exists inmuebles cascade;
 drop table if exists inmuebles_descripciones cascade;
 drop table if exists inmuebles_medidas cascade;
 drop table if exists facturas cascade;
-drop table if exists ventas cascade;
+drop table if exists ventas_compras cascade;
 drop table if exists propietarios_inmuebles cascade;
 drop table if exists administradores cascade; -- planeacion, organizacion, etc
 drop table if exists gerentes cascade;-- metas y procedimientos, control administracion
@@ -258,11 +258,18 @@ alter table inmuebles
 add constraint UNIQUE_inmuebles_id
 unique(id);
 
---FK ID_PROPIETARIO_INMUEBLE
-alter table inmuebles 
-add constraint FK_inmuebles_id_propietario_inmueble
-foreign key(id_propietario_inmueble)
-references propietarios_inmuebles(id);
+-- UNIQUE ID_INMUEBLE_MEDIDAS
+alter table inmuebles
+add constraint UNIQUE_inmuebles_id_inmueble_medidas
+unique(id_inmueble_medidas);
+
+
+-- UNIQUE ID_INMUEBLE_DESCRIPCION
+alter table inmuebles
+add constraint UNIQUE_inmuebles_id_inmueble_descripcion
+unique(id_inmueble_descripcion);
+
+
 
 -- FK ID_INMUEBLES_MEDIDAS
 alter table inmuebles
@@ -276,6 +283,11 @@ add constraint FK_inmuebles_id_inmueble_descripciones
 foreign key(id_inmueble_descripcion)
 references inmuebles_descripciones(id);
 
+--FK ID_PROPIETARIO_INMUEBLE
+alter table inmuebles 
+add constraint FK_inmuebles_id_propietario_inmueble
+foreign key(id_propietario_inmueble)
+references propietarios_inmuebles(id);
 
 
 --FK ID_OFICINA
@@ -391,6 +403,11 @@ alter table administradores
 add constraint UNIQUE_administradores_id
 unique(id);
 
+-- UNIQUE ID_EMPLEADO
+alter table administradores 
+add constraint UNIQUE_administradores_id_empleado
+unique(id_empleado);
+
 -- FK ID_EMPLEADO
 alter table administradores
 add constraint FK_administradores_id_empleado
@@ -426,6 +443,11 @@ monto_adicional_anual float not null
 alter table gerentes 
 add constraint UNIQUE_gerentes_id
 unique(id);
+
+-- UNIQUE ID_EMPLEADO
+alter table gerentes 
+add constraint UNIQUE_gerentes_id_empleado
+unique(id_empleado);
 
 -- FK ID_EMPLEADO
 alter table gerentes
@@ -474,6 +496,11 @@ cualidades varchar(50)-- flexibilidad, confianza,etc
 alter table vendedores 
 add constraint UNIQUE_vendedores_id
 unique(id);
+
+-- UNIQUE ID_EMPLEADO
+alter table vendedores 
+add constraint UNIQUE_vendedores_id_empleado
+unique(id_empleado);
 
 -- FK ID_EMPLEADO
 alter table vendedores 
@@ -662,9 +689,9 @@ references compradores(id);
 -- ---------------------------------------------------------------------------
 
 
--- ======= TABLA VENTAS ===========
+-- ======= TABLA VENTAS_COMPRAS ===========
 
-create table ventas(
+create table ventas_compras(
 	
 id int primary key,
 id_vendedor int not null,
@@ -674,35 +701,35 @@ fecha_venta timestamp not null
 
 );
 
--- ======= Restricciones Tabla Ventas ===========
+-- ======= Restricciones Tabla ventas_compras ===========
 
 -- UNIQUE ID
-alter table ventas 
-add constraint UNIQUE_ventas_id
+alter table ventas_compras
+add constraint UNIQUE_ventas_compras_id
 unique(id);
 
 -- FK ID_VENDEDOR
-alter table ventas 
-add constraint FK_ventas_id_vendedor
+alter table ventas_compras 
+add constraint FK_ventas_compras_id_vendedor
 foreign key(id_vendedor)
 references vendedores(id);
 
 -- FK ID_COMPRADOR
-alter table ventas 
-add constraint FK_ventas_id_comprador
+alter table ventas_compras 
+add constraint FK_ventas_compras_id_comprador
 foreign key(id_comprador)
 references compradores(id);
 
 -- FK ID_INMUEBLE
-alter table ventas 
-add constraint FK_ventas_id_inmuebles
+alter table ventas_compras 
+add constraint FK_ventas_compras_id_inmuebles
 foreign key(id_inmueble)
 references inmuebles(id);
 
 
 -- CHECK FECHA_VENTA
-alter table ventas 
-add constraint CHECK_ventas_fecha_venta
+alter table ventas_compras 
+add constraint CHECK_ventas_compras_fecha_venta
 check (fecha_venta >= current_date );
 
 
@@ -717,12 +744,15 @@ drop type if exists tipoPago;
 
 create type tipoFactura as enum('A','B','C','D');
 create type tipoPago as enum('EFECTIVO','CHEQUE','TARJETA');
+
+
+
 -- ======= TABLA FACTURAS ===========
 
 create table facturas(
 	
 id int primary key,
-id_venta int not null,
+id_venta_compra int not null,
 tipo tipoFactura not null,
 nro_factura int not null,
 fecha_emision timestamp not null,
@@ -743,11 +773,11 @@ alter table facturas
 add constraint UNIQUE_facturas_id
 unique(id);
 
--- FK ID_VENTA
+-- FK ID_VENTA_COMPRA
 alter table facturas 
-add constraint FK_facturas_id_venta
-foreign key(id_venta)
-references ventas(id);
+add constraint FK_facturas_id_venta_compra
+foreign key(id_venta_compra)
+references ventas_compras(id);
 
 -- UNIQUE NRO_FACTURA 
 alter table facturas 
@@ -807,7 +837,7 @@ select * from gerentes;
 select * from vendedores;
 select * from compradores;
 select * from compradores_clientes;
-select * from ventas;
+select * from ventas_compras;
 select * from facturas;
 
 

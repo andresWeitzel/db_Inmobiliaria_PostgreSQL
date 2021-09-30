@@ -29,8 +29,6 @@
 | propietarios_inmuebles(1) | inmuebles(N)   |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |
-| empleados(1) | administradores(N) |
-| empleados(1) | gerentes(N)  |
 | inmuebles_descripciones(1) | inmuebles(N) |
 | inmuebles_medidas(1) | inmuebles(N) |
 
@@ -42,15 +40,19 @@
 | compradores(1) | compradores_clientes(1)  |
 | clientes(1) | compradores_clientes(1)  |
 | empleados(1) | vendedores(1) |
+| empleados(1) | administradores(1) |
+| empleados(1) | gerentes(1)  |
 
 
-#### Restricciones de tipo Check Unique para relación (1:1)
+#### Restricciones de tipo CHECK UNIQUE para relación (1:1)
 
 | **Tabla** | **Campo** |               
 | ------------- | ------------- |
 | compradores_clientes | FK id_cliente  |
 | compradores_clientes | FK id_comprador |
-| vendedores | id_empleado |
+| vendedores | FK id_empleado |
+| administradores | FK id_empleado |
+| gerentes | FK id_empleado |
 
 
 <hr>

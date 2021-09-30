@@ -22,30 +22,43 @@
 
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
-| ventas(1) | facturas(N)   |
-| compradores(1) | ventas(N)  |
-| vendedores(1) | ventas(N)  |
-| inmuebles(1) | ventas(N)  |
+| ventas_compras(1) | facturas(N)   |
+| compradores(1) | ventas_compras(N)  |
+| vendedores(1) | ventas_compras(N)  |
+| inmuebles(1) | ventas_compras(N)  |
 | propietarios_inmuebles(1) | inmuebles(N)   |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |
-| empleados(1) | vendedores(N) |
-| empleados(1) | administradores(N) |
-| empleados(1) | gerentes(N)  |
-| inmuebles_descripciones(1) | inmuebles(N) |
-| inmuebles_medidas(1) | inmuebles(N) |
+
 
 </br>
 
 #### Tabla Descriptiva Entidad-Relación Uno a Uno (1:1).
+
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
 | compradores(1) | compradores_clientes(1)  |
 | clientes(1) | compradores_clientes(1)  |
+| empleados(1) | vendedores(1) |
+| empleados(1) | administradores(1) |
+| empleados(1) | gerentes(1)  |
+| inmuebles(1) | inmuebles_descripciones(1) |
+| inmuebles(1) | inmuebles_medidas(1) |
 
-* Las FK de la Tabla compradores_clientes se restringuen como Unique para que no hayan duplicados
-* Las PK de las Tablas compradores y clientes se restringuen con Unique para que no hayan duplicados
 
+#### Restricciones de tipo CHECK UNIQUE para relación (1:1)
+
+| **Tabla** | **Campo** |               
+| ------------- | ------------- |
+| compradores_clientes | FK id_cliente UNIQUE |
+| compradores_clientes | FK id_comprador UNIQUE |
+| vendedores | FK id_empleado UNIQUE |
+| administradores | FK id_empleado UNIQUE |
+| gerentes | FK id_empleado UNIQUE |
+| inmuebles | FK id_inmueble_medidas UNIQUE | 
+| inmuebles | FK id_inmueble_descripcion UNIQUE | 
+
+</br>
 
 <hr>
 

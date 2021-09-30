@@ -29,7 +29,6 @@
 | propietarios_inmuebles(1) | inmuebles(N)   |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |
-| empleados(1) | vendedores(N) |
 | empleados(1) | administradores(N) |
 | empleados(1) | gerentes(N)  |
 | inmuebles_descripciones(1) | inmuebles(N) |
@@ -42,9 +41,15 @@
 | ------------- | ------------- |
 | compradores(1) | compradores_clientes(1)  |
 | clientes(1) | compradores_clientes(1)  |
+| empleados(1) | vendedores(1) |
 
-* Las FK de la Tabla compradores_clientes se restringuen como Unique para que no hayan duplicados
-* Las PK de las Tablas compradores y clientes se restringuen con Unique para que no hayan duplicados
+
+* Restricciones de tipo Check Unique para relación (1:1)
+| **Tabla** | **Campo** |               
+| ------------- | ------------- |
+| compradores_clientes | FK id_cliente  |
+| compradores_clientes | FK id_comprador |
+| vendedores | id_empleado |
 
 
 <hr>

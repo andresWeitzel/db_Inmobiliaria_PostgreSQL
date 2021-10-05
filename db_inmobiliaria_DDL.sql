@@ -16,10 +16,13 @@ drop table if exists inmuebles cascade;
 drop table if exists inmuebles_descripciones cascade;
 drop table if exists inmuebles_medidas cascade;
 drop table if exists inmuebles_marketing cascade;
+drop table if exists servicios_inmuebles cascade;
+drop table if exists inspecciones_inmuebles cascade;
+drop table if exists citas_inmuebles cascade;
+drop table if exists propietarios_inmuebles cascade;
 drop table if exists facturas cascade;
 drop table if exists facturas_detalles cascade;
 drop table if exists ventas_compras cascade;
-drop table if exists propietarios_inmuebles cascade;
 drop table if exists administradores cascade; -- planeacion, organizacion, etc
 drop table if exists gerentes cascade;-- metas y procedimientos, control administracion
 drop table if exists vendedores cascade;-- ventas inmuebles, entrevistas, etc
@@ -40,6 +43,16 @@ drop type if exists estadoOficina;
 drop type if exists tipoOficina;
 drop type if exists tipoAnuncioPrincipal;
 drop type if exists redSocialPrincipal;
+drop type if exists tipoInpeccion;
+drop type if exists divisionComercial;
+drop type if exists divisionVivienda;
+drop type if exists tasaciones;
+drop type if exists administracion;
+
+
+
+
+
 
 
 
@@ -82,10 +95,11 @@ unique(telefono);
 
 -- ---------------------------------------------------------------------------
 
+-- ======= TABLA OFICINAS_DETALLES ===========
+
 create type estadoOficina as enum('ALQUILADA','PROPIA'); 
 create type tipoOficina as enum('PEQUEÑA','ESTANDAR','EJECUTIVA'); 
 
--- ======= TABLA OFICINAS_DETALLES ===========
 
 create table oficinas_detalles(
 	
@@ -312,118 +326,6 @@ unique(id);
 -- ---------------------------------------------------------------------------
 
 
-
--- ---------------------------------------------------------------------------
-
--- ======= TABLA INMUEBLES ===========
-
-create table inmuebles(
-	
-id int primary key,
-id_propietario_inmueble int not null,
-id_inmueble_medidas int not null,
-id_inmueble_descripcion int not null,
-id_oficina int not null,
-descripcion varchar(40) not null,-- ej: semipiso de 3 Amb en Palermo
-tipo varchar(20) not null, -- depto, casa, etc
-direccion varchar(40) not null,-- San sarasa 123
-ubicacion varchar(40) not null, -- zona:palermo, recoleta, etc
-sitioWeb varchar(40)-- link de la pag de la descripcion
-
-);
-
--- ======= Restricciones Tabla Inmuebles ===========
-
--- UNIQUE ID
-alter table inmuebles 
-add constraint UNIQUE_inmuebles_id
-unique(id);
-
--- UNIQUE ID_INMUEBLE_MEDIDAS
-alter table inmuebles
-add constraint UNIQUE_inmuebles_id_inmueble_medidas
-unique(id_inmueble_medidas);
-
-
--- UNIQUE ID_INMUEBLE_DESCRIPCION
-alter table inmuebles
-add constraint UNIQUE_inmuebles_id_inmueble_descripcion
-unique(id_inmueble_descripcion);
-
-
-
--- FK ID_INMUEBLES_MEDIDAS
-alter table inmuebles
-add constraint FK_inmuebles_id_inmueble_medidas
-foreign key(id_inmueble_medidas)
-references inmuebles_medidas(id);
-
--- FK ID_INMUEBLE_DESCRIPCIONES
-alter table inmuebles
-add constraint FK_inmuebles_id_inmueble_descripciones
-foreign key(id_inmueble_descripcion)
-references inmuebles_descripciones(id);
-
---FK ID_PROPIETARIO_INMUEBLE
-alter table inmuebles 
-add constraint FK_inmuebles_id_propietario_inmueble
-foreign key(id_propietario_inmueble)
-references propietarios_inmuebles(id);
-
-
---FK ID_OFICINA
-alter table inmuebles 
-add constraint FK_inmuebles_id_oficina
-foreign key(id_oficina)
-references oficinas(id);
-
-
-
--- ---------------------------------------------------------------------------
-
--- ---------------------------------------------------------------------------
-
-create type tipoAnuncioPrincipal as enum('GOOGLEADS','TELEVISION','PERIODICOS','OTROS');
-create type redSocialPrincipal as enum('FACEBOOK','TWITTER','LINKEDLIN','YOUTUBE','OTROS');
-
-
--- ======= TABLA INMUEBLES_MARKETING===========
-
-create table inmuebles_marketing(
-	
-id int primary key,
-id_inmueble int not null,
-tipo_anuncio_principal tipoAnuncioPrincipal not null,
-descripcion_anuncio varchar(40) not null,
-red_social_principal redSocialPrincipal not null,
-descripcion_red_social_principal varchar(40) not null,
-inversion_total float not null
-);
-
--- ======= Restricciones Tabla Inmuebles ===========
-
--- UNIQUE ID
-alter table inmuebles_marketing
-add constraint UNIQUE_inmuebles_marketing_id
-unique(id);
-
-
--- FK ID_INMUEBLES
-alter table inmuebles_marketing
-add constraint FK_inmuebles_marketing_id_inmueble
-foreign key(id_inmueble)
-references inmuebles(id);
-
--- CHECK INVERSION_TOTAL
-alter table inmuebles_marketing
-add constraint CHECK_inmuebles_marketing_inversion_total
-check(inversion_total > 0);
-
-
--- ---------------------------------------------------------------------------
-
-
-
 -- ---------------------------------------------------------------------------
 
 
@@ -500,6 +402,326 @@ check (salario_anual > 300);
 
 
 -- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA CLIENTES ===========
+
+create table clientes(
+	
+id int primary key,
+nombre varchar(30) not null,
+apellido varchar(30) not null,
+edad int not null,
+fecha_nacimiento date not null,
+tipo_documento varchar(20) not null,
+nro_documento varchar(20) not null,
+direccion varchar(40) not null, 
+telefono_principal varchar(40) not null,
+telefono_secundario varchar(40),
+email varchar(40),
+fecha_alta date not null
+
+
+);
+
+-- ======= Restricciones Tabla Clientes ===========
+
+-- UNIQUE ID
+alter table clientes 
+add constraint UNIQUE_clientes_id
+unique(id);
+
+
+-- UNIQUE NOMBRE/APELLIDO
+alter table clientes 
+add constraint UNIQUE_clientes_nombre_apellido
+unique(nombre,apellido);
+
+
+-- CHECK EDAD
+alter table clientes 
+add constraint CHECK_clientes_edad
+check (edad >= 18);
+
+
+--- UNIQUE NRO_DOCUMENTO
+alter table clientes 
+add constraint UNIQUE_clientes_nro_documento
+unique(nro_documento);
+
+
+-- CHECK FECHA_NACIMIENTO Y FECHA_ALTA
+alter table clientes 
+add constraint CHECK_clientes_fecha_nacimiento_alta
+check (current_date > fecha_nacimiento and current_date >= fecha_alta );
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA INMUEBLES ===========
+
+create table inmuebles(
+	
+id int primary key,
+id_propietario_inmueble int not null,
+id_inmueble_medidas int not null,
+id_inmueble_descripcion int not null,
+id_oficina int not null,
+descripcion varchar(40) not null,-- ej: semipiso de 3 Amb en Palermo
+tipo varchar(20) not null, -- depto, casa, etc
+direccion varchar(40) not null,-- San sarasa 123
+ubicacion varchar(40) not null, -- zona:palermo, recoleta, etc
+sitioWeb varchar(40)-- link de la pag de la descripcion
+
+);
+
+-- ======= Restricciones Tabla Inmuebles ===========
+
+-- UNIQUE ID
+alter table inmuebles 
+add constraint UNIQUE_inmuebles_id
+unique(id);
+
+-- UNIQUE ID_INMUEBLE_MEDIDAS
+alter table inmuebles
+add constraint UNIQUE_inmuebles_id_inmueble_medidas
+unique(id_inmueble_medidas);
+
+
+-- UNIQUE ID_INMUEBLE_DESCRIPCION
+alter table inmuebles
+add constraint UNIQUE_inmuebles_id_inmueble_descripcion
+unique(id_inmueble_descripcion);
+
+
+-- FK ID_INMUEBLES_MEDIDAS
+alter table inmuebles
+add constraint FK_inmuebles_id_inmueble_medidas
+foreign key(id_inmueble_medidas)
+references inmuebles_medidas(id);
+
+-- FK ID_INMUEBLE_DESCRIPCIONES
+alter table inmuebles
+add constraint FK_inmuebles_id_inmueble_descripciones
+foreign key(id_inmueble_descripcion)
+references inmuebles_descripciones(id);
+
+--FK ID_PROPIETARIO_INMUEBLE
+alter table inmuebles 
+add constraint FK_inmuebles_id_propietario_inmueble
+foreign key(id_propietario_inmueble)
+references propietarios_inmuebles(id);
+
+
+--FK ID_OFICINA
+alter table inmuebles 
+add constraint FK_inmuebles_id_oficina
+foreign key(id_oficina)
+references oficinas(id);
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA CITAS_INMUEBLES ===========
+
+create table citas_inmuebles(
+	
+id int primary key,
+id_inmueble int not null,
+id_empleado int NOT NULL,-- Puede ser un gerente o vendedor
+id_cliente int NOT null,-- Si hay cita automaticamente pasa a ser un cliente
+fecha_cita date NOT null,-- '2001-10-07'
+hora_cita time NOT NULL  -- '09:00:07'
+
+);
+
+-- ======= Restricciones Tabla citas_inmuebles ===========
+
+-- UNIQUE ID
+alter table citas_inmuebles 
+add constraint UNIQUE_citas_inmuebles_id
+unique(id);
+
+
+-- FK ID_INMUEBLE
+alter table citas_inmuebles
+add constraint FK_citas_inmuebles_id_inmueble
+foreign key(id_inmueble)
+REFERENCES inmuebles(id);
+
+
+-- FK ID_EMPLEADO
+alter table citas_inmuebles
+add constraint FK_citas_inmuebles_id_empleado
+foreign key(id_empleado)
+REFERENCES empleados(id);
+
+
+-- FK ID_CLIENTE
+alter table citas_inmuebles
+add constraint FK_citas_inmuebles_id_cliente
+foreign key(id_cliente)
+REFERENCES clientes(id);
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA SERVICIOS_INMUEBLES ===========
+-- https://www.mosquerabrokers.com.ar/es/informacion/servicios
+
+create type divisionComercial as enum('LOCALES','OFICINAS','TERRENOS','OTROS');
+create type divisionVivienda as enum('DEPARTAMENTOS','CASAS','TERRENOS','OTROS');
+create type tasaciones as enum('PROFESIONAL','JUDICIAL','OTROS');
+create type administracion as enum('ALQUILERES','CUENTAS','OTROS');
+
+
+create table servicios_inmuebles(
+	
+id int primary key,
+id_oficina int not null,
+tipo_comercial divisionComercial not null,
+tipo_vivienda divisionVivienda not null,
+tipo_tasaciones tasaciones not null,
+descripcion_servicios varchar(100)
+
+);
+
+-- ======= Restricciones Tabla servicios_inmuebles ===========
+
+-- UNIQUE ID
+alter table servicios_inmuebles 
+add constraint UNIQUE_servicios_inmuebles_id
+unique(id);
+
+
+-- FK ID_OFICINA
+alter table servicios_inmuebles
+add constraint FK_servicios_inmuebles_id_oficina
+foreign key(id_oficina)
+references oficinas(id);
+
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA INSPECCIONES_INMUEBLES ===========
+-- http://checkhouse.com.ar/inspecciones-para-inquilinos/#amenities-content
+
+create type tipoInspeccion as enum('MONOAMBIENTE','BASICA','CLASICA','OTROS');
+
+create table inspecciones_inmuebles(
+	
+id int primary key,
+id_inmueble int not null,
+empresa varchar(30) not null,
+direccion varchar(30) not null,
+telefono varchar(30) not null,
+tipo_inspeccion tipoInspeccion not null,
+descripcion varchar(60) not null,
+costo float not null,
+fecha date not null,-- '2001-10-07'
+hora time not null  -- '09:00:07'
+
+
+);
+
+-- ======= Restricciones Tabla inspecciones_inmuebles ===========
+
+-- UNIQUE ID
+alter table inspecciones_inmuebles 
+add constraint UNIQUE_inspecciones_inmuebles_id
+unique(id);
+
+
+-- FK ID_INMUEBLE
+alter table inspecciones_inmuebles
+add constraint FK_inspecciones_inmuebles_id_inmueble
+foreign key(id_inmueble)
+references inmuebles(id);
+
+-- CHECK COSTO
+alter table inspecciones_inmuebles
+add constraint CHECK_inspecciones_inmuebles_costo
+check(costo > 0);
+
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA INMUEBLES_MARKETING===========
+
+create type tipoAnuncioPrincipal as enum('GOOGLEADS','TELEVISION','PERIODICOS','OTROS');
+create type redSocialPrincipal as enum('FACEBOOK','TWITTER','LINKEDLIN','YOUTUBE','OTROS');
+
+
+create table inmuebles_marketing(
+	
+id int primary key,
+id_inmueble int not null,
+tipo_anuncio_principal tipoAnuncioPrincipal not null,
+descripcion_anuncio varchar(40) not null,
+red_social_principal redSocialPrincipal not null,
+descripcion_red_social_principal varchar(40) not null,
+inversion_total float not null
+);
+
+-- ======= Restricciones Tabla Inmuebles ===========
+
+-- UNIQUE ID
+alter table inmuebles_marketing
+add constraint UNIQUE_inmuebles_marketing_id
+unique(id);
+
+
+-- FK ID_INMUEBLES
+alter table inmuebles_marketing
+add constraint FK_inmuebles_marketing_id_inmueble
+foreign key(id_inmueble)
+references inmuebles(id);
+
+-- CHECK INVERSION_TOTAL
+alter table inmuebles_marketing
+add constraint CHECK_inmuebles_marketing_inversion_total
+check(inversion_total > 0);
+
+
+-- ---------------------------------------------------------------------------
+
 
 
 
@@ -645,63 +867,6 @@ check ( bonificacion_ventas >= 0);
 
 -- ---------------------------------------------------------------------------
 
--- ---------------------------------------------------------------------------
-
-
--- ======= TABLA CLIENTES ===========
-
-create table clientes(
-	
-id int primary key,
-nombre varchar(30) not null,
-apellido varchar(30) not null,
-edad int not null,
-fecha_nacimiento date not null,
-tipo_documento varchar(20) not null,
-nro_documento varchar(20) not null,
-direccion varchar(40) not null, 
-telefono_principal varchar(40) not null,
-telefono_secundario varchar(40),
-email varchar(40),
-fecha_alta date not null
-
-
-);
-
--- ======= Restricciones Tabla Clientes ===========
-
--- UNIQUE ID
-alter table clientes 
-add constraint UNIQUE_clientes_id
-unique(id);
-
-
--- UNIQUE NOMBRE/APELLIDO
-alter table clientes 
-add constraint UNIQUE_clientes_nombre_apellido
-unique(nombre,apellido);
-
-
--- CHECK EDAD
-alter table clientes 
-add constraint CHECK_clientes_edad
-check (edad >= 18);
-
-
---- UNIQUE NRO_DOCUMENTO
-alter table clientes 
-add constraint UNIQUE_clientes_nro_documento
-unique(nro_documento);
-
-
--- CHECK FECHA_NACIMIENTO Y FECHA_ALTA
-alter table clientes 
-add constraint CHECK_clientes_fecha_nacimiento_alta
-check (current_date > fecha_nacimiento and current_date >= fecha_alta );
-
-
-
--- ---------------------------------------------------------------------------
 
 
 -- ---------------------------------------------------------------------------
@@ -905,14 +1070,14 @@ check ( total_venta > 0);
 
 -- ---------------------------------------------------------------------------
 
+-- ======= TABLA FACTURAS_DETALLES ===========
+
 -- Los enumerados deben estar declarados fuera de la creacion de tabla 
 
 create type tipoFactura as enum('A','B','C','D');
 create type tipoPago as enum('EFECTIVO','CHEQUE','TARJETA');
 
 
-
--- ======= TABLA FACTURAS_DETALLES ===========
 
 create table facturas_detalles(
 	
@@ -982,6 +1147,9 @@ alter table inmuebles alter id set default nextval('id_secuencia');
 alter table inmuebles_descripciones alter id set default nextval('id_secuencia');
 alter table inmuebles_medidas alter id set default nextval('id_secuencia');
 alter table inmuebles_marketing alter id set default nextval('id_secuencia');
+alter table servicios_inmuebles alter id set default nextval('id_secuencia');
+alter table inspecciones_inmuebles alter id set default nextval('id_secuencia');
+alter table citas_inmuebles alter id set default nextval('id_secuencia');
 alter table propietarios_inmuebles alter id set default nextval('id_secuencia');
 alter table empleados alter id set default nextval('id_secuencia');
 alter table clientes alter id set default nextval('id_secuencia');
@@ -1015,6 +1183,9 @@ select * from inmuebles;
 select * from inmuebles_descripciones;
 select * from inmuebles_medidas;
 select * from inmuebles_marketing;
+select * from servicios_inmuebles;
+select * from inspecciones_inmuebles;
+select * from citas_inmuebles;
 select * from propietarios_inmuebles;
 select * from empleados;
 select * from clientes;

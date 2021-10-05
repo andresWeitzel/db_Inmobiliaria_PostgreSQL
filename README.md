@@ -44,6 +44,7 @@
 | empleados(1) | gerentes(1)  |
 | inmuebles(1) | inmuebles_descripciones(1) |
 | inmuebles(1) | inmuebles_medidas(1) |
+| facturas(1) | facturas_detalles(1) |
 
 
 #### Restricciones de tipo CHECK UNIQUE para relación (1:1)
@@ -57,6 +58,7 @@
 | gerentes | FK id_empleado UNIQUE |
 | inmuebles | FK id_inmueble_medidas UNIQUE | 
 | inmuebles | FK id_inmueble_descripcion UNIQUE | 
+| facturas_detalles | FK id_factura UNIQUE | 
 
 </br>
 

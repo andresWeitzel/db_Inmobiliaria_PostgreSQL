@@ -27,12 +27,14 @@
 | vendedores(1) | ventas_compras(N)  |
 | inmuebles(1) | ventas_compras(N)  |
 | inmuebles(1) | inmuebles_marketing(N)  |
-| citas_inmuebles(1) | inmuebles(N)  |
-| citas_inmuebles(1) | empleados(N)  |
-| citas_inmuebles(1) | clientes(N)  |
+| inmuebles(1) |  citas_inmuebles(N)  |
+| inmuebles(1) |  inspecciones_inmuebles(N)  |
+| empleados(1) |  citas_inmuebles(N) |
+| clientes(1) |  citas_inmuebles(N) |
 | propietarios_inmuebles(1) | inmuebles(N)   |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |
+| oficinas(1) | servicios_inmuebles(N) |
 
 * No declarando las FK como Unique de las relaciones de Tablas nos aseguramos que exista duplicidad.
 

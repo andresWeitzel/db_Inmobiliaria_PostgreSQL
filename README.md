@@ -26,9 +26,12 @@
 | compradores(1) | ventas_compras(N)  |
 | vendedores(1) | ventas_compras(N)  |
 | inmuebles(1) | ventas_compras(N)  |
+| inmuebles(1) | inmuebles_marketing(N)  |
 | propietarios_inmuebles(1) | inmuebles(N)   |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |
+
+* No declarando las FK como Unique de las relaciones de Tablas nos aseguramos que exista duplicidad.
 
 
 </br>

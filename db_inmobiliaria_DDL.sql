@@ -11,10 +11,13 @@
 https://www.tutorialesprogramacionya.com/postgresqlya/temarios/descripcion.php?inicio=0&cod=159&punto=1
 */
 
+-- Tablas
 drop table if exists inmuebles cascade;
 drop table if exists inmuebles_descripciones cascade;
 drop table if exists inmuebles_medidas cascade;
+drop table if exists inmuebles_marketing cascade;
 drop table if exists facturas cascade;
+drop table if exists facturas_detalles cascade;
 drop table if exists ventas_compras cascade;
 drop table if exists propietarios_inmuebles cascade;
 drop table if exists administradores cascade; -- planeacion, organizacion, etc
@@ -25,13 +28,23 @@ drop table if exists compradores cascade;
 drop table if exists clientes cascade;
 drop table if exists empleados cascade;
 drop table if exists oficinas cascade;
+drop table if exists oficinas_detalles cascade;
 
-drop sequence if exists id_seq;
+-- Todos lo id PK auto_increment
+drop sequence if exists id_secuencia;
+
+-- Enumerados
+drop type if exists tipoFactura;
+drop type if exists tipoPago;
+drop type if exists estadoOficina;
+drop type if exists tipoOficina;
+drop type if exists tipoAnuncioPrincipal;
+drop type if exists redSocialPrincipal;
+
 
 
 
 -- ---------------------------------------------------------------------------
-
 
 -- ---------------------------------------------------------------------------
 
@@ -44,8 +57,7 @@ id int primary key,
 nombre varchar(30) not null,
 direccion varchar(40) not null,
 telefono varchar(40) not null,
-email varchar(40),
-sitio_web varchar(40)
+email varchar(40)
 
 );
 
@@ -65,6 +77,75 @@ unique(direccion);
 alter table oficinas 
 add constraint UNIQUE_oficinas_telefono
 unique(telefono);
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+create type estadoOficina as enum('ALQUILADA','PROPIA'); 
+create type tipoOficina as enum('PEQUEÑA','ESTANDAR','EJECUTIVA'); 
+
+-- ======= TABLA OFICINAS_DETALLES ===========
+
+create table oficinas_detalles(
+	
+id int primary key,
+id_oficina int ,
+localidad varchar(40) not null,
+tipo_oficina tipoOficina not null, 
+estado_oficina estadoOficina not null,
+superficie_total float(10) not null,
+cantidad_ambientes smallint not null, -- 1,2,3,etc | smallint-->2bytes, int-->4bytes |
+cantidad_baños smallint not null,
+antiguedad smallint, -- 20 años, etc
+sitio_web varchar(40)
+
+);
+
+-- ======= Restricciones Tabla Oficinas_detalles ===========
+
+-- UNIQUE ID
+alter table oficinas_detalles 
+add constraint UNIQUE_oficinas_detalles_id
+unique(id);
+
+-- UNIQUE ID_OFICINA
+alter table oficinas_detalles 
+add constraint UNIQUE_oficinas_detalles_id_oficina
+unique(id_oficina);
+
+-- FK ID_OFICINA
+alter table oficinas_detalles 
+add constraint FK_oficinas_detalles_id_oficina
+foreign key(id_oficina)
+references oficinas(id);
+
+-- CHECK SUPERFICIE_TOTAL
+alter table oficinas_detalles
+add constraint CHECK_oficinas_detalles_superficie_total
+check (superficie_total > 0 );
+
+
+-- CHECK CANTIDAD AMBIENTES
+alter table oficinas_detalles
+add constraint CHECK_oficinas_detalles_cantidad_ambientes
+check (cantidad_ambientes > 0 );
+
+
+-- CHECK CANTIDAD BAÑOS
+alter table oficinas_detalles
+add constraint CHECK_oficinas_detalles_cantidad_baños
+check (cantidad_baños > 0 );
+
+
+-- CHECK ANTIGUEDAD
+alter table oficinas_detalles
+add constraint CHECK_oficinas_detalles_antiguedad
+check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
+
+
+
+
 
 -- ---------------------------------------------------------------------------
 
@@ -299,6 +380,48 @@ references oficinas(id);
 
 
 -- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+create type tipoAnuncioPrincipal as enum('GOOGLEADS','TELEVISION','PERIODICOS','OTROS');
+create type redSocialPrincipal as enum('FACEBOOK','TWITTER','LINKEDLIN','YOUTUBE','OTROS');
+
+
+-- ======= TABLA INMUEBLES_MARKETING===========
+
+create table inmuebles_marketing(
+	
+id int primary key,
+id_inmueble int not null,
+tipo_anuncio_principal tipoAnuncioPrincipal not null,
+descripcion_anuncio varchar(40) not null,
+red_social_principal redSocialPrincipal not null,
+descripcion_red_social_principal varchar(40) not null,
+inversion_total float not null
+);
+
+-- ======= Restricciones Tabla Inmuebles ===========
+
+-- UNIQUE ID
+alter table inmuebles_marketing
+add constraint UNIQUE_inmuebles_marketing_id
+unique(id);
+
+
+-- FK ID_INMUEBLES
+alter table inmuebles_marketing
+add constraint FK_inmuebles_marketing_id_inmueble
+foreign key(id_inmueble)
+references inmuebles(id);
+
+-- CHECK INVERSION_TOTAL
+alter table inmuebles_marketing
+add constraint CHECK_inmuebles_marketing_inversion_total
+check(inversion_total > 0);
+
+
+-- ---------------------------------------------------------------------------
+
 
 
 -- ---------------------------------------------------------------------------
@@ -598,9 +721,7 @@ descuento_cliente float not null
 
 -- ======= Restricciones Tabla Compradores ===========
 
--- ID AUTO_INCREMENT
-CREATE SEQUENCE id_seq;
-ALTER TABLE compradores ALTER id SET DEFAULT NEXTVAL('id_seq');
+
 
 -- UNIQUE ID
 alter table compradores
@@ -737,15 +858,6 @@ check (fecha_venta >= current_date );
 
 -- ---------------------------------------------------------------------------
 
--- Los enumerados deben estar declarados fuera de la creacion de tabla 
-
-drop type if exists tipoFactura;
-drop type if exists tipoPago;
-
-create type tipoFactura as enum('A','B','C','D');
-create type tipoPago as enum('EFECTIVO','CHEQUE','TARJETA');
-
-
 
 -- ======= TABLA FACTURAS ===========
 
@@ -753,20 +865,13 @@ create table facturas(
 	
 id int primary key,
 id_venta_compra int not null,
-tipo tipoFactura not null,
 nro_factura int not null,
 fecha_emision timestamp not null,
-cantidad_inmuebles int not null,
-descripcion_factura varchar(60) not null,-- venta departamento inscripto en la partida N° 14567..
-precio_unitario float not null,
-valor_venta float not null,-- iva + extra + etc
-total_venta float not null, -- + impuestos + costos + etc
-medioDePago tipoPago not null,
-descripcion_pago varchar(40) not null
+total_venta float not null -- + impuestos + costos + etc
 
 );
 
--- ======= Restricciones Tabla Facturas ===========
+-- ======= Restricciones Tabla facturas ===========
 
 -- UNIQUE ID
 alter table facturas 
@@ -789,30 +894,109 @@ alter table facturas
 add constraint CHECK_facturas_fecha_emision
 check (fecha_emision >= current_date );
 
--- CHECK CANTIDAD_INMUEBLES
-alter table facturas
-add constraint CHECK_facturas_cantidad_inmuebles
-check (cantidad_inmuebles > 0);
-
--- CHECK PRECIO_UNITARIO
-alter table facturas
-add constraint CHECK_facturas_precio_unitario
-check( precio_unitario < total_venta and precio_unitario > 0);
-
--- CHECK VALOR_VENTA
-alter table facturas
-add constraint CHECK_facturas_valor_venta
-check ( valor_venta < total_venta and valor_venta > 0);
 
 -- CHECK TOTAL_VENTA
 alter table facturas
 add constraint CHECK_facturas_total_venta
-check ( total_venta > precio_unitario and total_venta > 0);
+check ( total_venta > 0);
 
 
 -- ---------------------------------------------------------------------------
 
+-- ---------------------------------------------------------------------------
 
+-- Los enumerados deben estar declarados fuera de la creacion de tabla 
+
+create type tipoFactura as enum('A','B','C','D');
+create type tipoPago as enum('EFECTIVO','CHEQUE','TARJETA');
+
+
+
+-- ======= TABLA FACTURAS_DETALLES ===========
+
+create table facturas_detalles(
+	
+id int primary key,
+id_factura int not null,
+tipo tipoFactura not null,
+cantidad_inmuebles int not null,
+descripcion_factura varchar(60) not null,-- venta departamento inscripto en la partida N° 14567..
+precio_unitario float not null,
+valor_venta float not null,-- iva + extra + etc
+medioDePago tipoPago not null,
+descripcion_pago varchar(40) not null
+
+);
+
+-- ======= Restricciones Tabla facturas_detalles ===========
+
+-- UNIQUE ID
+alter table facturas_detalles
+add constraint UNIQUE_facturas_detalles_id
+unique(id);
+
+-- UNIQUE ID_FACTURA
+alter table facturas_detalles
+add constraint UNIQUE_facturas_detalles_id_factura
+unique(id_factura);
+
+-- FK ID_FACTURA
+alter table facturas_detalles 
+add constraint FK_facturas_detalles_id_factura
+foreign key(id_factura)
+references facturas(id);
+
+-- CHECK CANTIDAD_INMUEBLES
+alter table facturas_detalles
+add constraint CHECK_facturas_detalles_cantidad_inmuebles
+check (cantidad_inmuebles > 0);
+
+-- CHECK PRECIO_UNITARIO
+alter table facturas_detalles
+add constraint CHECK_facturas_detalles_precio_unitario
+check( precio_unitario < valor_venta and precio_unitario > 0);
+
+-- CHECK VALOR_VENTA
+alter table facturas_detalles
+add constraint CHECK_facturas_detalles_valor_venta
+check ( valor_venta > precio_unitario and valor_venta > 0);
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- -------------------------------------------------------------------
+
+
+
+
+
+
+-- ======== TODOS LOS ID´S PK DE LAS TABLAS COMO AUTO_INCREMENT =======
+
+CREATE SEQUENCE id_secuencia;
+
+alter table oficinas alter id set default nextval('id_secuencia');
+alter table oficinas_detalles alter id set default nextval('id_secuencia');
+alter table inmuebles alter id set default nextval('id_secuencia');
+alter table inmuebles_descripciones alter id set default nextval('id_secuencia');
+alter table inmuebles_medidas alter id set default nextval('id_secuencia');
+alter table inmuebles_marketing alter id set default nextval('id_secuencia');
+alter table propietarios_inmuebles alter id set default nextval('id_secuencia');
+alter table empleados alter id set default nextval('id_secuencia');
+alter table clientes alter id set default nextval('id_secuencia');
+alter table administradores alter id set default nextval('id_secuencia');
+alter table gerentes alter id set default nextval('id_secuencia');
+alter table vendedores alter id set default nextval('id_secuencia');
+alter table compradores alter id set default nextval('id_secuencia');
+alter table compradores_clientes alter id set default nextval('id_secuencia');
+alter table ventas_compras alter id set default nextval('id_secuencia');
+alter table facturas alter id set default nextval('id_secuencia');
+alter table facturas_detalles alter id set default nextval('id_secuencia');
+
+
+
+-- -------------------------------------------------------------------
 
 
 -- ---------------------------------------------------------------------------
@@ -826,9 +1010,11 @@ and schemaname != 'pg_catalog';
  
  
 select * from oficinas;
+select * from oficinas_detalles;
 select * from inmuebles;
 select * from inmuebles_descripciones;
 select * from inmuebles_medidas;
+select * from inmuebles_marketing;
 select * from propietarios_inmuebles;
 select * from empleados;
 select * from clientes;
@@ -839,6 +1025,7 @@ select * from compradores;
 select * from compradores_clientes;
 select * from ventas_compras;
 select * from facturas;
+select * from facturas_detalles;
 
 
 

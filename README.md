@@ -27,8 +27,9 @@
 | vendedores(1) | ventas_compras(N)  |
 | inmuebles(1) | ventas_compras(N)  |
 | inmuebles(1) | inmuebles_marketing(N)  |
-| inmuebles(1) | citas_inmuebles(N)  |
+| citas_inmuebles(1) | inmuebles(N)  |
 | citas_inmuebles(1) | empleados(N)  |
+| citas_inmuebles(1) | clientes(N)  |
 | propietarios_inmuebles(1) | inmuebles(N)   |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |

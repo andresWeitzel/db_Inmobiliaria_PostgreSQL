@@ -26,9 +26,12 @@
 | compradores(1) | ventas_compras(N)  |
 | vendedores(1) | ventas_compras(N)  |
 | inmuebles(1) | ventas_compras(N)  |
+| inmuebles(1) | inmuebles_marketing(N)  |
 | propietarios_inmuebles(1) | inmuebles(N)   |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |
+
+* No declarando las FK como Unique de las relaciones de Tablas nos aseguramos que exista duplicidad.
 
 
 </br>
@@ -44,6 +47,9 @@
 | empleados(1) | gerentes(1)  |
 | inmuebles(1) | inmuebles_descripciones(1) |
 | inmuebles(1) | inmuebles_medidas(1) |
+| facturas(1) | facturas_detalles(1) |
+| oficinas(1) | oficinas_detalles(1) |
+
 
 
 #### Restricciones de tipo CHECK UNIQUE para relación (1:1)
@@ -57,6 +63,8 @@
 | gerentes | FK id_empleado UNIQUE |
 | inmuebles | FK id_inmueble_medidas UNIQUE | 
 | inmuebles | FK id_inmueble_descripcion UNIQUE | 
+| facturas_detalles | FK id_factura UNIQUE | 
+| oficinas_detalles | FK id_oficina UNIQUE | 
 
 </br>
 

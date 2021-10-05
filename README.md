@@ -27,9 +27,14 @@
 | vendedores(1) | ventas_compras(N)  |
 | inmuebles(1) | ventas_compras(N)  |
 | inmuebles(1) | inmuebles_marketing(N)  |
+| inmuebles(1) |  citas_inmuebles(N)  |
+| inmuebles(1) |  inspecciones_inmuebles(N)  |
+| empleados(1) |  citas_inmuebles(N) |
+| clientes(1) |  citas_inmuebles(N) |
 | propietarios_inmuebles(1) | inmuebles(N)   |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |
+| oficinas(1) | servicios_inmuebles(N) |
 
 * No declarando las FK como Unique de las relaciones de Tablas nos aseguramos que exista duplicidad.
 
@@ -50,6 +55,7 @@
 | facturas(1) | facturas_detalles(1) |
 | oficinas(1) | oficinas_detalles(1) |
 
+* Declarando las FK como Unique de las relaciones de Tablas nos aseguramos que NO exista duplicidad.
 
 
 #### Restricciones de tipo CHECK UNIQUE para relación (1:1)

@@ -7,9 +7,7 @@
  * ========= DDL =============
  */
 
-/*
-https://www.tutorialesprogramacionya.com/postgresqlya/temarios/descripcion.php?inicio=0&cod=159&punto=1
-*/
+
 
 -- Tablas
 drop table if exists inmuebles cascade;
@@ -43,7 +41,7 @@ drop type if exists estadoOficina;
 drop type if exists tipoOficina;
 drop type if exists tipoAnuncioPrincipal;
 drop type if exists redSocialPrincipal;
-drop type if exists tipoInpeccion;
+drop type if exists tipoInspeccion;
 drop type if exists divisionComercial;
 drop type if exists divisionVivienda;
 drop type if exists tasaciones;
@@ -68,9 +66,9 @@ create table oficinas(
 	
 id int primary key,
 nombre varchar(30) not null,
-direccion varchar(40) not null,
+direccion varchar(60) not null,
 telefono varchar(40) not null,
-email varchar(40)
+email varchar(60)
 
 );
 
@@ -108,11 +106,11 @@ id_oficina int ,
 localidad varchar(40) not null,
 tipo_oficina tipoOficina not null, 
 estado_oficina estadoOficina not null,
-superficie_total float(10) not null,
+superficie_total float not null,
 cantidad_ambientes smallint not null, -- 1,2,3,etc | smallint-->2bytes, int-->4bytes |
 cantidad_baños smallint not null,
 antiguedad smallint, -- 20 años, etc
-sitio_web varchar(40)
+sitio_web varchar(80)
 
 );
 
@@ -171,8 +169,8 @@ check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
 create table propietarios_inmuebles(
 
 id int primary key,
-nombre varchar(30) not null,
-apellido varchar(30) not null,
+nombre varchar(40) not null,
+apellido varchar(40) not null,
 edad int not null,
 fecha_nacimiento date not null,
 tipo_documento varchar(20) not null,
@@ -644,7 +642,6 @@ descripcion varchar(60) not null,
 costo float not null,
 fecha date not null,-- '2001-10-07'
 hora time not null  -- '09:00:07'
-
 
 );
 

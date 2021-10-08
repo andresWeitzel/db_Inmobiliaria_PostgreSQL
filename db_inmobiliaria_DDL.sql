@@ -161,167 +161,6 @@ check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
 
 -- ---------------------------------------------------------------------------
 
--- ---------------------------------------------------------------------------
-
--- ======= TABLA PROPIETARIOS_INMUEBLES ===========
-
-
-create table propietarios_inmuebles(
-
-id int primary key,
-nombre varchar(40) not null,
-apellido varchar(40) not null,
-edad int not null,
-fecha_nacimiento date not null,
-tipo_documento varchar(20) not null,
-nro_documento varchar(20) not null,
-direccion varchar(40) not null, 
-telefono_principal varchar(40) not null,
-telefono_secundario varchar(40),
-email varchar(40)
-
-);
-
--- ======= Restricciones Tabla propietarios_inmuebles ===========
-
--- UNIQUE ID
-alter table propietarios_inmuebles 
-add constraint UNIQUE_propietarios_inmuebles_id
-unique(id);
-
-
-
--- UNIQUE NOMBRE/APELLIDO
-alter table propietarios_inmuebles 
-add constraint UNIQUE_propietarios_inmuebles_nombre_apellido
-unique(nombre,apellido);
-
-
--- CHECK EDAD
-alter table propietarios_inmuebles 
-add constraint CHECK_propietarios_inmuebles_edad
-check (edad >= 18);
-
-
--- CHECK FECHA_NACIMIENTO
-alter table propietarios_inmuebles 
-add constraint CHECK_propietarios_inmuebles_fecha_nacimiento
-check (current_date > fecha_nacimiento);
-
-
---- UNIQUE NRO_DOCUMENTO
-alter table propietarios_inmuebles 
-add constraint UNIQUE_propietarios_inmuebles_nro_documento
-unique(nro_documento);
-
-
-
--- ---------------------------------------------------------------------------
-
-
--- ---------------------------------------------------------------------------
-
-
--- ======= TABLA INMUEBLES DESCRIPCIONES ===========
-
-
-create table inmuebles_descripciones(
-	
-id int primary key,
-id_inmueble int not null,
-superficie_total float(10) not null,-- ej: 92 m^2 Total.
-cantidad_ambientes smallint not null, -- 1,2,3,etc | smallint-->2bytes, int-->4bytes |
-cantidad_dormitorios smallint not null,-- 1,2,3
-cantidad_baños smallint not null,-- 1,2,3
-cantidad_patios_jardines smallint , -- patio casa, jardin piso/semipiso
-cantidad_cocheras smallint ,-- si no tiene  0 o null
-cantidad_balcones smallint ,-- si no tiene  0 o null
-antiguedad smallint -- 20 años, etc
-
-);
-
-
--- ======= Restricciones Tabla Inmuebles Descripción ===========
-
--- UNIQUE ID
-alter table inmuebles_descripciones
-add constraint UNIQUE_inmuebles_descripciones_id
-unique(id);
-
-
--- CHECK SUPERFICIE_TOTAL
-alter table inmuebles_descripciones
-add constraint CHECK_inmuebles_descripciones_superficie_total
-check (superficie_total > 0 );
-
--- CHECK CANTIDAD AMBIENTES
-alter table inmuebles_descripciones
-add constraint CHECK_inmuebles_descripciones_cantidad_ambientes
-check (cantidad_ambientes > 0 );
-
--- CHECK CANTIDAD DORMITORIOS
-alter table inmuebles_descripciones
-add constraint CHECK_inmuebles_descripciones_cantidad_dormitorios
-check (cantidad_dormitorios > 0 );
-
--- CHECK CANTIDAD BAÑOS
-alter table inmuebles_descripciones
-add constraint CHECK_inmuebles_descripciones_cantidad_baños
-check (cantidad_baños > 0 );
-
--- CHECK CANTIDAD PATIOS/JARDINES
-alter table inmuebles_descripciones
-add constraint CHECK_inmuebles_descripciones_cantidad_patios_jardines
-check (cantidad_patios_jardines >= 0 or cantidad_patios_jardines = null );
-
--- CHECK CANTIDAD COCHERAS
-alter table inmuebles_descripciones
-add constraint CHECK_inmuebles_descripciones_cantidad_cocheras
-check (cantidad_cocheras >= 0 or cantidad_cocheras = null ); -- Puede ser nulleable
-
--- CHECK CANTIDAD BALCONES
-alter table inmuebles_descripciones
-add constraint CHECK_inmuebles_descripciones_cantidad_balcones
-check (cantidad_balcones >= 0 or cantidad_balcones = null ); -- Puede ser nulleable
-
--- CHECK ANTIGUEDAD
-alter table inmuebles_descripciones
-add constraint CHECK_inmuebles_descripciones_antiguedad
-check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
-
--- ---------------------------------------------------------------------------
-
--- ---------------------------------------------------------------------------
-
-
-
--- ======= TABLA INMUEBLES MEDIDAS ===========
--- Pueden no estar estipuladas
-
-create table inmuebles_medidas(-- ALTO X ANCHO
-
-id int primary key,
-living_comedor varchar(100),-- ej: 8,05 x 3,4
-cocina varchar(100), -- Cocina 1: 3,25 x 1,55
-dormitorio varchar(100), -- Dormitorio 1: 23 x 2,9 | Dormitorio 2: 43 x 1,9
-baño varchar(100),
-patio_jardin varchar(100),
-cochera varchar(50),
-balcon varchar(50)
-
-);
-
-
--- ======= Restricciones Tabla Inmuebles Medidas ===========
-
--- UNIQUE ID
-alter table inmuebles_medidas
-add constraint UNIQUE_inmuebles_medidas_id
-unique(id);
-
-
-
--- ---------------------------------------------------------------------------
 
 
 -- ---------------------------------------------------------------------------
@@ -459,6 +298,178 @@ check (current_date > fecha_nacimiento and current_date >= fecha_alta );
 
 
 -- ---------------------------------------------------------------------------
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA PROPIETARIOS_INMUEBLES ===========
+
+
+create table propietarios_inmuebles(
+
+id int primary key,
+nombre varchar(40) not null,
+apellido varchar(40) not null,
+edad int not null,
+fecha_nacimiento date not null,
+tipo_documento varchar(20) not null,
+nro_documento varchar(20) not null,
+direccion varchar(40) not null, 
+telefono_principal varchar(40) not null,
+telefono_secundario varchar(40),
+email varchar(40)
+
+);
+
+-- ======= Restricciones Tabla propietarios_inmuebles ===========
+
+-- UNIQUE ID
+alter table propietarios_inmuebles 
+add constraint UNIQUE_propietarios_inmuebles_id
+unique(id);
+
+
+
+-- UNIQUE NOMBRE/APELLIDO
+alter table propietarios_inmuebles 
+add constraint UNIQUE_propietarios_inmuebles_nombre_apellido
+unique(nombre,apellido);
+
+
+-- CHECK EDAD
+alter table propietarios_inmuebles 
+add constraint CHECK_propietarios_inmuebles_edad
+check (edad >= 18);
+
+
+-- CHECK FECHA_NACIMIENTO
+alter table propietarios_inmuebles 
+add constraint CHECK_propietarios_inmuebles_fecha_nacimiento
+check (current_date > fecha_nacimiento);
+
+
+--- UNIQUE NRO_DOCUMENTO
+alter table propietarios_inmuebles 
+add constraint UNIQUE_propietarios_inmuebles_nro_documento
+unique(nro_documento);
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA INMUEBLES DESCRIPCIONES ===========
+
+
+create table inmuebles_descripciones(
+	
+id int primary key,
+superficie_total float(4) not null,-- ej: 92 m^2 Total.
+superficie_cubierta float(4) not null,-- ej: 72 m^2 Total.
+cantidad_ambientes smallint not null, -- 1,2,3,etc | smallint-->2bytes, int-->4bytes |
+cantidad_dormitorios smallint not null,-- 1,2,3
+cantidad_baños smallint not null,-- 1,2,3
+cantidad_patios_jardines smallint , -- patio casa, jardin piso/semipiso
+cantidad_cocheras smallint ,-- si no tiene  0 o null
+cantidad_balcones smallint ,-- si no tiene  0 o null
+antiguedad smallint -- 20 años, etc
+
+);
+
+
+-- ======= Restricciones Tabla Inmuebles Descripción ===========
+
+-- UNIQUE ID
+alter table inmuebles_descripciones
+add constraint UNIQUE_inmuebles_descripciones_id
+unique(id);
+
+
+-- CHECK SUPERFICIE_TOTAL
+alter table inmuebles_descripciones
+add constraint CHECK_inmuebles_descripciones_superficie_total
+check (superficie_total > 0 );
+
+-- CHECK SUPERFICIE_CUBIERTA
+alter table inmuebles_descripciones
+add constraint CHECK_inmuebles_descripciones_superficie_cubierta
+check (superficie_total >= superficie_cubierta );
+
+
+-- CHECK CANTIDAD AMBIENTES
+alter table inmuebles_descripciones
+add constraint CHECK_inmuebles_descripciones_cantidad_ambientes
+check (cantidad_ambientes > 0 );
+
+-- CHECK CANTIDAD DORMITORIOS
+alter table inmuebles_descripciones
+add constraint CHECK_inmuebles_descripciones_cantidad_dormitorios
+check (cantidad_dormitorios > 0 );
+
+-- CHECK CANTIDAD BAÑOS
+alter table inmuebles_descripciones
+add constraint CHECK_inmuebles_descripciones_cantidad_baños
+check (cantidad_baños > 0 );
+
+-- CHECK CANTIDAD PATIOS/JARDINES
+alter table inmuebles_descripciones
+add constraint CHECK_inmuebles_descripciones_cantidad_patios_jardines
+check (cantidad_patios_jardines >= 0 or cantidad_patios_jardines = null );
+
+-- CHECK CANTIDAD COCHERAS
+alter table inmuebles_descripciones
+add constraint CHECK_inmuebles_descripciones_cantidad_cocheras
+check (cantidad_cocheras >= 0 or cantidad_cocheras = null ); -- Puede ser nulleable
+
+-- CHECK CANTIDAD BALCONES
+alter table inmuebles_descripciones
+add constraint CHECK_inmuebles_descripciones_cantidad_balcones
+check (cantidad_balcones >= 0 or cantidad_balcones = null ); -- Puede ser nulleable
+
+-- CHECK ANTIGUEDAD
+alter table inmuebles_descripciones
+add constraint CHECK_inmuebles_descripciones_antiguedad
+check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA INMUEBLES MEDIDAS ===========
+-- Pueden no estar estipuladas
+
+create table inmuebles_medidas(-- ALTO X ANCHO
+
+id int primary key,
+living_comedor varchar(100),-- ej: 8,05 x 3,4
+cocina varchar(100), -- Cocina 1: 3,25 x 1,55
+dormitorio varchar(100), -- Dormitorio 1: 23 x 2,9 | Dormitorio 2: 43 x 1,9
+baño varchar(100),
+patio_jardin varchar(100),
+cochera varchar(50),
+balcon varchar(50)
+
+);
+
+
+-- ======= Restricciones Tabla Inmuebles Medidas ===========
+
+-- UNIQUE ID
+alter table inmuebles_medidas
+add constraint UNIQUE_inmuebles_medidas_id
+unique(id);
+
+
+
+-- ---------------------------------------------------------------------------
+
 
 
 
@@ -718,6 +729,7 @@ check(inversion_total > 0);
 
 
 -- ---------------------------------------------------------------------------
+
 
 
 

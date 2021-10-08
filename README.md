@@ -2,7 +2,9 @@
 
 
 * En Este Proyecto se pone en práctica el Modelado, Creación, Desarrollo, Gestión y Administración de una Base de Datos con el SGBD PostgreSQL.
-* El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiandome por las informaciones y características del mercado inmobiliario en Argentina(valores, precios, medidas, lexico, etc). Las páginas de inmobiliaria más conocidas en las que me guíe son zonaprop, re/max y baigún.
+* El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiandome por las informaciones y características del mercado inmobiliario en Argentina(valores, precios, medidas, lexico, etc).
+*  Las páginas de inmobiliaria más conocidas en las que me guíe son zonaprop, re/max y baigún.
+*  Para la gran mayoría de las medidas tomadas en inmuebles me base en anuncios en mercadoLibre, ya que allí se detallan en mayor cantidad.
 *  Se incluye el pdf guía del proyecto dentro de la documentacion.
 
 

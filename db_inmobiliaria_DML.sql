@@ -14,7 +14,6 @@ select * from servicios_inmuebles;
 select * from inspecciones_inmuebles;
 select * from citas_inmuebles;
 select * from administradores;
-select * from gerentes;
 select * from vendedores;
 select * from compradores;
 select * from compradores_clientes;
@@ -35,7 +34,7 @@ information_schema.columns where table_name = 'oficinas';
 
 
 insert into oficinas (id, nombre, direccion, telefono, email) values 
-(1 , 'Torre Nepkiul' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'),
+(1 , 'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'),
 (2 , 'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '+54 11 61147000' , 'inmobiliariaDuckson@gmail.com'),
 (3 , 'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '011 5653-1799' , 'inmobiliariaDuckson@gmail.com');
 
@@ -69,8 +68,10 @@ information_schema.columns where table_name = 'propietarios_inmuebles';
 
 insert into propietarios_inmuebles (id, nombre, apellido, edad, fecha_nacimiento, tipo_documento, nro_documento
 ,direccion, telefono_principal, telefono_secundario , email) values
-(1, 'Fabian', 'Gonzalez', 45, '1975/10/09', 'DNI', 45897677, 'San Vicente 879', '+5491156749874', '6578-3786', 'viccentin3k@gmail.com'),
-(2, 'Guillermo', 'Zulenski', 65, '1955/10/09', 'DNI', 35897677, 'Av. Calloa 879', '+5491156788', '+5491156788', 'zulenskiVentas2019@gmail.com');
+(1, 'Fabian', 'Gonzalez', 45, '1975/10/09', 'DNI', 45897677, 'San Vicente 879', '+5491156749874', '6578-3786'
+, 'viccentin3k@gmail.com'),
+(2, 'Guillermo', 'Zulenski', 65, '1955/10/09', 'DNI', 35897677, 'Av. Calloa 879', '+5491156788', '+5491156788'
+, 'zulenskiVentas2019@gmail.com');
 
 
 
@@ -86,16 +87,17 @@ select * from inmuebles_descripciones;
 select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'inmuebles_descripciones';
 
--- 254.8m^2, 198.9m^2,  4 ambientes, 3 dormis, 2 baños, 1 patio, 1 cochera, 1 balcon, 50 años antiguedad
+-- EJ. 254.8m^2, 198.9m^2,  4 ambientes, 3 dormis, 2 baños, 1 patio, 1 cochera, 1 balcon, 50 años antiguedad
 
-insert into inmuebles_descripciones (id, superficie_total, superficie_cubierta, cantidad_ambientes, cantidad_dormitorios
-, cantidad_baños , cantidad_patios_jardines, cantidad_cocheras, cantidad_balcones, antiguedad) values 
+insert into inmuebles_descripciones (id, superficie_total, superficie_cubierta, cantidad_ambientes
+, cantidad_dormitorios, cantidad_baños , cantidad_patios_jardines, cantidad_cocheras, cantidad_balcones
+, antiguedad) values 
 (1, 265.8, 198.9 , 4, 3, 2, 1, 1, 1, 50 ), 
 (2, 185.8, 185.8 , 3, 4, 1, 0, 1, 0, 80 ),
 (3, 97.8, 60.3 , 2, 3, 2, 1, 0, 1, 30 );
 
 -- ---------------------------------------------------------------------------
-/*
+
 -- ======= TABLA INMUEBLES_MEDIDAS ===========
 
 
@@ -108,7 +110,13 @@ information_schema.columns where table_name = 'inmuebles_medidas';
 -- ALTO X ANCHO
 
 insert into inmuebles_medidas(id, living_comedor, cocina, dormitorio, baño, patio_jardin, cochera, balcon) values 
-(1, '17.0 x 5.9' , '6.0 x 4.0' , 'Dormitorio1: 5.0 x 5.0 , Dormitorio2: 7.0 x 4.0 , Dormitorio3: 6.0 x 6.0', ),
+(1, '17.0 x 5.9' , '6.0 x 4.0' , 'Dormitorio1: 5.0 x 5.0 | Dormitorio2: 7.0 x 4.0 | Dormitorio3: 6.0 x 6.0'
+, 'Baño1: 2.0 x 1.4 | Baño2: 1.67 x 1.89' , '6.0 x 7.56' , '3.0 x 3.66' , '1.0 x 1.23'),
+(2, '6.0 x 3.5' , '4.0 x 2.0' , 'Dormitorio1: 2.0 x 1.66 | Dormitorio2: 3.0 x 2.0 | Dormitorio3: 2.0 x 1.4 
+| Dormitorio4: 1.3 x 1.2', '1.88 x 2.20' , '-' , '2.77 x 1.02' , '-'),
+(3, '2.34 x 1.89' , '2.02 x 2.66' , 'Dormitorio1: 2.45 x 2.09 | Dormitorio2: 2.03 x 1.88 | Dormitorio3: 1.89 x 1.20'
+, 'Baño1: 1.50 x 1.04 | Baño2: 1.90 x 1.3' , '1.34 x 1.88' , '-' , '1.33 x 1.22');
+
 
 
 
@@ -122,6 +130,16 @@ select * from inmuebles;
 select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'inmuebles';
 
+insert into inmuebles (id, id_propietario_inmueble, id_inmueble_medidas, id_inmueble_descripcion, id_oficina,
+descripcion, tipo, direccion, ubicacion, sitioWeb) values 
+(1, 1, 1, 1, 1, 'PH de 4 Ambientes, 3 dormis, 2 baños, Amplio Espacio,jardin y balcon, Sin Expensas, Lujoso'
+, 'PH/Casa', 'San Cristobla 456', 'Palermo', 'www.avisosAlInstante.com.ar' ),
+(2, 1, 2, 2, 2, 'Casa 3 Ambientes, 4 Dormitorios, 1 baño y Cochera', 'Casa'
+,'Aristobulo del Valle 608 ', 'Belgrano', 'www.avisosAlInstante.com.ar' ),
+(3, 2, 3, 3, 3, 'Departamento de 2 Ambientes', 'Departamento', 'Av. Corrientes'
+, 'Caballito', 'www.avisosAlInstante.com.ar');
+
+
 
 -- ---------------------------------------------------------------------------
 
@@ -132,8 +150,65 @@ select * from empleados;
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'empleados';
 
+-- Oficina 1 (Torre San Vicente)
+insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
+, tipo_documento, nro_documento, direccion, telefono_principal, telefono_secundario
+, email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
+(1, 1, 'Marcos', 'Castro', 45, '1971/05/01', 'DNI', '48967156', 'Figueroa Alcorta 22'
+, '+5491178654356', '+5491178654356', 'marcosCastro2002_lop@hotmail.com', 'Agente Inmobiliario(Gerente)'
+, 4, '2017/09/6', 150000 ),
+(2, 1, 'Luciana', 'Martinez', 23, '1999/07/12', 'DNI', '37997256', 'Av. Corrientes 234'
+, '+5491174568399', '-', 'lu_martinez_trabajo@gmail.com', 'Administradora'
+, 1, '2020/10/09', 55000 ),
+(3, 1, 'José', 'Bastituta', 34, '1988/09/07', 'DNI', '409876546', 'San Acrosio 15781'
+, '+5491157670000', '+5491157670000', 'joseBastituta_88@gmail.com', 'Agente Inmobiliario(Vendedor)'
+, 1, '2020/07/12', 65000 );
+
+-- Oficina 2 (Edificio Torre Alem)
+insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
+, tipo_documento, nro_documento, direccion, telefono_principal, telefono_secundario
+, email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
+(4, 2, 'Damian', 'Gutierrez', 39, '1978/09/14', 'DNI', '33869556', 'Av Alberdi 05'
+, '+5491176844456', '+5491157684445', 'damian_gut.756@gmail.com', 'Agente Inmobiliario(Gerente)'
+, 3, '2018/3/4', 139000 ),
+(5, 2, 'Marcelo', 'Perez', 28, '1988/03/17', 'DNI', '39345679', 'Carabobo 06'
+, '+5491138765433', '-', 'MarceloPerez@gmail.com', 'Administrador'
+, 2, '2019/04/14', 56000 ),
+(6, 2, 'Jimena', 'D Ambrosio', 37, '1991/11/06', 'DNI', '417896537', 'Valentin Figueroa 33'
+, '+5491175680377', '+5491175680338', 'lic_DAmbrosio@gmail.com', 'Agente Inmobiliario(Vendedora)'
+, 3, '2018/08/14', 71000 );
+
+-- Oficina 3 (Oficina Comercial Principal)
+insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
+, tipo_documento, nro_documento, direccion, telefono_principal, telefono_secundario
+, email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
+(7, 3, 'Sofia', 'Aguilar', 35, '1981/07/01', 'DNI', '33456733', 'Av. Corrientes 2564'
+, '+5491175678844', '+5491130928783', 'lic_sofiaAguilar@gmail.com', 'Agente Inmobiliario(Gerenta)'
+, 3, '2018/08/02', 156000 ),
+(8, 3, 'Luis', 'Gonzalez', 26, '1991/09/21', 'DNI', '397865432', 'La Pampa 22'
+, '+549113764522', '-', 'luisGonzalez_jsu@gmail.com', 'Administrador'
+, 2, '2019/07/12', 50000 ),
+(9, 3, 'Juan', 'Notowski', 41, '1988/02/21', 'DNI', '432765411', 'Av Rivadavia 9100'
+, '+5491175680827', '+5491175680827', 'notowski_Juan_7238@gmail.com', 'Agente Inmobiliario(Vendedor)'
+, 2, '2019/04/22', 74000 );
 
 
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA GERENTES ===========
+
+select * from gerentes;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'gerentes';
+
+insert into gerentes (id, id_empleado, titulo, experiencia_laboral, competencias, beneficios
+, retribucion_salarial_anual) values
+(1, 1, 'Contador Público Universitario', 12.8, 'Planeamiento Eficiente, Ejecución Eficaz, Rendimiento'
+,'Home Office 2 veces x sem, 35% Descuento Pack Viajes, Planes de Ahorro Viviendas', 32000);
+
+
+/*
 -- ---------------------------------------------------------------------------
 
 -- ======= TABLA CLIENTES ===========

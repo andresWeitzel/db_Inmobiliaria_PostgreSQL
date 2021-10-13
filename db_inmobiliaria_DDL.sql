@@ -484,7 +484,7 @@ id_propietario_inmueble int not null,
 id_inmueble_medidas int not null,
 id_inmueble_descripcion int not null,
 id_oficina int not null,
-descripcion varchar(40) not null,-- ej: semipiso de 3 Amb en Palermo
+descripcion varchar(200) not null,-- ej: semipiso de 3 Amb en Palermo
 tipo varchar(20) not null, -- depto, casa, etc
 direccion varchar(40) not null,-- San sarasa 123
 ubicacion varchar(40) not null, -- zona:palermo, recoleta, etc
@@ -785,9 +785,9 @@ id int primary key,
 id_empleado int not null,
 titulo varchar(30) not null,
 experiencia_laboral float not null, -- 1.2 años, etc
-competencias varchar(50),-- planeamiento Estrategico, comunicacion efectiva, liderazgo, trabajo en equipo, orientacion a resultados,etc  
+competencias varchar(100),-- planeamiento Estrategico, comunicacion efectiva, liderazgo, trabajo en equipo, orientacion a resultados,etc  
 beneficios varchar(100),--Viajes, Horario flexible, home office,etc 
-monto_adicional_anual float not null
+retribucion_salarial_anual float not null 
 
 );
 
@@ -818,8 +818,8 @@ check ( experiencia_laboral >= 2);-- 2 años
 
 -- CHECK MONTO_ADICIONAL
 alter table gerentes
-add constraint CHECK_gerentes_monto_adicional_anual
-check ( monto_adicional_anual >= 100);-- 100 dolares
+add constraint CHECK_gerentes_retribucion_salarial_anual
+check ( retribucion_salarial_anual > 0);
 
 
 

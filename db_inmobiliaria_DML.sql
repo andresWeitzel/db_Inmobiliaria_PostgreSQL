@@ -9,13 +9,9 @@
 
 
 
-select * from inmuebles_marketing;
 select * from servicios_inmuebles;
 select * from inspecciones_inmuebles;
 select * from citas_inmuebles;
-select * from administradores;
-select * from vendedores;
-select * from compradores;
 select * from compradores_clientes;
 select * from ventas_compras;
 select * from facturas;
@@ -131,13 +127,33 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'inmuebles';
 
 insert into inmuebles (id, id_propietario_inmueble, id_inmueble_medidas, id_inmueble_descripcion, id_oficina,
-descripcion, tipo, direccion, ubicacion, sitioWeb) values 
+descripcion, tipo, estado_inmueble,  direccion, ubicacion, sitioWeb) values 
 (1, 1, 1, 1, 1, 'PH de 4 Ambientes, 3 dormis, 2 baños, Amplio Espacio,jardin y balcon, Sin Expensas, Lujoso'
-, 'PH/Casa', 'San Cristobla 456', 'Palermo', 'www.avisosAlInstante.com.ar' ),
-(2, 1, 2, 2, 2, 'Casa 3 Ambientes, 4 Dormitorios, 1 baño y Cochera', 'Casa'
+, 'PH/Casa','DISPONIBLE', 'San Cristobla 456', 'Palermo', 'www.avisosAlInstante.com.ar' ),
+(2, 1, 2, 2, 2, 'Casa 3 Ambientes, 4 Dormitorios, 1 baño y Cochera', 'Casa','VENDIDO'
 ,'Aristobulo del Valle 608 ', 'Belgrano', 'www.avisosAlInstante.com.ar' ),
-(3, 2, 3, 3, 3, 'Departamento de 2 Ambientes', 'Departamento', 'Av. Corrientes'
+(3, 2, 3, 3, 3, 'Departamento de 2 Ambientes', 'Departamento','VENDIDO', 'Av. Corrientes'
 , 'Caballito', 'www.avisosAlInstante.com.ar');
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA INMUEBLES_MARKETING ===========
+
+
+select * from inmuebles_marketing;
+
+select column_name, data_type, is_nullable from
+information_schema.columns where table_name = 'inmuebles_marketing';
+
+
+insert into inmuebles_marketing(id, id_inmueble, tipo_anuncio_principal, tipo_anuncio_secundario
+, descripcion_anuncio, inversion_total) values
+(1, 1, 'Google Ads', 'Youtube', 'Marketing en Páginas de Búsqueda de Inmuebles', 4000),
+(2, 2, 'Google Ads', 'Linkedin', 'Sección Ventas en Inmuebles', 5000),
+(3, 3, 'Google Ads', '-', 'Sección Ventas en Inmuebles', 3000);
+
 
 
 
@@ -202,13 +218,76 @@ select * from gerentes;
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'gerentes';
 
-insert into gerentes (id, id_empleado, titulo, experiencia_laboral, competencias, beneficios
+insert into gerentes (id, id_empleado, titulo, años_experiencia_laboral, competencias, beneficios
 , retribucion_salarial_anual) values
 (1, 1, 'Contador Público Universitario', 12.8, 'Planeamiento Eficiente, Ejecución Eficaz, Rendimiento'
-,'Home Office 2 veces x sem, 35% Descuento Pack Viajes, Planes de Ahorro Viviendas', 32000);
+,'Home Office 2 veces x sem, 35% Descuento Pack Viajes, Planes de Ahorro Viviendas', 32000),
+(2, 4, 'Licenciado en Administración', 5.6, 'Organización, Gestión, Desempeño'
+,'Horarios Flexibles, 35% Descuento Pack Viajes', 42000),
+(3, 7, 'Licenciada en Marketing', 7.0, 'Ventas, Publicidad, Coordinación'
+,'Horarios Flexibles y Días Extras de Descanso, 40% Descuento Pack Viajes', 35000);
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA ADMINISTRADORES ===========
+
+select * from administradores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'administradores';
+
+-- tipo_inmueble --> casa, depto, etc
+
+insert into administradores(id, id_empleado, tipo_inmueble, certificaciones, nivel_experiencia, cualidades)values
+(1, 2, 'Departamento', 'Cert. Habilidades Aministrativas, Cert. Nivel 2 en Aministración de Cuentas'
+,'Alto', 'Liderazgo y Negocición'),
+(2, 5, 'Casa', 'Cert. Administración Viviendas, Cert. Tecnologías Digital, Cert. Servicios de Aministración'
+,'Medio', 'Recursos Tecnológicos, Comunicación y Planificación'),
+(3, 8, 'Departamento-Casa', 'Cert. Gestión Avanzada en Inmuebles, Cert. Especialista Apoyo Administrativo
+, Cert. Aministración de Oficinas', 'Alto', 'Alta Flexibilidad, Marketing Digital y Planificación');
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA VENDEDORES ===========
+
+select * from vendedores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'vendedores';
+
+--puntuacion_ventas --> Buena, Normal, Excelente
+
+insert into vendedores(id, id_empleado, cantidad_ventas, bonificacion_ventas, puntuacion_ventas, 
+orientacion_tipo_inmueble, cualidades) values
+(1, 3, 0, 0, 'Sin Ventas', 'Departamento', 'Confianza, Dominio de Venta, Desarrollo Linguístico'),
+(2, 6, 1, 2000, 'Buena', 'Casa', 'Ambición, Comercialización, Determinación'),
+(3, 9, 2, 5000, 'Muy Buena', 'Departamento-Casa', 'Comunicación Eficaz, Creatividad, Convicción');
+
+
+
 
 
 /*
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA COMPRADORES ===========
+	
+
+select * from compradores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'compradores';
+
+
+insert into compradores
+
+
+
+
+
 -- ---------------------------------------------------------------------------
 
 -- ======= TABLA CLIENTES ===========

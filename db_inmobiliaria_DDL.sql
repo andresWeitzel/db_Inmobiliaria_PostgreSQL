@@ -39,13 +39,12 @@ drop type if exists tipoFactura;
 drop type if exists tipoPago;
 drop type if exists estadoOficina;
 drop type if exists tipoOficina;
-drop type if exists tipoAnuncioPrincipal;
-drop type if exists redSocialPrincipal;
 drop type if exists tipoInspeccion;
 drop type if exists divisionComercial;
 drop type if exists divisionVivienda;
 drop type if exists tasaciones;
 drop type if exists administracion;
+drop type if exists estadoInmueble;
 
 
 
@@ -477,6 +476,11 @@ unique(id);
 
 -- ======= TABLA INMUEBLES ===========
 
+
+create type estadoInmueble as enum('VENDIDO','DISPONIBLE','NO DISPONIBLE','FALTA INSPECCION');
+
+
+
 create table inmuebles(
 	
 id int primary key,
@@ -486,6 +490,7 @@ id_inmueble_descripcion int not null,
 id_oficina int not null,
 descripcion varchar(200) not null,-- ej: semipiso de 3 Amb en Palermo
 tipo varchar(20) not null, -- depto, casa, etc
+estado_inmueble estadoInmueble not null,
 direccion varchar(40) not null,-- San sarasa 123
 ubicacion varchar(40) not null, -- zona:palermo, recoleta, etc
 sitioWeb varchar(40)-- link de la pag de la descripcion
@@ -693,22 +698,19 @@ check(costo > 0);
 
 -- ======= TABLA INMUEBLES_MARKETING===========
 
-create type tipoAnuncioPrincipal as enum('GOOGLEADS','TELEVISION','PERIODICOS','OTROS');
-create type redSocialPrincipal as enum('FACEBOOK','TWITTER','LINKEDLIN','YOUTUBE','OTROS');
 
 
 create table inmuebles_marketing(
 	
 id int primary key,
 id_inmueble int not null,
-tipo_anuncio_principal tipoAnuncioPrincipal not null,
-descripcion_anuncio varchar(40) not null,
-red_social_principal redSocialPrincipal not null,
-descripcion_red_social_principal varchar(40) not null,
+tipo_anuncio_principal varchar(50) not null,
+tipo_anuncio_secundario varchar(50),
+descripcion_anuncio varchar(100) not null,
 inversion_total float not null
 );
 
--- ======= Restricciones Tabla Inmuebles ===========
+-- ======= Restricciones Tabla inmuebles_marketing ===========
 
 -- UNIQUE ID
 alter table inmuebles_marketing
@@ -744,9 +746,9 @@ create table administradores(
 id int primary key,
 id_empleado int not null,
 tipo_inmueble varchar(20),-- casa, depto, etc
-certificaciones varchar(50),-- administracion zonas residenciales, rurales, etc
-experiencia varchar(30),-- bueno,alto,excelente
-cualidades varchar(50)-- flexibilidad, confianza,etc
+certificaciones varchar(200),-- administracion zonas residenciales, rurales, etc
+nivel_experiencia varchar(30),-- bueno,alto,excelente
+cualidades varchar(100)-- flexibilidad, confianza,etc
 
 );
 
@@ -784,7 +786,7 @@ create table gerentes(-- Cargo de Directores, etc
 id int primary key,
 id_empleado int not null,
 titulo varchar(30) not null,
-experiencia_laboral float not null, -- 1.2 años, etc
+años_experiencia_laboral float not null, -- 1.2 años, etc
 competencias varchar(100),-- planeamiento Estrategico, comunicacion efectiva, liderazgo, trabajo en equipo, orientacion a resultados,etc  
 beneficios varchar(100),--Viajes, Horario flexible, home office,etc 
 retribucion_salarial_anual float not null 
@@ -812,8 +814,8 @@ references empleados(id);
 
 -- CHECK EXPERIENCIA_LABORAL
 alter table gerentes 
-add constraint CHECK_gerentes_expericia_laboral
-check ( experiencia_laboral >= 2);-- 2 años
+add constraint CHECK_gerentes_años_expericia_laboral
+check ( años_experiencia_laboral >= 2);-- 2 años
 
 
 -- CHECK MONTO_ADICIONAL
@@ -839,8 +841,8 @@ id_empleado int not null,
 cantidad_ventas int not null,
 bonificacion_ventas float,
 puntuacion_ventas varchar(20),-- buena, normal, excelente
-orientacion_tipo_inmueble varchar(20),-- casa, depto, etc
-cualidades varchar(50)-- flexibilidad, confianza,etc
+orientacion_tipo_inmueble varchar(30),-- casa, depto, etc
+cualidades varchar(100)-- flexibilidad, confianza,etc
 
 );
 
@@ -889,8 +891,7 @@ id int primary key ,
 cantidad_inmuebles_comprados int not null,
 importe_maximo_por_compra float not null,
 importe_total_compra float not null,
-beneficios_compras varchar(60) not null,
-descuento_cliente float not null
+beneficios_compras varchar(60) not null
 );
 
 -- ======= Restricciones Tabla Compradores ===========
@@ -921,10 +922,6 @@ check ( importe_total_compra > 0);
 
 
 
--- CHECK DESCUENTO_CLIENTE
-alter table compradores
-add constraint CHECK_compradores_descuento_cliente
-check ( descuento_cliente >= 0);
 
 
 
@@ -941,7 +938,8 @@ create table compradores_clientes(
 	
 id int primary key,
 id_cliente int ,
-id_comprador int 
+id_comprador int,
+descuento_cliente float not null
 
 );
 
@@ -977,6 +975,12 @@ alter table compradores_clientes
 add constraint FK_compradores_clientes_id_ccomprador
 foreign key(id_comprador)
 references compradores(id);
+
+-- CHECK DESCUENTO_CLIENTE
+alter table compradores_clientes
+add constraint CHECK_compradores_clientes_descuento_cliente
+check ( descuento_cliente >= 0);
+
 
 -- ---------------------------------------------------------------------------
 

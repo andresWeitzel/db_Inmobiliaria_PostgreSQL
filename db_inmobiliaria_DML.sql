@@ -29,11 +29,6 @@ delete from oficinas cascade;
 
 
 
-select * from compradores_clientes;
-select * from ventas_compras;
-select * from facturas;
-select * from facturas_detalles;
-
 
 
 -- ---------------------------------------------------------------------------
@@ -153,12 +148,12 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'inmuebles';
 
 insert into inmuebles (id, id_propietario_inmueble, id_inmueble_medidas, id_inmueble_descripcion, id_oficina,
-descripcion, tipo, estado_inmueble,  direccion, ubicacion, sitioWeb) values 
+descripcion, tipo, estado_inmueble, precio_inmueble_usd, direccion, ubicacion, sitioWeb) values 
 (1, 1, 1, 1, 1, 'PH de 4 Ambientes, 3 dormis, 2 baños, Amplio Espacio,jardin y balcon, Sin Expensas, Lujoso'
-, 'PH/Casa','DISPONIBLE', 'San Cristobla 456', 'Palermo', 'www.avisosAlInstante.com.ar' ),
+, 'PH/Casa','DISPONIBLE', 177000, 'San Cristobla 456', 'Palermo', 'www.avisosAlInstante.com.ar' ),
 (2, 1, 2, 2, 2, 'Casa 3 Ambientes, 4 Dormitorios, 1 baño y Cochera', 'Casa','VENDIDO'
-,'Aristobulo del Valle 608 ', 'Belgrano', 'www.avisosAlInstante.com.ar' ),
-(3, 2, 3, 3, 3, 'Departamento de 2 Ambientes', 'Departamento','VENDIDO', 'Av. Corrientes'
+, 168000, 'Aristobulo del Valle 608 ', 'Belgrano', 'www.avisosAlInstante.com.ar' ),
+(3, 2, 3, 3, 3, 'Departamento de 2 Ambientes', 'Departamento','VENDIDO', 110000, 'Av. Corrientes'
 , 'Caballito', 'www.avisosAlInstante.com.ar');
 
 
@@ -395,11 +390,6 @@ insert into citas_inmuebles (id, id_inmueble, id_empleado, id_cliente, estado_ci
 (2, 2, 6, 2, 'COMPLETADA', 'Cita Finalizada y Venta Efectuada de Forma Exitosa', '2020-09-02', '09:15:00' );
 
 
-
-
-
-/*
-
 -- ---------------------------------------------------------------------------
 
 -- ======= TABLA COMPRADORES ===========
@@ -411,11 +401,30 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'compradores';
 
 
-insert into compradores
+insert into compradores(id, id_cliente, cantidad_inmuebles_comprados, importe_maximo_por_compra
+, importe_total_compras, beneficios_compras, descuento_cliente) values 
+(1, 2, 1, 168000, 168000, 'Descuento del 10% en la Próxima Compra', 0);
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA VENTAS ===========
+	
+
+select * from ventas;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'ventas';
 
 
 
 
 
 
-*/
+select * from facturas;
+select * from facturas_detalles;
+
+
+
+
+

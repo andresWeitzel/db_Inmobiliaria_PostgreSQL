@@ -20,11 +20,10 @@ drop table if exists citas_inmuebles cascade;
 drop table if exists propietarios_inmuebles cascade;
 drop table if exists facturas cascade;
 drop table if exists facturas_detalles cascade;
-drop table if exists ventas_compras cascade;
+drop table if exists ventas cascade;
 drop table if exists administradores cascade; -- planeacion, organizacion, etc
 drop table if exists gerentes cascade;-- metas y procedimientos, control administracion
 drop table if exists vendedores cascade;-- ventas inmuebles, entrevistas, etc
-drop table if exists compradores_clientes cascade;
 drop table if exists compradores cascade;
 drop table if exists clientes cascade;
 drop table if exists empleados cascade;
@@ -32,7 +31,7 @@ drop table if exists oficinas cascade;
 drop table if exists oficinas_detalles cascade;
 
 -- Todos lo id PK auto_increment
-drop sequence if exists id_secuencia;
+drop sequence if exists id_secuencia cascade;
 
 
 -- Enumerados tabla oficinas_detalles
@@ -496,6 +495,7 @@ id_oficina int not null,
 descripcion varchar(200) not null,-- ej: semipiso de 3 Amb en Palermo
 tipo varchar(20) not null, -- depto, casa, etc
 estado_inmueble estadoInmueble not null,
+precio_inmueble_usd float(4) not null,
 direccion varchar(40) not null,-- San sarasa 123
 ubicacion varchar(40) not null, -- zona:palermo, recoleta, etc
 sitioWeb varchar(40)-- link de la pag de la descripcion
@@ -545,6 +545,12 @@ alter table inmuebles
 add constraint FK_inmuebles_id_oficina
 foreign key(id_oficina)
 references oficinas(id);
+
+-- CHECK PRECIO_INMUEBLE_USD
+alter table inmuebles
+add constraint CHECK_inmuebles_precio_inmueble_usd
+check (precio_inmueble_usd > 0);
+
 
 
 
@@ -886,11 +892,13 @@ check ( bonificacion_ventas >= 0);
 
 create table compradores(
 	
-id int primary key ,
+id int primary key,
+id_cliente int not null,
 cantidad_inmuebles_comprados int not null,
 importe_maximo_por_compra float not null,
-importe_total_compra float not null,
-beneficios_compras varchar(60) not null
+importe_total_compras float not null,
+beneficios_compras varchar(100) not null,
+descuento_cliente float not null
 );
 
 -- ======= Restricciones Tabla Compradores ===========
@@ -900,6 +908,19 @@ beneficios_compras varchar(60) not null
 alter table compradores
 add constraint UNIQUE_compradores_id
 unique(id);
+
+
+-- UNIQUE ID_CLIENTE
+alter table compradores
+add constraint UNIQUE_compradores_id_cliente
+unique(id_cliente);
+
+
+-- FK ID_CLIENTE
+alter table compradores
+add constraint FK_compradores_id_cliente
+foreign key(id_cliente)
+references clientes(id);
 
 
 -- CHECK CANTIDAD_INMUEBLES_COMPRADOS
@@ -913,115 +934,67 @@ add constraint CHECK_compradores_importe_maximo_por_compra
 check ( importe_maximo_por_compra > 0);
 
 
--- CHECK IMPORTE_TOTAL_COMPRA
+-- CHECK IMPORTE_TOTAL_COMPRAS
 alter table compradores
-add constraint CHECK_compradores_importe_total_compra
-check ( importe_total_compra > 0);
+add constraint CHECK_compradores_importe_total_compras
+check ( importe_total_compras > 0);
 
--- ---------------------------------------------------------------------------
-
-
-
--- ---------------------------------------------------------------------------
-
-
--- ======= TABLA COMPRADORES_CLIENTES ===========
-
-create table compradores_clientes(
-	
-id int primary key,
-id_cliente int ,
-id_comprador int,
-descuento_cliente float not null
-
-);
-
--- ======= Restricciones Tabla compradores_clientes ===========
-
--- UNIQUE ID
-alter table compradores_clientes
-add constraint UNIQUE_compradores_clientes_id
-unique(id);
-
--- UNIQUE ID_CLIENTE
-alter table compradores_clientes
-add constraint UNIQUE_compradores_clientes_id_cliente
-unique(id_cliente);
-
-
--- UNIQUE ID_CLIENTE
-alter table compradores_clientes
-add constraint UNIQUE_compradores_clientes_id_comprador
-unique(id_comprador);
-
-
--- FK ID_CLIENTE
-alter table compradores_clientes
-add constraint FK_compradores_clientes_id_cliente
-foreign key(id_cliente)
-references clientes(id);
-
-
-
--- FK ID_COMPRADOR
-alter table compradores_clientes 
-add constraint FK_compradores_clientes_id_ccomprador
-foreign key(id_comprador)
-references compradores(id);
 
 -- CHECK DESCUENTO_CLIENTE
-alter table compradores_clientes
-add constraint CHECK_compradores_clientes_descuento_cliente
+alter table compradores
+add constraint CHECK_compradores_descuento_cliente
 check ( descuento_cliente >= 0);
 
 
--- ---------------------------------------------------------------------------
-
 
 -- ---------------------------------------------------------------------------
 
 
--- ======= TABLA VENTAS_COMPRAS ===========
 
-create table ventas_compras(
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA VENTAS ===========
+
+create table ventas(
 	
 id int primary key,
 id_vendedor int not null,
-id_comprador int not null,
+id_cliente int not null,
 id_inmueble int not null,
 fecha_venta timestamp not null
 
 );
 
--- ======= Restricciones Tabla ventas_compras ===========
+-- ======= Restricciones Tabla ventas ===========
 
 -- UNIQUE ID
-alter table ventas_compras
-add constraint UNIQUE_ventas_compras_id
+alter table ventas
+add constraint UNIQUE_ventas_id
 unique(id);
 
 -- FK ID_VENDEDOR
-alter table ventas_compras 
-add constraint FK_ventas_compras_id_vendedor
+alter table ventas 
+add constraint FK_ventas_id_vendedor
 foreign key(id_vendedor)
 references vendedores(id);
 
--- FK ID_COMPRADOR
-alter table ventas_compras 
-add constraint FK_ventas_compras_id_comprador
-foreign key(id_comprador)
-references compradores(id);
+-- FK ID_CLIENTE
+alter table ventas
+add constraint FK_ventas_id_cliente
+foreign key(id_cliente)
+references clientes(id);
 
 -- FK ID_INMUEBLE
-alter table ventas_compras 
-add constraint FK_ventas_compras_id_inmuebles
+alter table ventas 
+add constraint FK_ventas_id_inmuebles
 foreign key(id_inmueble)
 references inmuebles(id);
 
 
 -- CHECK FECHA_VENTA
-alter table ventas_compras 
-add constraint CHECK_ventas_compras_fecha_venta
+alter table ventas
+add constraint CHECK_ventas_fecha_venta
 check (fecha_venta >= current_date );
 
 
@@ -1094,7 +1067,6 @@ create table facturas_detalles(
 id int primary key,
 id_factura int not null,
 tipo tipoFactura not null,
-cantidad_inmuebles int not null,
 descripcion_factura varchar(60) not null,-- venta departamento inscripto en la partida N° 14567..
 precio_unitario float not null,
 valor_venta float not null,-- iva + extra + etc
@@ -1121,10 +1093,6 @@ add constraint FK_facturas_detalles_id_factura
 foreign key(id_factura)
 references facturas(id);
 
--- CHECK CANTIDAD_INMUEBLES
-alter table facturas_detalles
-add constraint CHECK_facturas_detalles_cantidad_inmuebles
-check (cantidad_inmuebles > 0);
 
 -- CHECK PRECIO_UNITARIO
 alter table facturas_detalles
@@ -1167,8 +1135,7 @@ alter table administradores alter id set default nextval('id_secuencia');
 alter table gerentes alter id set default nextval('id_secuencia');
 alter table vendedores alter id set default nextval('id_secuencia');
 alter table compradores alter id set default nextval('id_secuencia');
-alter table compradores_clientes alter id set default nextval('id_secuencia');
-alter table ventas_compras alter id set default nextval('id_secuencia');
+alter table ventas alter id set default nextval('id_secuencia');
 alter table facturas alter id set default nextval('id_secuencia');
 alter table facturas_detalles alter id set default nextval('id_secuencia');
 
@@ -1202,8 +1169,7 @@ select * from administradores;
 select * from gerentes;
 select * from vendedores;
 select * from compradores;
-select * from compradores_clientes;
-select * from ventas_compras;
+select * from ventas;
 select * from facturas;
 select * from facturas_detalles;
 

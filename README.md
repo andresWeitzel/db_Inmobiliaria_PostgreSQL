@@ -48,8 +48,7 @@
 
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
-| compradores(1) | compradores_clientes(1)  |
-| clientes(1) | compradores_clientes(1)  |
+| clientes(1) | compradores(1)  |
 | empleados(1) | vendedores(1) |
 | empleados(1) | administradores(1) |
 | empleados(1) | gerentes(1)  |
@@ -65,8 +64,7 @@
 
 | **Tabla** | **Campo** |               
 | ------------- | ------------- |
-| compradores_clientes | FK id_cliente UNIQUE |
-| compradores_clientes | FK id_comprador UNIQUE |
+| compradores | FK id_cliente UNIQUE |
 | vendedores | FK id_empleado UNIQUE |
 | administradores | FK id_empleado UNIQUE |
 | gerentes | FK id_empleado UNIQUE |

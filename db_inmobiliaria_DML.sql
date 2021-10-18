@@ -6,12 +6,29 @@
  * ========= DML =============
  */
 
+delete from inspecciones_inmuebles cascade;
+delete from inmuebles_marketing cascade;
+delete from inmuebles cascade;
+delete from inmuebles_descripciones cascade;
+delete from inmuebles_medidas cascade;
+delete from servicios_inmuebles cascade;
+delete from citas_inmuebles cascade;
+delete from propietarios_inmuebles cascade;
+delete from facturas cascade;
+delete from facturas_detalles cascade;
+delete from ventas_compras cascade;
+delete from administradores cascade; 
+delete from gerentes cascade;
+delete from vendedores cascade;
+delete from compradores_clientes cascade;
+delete from compradores cascade;
+delete from clientes cascade;
+delete from empleados cascade;
+delete from oficinas_detalles cascade;
+delete from oficinas cascade;
 
 
 
-select * from servicios_inmuebles;
-select * from inspecciones_inmuebles;
-select * from citas_inmuebles;
 select * from compradores_clientes;
 select * from ventas_compras;
 select * from facturas;
@@ -40,6 +57,11 @@ insert into oficinas (id, nombre, direccion, telefono, email) values
 
 -- ======= TABLA OFICINAS_DETALLES ===========
 
+-- ENUM estadoOficina ('ALQUILADA','PROPIA'); 
+-- ENUM  tipoOficina('PEQUEÑA','ESTANDAR','EJECUTIVA'); 
+
+
+
 select * from oficinas_detalles;
 
 select column_name, data_type, is_nullable from
@@ -51,6 +73,8 @@ insert into oficinas_detalles (id, id_oficina, localidad, tipo_oficina, estado_o
 (1 , 1 , 'Retiro' , 'EJECUTIVA' , 'ALQUILADA' , 140.0 , 6 , 4 , 15 , 'www.inmobiliariaDuckson-torre-Nepkiul.com.ar'),-- sup_total en m^2
 (2 , 2 , 'Belgrano' , 'PEQUEÑA' , 'PROPIA' , 35.0 , 1 , 1 , 35 , 'www.inmobiliariaDuckson-torre-Alem.com.ar'),
 (3 , 3 , 'Balvanera' , 'ESTANDAR' , 'PROPIA' , 60.0 , 2 , 4 , 22 , 'www.inmobiliariaDuckson-oficina-principal.com.ar');
+
+
 
 
 -- ---------------------------------------------------------------------------
@@ -102,8 +126,8 @@ select * from inmuebles_medidas;
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'inmuebles_medidas';
 
--- Dormitorio 1: 23 x 2,9 | Dormitorio 2: 43 x 1,9
--- ALTO X ANCHO
+-- EJ dormitorio: Dormitorio01: 23 x 2,9 | Dormitorio 2: 43 x 1,9
+-- Medidas ALTO X ANCHO
 
 insert into inmuebles_medidas(id, living_comedor, cocina, dormitorio, baño, patio_jardin, cochera, balcon) values 
 (1, '17.0 x 5.9' , '6.0 x 4.0' , 'Dormitorio1: 5.0 x 5.0 | Dormitorio2: 7.0 x 4.0 | Dormitorio3: 6.0 x 6.0'
@@ -119,6 +143,8 @@ insert into inmuebles_medidas(id, living_comedor, cocina, dormitorio, baño, pati
 -- ---------------------------------------------------------------------------
 
 -- ======= TABLA INMUEBLES ===========
+
+-- ENUM estadoInmueble ('VENDIDO','DISPONIBLE','NO DISPONIBLE','FALTA INSPECCION');
 
 
 select * from inmuebles;
@@ -153,6 +179,59 @@ insert into inmuebles_marketing(id, id_inmueble, tipo_anuncio_principal, tipo_an
 (1, 1, 'Google Ads', 'Youtube', 'Marketing en Páginas de Búsqueda de Inmuebles', 4000),
 (2, 2, 'Google Ads', 'Linkedin', 'Sección Ventas en Inmuebles', 5000),
 (3, 3, 'Google Ads', '-', 'Sección Ventas en Inmuebles', 3000);
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA INSPECCIONES_INMUEBLES ===========
+
+-- ENUM estadoInspeccion ('ACEPTADA','NO ACEPTADA','PENDIENTE REVISION');
+-- ENUM tipoInspeccion('DEPARTAMENTO','CASA','PH');
+-- fecha date  '2001-10-07'
+-- hora time   '09:00:07'
+
+
+select * from inspecciones_inmuebles;
+
+select column_name, data_type, is_nullable from
+information_schema.columns where table_name = 'inspecciones_inmuebles';
+
+insert into inspecciones_inmuebles (id, id_inmueble, estado_inspeccion, tipo_inspeccion
+, descripcion_inspeccion, empresa, direccion, telefono, costo, fecha, hora) values
+(1, 1, 'ACEPTADA', 'PH', 'Se llevo a caba la inspeccion de forma exitosa y sin Novedad'
+, 'Les Venegas', 'Las Pampas 334', '7568-0499', '8600', '2021-02-13', '07:00:00' ),
+(2, 2, 'ACEPTADA', 'CASA', 'Se llevo a caba la inspeccion de forma exitosa y sin Novedad'
+, 'Les Venegas', 'Las Pampas 334', '7568-0499', '7400', '2021-03-18', '10:00:00' ),
+(3, 3, 'ACEPTADA', 'DEPARTAMENTO', 'Se llevo a caba la inspeccion de forma exitosa y sin Novedad'
+, 'Les Venegas', 'Las Pampas 334', '7568-0499', '5100', '2020-01-09', '08:30:00' );
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA SERVICIOS_INMUEBLES ===========
+
+-- ENUM divisionComercial ('LOCALES','OFICINAS','TERRENOS','LOCALES-OFICINAS-TERRENOS','NO APLICA');
+-- ENUM divisionVivienda ('DEPARTAMENTOS','CASAS','TERRENOS','DEPARTAMENTOS-CASAS-TERRENOS','NO APLICA');
+-- ENUM tasaciones ('PROFESIONAL','JUDICIAL', 'PROFESIONAL-JUDICIAL','NO APLICA');
+-- ENUM administracion ('ALQUILERES','CUENTAS','ALQUILERES-CUENTAS','NO APLICA');
+
+
+select * from servicios_inmuebles;
+
+select column_name, data_type, is_nullable from
+information_schema.columns where table_name = 'servicios_inmuebles';
+
+
+insert into servicios_inmuebles (id, id_oficina, tipo_comercial, tipo_vivienda, tipo_tasaciones
+, tipo_administracion, descripcion_servicios) values 
+(1, 1, 'LOCALES-OFICINAS-TERRENOS','DEPARTAMENTOS-CASAS-TERRENOS','PROFESIONAL','ALQUILERES-CUENTAS','-'),
+(2, 2, 'OFICINAS','DEPARTAMENTOS','PROFESIONAL','ALQUILERES-CUENTAS','-'),
+(3, 3, 'LOCALES-OFICINAS-TERRENOS','DEPARTAMENTOS-CASAS-TERRENOS','PROFESIONAL-JUDICIAL','ALQUILERES-CUENTAS','-');
 
 
 
@@ -270,7 +349,57 @@ orientacion_tipo_inmueble, cualidades) values
 
 
 
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA CLIENTES ===========
+
+-- fecha_nacimiento date ejemplo '2001-10-07'
+-- fecha_alta date ejemplo '2002-10-07'
+
+select * from clientes;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'clientes';
+
+insert into clientes(id, nombre, apellido, edad, fecha_nacimiento, tipo_documento, nro_documento
+, direccion, telefono_principal, telefono_secundario, email, fecha_alta)values
+(1, 'Rodrigo', 'Bustamante', 29, '1991-03-02', 'DNI', '36879254', 'Aristobulo del Valle 887'
+, '+5491176534456', '3765-9978', 'rodrigo_bustamante@gmail.com', '2021-06-12'),
+(2, 'Marcela', 'Pérez', 31, '1989-12-12', 'DNI', '33895854', 'Av. Callao 213'
+, '+5491143534456', '+5491143534456', 'marcela_perez@gmail.com', '2020-03-06'),
+(3, 'Jaime', 'Rodriguez', 48, '1977-02-16', 'DNI', '29937852', 'Av. La Pampa 218'
+, '+5491183675544', '+5491183675544', 'jaime.CL_la@gmail.com', '2020-11-23');
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA CITAS_INMUEBLES ===========
+
+-- ENUM estadoCita('PENDIENTE','COMPLETADA','INCOMPLETA');
+-- fecha_cita date '2001-10-07'
+-- hora_cita time '09:00:07'
+
+
+select * from citas_inmuebles;
+
+
+select column_name, data_type, is_nullable from
+information_schema.columns where table_name = 'citas_inmuebles';
+
+insert into citas_inmuebles (id, id_inmueble, id_empleado, id_cliente, estado_cita
+, descripcion_cita,  fecha_cita, hora_cita)values
+(1, 1, 3, 1, 'PENDIENTE', 'Cita Pendiente', '2021-12-09', '11:00:00' ),
+(2, 2, 6, 2, 'COMPLETADA', 'Cita Finalizada y Venta Efectuada de Forma Exitosa', '2020-09-02', '09:15:00' );
+
+
+
+
+
 /*
+
 -- ---------------------------------------------------------------------------
 
 -- ======= TABLA COMPRADORES ===========
@@ -288,12 +417,5 @@ insert into compradores
 
 
 
--- ---------------------------------------------------------------------------
 
--- ======= TABLA CLIENTES ===========
-
-select * from clientes;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'clientes';
 */

@@ -34,30 +34,37 @@ drop table if exists oficinas_detalles cascade;
 -- Todos lo id PK auto_increment
 drop sequence if exists id_secuencia;
 
--- Enumerados
-drop type if exists tipoFactura;
-drop type if exists tipoPago;
+
+-- Enumerados tabla oficinas_detalles
 drop type if exists estadoOficina;
 drop type if exists tipoOficina;
+
+-- Enumerados tabla inspecciones_inmuebles
 drop type if exists tipoInspeccion;
+drop type if exists estadoInspeccion;
+
+-- Enumerados tabla inmuebles
+drop type if exists estadoInmueble;
+
+-- Enumerados tabla servicios_inmuebles
 drop type if exists divisionComercial;
 drop type if exists divisionVivienda;
 drop type if exists tasaciones;
 drop type if exists administracion;
-drop type if exists estadoInmueble;
+
+-- Enumerados tabla citas_inmuebles
+drop type if exists estadoCita;
 
 
+-- Enumerados tabla facturas_detalles
+drop type if exists tipoFactura;
+drop type if exists tipoPago;
 
-
-
-
+-- ---------------------------------------------------------------------------
 
 
 
 -- ---------------------------------------------------------------------------
-
--- ---------------------------------------------------------------------------
-
 
 -- ======= TABLA OFICINAS ===========
 
@@ -89,6 +96,8 @@ add constraint UNIQUE_oficinas_telefono
 unique(telefono);
 
 -- ---------------------------------------------------------------------------
+
+
 
 -- ---------------------------------------------------------------------------
 
@@ -153,9 +162,6 @@ check (cantidad_baños > 0 );
 alter table oficinas_detalles
 add constraint CHECK_oficinas_detalles_antiguedad
 check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
-
-
-
 
 
 -- ---------------------------------------------------------------------------
@@ -437,9 +443,9 @@ check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
 
 -- ---------------------------------------------------------------------------
 
+
+
 -- ---------------------------------------------------------------------------
-
-
 
 -- ======= TABLA INMUEBLES MEDIDAS ===========
 -- Pueden no estar estipuladas
@@ -478,7 +484,6 @@ unique(id);
 
 
 create type estadoInmueble as enum('VENDIDO','DISPONIBLE','NO DISPONIBLE','FALTA INSPECCION');
-
 
 
 create table inmuebles(
@@ -550,12 +555,17 @@ references oficinas(id);
 
 -- ======= TABLA CITAS_INMUEBLES ===========
 
+create type estadoCita as enum('PENDIENTE','COMPLETADA','INCOMPLETA');
+
+
 create table citas_inmuebles(
 	
 id int primary key,
 id_inmueble int not null,
 id_empleado int NOT NULL,-- Puede ser un gerente o vendedor
 id_cliente int NOT null,-- Si hay cita automaticamente pasa a ser un cliente
+estado_cita estadoCita not null,
+descripcion_cita varchar(200) not null,
 fecha_cita date NOT null,-- '2001-10-07'
 hora_cita time NOT NULL  -- '09:00:07'
 
@@ -589,9 +599,6 @@ add constraint FK_citas_inmuebles_id_cliente
 foreign key(id_cliente)
 REFERENCES clientes(id);
 
-
-
-
 -- ---------------------------------------------------------------------------
 
 
@@ -600,10 +607,17 @@ REFERENCES clientes(id);
 -- ======= TABLA SERVICIOS_INMUEBLES ===========
 -- https://www.mosquerabrokers.com.ar/es/informacion/servicios
 
-create type divisionComercial as enum('LOCALES','OFICINAS','TERRENOS','OTROS');
-create type divisionVivienda as enum('DEPARTAMENTOS','CASAS','TERRENOS','OTROS');
-create type tasaciones as enum('PROFESIONAL','JUDICIAL','OTROS');
-create type administracion as enum('ALQUILERES','CUENTAS','OTROS');
+create type divisionComercial as enum('LOCALES','OFICINAS','TERRENOS'
+,'LOCALES-OFICINAS-TERRENOS','NO APLICA');
+
+create type divisionVivienda as enum('DEPARTAMENTOS','CASAS','TERRENOS'
+,'DEPARTAMENTOS-CASAS-TERRENOS','NO APLICA');
+
+create type tasaciones as enum('PROFESIONAL','JUDICIAL','PROFESIONAL-JUDICIAL'
+,'NO APLICA');
+
+create type administracion as enum('ALQUILERES','CUENTAS','ALQUILERES-CUENTAS' 
+,'NO APLICA');
 
 
 create table servicios_inmuebles(
@@ -613,7 +627,8 @@ id_oficina int not null,
 tipo_comercial divisionComercial not null,
 tipo_vivienda divisionVivienda not null,
 tipo_tasaciones tasaciones not null,
-descripcion_servicios varchar(100)
+tipo_administracion administracion not null,
+descripcion_servicios varchar(200)
 
 );
 
@@ -632,11 +647,9 @@ foreign key(id_oficina)
 references oficinas(id);
 
 
-
-
-
-
 -- ---------------------------------------------------------------------------
+
+
 
 
 -- ---------------------------------------------------------------------------
@@ -644,17 +657,19 @@ references oficinas(id);
 -- ======= TABLA INSPECCIONES_INMUEBLES ===========
 -- http://checkhouse.com.ar/inspecciones-para-inquilinos/#amenities-content
 
-create type tipoInspeccion as enum('MONOAMBIENTE','BASICA','CLASICA','OTROS');
+create type estadoInspeccion as enum('ACEPTADA','NO ACEPTADA','PENDIENTE REVISION');
+create type tipoInspeccion as enum('DEPARTAMENTO','CASA','PH');
 
 create table inspecciones_inmuebles(
 	
 id int primary key,
 id_inmueble int not null,
+estado_inspeccion estadoInspeccion not null,
+tipo_inspeccion tipoInspeccion not null,
+descripcion_inspeccion varchar(200) not null,
 empresa varchar(30) not null,
 direccion varchar(30) not null,
 telefono varchar(30) not null,
-tipo_inspeccion tipoInspeccion not null,
-descripcion varchar(60) not null,
 costo float not null,
 fecha date not null,-- '2001-10-07'
 hora time not null  -- '09:00:07'
@@ -681,15 +696,7 @@ add constraint CHECK_inspecciones_inmuebles_costo
 check(costo > 0);
 
 
-
-
-
-
 -- ---------------------------------------------------------------------------
-
-
-
-
 
 
 
@@ -697,7 +704,6 @@ check(costo > 0);
 
 
 -- ======= TABLA INMUEBLES_MARKETING===========
-
 
 
 create table inmuebles_marketing(
@@ -734,8 +740,6 @@ check(inversion_total > 0);
 
 
 
-
-
 -- ---------------------------------------------------------------------------
 
 
@@ -769,9 +773,6 @@ alter table administradores
 add constraint FK_administradores_id_empleado
 foreign key(id_empleado)
 references empleados(id);
-
-
-
 
 -- ---------------------------------------------------------------------------
 
@@ -822,8 +823,6 @@ check ( años_experiencia_laboral >= 2);-- 2 años
 alter table gerentes
 add constraint CHECK_gerentes_retribucion_salarial_anual
 check ( retribucion_salarial_anual > 0);
-
-
 
 
 -- ---------------------------------------------------------------------------
@@ -897,7 +896,6 @@ beneficios_compras varchar(60) not null
 -- ======= Restricciones Tabla Compradores ===========
 
 
-
 -- UNIQUE ID
 alter table compradores
 add constraint UNIQUE_compradores_id
@@ -920,14 +918,9 @@ alter table compradores
 add constraint CHECK_compradores_importe_total_compra
 check ( importe_total_compra > 0);
 
-
-
-
-
-
-
-
 -- ---------------------------------------------------------------------------
+
+
 
 -- ---------------------------------------------------------------------------
 
@@ -1034,6 +1027,8 @@ check (fecha_venta >= current_date );
 
 -- ---------------------------------------------------------------------------
 
+
+
 -- ---------------------------------------------------------------------------
 
 
@@ -1080,6 +1075,8 @@ check ( total_venta > 0);
 
 
 -- ---------------------------------------------------------------------------
+
+
 
 -- ---------------------------------------------------------------------------
 
@@ -1182,12 +1179,11 @@ alter table facturas_detalles alter id set default nextval('id_secuencia');
 
 -- ---------------------------------------------------------------------------
 
-
+/*
 
 select * from pg_catalog.pg_tables 
 where  schemaname != 'information_schema' 
 and schemaname != 'pg_catalog';
- 
  
  
 select * from oficinas;
@@ -1211,6 +1207,7 @@ select * from ventas_compras;
 select * from facturas;
 select * from facturas_detalles;
 
+*/
 
 
 

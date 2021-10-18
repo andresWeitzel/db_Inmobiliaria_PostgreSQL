@@ -26,9 +26,9 @@
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
 | ventas_compras(1) | facturas(N)   |
-| compradores(1) | ventas_compras(N)  |
-| vendedores(1) | ventas_compras(N)  |
-| inmuebles(1) | ventas_compras(N)  |
+| vendedores(1) | ventas(N)  |
+| clientes(1) | ventas(N)  |
+| inmuebles(1) | ventas(N)  |
 | inmuebles(1) | inmuebles_marketing(N)  |
 | inmuebles(1) |  citas_inmuebles(N)  |
 | inmuebles(1) |  inspecciones_inmuebles(N)  |

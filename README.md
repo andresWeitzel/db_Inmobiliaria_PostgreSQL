@@ -25,19 +25,19 @@
 
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
-| ventas_compras(1) | facturas(N)   |
-| vendedores(1) | ventas(N)  |
-| clientes(1) | ventas(N)  |
+| oficinas(1) | inmuebles(N)  |
+| oficinas(1) | empleados(N)  |
+| oficinas(1) | servicios_inmuebles(N) |
 | inmuebles(1) | ventas(N)  |
 | inmuebles(1) | inmuebles_marketing(N)  |
 | inmuebles(1) |  citas_inmuebles(N)  |
 | inmuebles(1) |  inspecciones_inmuebles(N)  |
-| empleados(1) |  citas_inmuebles(N) |
-| clientes(1) |  citas_inmuebles(N) |
 | propietarios_inmuebles(1) | inmuebles(N)   |
-| oficinas(1) | inmuebles(N)  |
-| oficinas(1) | empleados(N)  |
-| oficinas(1) | servicios_inmuebles(N) |
+| empleados(1) |  citas_inmuebles(N) |
+| empleados(1) | ventas(N)  |
+| clientes(1) |  citas_inmuebles(N) |
+| clientes(1) | ventas(N)  |
+
 
 * No declarando las FK como Unique de las relaciones de Tablas nos aseguramos que exista duplicidad.
 
@@ -48,14 +48,16 @@
 
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
-| clientes(1) | compradores(1)  |
+| oficinas(1) | oficinas_detalles(1) |
+| inmuebles(1) | inmuebles_descripciones(1) |
+| inmuebles(1) | inmuebles_medidas(1) |
 | empleados(1) | vendedores(1) |
 | empleados(1) | administradores(1) |
 | empleados(1) | gerentes(1)  |
-| inmuebles(1) | inmuebles_descripciones(1) |
-| inmuebles(1) | inmuebles_medidas(1) |
+| clientes(1) | compradores(1)  |
+| facturas(1) |  ventas(1) |
 | facturas(1) | facturas_detalles(1) |
-| oficinas(1) | oficinas_detalles(1) |
+
 
 * Declarando las FK como Unique de las relaciones de Tablas nos aseguramos que NO exista duplicidad.
 
@@ -64,14 +66,16 @@
 
 | **Tabla** | **Campo** |               
 | ------------- | ------------- |
-| compradores | FK id_cliente UNIQUE |
-| vendedores | FK id_empleado UNIQUE |
-| administradores | FK id_empleado UNIQUE |
-| gerentes | FK id_empleado UNIQUE |
+| oficinas_detalles | FK id_oficina UNIQUE | 
 | inmuebles | FK id_inmueble_medidas UNIQUE | 
 | inmuebles | FK id_inmueble_descripcion UNIQUE | 
+| administradores | FK id_empleado UNIQUE |
+| gerentes | FK id_empleado UNIQUE |
+| compradores | FK id_cliente UNIQUE |
+| vendedores | FK id_empleado UNIQUE |
+| facturas  | FK id_venta UNIQUE
 | facturas_detalles | FK id_factura UNIQUE | 
-| oficinas_detalles | FK id_oficina UNIQUE | 
+
 
 </br>
 

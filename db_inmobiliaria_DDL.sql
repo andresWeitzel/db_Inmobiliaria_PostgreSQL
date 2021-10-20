@@ -180,8 +180,9 @@ nombre varchar(30) not null,
 apellido varchar(30) not null,
 edad int not null,
 fecha_nacimiento date not null,
-tipo_documento varchar(20) not null,
+tipo_documento varchar(50) not null, -- Pasaporte, LE(libreta enrolamiento),LC(libreta civica)
 nro_documento varchar(20) not null,
+cuil varchar(30) not null, -- Si no tiene DNI, cuil provisorio
 direccion varchar(40) not null, 
 telefono_principal varchar(40) not null,
 telefono_secundario varchar(40),
@@ -572,8 +573,8 @@ id_empleado int NOT NULL,-- Puede ser un gerente o vendedor
 id_cliente int NOT null,-- Si hay cita automaticamente pasa a ser un cliente
 estado_cita estadoCita not null,
 descripcion_cita varchar(200) not null,
-fecha_cita date NOT null,-- '2001-10-07'
-hora_cita time NOT NULL  -- '09:00:07'
+fecha_cita date NOT null,-- ej '2001-10-07'
+hora_cita time NOT NULL  -- ej '09:00:07'
 
 );
 
@@ -677,8 +678,8 @@ empresa varchar(30) not null,
 direccion varchar(30) not null,
 telefono varchar(30) not null,
 costo float not null,
-fecha date not null,-- '2001-10-07'
-hora time not null  -- '09:00:07'
+fecha date not null,-- ej '2001-10-07'
+hora time not null  -- ej '09:00:07'
 
 );
 
@@ -890,15 +891,18 @@ check ( bonificacion_ventas >= 0);
 
 -- ======= TABLA COMPRADORES ===========
 
+-- importe_maximo_por_compra_usd se considera en base a todas las compras 	
+-- importe_total_compras_usd se considera la suma de todas las compras
+
 create table compradores(
 	
 id int primary key,
 id_cliente int not null,
 cantidad_inmuebles_comprados int not null,
-importe_maximo_por_compra float not null,
-importe_total_compras float not null,
+importe_maximo_por_compra_usd float not null,
+importe_total_compras_usd float not null,
 beneficios_compras varchar(100) not null,
-descuento_cliente float not null
+descuento_cliente_usd float not null
 );
 
 -- ======= Restricciones Tabla Compradores ===========
@@ -930,20 +934,20 @@ check ( cantidad_inmuebles_comprados > 0);
 
 -- CHECK IMPORTE_MAXIMO_POR_COMPRA
 alter table compradores
-add constraint CHECK_compradores_importe_maximo_por_compra
-check ( importe_maximo_por_compra > 0);
+add constraint CHECK_compradores_importe_maximo_por_compra_usd
+check ( importe_maximo_por_compra_usd > 0);
 
 
 -- CHECK IMPORTE_TOTAL_COMPRAS
 alter table compradores
-add constraint CHECK_compradores_importe_total_compras
-check ( importe_total_compras > 0);
+add constraint CHECK_compradores_importe_total_compras_usd
+check ( importe_total_compras_usd > 0);
 
 
 -- CHECK DESCUENTO_CLIENTE
 alter table compradores
-add constraint CHECK_compradores_descuento_cliente
-check ( descuento_cliente >= 0);
+add constraint CHECK_compradores_descuento_cliente_usd
+check ( descuento_cliente_usd >= 0);
 
 
 
@@ -959,10 +963,12 @@ check ( descuento_cliente >= 0);
 create table ventas(
 	
 id int primary key,
-id_vendedor int not null,
+id_empleado int not null,
 id_cliente int not null,
 id_inmueble int not null,
-fecha_venta timestamp not null
+fecha_venta date not null,-- ej '2001-10-07'
+hora_venta time not null, -- ej  '09:00:07'
+detalle_ventas varchar(100) not null
 
 );
 
@@ -973,11 +979,11 @@ alter table ventas
 add constraint UNIQUE_ventas_id
 unique(id);
 
--- FK ID_VENDEDOR
+-- FK ID_EMPLEADO
 alter table ventas 
-add constraint FK_ventas_id_vendedor
-foreign key(id_vendedor)
-references vendedores(id);
+add constraint FK_ventas_id_empleado
+foreign key(id_empleado)
+references empleados(id);
 
 -- FK ID_CLIENTE
 alter table ventas
@@ -992,12 +998,6 @@ foreign key(id_inmueble)
 references inmuebles(id);
 
 
--- CHECK FECHA_VENTA
-alter table ventas
-add constraint CHECK_ventas_fecha_venta
-check (fecha_venta >= current_date );
-
-
 -- ---------------------------------------------------------------------------
 
 
@@ -1010,10 +1010,11 @@ check (fecha_venta >= current_date );
 create table facturas(
 	
 id int primary key,
-id_venta_compra int not null,
-nro_factura int not null,
-fecha_emision timestamp not null,
-total_venta float not null -- + impuestos + costos + etc
+id_venta int not null,
+nro_factura varchar(30) not null,
+fecha_emision date not null,-- ej '2001-10-07'
+hora_emision time not null,  -- ej '09:00:07'
+precio_total_venta_usd float not null -- + impuestos + costos + etc
 
 );
 
@@ -1024,27 +1025,21 @@ alter table facturas
 add constraint UNIQUE_facturas_id
 unique(id);
 
--- FK ID_VENTA_COMPRA
+-- FK ID_VENTA
 alter table facturas 
-add constraint FK_facturas_id_venta_compra
-foreign key(id_venta_compra)
-references ventas_compras(id);
+add constraint FK_facturas_id_venta
+foreign key(id_venta)
+references ventas(id);
 
--- UNIQUE NRO_FACTURA 
+-- UNIQUE ID_VENTA
 alter table facturas 
-add constraint UNIQUE_nro_factura
-unique(nro_factura);
+add constraint UNIQUE_facturas_id_venta
+unique(id_venta);
 
--- CHECK FECHA_EMISION
-alter table facturas 
-add constraint CHECK_facturas_fecha_emision
-check (fecha_emision >= current_date );
-
-
--- CHECK TOTAL_VENTA
+-- CHECK PRECIO_TOTAL_VENTA_USD
 alter table facturas
-add constraint CHECK_facturas_total_venta
-check ( total_venta > 0);
+add constraint CHECK_facturas_precio_total_venta_usd
+check ( precio_total_venta_usd > 0);
 
 
 -- ---------------------------------------------------------------------------
@@ -1066,12 +1061,13 @@ create table facturas_detalles(
 	
 id int primary key,
 id_factura int not null,
-tipo tipoFactura not null,
-descripcion_factura varchar(60) not null,-- venta departamento inscripto en la partida N° 14567..
-precio_unitario float not null,
-valor_venta float not null,-- iva + extra + etc
-medioDePago tipoPago not null,
-descripcion_pago varchar(40) not null
+tipo tipoFactura not null, -- A,C ETC
+descripcion_factura varchar(100) not null,-- venta departamento inscripto en la partida N° 14567..
+valor_inmueble_usd float not null,-- Valor Real del Inmueble sin impuestos, etc
+costo_asociado_usd float not null, -- Escritura del vendedor, sellos, comisiones, etc 
+impuestos_asociados_usd float not null, -- IVA 10%, imp a las ganancias, imp tranf. de inmuebles, etc
+medio_de_pago tipoPago not null,
+descripcion_pago varchar(100) not null
 
 );
 
@@ -1094,16 +1090,21 @@ foreign key(id_factura)
 references facturas(id);
 
 
--- CHECK PRECIO_UNITARIO
+-- CHECK VALOR_INMUEBLE_USD
 alter table facturas_detalles
-add constraint CHECK_facturas_detalles_precio_unitario
-check( precio_unitario < valor_venta and precio_unitario > 0);
+add constraint CHECK_facturas_detalles_valor_inmueble_usd
+check ( valor_inmueble_usd > 0);
 
--- CHECK VALOR_VENTA
+
+-- CHECK COSTO_ASOCIADO_USD
 alter table facturas_detalles
-add constraint CHECK_facturas_detalles_valor_venta
-check ( valor_venta > precio_unitario and valor_venta > 0);
+add constraint CHECK_facturas_detalles_costo_asociado_usd
+check( costo_asociado_usd > 0);
 
+-- CHECK IMPUESTOS_ASOCIADOS_USD
+alter table facturas_detalles
+add constraint CHECK_facturas_detalles_impuestos_asociados_usd
+check( impuestos_asociados_usd > 0);
 
 
 -- ---------------------------------------------------------------------------

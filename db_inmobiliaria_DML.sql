@@ -6,7 +6,7 @@
  * ========= DML =============
  */
 
-delete from inspecciones_inmuebles cascade;
+delete from inspecciones_inmuebles ;
 delete from inmuebles_marketing cascade;
 delete from inmuebles cascade;
 delete from inmuebles_descripciones cascade;
@@ -242,43 +242,43 @@ information_schema.columns where table_name = 'empleados';
 
 -- Oficina 1 (Torre San Vicente)
 insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
-, tipo_documento, nro_documento, direccion, telefono_principal, telefono_secundario
+, tipo_documento, nro_documento, cuil, direccion, telefono_principal, telefono_secundario
 , email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
-(1, 1, 'Marcos', 'Castro', 45, '1971/05/01', 'DNI', '48967156', 'Figueroa Alcorta 22'
+(1, 1, 'Marcos', 'Castro', 45, '1971/05/01', 'DNI', '48967156','33-48967156-4', 'Figueroa Alcorta 22'
 , '+5491178654356', '+5491178654356', 'marcosCastro2002_lop@hotmail.com', 'Agente Inmobiliario(Gerente)'
 , 4, '2017/09/6', 150000 ),
-(2, 1, 'Luciana', 'Martinez', 23, '1999/07/12', 'DNI', '37997256', 'Av. Corrientes 234'
+(2, 1, 'Luciana', 'Martinez', 23, '1999/07/12', 'DNI', '37997256', '32-37997256-9', 'Av. Corrientes 234'
 , '+5491174568399', '-', 'lu_martinez_trabajo@gmail.com', 'Administradora'
 , 1, '2020/10/09', 55000 ),
-(3, 1, 'José', 'Bastituta', 34, '1988/09/07', 'DNI', '409876546', 'San Acrosio 15781'
+(3, 1, 'José', 'Bastituta', 34, '1988/09/07', 'DNI', '409876546', '12-409876546-0', 'San Acrosio 15781'
 , '+5491157670000', '+5491157670000', 'joseBastituta_88@gmail.com', 'Agente Inmobiliario(Vendedor)'
 , 1, '2020/07/12', 65000 );
 
 -- Oficina 2 (Edificio Torre Alem)
 insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
-, tipo_documento, nro_documento, direccion, telefono_principal, telefono_secundario
+, tipo_documento, nro_documento, cuil, direccion, telefono_principal, telefono_secundario
 , email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
-(4, 2, 'Damian', 'Gutierrez', 39, '1978/09/14', 'DNI', '33869556', 'Av Alberdi 05'
+(4, 2, 'Damian', 'Gutierrez', 39, '1978/09/14', 'DNI', '33869556', '20-33869556-3', 'Av Alberdi 05'
 , '+5491176844456', '+5491157684445', 'damian_gut.756@gmail.com', 'Agente Inmobiliario(Gerente)'
 , 3, '2018/3/4', 139000 ),
-(5, 2, 'Marcelo', 'Perez', 28, '1988/03/17', 'DNI', '39345679', 'Carabobo 06'
+(5, 2, 'Marcelo', 'Perez', 28, '1988/03/17', 'DNI', '39345679', '12-39345679-9', 'Carabobo 06'
 , '+5491138765433', '-', 'MarceloPerez@gmail.com', 'Administrador'
 , 2, '2019/04/14', 56000 ),
-(6, 2, 'Jimena', 'D Ambrosio', 37, '1991/11/06', 'DNI', '417896537', 'Valentin Figueroa 33'
+(6, 2, 'Jimena', 'D Ambrosio', 37, '1991/11/06', 'DNI', '417896537', '2-417896537-2', 'Valentin Figueroa 33'
 , '+5491175680377', '+5491175680338', 'lic_DAmbrosio@gmail.com', 'Agente Inmobiliario(Vendedora)'
 , 3, '2018/08/14', 71000 );
 
 -- Oficina 3 (Oficina Comercial Principal)
 insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
-, tipo_documento, nro_documento, direccion, telefono_principal, telefono_secundario
+, tipo_documento, nro_documento, cuil, direccion, telefono_principal, telefono_secundario
 , email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
-(7, 3, 'Sofia', 'Aguilar', 35, '1981/07/01', 'DNI', '33456733', 'Av. Corrientes 2564'
+(7, 3, 'Sofia', 'Aguilar', 35, '1981/07/01', 'DNI', '33456733', '8-33456733-9', 'Av. Corrientes 2564'
 , '+5491175678844', '+5491130928783', 'lic_sofiaAguilar@gmail.com', 'Agente Inmobiliario(Gerenta)'
 , 3, '2018/08/02', 156000 ),
-(8, 3, 'Luis', 'Gonzalez', 26, '1991/09/21', 'DNI', '397865432', 'La Pampa 22'
+(8, 3, 'Luis', 'Gonzalez', 26, '1991/09/21', 'DNI', '397865432', '56-397865432-99', 'La Pampa 22'
 , '+549113764522', '-', 'luisGonzalez_jsu@gmail.com', 'Administrador'
 , 2, '2019/07/12', 50000 ),
-(9, 3, 'Juan', 'Notowski', 41, '1988/02/21', 'DNI', '432765411', 'Av Rivadavia 9100'
+(9, 3, 'Juan', 'Notowski', 41, '1988/02/21', 'DNI', '432765411', '22-432765411-93', 'Av Rivadavia 9100'
 , '+5491175680827', '+5491175680827', 'notowski_Juan_7238@gmail.com', 'Agente Inmobiliario(Vendedor)'
 , 2, '2019/04/22', 74000 );
 
@@ -386,14 +386,16 @@ information_schema.columns where table_name = 'citas_inmuebles';
 
 insert into citas_inmuebles (id, id_inmueble, id_empleado, id_cliente, estado_cita
 , descripcion_cita,  fecha_cita, hora_cita)values
-(1, 1, 3, 1, 'PENDIENTE', 'Cita Pendiente', '2021-12-09', '11:00:00' ),
-(2, 2, 6, 2, 'COMPLETADA', 'Cita Finalizada y Venta Efectuada de Forma Exitosa', '2020-09-02', '09:15:00' );
+(1, 3, 3, 1, 'INCOMPLETA', 'Cita Pendiente', '2020-03-01', '11:00:00' ),
+(2, 2, 6, 2, 'COMPLETADA', 'Cita Finalizada y Venta Efectuada de Forma Exitosa', '2020-09-02', '09:15:00' ),
+(3, 3, 3, 1, 'COMPLETADA', 'Venta Efectuada de Forma Exitosa', '2020-12-22', '08:30:00' );
 
 
 -- ---------------------------------------------------------------------------
 
 -- ======= TABLA COMPRADORES ===========
-	
+-- importe_maximo_por_compra_usd se considera en base a todas las compras 	
+-- importe_total_compras_usd se considera la suma de todas las compras
 
 select * from compradores;
 
@@ -401,15 +403,19 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'compradores';
 
 
-insert into compradores(id, id_cliente, cantidad_inmuebles_comprados, importe_maximo_por_compra
-, importe_total_compras, beneficios_compras, descuento_cliente) values 
-(1, 2, 1, 168000, 168000, 'Descuento del 10% en la Próxima Compra', 0);
+insert into compradores(id, id_cliente, cantidad_inmuebles_comprados, importe_maximo_por_compra_usd
+, importe_total_compras_usd, beneficios_compras, descuento_cliente_usd) values 
+(1, 1, 1, 168000, 168000, 'Descuento del 15% en la Próxima Compra', 200),
+(2, 2, 1, 110000, 110000, 'Descuento del 10% en la Próxima Compra',200);
 
 
 -- ---------------------------------------------------------------------------
 
 -- ======= TABLA VENTAS ===========
 	
+-- fecha_venta date '2001-10-07'
+-- hora_venta time '09:00:07'
+
 
 select * from ventas;
 
@@ -417,12 +423,53 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'ventas';
 
 
+insert into ventas(id, id_empleado, id_cliente, id_inmueble, fecha_venta, hora_venta, detalle_ventas) values
+(1, 3, 1, 3, '2020-12-22', '08:30:00', 'Se Realiza la Venta luego de la Primera Cita Inconclusa'),
+(2, 6, 2, 2, '2020-09-02', '09:15:00', 'La Venta del Inmueble fue de manera Exitosa');
 
 
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA FACTURAS ===========
+	
+-- fecha_venta date '2001-10-07'
+-- hora_venta time '09:00:07'
 
 
 select * from facturas;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas';
+
+insert into facturas(id, id_venta, nro_factura, fecha_emision, hora_emision, precio_total_venta_usd)values
+(1, 1, '00001-00000001', '2020-12-22', '08:30:00', 110000),
+(2, 2, '00001-00000002', '2020-09-02', '09:15:00', 168000);
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA FACTURAS_DETALLES ===========
+
+-- ENUM tipoFactura ('A','B','C','D');
+-- ENUM tipoPago ('EFECTIVO','CHEQUE','TARJETA');
+
+
+
 select * from facturas_detalles;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas_detalles';
+
+
+insert into facturas_detalles (id, id_factura, tipo, descripcion_factura, valor_inmueble_usd
+, costo_asociado_usd, impuestos_asociados_usd, medio_de_pago, descripcion_pago) values
+(1, 1, 'A', 'Venta de Inmueble Tipo Departamento de 2 Ambientes Zona Caballito', 109000, 800, 200
+, 'EFECTIVO', 'Se efectuó la compra en 1 sólo Pago'),
+(2, 2, 'A', 'Venta de Inmueble Tipo Casa de 3 Ambientes Zona Belgrano', 167000, 600, 400
+, 'CHEQUE', 'Se efectuó la compra a Pagar en 3 Pagos');
+
 
 
 

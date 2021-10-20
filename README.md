@@ -37,7 +37,7 @@
 | empleados(1) | ventas(N)  |
 | clientes(1) |  citas_inmuebles(N) |
 | clientes(1) | ventas(N)  |
-| facturas(1) |  ventas(N) |
+
 
 * No declarando las FK como Unique de las relaciones de Tablas nos aseguramos que exista duplicidad.
 
@@ -55,6 +55,7 @@
 | empleados(1) | administradores(1) |
 | empleados(1) | gerentes(1)  |
 | clientes(1) | compradores(1)  |
+| facturas(1) |  ventas(1) |
 | facturas(1) | facturas_detalles(1) |
 
 
@@ -72,6 +73,7 @@
 | gerentes | FK id_empleado UNIQUE |
 | compradores | FK id_cliente UNIQUE |
 | vendedores | FK id_empleado UNIQUE |
+| facturas  | FK id_venta UNIQUE
 | facturas_detalles | FK id_factura UNIQUE | 
 
 

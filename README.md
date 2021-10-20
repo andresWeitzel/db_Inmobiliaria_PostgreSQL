@@ -25,15 +25,15 @@
 
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
-| ventas_compras(1) | facturas(N)   |
-| vendedores(1) | ventas(N)  |
+| ventas(1) | facturas(N)   |
+| empleados(1) |  citas_inmuebles(N) |
+| empleados(1) | ventas(N)  |
+| clientes(1) |  citas_inmuebles(N) |
 | clientes(1) | ventas(N)  |
 | inmuebles(1) | ventas(N)  |
 | inmuebles(1) | inmuebles_marketing(N)  |
 | inmuebles(1) |  citas_inmuebles(N)  |
 | inmuebles(1) |  inspecciones_inmuebles(N)  |
-| empleados(1) |  citas_inmuebles(N) |
-| clientes(1) |  citas_inmuebles(N) |
 | propietarios_inmuebles(1) | inmuebles(N)   |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |

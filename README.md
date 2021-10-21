@@ -1,10 +1,10 @@
-# Administracón y Gestión de Bases De Datos PostgreSQL
+# Administración y Gestión de Bases De Datos PostgreSQL.
 
 
-* En Este Proyecto se pone en práctica el Modelado, Creación, Desarrollo, Gestión y Administración de una Base de Datos con el SGBD PostgreSQL.
-* El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiandome por las informaciones y características del mercado inmobiliario en Argentina(valores, precios, medidas, lexico, etc).
+* En Este Proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Gestión y Administración de una Base de Datos con el SGBD PostgreSQL.
+* El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiándome por las informaciones y características del mercado Inmobiliario en Argentina(valores, precios, medidas, léxico, etc).
 *  Las páginas de inmobiliaria más conocidas en las que me guíe son zonaprop, re/max y baigún.
-*  Para la gran mayoría de las medidas tomadas en inmuebles me base en anuncios en mercadoLibre, ya que allí se detallan en mayor cantidad.
+*  Para la gran mayoría de las medidas tomadas en inmuebles me guié en anuncios en MercadoLibre, ya que allí se detallan en mayor cantidad.
 *  Se incluye el pdf guía del proyecto dentro de la documentacion.
 
 
@@ -14,7 +14,7 @@
 
 ![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/db_inmobiliaria_DER.png)
 
-* DBeaver implementa la notación IDEF1X para el Diagrama Entidad Relación. En la doc que anexa DBeaver(https://dbeaver.com/docs/wiki/ER-Diagrams/) no está del todo claro la relación que implementa. Investigando sobre las mismas, se puede concluir que la Relación Diamante y Circulo entre línea Punteada se declara como relaciónes Opcionales. Por ende debajo de la siguiente Imagen está detallado las Relaciones entre Entidades.
+* DBeaver implementa la Notación IDEF1X para el Diagrama Entidad Relación. En la documentación que anexa DBeaver(https://dbeaver.com/docs/wiki/ER-Diagrams/) no está del todo claro la relación que implementa. Investigando sobre las mismas, se puede concluir que la Relación Diamante y Círculo entre línea Punteada se declara como relaciónes Opcionales. Por ende debajo de la siguiente Imagen está detallado las Relaciones entre Entidades.
 
 ![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/relacionDeTablas.png)
 
@@ -39,7 +39,7 @@
 | clientes(1) | ventas(N)  |
 
 
-* No declarando las FK como Unique de las relaciones de Tablas nos aseguramos que exista duplicidad.
+* No declarando las FK como Unique en las relaciones de Tablas nos aseguramos que exista duplicidad.
 
 
 </br>
@@ -59,7 +59,7 @@
 | facturas(1) | facturas_detalles(1) |
 
 
-* Declarando las FK como Unique de las relaciones de Tablas nos aseguramos que NO exista duplicidad.
+* Declarando las FK como Unique en las relaciones de Tablas nos aseguramos qué NO exista duplicidad.
 
 
 #### Restricciones de tipo CHECK UNIQUE para relación (1:1)
@@ -104,11 +104,11 @@
 
 <hr>
 
-## `Documentación Del Proyecto`
-#### (Esta Documentación que Desarrollé es para la Creación, Configuración, Posibles Errores, Manejo de la Base de Datos db_inmuebles con PostgreSQL en DBeaver. Recomiendo Leerla y Realizar todo paso a paso como se indica en la misma, cualquier aporte o sugerencia, informar al respecto).
+## `Documentación y Guía Del Proyecto`
+#### (Esta Documentación y Guía que Desarrollé es para la Creación, Configuración, Manejo, etc de la Base de Datos db_inmuebles con PostgreSQL en DBeaver. Como así también para el Manejo de los Posibles Errores que pudiesen surgir, manejo de Git, consideraciones y declaraciones del Proyecto, etc. Recomiendo Leerla y Realizar todo paso a paso como se indica en la misma, cualquier aporte o sugerencia, informar al respecto).
 
 ## Indice
-- [Creación y Configuraciones de un Proyecto Spring Boot con Maven en Spring Tool Suite 4.](#creación-de-un-proyecto-spring-boot-con-maven-en-spring-tool-suite-4-y-configuraciones-iniciales)
+- [Configuiración y Puesta en Marcha de la Base de Datos.](#configuración-y-puesta-en-marcha-de-la-base-de-datos-db-inmuebles)
 
 - [Configuración del Servidor de Despliegue (Wildfly).](#configuración-del-servidor-de-despliegue-wildfly)
 - [Herramienta Cygwin para el uso de Git.](#uso-de-cygwin)
@@ -117,7 +117,7 @@
 </br>
 
 ## Configuración y Puesta en Marcha de la Base de Datos db_inmuebles.
-#### (Primeramente deberás descargate PostgreSQL como SGDB, luego DBeaver como GDB y crear la db ).
+#### (Primeramente deberás descargar el SGDB PostgreSQL , luego algún GDB como por ej. DBeaver y crear la db ).
 
 #### 1) Descarga de DBeaver
 * --> https://dbeaver.io/
@@ -151,7 +151,7 @@
 
 </br>
 
-## Uso y Ejecución de los Scripts .sql
+## Uso y Ejecución de los Scripts .sql para la Base de Datos
 #### (Vamos a trabajar con los Archivos sql dentro de DBeaver).
 
 #### 1) Primeramente asegurate de haber descargado este Repositorio

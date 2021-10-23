@@ -3,20 +3,21 @@
  * ----------------------------
  * 
  * 
- * ========= DML =============
+ * ========= DML INSERTS =============
  */
 
+
+delete from facturas_detalles cascade;
+delete from facturas cascade;
+delete from ventas cascade;
+delete from citas_inmuebles cascade;
 delete from inspecciones_inmuebles ;
 delete from inmuebles_marketing cascade;
 delete from inmuebles cascade;
 delete from inmuebles_descripciones cascade;
 delete from inmuebles_medidas cascade;
 delete from servicios_inmuebles cascade;
-delete from citas_inmuebles cascade;
 delete from propietarios_inmuebles cascade;
-delete from facturas cascade;
-delete from facturas_detalles cascade;
-delete from ventas_compras cascade;
 delete from administradores cascade; 
 delete from gerentes cascade;
 delete from vendedores cascade;

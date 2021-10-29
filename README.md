@@ -1,7 +1,7 @@
-# Administración y Gestión db_Inmobiliaria con PostgreSQL.
+# Proyecto db_Inmobiliaria con PostgreSQL.
 
 
-* En Este Proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Gestión y Administración de una Base de Datos con el SGBD PostgreSQL.
+* En Este Proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos con el SGBD PostgreSQL.
 * El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiándome por las informaciones y características del mercado Inmobiliario en Argentina(valores, precios, medidas, léxico, etc).
 *  Las páginas de inmobiliaria más conocidas en las que me guíe son zonaprop, re/max y baigún.
 *  Para la gran mayoría de las medidas tomadas en inmuebles me guié en anuncios en MercadoLibre, ya que allí se detallan en mayor cantidad.

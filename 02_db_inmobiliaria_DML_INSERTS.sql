@@ -44,8 +44,8 @@ information_schema.columns where table_name = 'oficinas';
 
 insert into oficinas (id, nombre, direccion, nro_telefono, email) values 
 (1 , 'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'),
-(2 , 'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '+54 11 61147000' , 'inmobiliariaDuckson@gmail.com'),
-(3 , 'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '011 5653-1799' , 'inmobiliariaDuckson@gmail.com');
+(2 , 'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'),
+(3 , 'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com');
 
 
 
@@ -246,13 +246,13 @@ insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
 , tipo_documento, nro_documento, cuil, direccion, nro_telefono_principal, nro_telefono_secundario
 , email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
 (1, 1, 'Marcos', 'Castro', 45, '1971/05/01', 'DNI', '48967156','33-48967156-4', 'Figueroa Alcorta 22'
-, '+5491178654356', '+5491178654356', 'marcosCastro2002_lop@hotmail.com', 'Agente Inmobiliario(Gerente)'
+, '1178654356', '+5491178654356', 'marcosCastro2002_lop@hotmail.com', 'Agente Inmobiliario(Gerente)'
 , 4, '2017/09/6', 150000 ),
 (2, 1, 'Luciana', 'Martinez', 23, '1999/07/12', 'DNI', '37997256', '32-37997256-9', 'Av. Corrientes 234'
-, '+5491174568399', '-', 'lu_martinez_trabajo@gmail.com', 'Administradora'
+, '11 74568399', '-', 'lu_martinez_trabajo@gmail.com', 'Administradora'
 , 1, '2020/10/09', 55000 ),
 (3, 1, 'José', 'Bastituta', 34, '1988/09/07', 'DNI', '409876546', '12-409876546-0', 'San Acrosio 15781'
-, '+5491157670000', '+5491157670000', 'joseBastituta_88@gmail.com', 'Agente Inmobiliario(Vendedor)'
+, '1157670000', '+5491157670000', 'joseBastituta_88@gmail.com', 'Agente Inmobiliario(Vendedor)'
 , 1, '2020/07/12', 65000 );
 
 -- Oficina 2 (Edificio Torre Alem)
@@ -266,7 +266,7 @@ insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
 , '+5491138765433', '-', 'MarceloPerez@gmail.com', 'Administrador'
 , 2, '2019/04/14', 56000 ),
 (6, 2, 'Jimena', 'D Ambrosio', 37, '1991/11/06', 'DNI', '417896537', '2-417896537-2', 'Valentin Figueroa 33'
-, '+5491175680377', '+5491175680338', 'lic_DAmbrosio@gmail.com', 'Agente Inmobiliario(Vendedora)'
+, '1175680377', '+5491175680338', 'lic_DAmbrosio@gmail.com', 'Agente Inmobiliario(Vendedora)'
 , 3, '2018/08/14', 71000 );
 
 -- Oficina 3 (Oficina Comercial Principal)
@@ -274,7 +274,7 @@ insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
 , tipo_documento, nro_documento, cuil, direccion, nro_telefono_principal, nro_telefono_secundario
 , email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
 (7, 3, 'Sofia', 'Aguilar', 35, '1981/07/01', 'DNI', '33456733', '8-33456733-9', 'Av. Corrientes 2564'
-, '+5491175678844', '+5491130928783', 'lic_sofiaAguilar@gmail.com', 'Agente Inmobiliario(Gerenta)'
+, '1175678844', '+5491130928783', 'lic_sofiaAguilar@gmail.com', 'Agente Inmobiliario(Gerenta)'
 , 3, '2018/08/02', 156000 ),
 (8, 3, 'Luis', 'Gonzalez', 26, '1991/09/21', 'DNI', '397865432', '56-397865432-99', 'La Pampa 22'
 , '+549113764522', '-', 'luisGonzalez_jsu@gmail.com', 'Administrador'

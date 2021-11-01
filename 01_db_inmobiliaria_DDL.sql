@@ -35,29 +35,29 @@ drop sequence if exists id_secuencia cascade;
 
 
 -- Enumerados tabla oficinas_detalles
-drop type if exists estado_oficina;
-drop type if exists tipo_oficina;
+drop type if exists estado_oficina cascade;
+drop type if exists tipo_oficina cascade;
 
 -- Enumerados tabla inspecciones_inmuebles
-drop type if exists tipo_inspeccion;
-drop type if exists estado_inspeccion;
+drop type if exists tipo_inspeccion cascade;
+drop type if exists estado_inspeccion cascade;
 
 -- Enumerados tabla inmuebles
-drop type if exists estado_inmueble;
+drop type if exists estado_inmueble cascade;
 
 -- Enumerados tabla servicios_inmuebles
-drop type if exists division_comercial;
-drop type if exists division_vivienda;
-drop type if exists tasaciones;
-drop type if exists administracion;
+drop type if exists division_comercial cascade;
+drop type if exists division_vivienda cascade;
+drop type if exists tasaciones cascade;
+drop type if exists administracion cascade;
 
 -- Enumerados tabla citas_inmuebles
-drop type if exists estado_cita;
+drop type if exists estado_cita cascade;
 
 
 -- Enumerados tabla facturas_detalles
-drop type if exists tipo_factura;
-drop type if exists tipo_pago;
+drop type if exists tipo_factura cascade;
+drop type if exists tipo_pago cascade;
 
 -- ---------------------------------------------------------------------------
 
@@ -111,8 +111,8 @@ create table oficinas_detalles(
 id int primary key,
 id_oficina int ,
 localidad varchar(40) not null,
-tipo_oficina tipoOficina not null, 
-estado_oficina estadoOficina not null,
+tipo_oficina tipo_oficina not null, 
+estado_oficina estado_oficina not null,
 superficie_total float not null,
 cantidad_ambientes smallint not null, -- 1,2,3,etc | smallint-->2bytes, int-->4bytes |
 cantidad_sanitarios smallint not null, -- Reemplazamos baños por caracter especial
@@ -515,7 +515,7 @@ id_inmueble_descripcion int not null,
 id_oficina int not null,
 descripcion varchar(200) not null,-- ej: semipiso de 3 Amb en Palermo
 tipo varchar(20) not null, -- depto, casa, etc
-estado_inmueble estadoInmueble not null,
+estado_inmueble estado_inmueble not null,
 precio_inmueble_usd float(4) not null,
 direccion varchar(40) not null,-- San sarasa 123
 ubicacion varchar(40) not null, -- zona:palermo, recoleta, etc
@@ -591,7 +591,7 @@ id int primary key,
 id_inmueble int not null,
 id_empleado int NOT NULL,-- Puede ser un gerente o vendedor
 id_cliente int NOT null,-- Si hay cita automaticamente pasa a ser un cliente
-estado_cita estadoCita not null,
+estado_cita estado_cita not null,
 descripcion_cita varchar(200) not null,
 fecha_cita date NOT null,-- ej '2001-10-07'
 hora_cita time NOT NULL  -- ej '09:00:07'
@@ -651,8 +651,8 @@ create table servicios_inmuebles(
 	
 id int primary key,
 id_oficina int not null,
-tipo_comercial divisionComercial not null,
-tipo_vivienda divisionVivienda not null,
+tipo_comercial division_comercial not null,
+tipo_vivienda division_vivienda not null,
 tipo_tasaciones tasaciones not null,
 tipo_administracion administracion not null,
 descripcion_servicios varchar(200)
@@ -691,8 +691,8 @@ create table inspecciones_inmuebles(
 	
 id int primary key,
 id_inmueble int not null,
-estado_inspeccion estadoInspeccion not null,
-tipo_inspeccion tipoInspeccion not null,
+estado_inspeccion estado_inspeccion not null,
+tipo_inspeccion tipo_inspeccion not null,
 descripcion_inspeccion varchar(200) not null,
 empresa varchar(30) not null,
 direccion varchar(30) not null,
@@ -1083,12 +1083,12 @@ create table facturas_detalles(
 	
 id int primary key,
 id_factura int not null,
-tipo tipoFactura not null, -- A,C ETC
+tipo tipo_factura not null, -- A,C ETC
 descripcion_factura varchar(100) not null,-- venta departamento inscripto en la partida N° 14567..
 valor_inmueble_usd float not null,-- Valor Real del Inmueble sin impuestos, etc
 costo_asociado_usd float not null, -- Escritura del vendedor, sellos, comisiones, etc 
 impuestos_asociados_usd float not null, -- IVA 10%, imp a las ganancias, imp tranf. de inmuebles, etc
-medio_de_pago tipoPago not null,
+medio_de_pago tipo_pago not null,
 descripcion_pago varchar(100) not null
 
 );

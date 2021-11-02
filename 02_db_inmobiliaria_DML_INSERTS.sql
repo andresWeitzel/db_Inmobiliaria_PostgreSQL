@@ -245,13 +245,13 @@ information_schema.columns where table_name = 'empleados';
 insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
 , tipo_documento, nro_documento, cuil, direccion, nro_telefono_principal, nro_telefono_secundario
 , email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
-(1, 1, 'Marcos', 'Castro', 45, '1971/05/01', 'DNI', '48967156','33-48967156-4', 'Figueroa Alcorta 22'
+(1, 1, 'marcos', 'Castro', 45, '1971/05/01', 'DNI', '48967156','33489671564', 'Figueroa Alcorta 22'
 , '1178654356', '+5491178654356', 'marcosCastro2002_lop@hotmail.com', 'Agente Inmobiliario(Gerente)'
 , 4, '2017/09/6', 150000 ),
-(2, 1, 'Luciana', 'Martinez', 23, '1999/07/12', 'DNI', '37997256', '32-37997256-9', 'Av. Corrientes 234'
+(2, 1, 'Luciana', 'martinez', 23, '1999/07/12', 'DNI', '37997256', '32-37997256-9', 'Av. Corrientes 234'
 , '11 74568399', '-', 'lu_martinez_trabajo@gmail.com', 'Administradora'
 , 1, '2020/10/09', 55000 ),
-(3, 1, 'José', 'Bastituta', 34, '1988/09/07', 'DNI', '409876546', '12-409876546-0', 'San Acrosio 15781'
+(3, 1, 'José', 'bastituta', 34, '1988/09/07', 'DNI', '409876546', '12409876546-0', 'San Acrosio 15781'
 , '1157670000', '+5491157670000', 'joseBastituta_88@gmail.com', 'Agente Inmobiliario(Vendedor)'
 , 1, '2020/07/12', 65000 );
 
@@ -259,7 +259,7 @@ insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
 insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
 , tipo_documento, nro_documento, cuil, direccion, nro_telefono_principal, nro_telefono_secundario
 , email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
-(4, 2, 'Damian', 'Gutierrez', 39, '1978/09/14', 'DNI', '33869556', '20-33869556-3', 'Av Alberdi 05'
+(4, 2, 'Damian', 'gutierrez', 39, '1978/09/14', 'DNI', '33869556', '20-33869556-3', 'Av Alberdi 05'
 , '+5491176844456', '+5491157684445', 'damian_gut.756@gmail.com', 'Agente Inmobiliario(Gerente)'
 , 3, '2018/3/4', 139000 ),
 (5, 2, 'Marcelo', 'Perez', 28, '1988/03/17', 'DNI', '39345679', '12-39345679-9', 'Carabobo 06'

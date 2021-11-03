@@ -30,18 +30,27 @@ drop function if exists depurar_dir_oficinas;
 
 -- --------- TABLA OFICINAS_DETALLES -----------
 
--- -------- Campo Localidad ---------- 
+-- -------- Campo localidad ---------- 
 drop function if exists cambiar_loc_oficinas_detalles;
 drop function if exists cambiar_tipo_of_oficinas_detalles;
 
 
 -- --------- TABLA EMPLEADOS -----------
 
--- ---------Campo Nombre y Campo Apellido ----
+-- ---------Campo nombre y Campo apellido ----
 drop function if exists depurar_nombres_apellidos_empleados;
 
--- -------- Campo Cuil ---------- 
+-- -------- Campo cuil ---------- 
 drop function if exists cambiar_cuil_empleados;
+
+-- -------- Campo direccion --------
+drop function if exists depurar_direccion_empleados;
+
+-- -------- Campo nro_tel_principal y Campo nro_tel_secundario ------------
+drop function if exists depurar_nro_telefonos_empleados;
+
+-- --------- Campo salario_anual -----------
+drop function if exists depurar_salario_anual_empleados;
 
 
 
@@ -214,6 +223,7 @@ $$ language plpgsql;
 
 
 -- ======= TABLA EMPLEADOS ===========
+
 select * from empleados;
 
 -- --------- CAMPO NOMBRE Y CAMPO APELLIDO ---------------
@@ -240,6 +250,9 @@ $$ language plpgsql;
 
 -- --------- CAMPO CUIL ---------------
 
+
+select * from empleados;
+
 -- actualizacion de cuil por id
 create function cambiar_cuil_empleados(cuil_input varchar, id_input int) returns void as $$
 
@@ -250,3 +263,94 @@ begin
 	
 end
 $$ language plpgsql;
+
+
+-- --------- CAMPO DIRECCION ---------------
+
+
+select * from empleados;
+
+-- Depuracion general de direccion
+create function depurar_direccion_empleados() returns void as $$
+
+begin
+		
+
+	-- Todas las palabras con su inicial en Mayuscula
+	update empleados set direccion = initcap(direccion);
+
+	-- Quitamos los puntos
+	update empleados set direccion = replace(direccion, '.', ' ');
+
+
+	
+end
+
+$$ language plpgsql;
+
+
+
+-- --------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ---------------
+
+select * from empleados;
+
+-- Depuracion general de ambos campos
+create function depurar_nro_telefonos_empleados() returns void as $$
+
+begin 
+		
+	-- Remplazamos todos los Patrones de Caracteristica de Buenos Aires (11)
+	update empleados set nro_telefono_principal = replace (nro_telefono_principal, '011 ', '11');
+	update empleados set nro_telefono_secundario = replace (nro_telefono_secundario, '011 ', '11');
+	
+	-- Si no está el +54 lo Agregamos
+	update empleados set nro_telefono_principal = replace (nro_telefono_principal, '11 ', '+5411');
+	update empleados set nro_telefono_secundario = replace (nro_telefono_secundario, '11 ', '+5411');
+	
+	-- Reemplazamos los +54911 a +5411 (9 es caracteristica de Celular)
+	update empleados set nro_telefono_principal = replace (nro_telefono_principal, '+54911', '+5411');
+	update empleados set nro_telefono_secundario = replace (nro_telefono_secundario, '+54911', '+5411');
+	
+	-- Quitamos los guiones
+	update empleados set nro_telefono_principal = replace(nro_telefono_principal, '-', ' ');
+	update empleados set nro_telefono_secundario = replace(nro_telefono_secundario, '-', ' ');
+	
+	-- Quitamos los puntos
+	update empleados set nro_telefono_principal = replace(nro_telefono_principal, '.', ' ');
+	update empleados set nro_telefono_secundario = replace(nro_telefono_secundario, '.', ' ');
+	
+	-- Quitamos los espacios en Blanco
+	update empleados set nro_telefono_principal = replace(nro_telefono_principal, ' ', '');
+	update empleados set nro_telefono_secundario = replace(nro_telefono_secundario, ' ', '');
+	
+
+end;
+
+$$ language plpgsql;
+
+
+-- ---------------- CAMPO SALARIO_ANUAL --------------------
+
+select * from empleados;
+
+-- Actualización del Salario Anual por años de antiguedad
+create function depurar_salario_anual_empleados() returns void as $$
+
+/*
+-- Declaramos e Inicializamos una variable
+declare 
+
+	porcentaje_agregado float = (select * from empleados.salario_anual * 10)/100;
+*/	
+
+begin 
+
+	-- Aumentamos 10% a los empleados con 2 o más años de antiguedad
+	update empleados set salario_anual = (salario_anual + ((salario_anual*20)/100))  where antiguedad >= 2; 
+
+	
+	
+end;
+
+$$ language plpgsql;
+

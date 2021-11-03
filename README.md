@@ -39,7 +39,7 @@
 | clientes(1) | ventas(N)  |
 
 
-* No declarando las FK como Unique en las relaciones de Tablas nos aseguramos que exista duplicidad.
+* No declarando las FK como Unique en las relaciones de Tablas nos aseguramos que exista duplicidad de registros.
 
 
 </br>

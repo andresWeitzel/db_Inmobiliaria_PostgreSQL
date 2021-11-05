@@ -105,21 +105,6 @@
 | PostgreSQL |  https://www.postgresql.org/download/  | https://www.postgresql.org/docs/current/tutorial.html  |
 | DBeaver | https://dbeaver.io/download/  | https://github.com/dbeaver/dbeaver/wiki | 
 
-
-### Descarga
-#### Git:                             https://git-scm.com/downloads
-#### PostgreSQL:                            https://www.postgresql.org/download/
-#### DBeaver:                         https://dbeaver.io/download/
-
-</br>
-
-### Documentación
-#### Git:                              https://git-scm.com/docs
-#### PostgreSQL:                            https://www.postgresql.org/docs/current/tutorial.html
-#### DBeaver:                         https://github.com/dbeaver/dbeaver/wiki
-
-
-
 </br>
 
 <hr>

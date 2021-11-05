@@ -95,10 +95,23 @@
 </br>
 
 
-## Descarga y documentacion de las Tecnologías empleadas:
-#### Git:                              https://git-scm.com/docs
+## Descarga y Documentacion de las Tecnologías Empleadas:
+
+</br>
+
+### Descarga
+#### Git:                             https://git-scm.com/downloads
 #### PostgreSQL:                            https://www.postgresql.org/download/
-#### DBeaver:                         https://dbeaver.io/
+#### DBeaver:                         https://dbeaver.io/download/
+
+</br>
+
+### Documentación
+#### Git:                              https://git-scm.com/docs
+#### PostgreSQL:                            https://www.postgresql.org/docs/current/tutorial.html
+#### DBeaver:                         https://github.com/dbeaver/dbeaver/wiki
+
+
 
 </br>
 

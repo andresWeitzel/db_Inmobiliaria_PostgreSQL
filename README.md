@@ -220,6 +220,10 @@
 #### 5)Enviamos todos los cambios locales al repo en github
 * git push https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL
 
+#### 6) En casos extremos pisamos todo el repositorio
+* git push -f --set-upstream origin master
+
+
 </br>
 
 

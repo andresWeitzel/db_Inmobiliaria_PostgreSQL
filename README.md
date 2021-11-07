@@ -39,7 +39,7 @@
 | clientes(1) | ventas(N)  |
 
 
-* No declarando las FK como Unique en las relaciones de Tablas nos aseguramos que exista duplicidad.
+* No declarando las FK como Unique en las relaciones de Tablas nos aseguramos que exista duplicidad de registros.
 
 
 </br>
@@ -95,10 +95,15 @@
 </br>
 
 
-## Descarga y documentacion de las Tecnologías empleadas:
-#### Git:                              https://git-scm.com/docs
-#### PostgreSQL:                            https://www.postgresql.org/download/
-#### DBeaver:                         https://dbeaver.io/
+## Descarga y Documentacion de las Tecnologías Empleadas:
+
+</br>
+
+| **Tecnologías** | **Descarga** | **Documentación** |               
+| ------------- | ------------- | ------------- |
+| Git Bash |  https://git-scm.com/downloads |   https://git-scm.com/docs |
+| PostgreSQL |  https://www.postgresql.org/download/  | https://www.postgresql.org/docs/current/tutorial.html  |
+| DBeaver | https://dbeaver.io/download/  | https://github.com/dbeaver/dbeaver/wiki | 
 
 </br>
 
@@ -214,6 +219,10 @@
 
 #### 5)Enviamos todos los cambios locales al repo en github
 * git push https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL
+
+#### 6) En casos extremos pisamos todo el repositorio
+* git push -f --set-upstream origin master
+
 
 </br>
 

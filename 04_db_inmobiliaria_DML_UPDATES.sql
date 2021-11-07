@@ -123,6 +123,60 @@ select depurar_nro_telefonos_empleados();
 select * from empleados; 
 
 
--- ----------- Campo Salario -------------
+-- ----------- Campo salario -------------
 select depurar_salario_anual_empleados();
 select * from empleados;
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA CLIENTES ===========
+
+
+select * from clientes;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'clientes';
+
+
+-- ----------- Campo nombre y Campo apellido -------------
+select depurar_nombres_apellidos_clientes();
+select * from clientes;
+
+-- -------- Campo nro_tel_principal y Campo nro_tel_secundario ------------
+select depurar_nro_telefonos_clientes();
+select * from clientes;
+
+-- -------- Campo direccion ------------
+select depurar_direccion_clientes();
+select * from clientes;
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA PROPIETARIOS_INMUEBLES ===========
+
+
+select * from propietarios_inmuebles;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'propietarios_inmuebles';
+
+
+-- ----------- Campo nombre y Campo apellido -------------
+select depurar_nombres_apellidos_propietarios_inmuebles();
+select * from propietarios_inmuebles;
+
+
+-- -------- Campo nro_tel_principal y Campo nro_tel_secundario ------------
+select depurar_nro_telefonos_propietarios_inmuebles();
+select * from propietarios_inmuebles;
+
+
+-- -------- Campo direccion ------------
+select depurar_direccion_propietarios_inmuebles();
+select * from propietarios_inmuebles;

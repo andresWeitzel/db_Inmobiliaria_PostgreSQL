@@ -54,6 +54,34 @@ drop function if exists depurar_salario_anual_empleados;
 
 
 
+-- --------- TABLA CLIENTES -----------
+
+-- ---------Campo nombre y Campo apellido ----
+drop function if exists depurar_nombres_apellidos_clientes;
+
+
+-- -------- Campo nro_tel_principal y Campo nro_tel_secundario ------------
+drop function if exists depurar_nro_telefonos_clientes;
+
+-- -------- Campo direccion --------
+drop function if exists depurar_direccion_clientes;
+
+
+
+
+-- --------- TABLA PROPIETARIOS_INMUEBLES -----------
+
+
+-- ---------Campo nombre y Campo apellido ----
+drop function if exists depurar_nombres_apellidos_propietarios_inmuebles;
+
+
+-- -------- Campo nro_tel_principal y Campo nro_tel_secundario ------------
+drop function if exists depurar_nro_telefonos_propietarios_inmuebles;
+
+-- -------- Campo direccion --------
+drop function if exists depurar_direccion_propietarios_inmuebles;
+
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
@@ -336,21 +364,228 @@ select * from empleados;
 -- Actualización del Salario Anual por años de antiguedad
 create function depurar_salario_anual_empleados() returns void as $$
 
-/*
--- Declaramos e Inicializamos una variable
-declare 
-
-	porcentaje_agregado float = (select * from empleados.salario_anual * 10)/100;
-*/	
 
 begin 
-
-	-- Aumentamos 10% a los empleados con 2 o más años de antiguedad
-	update empleados set salario_anual = (salario_anual + ((salario_anual*20)/100))  where antiguedad >= 2; 
-
 	
+
+	-- Aumentamos 3% a los empleados con 1 año de antiguedad
+	update empleados set salario_anual = (salario_anual + ((salario_anual*3)/100))  where antiguedad = 1; 
+
+	-- Aumentamos 10% a los empleados con 2 años de antiguedad
+	update empleados set salario_anual = (salario_anual + ((salario_anual*10)/100))  where antiguedad = 2; 
+
+	-- Aumentamos 15% a los empleados con 3 años de antiguedad
+	update empleados set salario_anual = (salario_anual + ((salario_anual*15)/100))  where antiguedad = 3; 
+	
+	-- Aumentamos 21% a los empleados con 4 años de antiguedad
+	update empleados set salario_anual = (salario_anual + ((salario_anual*21)/100))  where antiguedad = 4; 
+	
+	-- Seteamos 2 digitos luego del punto
+	update empleados set salario_anual = round((salario_anual)::numeric , 2);
 	
 end;
 
 $$ language plpgsql;
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA CLIENTES ===========
+
+select * from clientes;
+
+
+-- --------- CAMPO NOMBRE Y CAMPO APELLIDO ---------------
+
+-- Depuracionn general de ambos campos
+create function depurar_nombres_apellidos_clientes() returns void as $$
+
+begin
+		
+
+	-- Todas las palabras con su inicial en Mayuscula
+	update clientes set nombre = initcap(nombre);
+	update clientes set apellido = initcap(apellido);
+	
+	-- Quitamos los espacios
+	update clientes set nombre = replace(nombre, ' ', '');
+	update clientes set apellido = replace(apellido, ' ', '');
+
+end
+
+$$ language plpgsql;
+
+
+
+
+-- --------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ---------------
+
+select * from clientes;
+
+-- Depuracion general de ambos campos
+create function depurar_nro_telefonos_clientes() returns void as $$
+
+begin 
+		
+	-- Remplazamos todos los Patrones de Caracteristica de Buenos Aires (11)
+	update clientes set nro_telefono_principal = replace (nro_telefono_principal, '011 ', '11');
+	update clientes set nro_telefono_secundario = replace (nro_telefono_secundario, '011 ', '11');
+	
+	-- Si no está el +54 lo Agregamos
+	update clientes set nro_telefono_principal = replace (nro_telefono_principal, '11 ', '+5411');
+	update clientes set nro_telefono_secundario = replace (nro_telefono_secundario, '11 ', '+5411');
+	
+	-- Reemplazamos los +54911 a +5411 (9 es caracteristica de Celular)
+	update clientes set nro_telefono_principal = replace (nro_telefono_principal, '+54911', '+5411');
+	update clientes set nro_telefono_secundario = replace (nro_telefono_secundario, '+54911', '+5411');
+	
+	-- Quitamos los guiones
+	update clientes set nro_telefono_principal = replace(nro_telefono_principal, '-', ' ');
+	update clientes set nro_telefono_secundario = replace(nro_telefono_secundario, '-', ' ');
+	
+	-- Quitamos los puntos
+	update clientes set nro_telefono_principal = replace(nro_telefono_principal, '.', ' ');
+	update clientes set nro_telefono_secundario = replace(nro_telefono_secundario, '.', ' ');
+	
+	-- Quitamos los espacios en Blanco
+	update clientes set nro_telefono_principal = replace(nro_telefono_principal, ' ', '');
+	update clientes set nro_telefono_secundario = replace(nro_telefono_secundario, ' ', '');
+	
+
+end;
+
+$$ language plpgsql;
+
+
+
+
+-- --------- CAMPO DIRECCION ---------------
+
+
+select * from clientes;
+
+-- Depuracion general de direccion
+create function depurar_direccion_clientes() returns void as $$
+
+begin
+		
+
+	-- Todas las palabras con su inicial en Mayuscula
+	update clientes set direccion = initcap(direccion);
+
+	-- Quitamos los puntos
+	update clientes set direccion = replace(direccion, '.', ' ');
+
+
+	
+end
+
+$$ language plpgsql;
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA PROPIETARIOS_INMUEBLES ===========
+
+
+
+-- --------- CAMPO NOMBRE Y CAMPO APELLIDO ---------------
+
+select * from clientes;
+
+
+-- Depuracionn general de ambos campos
+create function depurar_nombres_apellidos_propietarios_inmuebles() returns void as $$
+
+begin
+		
+
+	-- Todas las palabras con su inicial en Mayuscula
+	update propietarios_inmuebles set nombre = initcap(nombre);
+	update propietarios_inmuebles set apellido = initcap(apellido);
+	
+	-- Quitamos los espacios
+	update propietarios_inmuebles set nombre = replace(nombre, ' ', '');
+	update propietarios_inmuebles set apellido = replace(apellido, ' ', '');
+
+end
+
+$$ language plpgsql;
+
+
+
+-- --------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ---------------
+
+select * from propietarios_inmuebles;
+
+
+-- Depuracion general de ambos campos
+create function depurar_nro_telefonos_propietarios_inmuebles() returns void as $$
+
+begin 
+		
+	-- Remplazamos todos los Patrones de Caracteristica de Buenos Aires (11)
+	update propietarios_inmuebles set nro_telefono_principal = replace (nro_telefono_principal, '011 ', '11');
+	update propietarios_inmuebles set nro_telefono_secundario = replace (nro_telefono_secundario, '011 ', '11');
+	
+	-- Si no está el +54 lo Agregamos
+	update propietarios_inmuebles set nro_telefono_principal = replace (nro_telefono_principal, '11 ', '+5411');
+	update propietarios_inmuebles set nro_telefono_secundario = replace (nro_telefono_secundario, '11 ', '+5411');
+	
+	-- Reemplazamos los +54911 a +5411 (9 es caracteristica de Celular)
+	update propietarios_inmuebles set nro_telefono_principal = replace (nro_telefono_principal, '+54911', '+5411');
+	update propietarios_inmuebles set nro_telefono_secundario = replace (nro_telefono_secundario, '+54911', '+5411');
+	
+	-- Quitamos los guiones
+	update propietarios_inmuebles set nro_telefono_principal = replace(nro_telefono_principal, '-', ' ');
+	update propietarios_inmuebles set nro_telefono_secundario = replace(nro_telefono_secundario, '-', ' ');
+	
+	-- Quitamos los puntos
+	update propietarios_inmuebles set nro_telefono_principal = replace(nro_telefono_principal, '.', ' ');
+	update propietarios_inmuebles set nro_telefono_secundario = replace(nro_telefono_secundario, '.', ' ');
+	
+	-- Quitamos los espacios en Blanco
+	update propietarios_inmuebles set nro_telefono_principal = replace(nro_telefono_principal, ' ', '');
+	update propietarios_inmuebles set nro_telefono_secundario = replace(nro_telefono_secundario, ' ', '');
+	
+
+end;
+
+$$ language plpgsql;
+
+
+
+-- --------- CAMPO DIRECCION ---------------
+
+
+select * from propietarios_inmuebles;
+
+-- Depuracion general de direccion
+create function depurar_direccion_propietarios_inmuebles() returns void as $$
+
+begin
+		
+
+	-- Todas las palabras con su inicial en Mayuscula
+	update propietarios_inmuebles set direccion = initcap(direccion);
+
+	-- Quitamos los puntos
+	update propietarios_inmuebles set direccion = replace(direccion, '.', ' ');
+
+
+	
+end
+
+$$ language plpgsql;
+
+
+
+
 

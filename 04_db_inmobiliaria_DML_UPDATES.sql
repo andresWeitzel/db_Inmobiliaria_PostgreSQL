@@ -20,13 +20,13 @@ information_schema.columns where table_name = 'oficinas';
 
 
 
--- ---------- Todos los campos ---------------
+-- ---------- TODOS LOS CAMPOS ---------------
 -- Actualizamos todos los campos
 select cambiar_campos_oficinas(1, 'Torre San Vicente', 'Paraguay 770', '+54911735345','inmobiliariaDuckson@gmail.com');
 select * from oficinas;
 
 
--- --------- Campo nro_telefono --------------
+-- --------- CAMPO NRO_TELEFONO --------------
 
 -- Actualizamos el Numero con sentencia
 update oficinas set nro_telefono='+5491152794990' where id = 1;
@@ -47,7 +47,7 @@ select * from oficinas;
 
 
 
--- --------- Campo direccion --------------
+-- --------- CAMPO DIRECCION --------------
 
 -- Depurar Direcciones Automatico con funcion
 select depurar_dir_oficinas();
@@ -65,27 +65,30 @@ select * from oficinas;
 
 select * from oficinas_detalles;
 
--- Actualizamos la superficie_total
-select cambiar_superficie_total_oficinas_detalles(143.88, 1);
-select * from oficinas_detalles;
-
-
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'oficinas_detalles';
 
 
 
--- --------- Campo localidad--------------
+-- ---------CAMPO LOCALIDAD--------------
+
 -- Cambio de Localidad por funcion
 select cambiar_loc_oficinas_detalles('Tribunales', 1);
 select * from oficinas_detalles;
 
 
--- -------- Campo tipo_oficina -------------
+-- -------- CAMPO TIPO_OFICINA  -------------
+
 -- Cambio de Tipo de Oficina
 select cambiar_tipo_of_oficinas_detalles('ESTANDAR',2);
 select * from oficinas_detalles;
 
+
+-- -------- CAMPO SUPERFICIE_TOTAL  -------------
+
+-- Actualizamos la superficie_total
+select cambiar_superficie_total_oficinas_detalles(143.88, 1);
+select * from oficinas_detalles;
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
@@ -100,14 +103,15 @@ information_schema.columns where table_name = 'empleados';
 
 
 
--- -------- Campo nombre, Campo apellido -------------
+-- -------- CAMPO NOMBRE Y CAMPO APELLIDO  -------------
+
 -- Depuración general de ambos campos
 select depurar_nombres_apellidos_empleados();
 select * from empleados;
 
 
 
--- -------- Campo cuil -------------
+-- --------  CAMPO CUIL -------------
 -- actualización cuil de empleados
 select cambiar_cuil_empleados('63-489671-5',1);
 select cambiar_cuil_empleados('72-409876546-0',3);
@@ -116,19 +120,19 @@ select cambiar_cuil_empleados('48-33456733-9',7);
 select * from empleados;
 
 
--- --------- Campo direccion ------------
+-- --------- CAMPO DIRECCION ------------
 --  Depuración Gral direccion de Empleados
 select depurar_direccion_empleados();
 select * from empleados;
 
 
--- ---------- Campo nro_telefono_principal y Campo nro_telefono_secundario ---------------- 
+-- ---------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ---------------- 
 -- Depuración gral de ambos campos
 select depurar_nro_telefonos_empleados();
 select * from empleados; 
 
 
--- ----------- Campo salario -------------
+-- ----------- CAMPO SALARIO_ANUAL -------------
 select depurar_salario_anual_empleados();
 select * from empleados;
 
@@ -146,15 +150,19 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'clientes';
 
 
--- ----------- Campo nombre y Campo apellido -------------
+-- ----------- CAMPO NOMBRE Y CAMPO APELLIDO -------------
 select depurar_nombres_apellidos_clientes();
 select * from clientes;
 
--- -------- Campo nro_tel_principal y Campo nro_tel_secundario ------------
+
+
+-- -------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ------------
 select depurar_nro_telefonos_clientes();
 select * from clientes;
 
--- -------- Campo direccion ------------
+
+
+-- -------- CAMPO DIRECCION  ------------
 select depurar_direccion_clientes();
 select * from clientes;
 
@@ -172,17 +180,18 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'propietarios_inmuebles';
 
 
--- ----------- Campo nombre y Campo apellido -------------
+-- -----------  CAMPO NOMBRE Y CAMPO APELLIDO -------------
 select depurar_nombres_apellidos_propietarios_inmuebles();
 select * from propietarios_inmuebles;
 
 
--- -------- Campo nro_tel_principal y Campo nro_tel_secundario ------------
+
+-- -------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ------------
 select depurar_nro_telefonos_propietarios_inmuebles();
 select * from propietarios_inmuebles;
 
 
--- -------- Campo direccion ------------
+-- -------- CAMPO DIRECCION ------------
 select depurar_direccion_propietarios_inmuebles();
 select * from propietarios_inmuebles;
 
@@ -199,6 +208,52 @@ select * from propietarios_inmuebles;
 
 
 
--- ----------- Campo superficie_total --------------------------
-select depurar_superficie_total_cubierta_inmuebles_descripciones();
+-- ----------- CAMPO SUPERFICIE_TOTAL Y CAMPO SUPERFICIE_CUBIERTA --------------------------
+
+
+select cambiar_superficie_total_cubierta_inmuebles_descripciones(278.0 , 195.34 , 1 );
 select * from inmuebles_descripciones;
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA INMUEBLES MEDIDAS ===========
+
+
+
+-- ----------- CAMPO DORMITORIO --------------------------
+
+select depurar_dormitorio_inmuebles_medidas();
+select * from inmuebles_medidas;
+
+
+-- ----------- CAMPO SANITARIO --------------------------
+
+select depurar_sanitario_inmuebles_medidas();
+select * from inmuebles_medidas;
+
+
+
+-- --------- CAMPOS PATIO_JARDIN, COCHERA, BALCON ---------------
+
+-- Depuracion general de los campos
+select depurar_patio_jardin_cochera_balcon_inmuebles_medidas();
+select * from inmuebles_medidas;
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA INMUEBLES ===========
+
+
+-- --------- CAMPOS DESCRIPCION, TIPO ---------------
+
+select depurar_descripcion_tipo_inmuebles();
+select * from inmuebles;
+

@@ -50,7 +50,7 @@ $$ language plpgsql;
 
 
 
--- -----------CAMPO TELEFONO--------------
+-- ----------- CAMPO NRO_TELEFONO --------------
 
 -- Cambiamos el Numero a traves del id
 create or replace function cambiar_nro_tel_oficinas(nro_tel_input varchar, id_input int ) returns void as $$
@@ -119,7 +119,7 @@ $$ language plpgsql;
 
 
 
--- -----------CAMPO DIRECCION--------------
+-- ----------- CAMPO DIRECCION --------------
 
 create or replace function depurar_dir_oficinas() returns void as $$
 
@@ -230,8 +230,8 @@ $$ language plpgsql;
 
 
 
--- --------- CAMPO CUIL ---------------
 
+-- --------- CAMPO CUIL ---------------
 
 select * from empleados;
 
@@ -247,8 +247,9 @@ end
 $$ language plpgsql;
 
 
--- --------- CAMPO DIRECCION ---------------
 
+
+-- --------- CAMPO DIRECCION ---------------
 
 select * from empleados;
 
@@ -334,8 +335,7 @@ begin
 	-- Aumentamos 21% a los empleados con 4 años de antiguedad
 	update empleados set salario_anual = (salario_anual + ((salario_anual*21)/100))  where antiguedad = 4; 
 	
-	-- Seteamos 2 digitos luego del punto
-	-- update empleados set salario_anual = round((salario_anual)::numeric , 2);
+
 	
 end;
 
@@ -563,17 +563,125 @@ $$ language plpgsql;
 select * from inmuebles_descripciones;
 
 -- Depuracion general de cambos campos
-create or replace function depurar_superficie_total_cubierta_inmuebles_descripciones() returns void as $$
+create or replace function cambiar_superficie_total_cubierta_inmuebles_descripciones
+(sup_total_input decimal, sup_cubierta_input decimal, id_input int ) returns void as $$
 
 begin
-		
-	-- Seteamos 2 digitos luego del punto
-	-- update inmuebles_descripciones set superficie_total = round((superficie_total)::numeric , 2);
-	
+
+	update inmuebles_descripciones set superficie_total = sup_total_input, superficie_cubierta = sup_cubierta_input
+	where id = id_input;
 
 	
 end
 
 $$ language plpgsql;
 
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA INMUEBLES MEDIDAS ===========
+
+
+
+-- --------- CAMPO DORMITORIO ---------------
+
+select * from inmuebles_medidas;
+
+-- Depuracion general de cambo dormitorio
+create or replace function depurar_dormitorio_inmuebles_medidas() returns void as $$
+
+begin
+
+	update inmuebles_medidas set dormitorio = replace(dormitorio, 'Dormitorio1', 'D1');
+	update inmuebles_medidas set dormitorio = replace(dormitorio, 'Dormitorio2', 'D2');
+	update inmuebles_medidas set dormitorio = replace(dormitorio, 'Dormitorio3', 'D3');
+	update inmuebles_medidas set dormitorio = replace(dormitorio, 'Dormitorio4', 'D4');
+	update inmuebles_medidas set dormitorio = replace(dormitorio, '|', ' ');
+
+	
+end
+
+$$ language plpgsql;
+
+
+
+
+-- --------- CAMPO SANITARIO ---------------
+
+select * from inmuebles_medidas;
+
+-- Depuracion general de cambo dormitorio
+create or replace function depurar_sanitario_inmuebles_medidas() returns void as $$
+
+begin
+
+	update inmuebles_medidas set sanitario = replace(sanitario, 'Baño1', 'S1');
+	update inmuebles_medidas set sanitario = replace(sanitario, 'Baño2', 'S2');
+	update inmuebles_medidas set sanitario = replace(sanitario, 'Baño3', 'S3');
+	update inmuebles_medidas set sanitario = replace(sanitario, '|', ' ');
+
+	
+end
+
+$$ language plpgsql;
+
+
+
+
+-- --------- CAMPOS PATIO_JARDIN, COCHERA, BALCON ---------------
+
+select * from inmuebles_medidas;
+
+-- Depuracion general de los campos
+create or replace function depurar_patio_jardin_cochera_balcon_inmuebles_medidas() returns void as $$
+
+begin
+
+	update inmuebles_medidas set patio_jardin = replace(patio_jardin, '-', '0.0 x 0.0');
+	update inmuebles_medidas set cochera = replace(cochera, '-', '0.0 x 0.0');
+	update inmuebles_medidas set balcon = replace(balcon, '-', '0.0 x 0.0');
+
+	
+end
+
+$$ language plpgsql;
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA INMUEBLES ===========
+
+
+
+-- --------- CAMPOS DESCRIPCION, TIPO ---------------
+
+select * from inmuebles;
+
+
+
+-- Depuracion general de los campos
+create or replace function depurar_descripcion_tipo_inmuebles() returns void as $$
+
+begin
+		
+
+	
+	update inmuebles set descripcion = initcap(descripcion);
+	update inmuebles set tipo = initcap(tipo);
+	
+	
+	update inmuebles set descripcion = replace(descripcion, 'Baño', 'Sanitario');
+	update inmuebles set descripcion = replace(descripcion, 'Baños', 'Sanitarios');
+	update inmuebles set descripcion = replace(descripcion, ',', ' ');
+	update inmuebles set tipo = replace(tipo, 'Ph/Casa', 'Ph');
+
+end
+
+$$ language plpgsql;
 

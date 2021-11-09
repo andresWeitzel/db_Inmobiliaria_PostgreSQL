@@ -113,7 +113,7 @@ id_oficina int ,
 localidad varchar(40) not null,
 tipo_oficina tipo_oficina not null, 
 estado_oficina estado_oficina not null,
-superficie_total float not null,
+superficie_total decimal(8,2) not null,
 cantidad_ambientes smallint not null, -- 1,2,3,etc | smallint-->2bytes, int-->4bytes |
 cantidad_sanitarios smallint not null, -- Reemplazamos baños por caracter especial
 antiguedad smallint, -- 20 años, etc
@@ -190,7 +190,7 @@ email varchar(40),
 cargo varchar(40) not null,
 antiguedad int,
 fecha_ingreso date not null,
-salario_anual float not null
+salario_anual decimal(10,2) not null
 
 
 );
@@ -394,8 +394,8 @@ unique(nro_documento);
 create table inmuebles_descripciones(
 	
 id int primary key,
-superficie_total float(4) not null,-- ej: 92 m^2 Total.
-superficie_cubierta float(4) not null,-- ej: 72 m^2 Total.
+superficie_total decimal(8,2) not null,-- ej: 92 m^2 Total.
+superficie_cubierta decimal(8,2) not null,-- ej: 72 m^2 Total.
 cantidad_ambientes smallint not null, -- 1,2,3,etc | smallint-->2bytes, int-->4bytes |
 cantidad_dormitorios smallint not null,-- 1,2,3
 cantidad_sanitarios smallint not null,-- 1,2,3 reemplazamos baños, por el caracter especial
@@ -516,7 +516,7 @@ id_oficina int not null,
 descripcion varchar(200) not null,-- ej: semipiso de 3 Amb en Palermo
 tipo varchar(20) not null, -- depto, casa, etc
 estado_inmueble estado_inmueble not null,
-precio_inmueble_usd float(4) not null,
+precio_inmueble_usd decimal(10,2) not null,
 direccion varchar(40) not null,-- San sarasa 123
 ubicacion varchar(40) not null, -- zona:palermo, recoleta, etc
 sitioWeb varchar(40)-- link de la pag de la descripcion
@@ -697,7 +697,7 @@ descripcion_inspeccion varchar(200) not null,
 empresa varchar(30) not null,
 direccion varchar(30) not null,
 nro_telefono varchar(30) not null,
-costo float not null,
+costo decimal(10,2) not null,
 fecha date not null,-- ej '2001-10-07'
 hora time not null  -- ej '09:00:07'
 
@@ -740,7 +740,7 @@ id_inmueble int not null,
 tipo_anuncio_principal varchar(50) not null,
 tipo_anuncio_secundario varchar(50),
 descripcion_anuncio varchar(100) not null,
-inversion_total float not null
+inversion_total decimal(8,2) not null
 );
 
 -- ======= Restricciones Tabla inmuebles_marketing ===========
@@ -816,10 +816,10 @@ create table gerentes(
 id int primary key,
 id_empleado int not null,
 titulo varchar(30) not null,
-aneos_experiencia_laboral float not null, -- 1.2 años, etc
+aneos_experiencia_laboral decimal(4,2) not null, -- ej 1.2 años, etc
 competencias varchar(100),-- planeamiento Estrategico, comunicacion efectiva, liderazgo, trabajo en equipo, orientacion a resultados,etc  
 beneficios varchar(100),--Viajes, Horario flexible, home office,etc 
-retribucion_salarial_anual float not null 
+retribucion_salarial_anual decimal(8,2) not null 
 
 );
 
@@ -867,7 +867,7 @@ create table vendedores(
 id int primary key,
 id_empleado int not null,
 cantidad_ventas int not null,
-bonificacion_ventas float,
+bonificacion_ventas decimal(8,2),
 puntuacion_ventas varchar(20),-- buena, normal, excelente
 orientacion_tipo_inmueble varchar(30),-- casa, depto, etc
 cualidades varchar(100)-- flexibilidad, confianza,etc
@@ -921,10 +921,10 @@ create table compradores(
 id int primary key,
 id_cliente int not null,
 cantidad_inmuebles_comprados int not null,
-importe_maximo_por_compra_usd float not null,
-importe_total_compras_usd float not null,
+importe_maximo_por_compra_usd decimal(8,2) not null,
+importe_total_compras_usd decimal(8,2) not null,
 beneficios_compras varchar(100) not null,
-descuento_cliente_usd float not null
+descuento_cliente_usd decimal(8,2) not null
 );
 
 -- ======= Restricciones Tabla compradores ===========
@@ -1036,7 +1036,7 @@ id_venta int not null,
 nro_factura varchar(30) not null,
 fecha_emision date not null,-- ej '2001-10-07'
 hora_emision time not null,  -- ej '09:00:07'
-precio_total_venta_usd float not null -- + impuestos + costos + etc
+precio_total_venta_usd decimal(10,2) not null -- + impuestos + costos + etc
 
 );
 
@@ -1085,9 +1085,9 @@ id int primary key,
 id_factura int not null,
 tipo tipo_factura not null, -- A,C ETC
 descripcion_factura varchar(100) not null,-- venta departamento inscripto en la partida N° 14567..
-valor_inmueble_usd float not null,-- Valor Real del Inmueble sin impuestos, etc
-costo_asociado_usd float not null, -- Escritura del vendedor, sellos, comisiones, etc 
-impuestos_asociados_usd float not null, -- IVA 10%, imp a las ganancias, imp tranf. de inmuebles, etc
+valor_inmueble_usd decimal(10,2) not null,-- Valor Real del Inmueble sin impuestos, etc
+costo_asociado_usd decimal(8,2) not null, -- Escritura del vendedor, sellos, comisiones, etc 
+impuestos_asociados_usd decimal(8,2) not null, -- IVA 10%, imp a las ganancias, imp tranf. de inmuebles, etc
 medio_de_pago tipo_pago not null,
 descripcion_pago varchar(100) not null
 

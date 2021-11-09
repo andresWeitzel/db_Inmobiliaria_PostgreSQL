@@ -65,6 +65,11 @@ select * from oficinas;
 
 select * from oficinas_detalles;
 
+-- Actualizamos la superficie_total
+select cambiar_superficie_total_oficinas_detalles(143.88, 1);
+select * from oficinas_detalles;
+
+
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'oficinas_detalles';
 
@@ -180,3 +185,20 @@ select * from propietarios_inmuebles;
 -- -------- Campo direccion ------------
 select depurar_direccion_propietarios_inmuebles();
 select * from propietarios_inmuebles;
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA INMUEBLES DESCRIPCIONES ===========
+
+
+
+-- ----------- Campo superficie_total --------------------------
+select depurar_superficie_total_cubierta_inmuebles_descripciones();
+select * from inmuebles_descripciones;

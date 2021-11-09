@@ -13,74 +13,6 @@
 
 
 
--- --------TABLA OFICINAS -----------
-
--- ------- Todos los Campos ---------
-drop function if exists cambiar_campos_oficinas;
-
--- ------- Campo telefono ---------
-drop function if exists depurar_nro_tel_oficinas;
-drop function if exists cambiar_nro_tel_oficinas;
-drop function if exists agregar_dig_nro_tel_oficinas;
-
--- ------- Campo direccion --------
-drop function if exists depurar_dir_oficinas;
-
-
-
--- --------- TABLA OFICINAS_DETALLES -----------
-
--- -------- Campo localidad ---------- 
-drop function if exists cambiar_loc_oficinas_detalles;
-drop function if exists cambiar_tipo_of_oficinas_detalles;
-
-
--- --------- TABLA EMPLEADOS -----------
-
--- ---------Campo nombre y Campo apellido ----
-drop function if exists depurar_nombres_apellidos_empleados;
-
--- -------- Campo cuil ---------- 
-drop function if exists cambiar_cuil_empleados;
-
--- -------- Campo direccion --------
-drop function if exists depurar_direccion_empleados;
-
--- -------- Campo nro_tel_principal y Campo nro_tel_secundario ------------
-drop function if exists depurar_nro_telefonos_empleados;
-
--- --------- Campo salario_anual -----------
-drop function if exists depurar_salario_anual_empleados;
-
-
-
--- --------- TABLA CLIENTES -----------
-
--- ---------Campo nombre y Campo apellido ----
-drop function if exists depurar_nombres_apellidos_clientes;
-
-
--- -------- Campo nro_tel_principal y Campo nro_tel_secundario ------------
-drop function if exists depurar_nro_telefonos_clientes;
-
--- -------- Campo direccion --------
-drop function if exists depurar_direccion_clientes;
-
-
-
-
--- --------- TABLA PROPIETARIOS_INMUEBLES -----------
-
-
--- ---------Campo nombre y Campo apellido ----
-drop function if exists depurar_nombres_apellidos_propietarios_inmuebles;
-
-
--- -------- Campo nro_tel_principal y Campo nro_tel_secundario ------------
-drop function if exists depurar_nro_telefonos_propietarios_inmuebles;
-
--- -------- Campo direccion --------
-drop function if exists depurar_direccion_propietarios_inmuebles;
 
 
 -- ---------------------------------------------------------------------------
@@ -96,15 +28,20 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'oficinas';
 
 
+
+
 -- -----------TODOS LOS CAMPOS------------
 
-create function cambiar_campos_oficinas(id_input int, nombre_input varchar, dir_input varchar
+create or replace function cambiar_campos_oficinas(id_input int, nombre_input varchar, dir_input varchar
 , nro_tel_input varchar, email_input varchar) returns void as $$
 
 begin
 	
 	update oficinas set nombre = nombre_input, direccion = dir_input
 	, nro_telefono = nro_tel_input, email = email_input where id = id_input;
+
+
+
 end
 $$ language plpgsql;
 
@@ -116,7 +53,7 @@ $$ language plpgsql;
 -- -----------CAMPO TELEFONO--------------
 
 -- Cambiamos el Numero a traves del id
-create function cambiar_nro_tel_oficinas(nro_tel_input varchar, id_input int ) returns void as $$
+create or replace function cambiar_nro_tel_oficinas(nro_tel_input varchar, id_input int ) returns void as $$
 
 begin 
 
@@ -130,7 +67,7 @@ $$ language plpgsql;
 
 
 -- Agregar Digitos
-create function agregar_dig_nro_tel_oficinas(caract_input varchar, id_oficina int ) returns void as $$
+create or replace function agregar_dig_nro_tel_oficinas(caract_input varchar, id_oficina int ) returns void as $$
 
 begin 
 		
@@ -148,7 +85,7 @@ $$ language plpgsql;
 
 
 -- Depuracion General
-create function depurar_nro_tel_oficinas() returns void as $$
+create or replace function depurar_nro_tel_oficinas() returns void as $$
 
 begin 
 		
@@ -184,7 +121,7 @@ $$ language plpgsql;
 
 -- -----------CAMPO DIRECCION--------------
 
-create function depurar_dir_oficinas() returns void as $$
+create or replace function depurar_dir_oficinas() returns void as $$
 
 begin
 		
@@ -218,7 +155,7 @@ information_schema.columns where table_name = 'oficinas_detalles';
 -- --------- CAMPO LOCALIDAD --------------
 
 -- Cambiamos la localidad a traves del id
-create function cambiar_loc_oficinas_detalles(loc_input varchar, id_input int ) returns void as $$
+create or replace function cambiar_loc_oficinas_detalles(loc_input varchar, id_input int ) returns void as $$
 
 begin 
 	
@@ -233,7 +170,7 @@ $$ language plpgsql;
 
 -- Cmabiamos el tipo de oficina enum
 
-create function cambiar_tipo_of_oficinas_detalles(tipo_input tipo_oficina, id_input int) returns void as $$
+create or replace function cambiar_tipo_of_oficinas_detalles(tipo_input tipo_oficina, id_input int) returns void as $$
 
 begin
 	
@@ -243,6 +180,23 @@ begin
 end
 
 $$ language plpgsql;
+
+
+
+-- --------- CAMPO SUPERFICIE_TOTAL --------------
+
+
+create or replace function cambiar_superficie_total_oficinas_detalles(sup_total_input decimal, id_input int) returns void as $$
+
+begin
+	
+
+	update oficinas_detalles set superficie_total = sup_total_input where id = id_input; 
+	
+end
+
+$$ language plpgsql;
+
 
 
 
@@ -257,7 +211,7 @@ select * from empleados;
 -- --------- CAMPO NOMBRE Y CAMPO APELLIDO ---------------
 
 -- Depuracionn general de ambos campos
-create function depurar_nombres_apellidos_empleados() returns void as $$
+create or replace function depurar_nombres_apellidos_empleados() returns void as $$
 
 begin
 		
@@ -282,7 +236,7 @@ $$ language plpgsql;
 select * from empleados;
 
 -- actualizacion de cuil por id
-create function cambiar_cuil_empleados(cuil_input varchar, id_input int) returns void as $$
+create or replace function cambiar_cuil_empleados(cuil_input varchar, id_input int) returns void as $$
 
 begin
 	
@@ -299,7 +253,7 @@ $$ language plpgsql;
 select * from empleados;
 
 -- Depuracion general de direccion
-create function depurar_direccion_empleados() returns void as $$
+create or replace function depurar_direccion_empleados() returns void as $$
 
 begin
 		
@@ -323,7 +277,7 @@ $$ language plpgsql;
 select * from empleados;
 
 -- Depuracion general de ambos campos
-create function depurar_nro_telefonos_empleados() returns void as $$
+create or replace function depurar_nro_telefonos_empleados() returns void as $$
 
 begin 
 		
@@ -362,7 +316,7 @@ $$ language plpgsql;
 select * from empleados;
 
 -- Actualización del Salario Anual por años de antiguedad
-create function depurar_salario_anual_empleados() returns void as $$
+create or replace function depurar_salario_anual_empleados() returns void as $$
 
 
 begin 
@@ -381,7 +335,7 @@ begin
 	update empleados set salario_anual = (salario_anual + ((salario_anual*21)/100))  where antiguedad = 4; 
 	
 	-- Seteamos 2 digitos luego del punto
-	update empleados set salario_anual = round((salario_anual)::numeric , 2);
+	-- update empleados set salario_anual = round((salario_anual)::numeric , 2);
 	
 end;
 
@@ -401,7 +355,7 @@ select * from clientes;
 -- --------- CAMPO NOMBRE Y CAMPO APELLIDO ---------------
 
 -- Depuracionn general de ambos campos
-create function depurar_nombres_apellidos_clientes() returns void as $$
+create or replace function depurar_nombres_apellidos_clientes() returns void as $$
 
 begin
 		
@@ -426,7 +380,7 @@ $$ language plpgsql;
 select * from clientes;
 
 -- Depuracion general de ambos campos
-create function depurar_nro_telefonos_clientes() returns void as $$
+create or replace function depurar_nro_telefonos_clientes() returns void as $$
 
 begin 
 		
@@ -468,7 +422,7 @@ $$ language plpgsql;
 select * from clientes;
 
 -- Depuracion general de direccion
-create function depurar_direccion_clientes() returns void as $$
+create or replace function depurar_direccion_clientes() returns void as $$
 
 begin
 		
@@ -502,7 +456,7 @@ select * from clientes;
 
 
 -- Depuracionn general de ambos campos
-create function depurar_nombres_apellidos_propietarios_inmuebles() returns void as $$
+create or replace function depurar_nombres_apellidos_propietarios_inmuebles() returns void as $$
 
 begin
 		
@@ -521,13 +475,19 @@ $$ language plpgsql;
 
 
 
+
 -- --------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ---------------
 
 select * from propietarios_inmuebles;
 
 
 -- Depuracion general de ambos campos
-create function depurar_nro_telefonos_propietarios_inmuebles() returns void as $$
+create or replace function depurar_nro_telefonos_propietarios_inmuebles() returns void as $$
+
+declare 
+	
+	num_tel_princ varchar;
+	num_tel_sec varchar;
 
 begin 
 		
@@ -556,6 +516,8 @@ begin
 	update propietarios_inmuebles set nro_telefono_secundario = replace(nro_telefono_secundario, ' ', '');
 	
 
+	
+	
 end;
 
 $$ language plpgsql;
@@ -568,7 +530,7 @@ $$ language plpgsql;
 select * from propietarios_inmuebles;
 
 -- Depuracion general de direccion
-create function depurar_direccion_propietarios_inmuebles() returns void as $$
+create or replace function depurar_direccion_propietarios_inmuebles() returns void as $$
 
 begin
 		
@@ -587,5 +549,31 @@ $$ language plpgsql;
 
 
 
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA INMUEBLES DESCRIPCIONES ===========
+
+
+
+-- --------- CAMPO SUPERFICIE_TOTAL Y CAMPO SUPERFICIE_CUBIERTA---------------
+
+select * from inmuebles_descripciones;
+
+-- Depuracion general de cambos campos
+create or replace function depurar_superficie_total_cubierta_inmuebles_descripciones() returns void as $$
+
+begin
+		
+	-- Seteamos 2 digitos luego del punto
+	-- update inmuebles_descripciones set superficie_total = round((superficie_total)::numeric , 2);
+	
+
+	
+end
+
+$$ language plpgsql;
 
 

@@ -32,32 +32,105 @@ information_schema.columns where table_name = 'oficinas';
 
 -- -----------TODOS LOS CAMPOS------------
 
+
 create or replace function cambiar_campos_oficinas(id_input int, nombre_input varchar, dir_input varchar
 , nro_tel_input varchar, email_input varchar) returns void as $$
 
+declare 
+
+ id_anterior varchar:= (select id from oficinas where id=id_input);
+ nombre_anterior varchar:= (select nombre from oficinas where id=id_input);
+ dir_anterior varchar := (select direccion from oficinas where id=id_input);
+ nro_tel_anterior varchar := (select nro_telefono from oficinas where id=id_input);
+ email_anterior varchar := (select email from oficinas where id=id_input);
+
+
+
 begin
+	
+	raise notice '-----------------------------------------------------';
+	raise notice '-- Modificación de Todos los Campos Tabla Oficinas --';
+	raise notice '-----------------------------------------------------';
+
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice 'Nombre : %', nombre_anterior;
+	raise notice 'Dirección : %', dir_anterior;
+	raise notice 'Nro Telefono : %', nro_tel_anterior;
+	raise notice 'Email : %', email_anterior;
 	
 	update oficinas set nombre = nombre_input, direccion = dir_input
 	, nro_telefono = nro_tel_input, email = email_input where id = id_input;
+	
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
 
+	raise notice ' Id : %',  id_input;
+	raise notice 'Nombre : %', nombre_input;
+	raise notice 'Dirección : %', dir_input;
+	raise notice 'Nro Telefono : %', nro_tel_input;
+	raise notice 'Email : %', email_input;
 
+	raise notice '';
+	
 
-end
+	
+	
+
+end;
+	
 $$ language plpgsql;
 
 
 -- ---------------------------------------------------------------------------
 
 
-
 -- ----------- CAMPO NRO_TELEFONO --------------
+
+select * from oficinas;
+
 
 -- Cambiamos el Numero a traves del id
 create or replace function cambiar_nro_tel_oficinas(nro_tel_input varchar, id_input int ) returns void as $$
 
-begin 
+declare 
 
+id_anterior varchar := (select id from oficinas where id=id_input);
+nro_tel_anterior varchar := (select nro_telefono from oficinas where id=id_input);
+
+begin 
+	
+	
+	
+	raise notice '--------------------------------------------------------';
+	raise notice '-- Modificación del Campo nro_telefono Tabla Oficinas --';
+	raise notice '--------------------------------------------------------';
+
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice 'Nro Telefono : %', nro_tel_anterior;
+	
+	
 	update oficinas set nro_telefono = nro_tel_input where id = id_input;
+
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_input;
+	raise notice 'Nro Telefono : %', nro_tel_input;
+
+	raise notice '';
+	
 
 end;
 
@@ -65,14 +138,52 @@ $$ language plpgsql;
 
 -- ---------------------------------------------------------------------------
 
+-- ----------- CAMPO NRO_TELEFONO --------------
+
+
+select * from oficinas;
 
 -- Agregar Digitos
-create or replace function agregar_dig_nro_tel_oficinas(caract_input varchar, id_oficina int ) returns void as $$
+create or replace function agregar_dig_nro_tel_oficinas(caract_input varchar, id_input int ) returns void as $$
+
+declare 
+
+id_anterior varchar := (select id from oficinas where id=id_input);
+nro_tel_anterior varchar := (select nro_telefono from oficinas where id=id_input);
+nro_tel_actual varchar;
 
 begin 
+	
+	raise notice '--------------------------------------------------------';
+	raise notice '-- Modificación del Campo nro_telefono Tabla Oficinas --';
+	raise notice '--------------------------------------------------------';
+
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice 'Nro Telefono : %', nro_tel_anterior;
+
+
 		
+
 	-- Agregamos el +54 al id Especifico
-	update oficinas set nro_telefono = concat(caract_input, nro_telefono) where id = id_oficina;
+	update oficinas set nro_telefono = concat(caract_input, nro_telefono) where id = id_input;
+
+	nro_tel_actual := (select nro_telefono from oficinas where id = id_input);
+	
+	
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_input;
+	raise notice 'Nro Telefono : %', nro_tel_actual;
+
+	
+	raise notice '';
 	
 
 end;
@@ -87,8 +198,17 @@ $$ language plpgsql;
 -- Depuracion General
 create or replace function depurar_nro_tel_oficinas() returns void as $$
 
+declare 
+
+
+
 begin 
-		
+	
+	raise notice '--------------------------------------------------------------';
+	raise notice '-- Depuración General del Campo nro_telefono Tabla Oficinas --';
+	raise notice '--------------------------------------------------------------';
+
+	
 	-- Remplazamos todos los Patrones de Caracteristica de Buenos Aires (11)
 	update oficinas set nro_telefono = replace (nro_telefono, '011 ', '11');
 	
@@ -107,8 +227,8 @@ begin
 	-- Quitamos los espacios en Blanco
 	 update oficinas set nro_telefono = replace(nro_telefono, ' ', '');
 	
-	
-
+	raise notice 'ok!';
+	raise notice ' ';
 
 end;
 
@@ -124,13 +244,24 @@ $$ language plpgsql;
 create or replace function depurar_dir_oficinas() returns void as $$
 
 begin
+	
+	raise notice '-----------------------------------------------------------';
+	raise notice '-- Depuración General del Campo direccion Tabla Oficinas --';
+	raise notice '-----------------------------------------------------------';
+
 		
+	
 	-- Quitamos Caracteres Especiales
 	update oficinas set direccion = replace(direccion, ',', ' ');
 
 	update oficinas set direccion = replace(direccion, 'N°', ' ');
 
 	update oficinas set direccion = replace(direccion, '/', '-');
+
+
+	raise notice 'ok!';
+	raise notice ' ';
+
 	
 end
 
@@ -319,21 +450,35 @@ select * from empleados;
 -- Actualización del Salario Anual por años de antiguedad
 create or replace function depurar_salario_anual_empleados() returns void as $$
 
+declare
+	-- Aumentamos 3% a los empleados con 1 año de antiguedad
+	 primer_aumento decimal := 3.0/100;
+	
+	-- Aumentamos 7% a los empleados con 2 años de antiguedad
+	 segundo_aumento decimal := 7.0/100;
+	
+	-- Aumentamos 10% a los empleados con 3 años de antiguedad
+	 tercer_aumento decimal := 10.0/100;
+	
+	-- Aumentamos 15% a los empleados con 4 años de antiguedad
+	 cuarto_aumento decimal := 15.0/100;
+	
+
 
 begin 
 	
 
-	-- Aumentamos 3% a los empleados con 1 año de antiguedad
-	update empleados set salario_anual = (salario_anual + ((salario_anual*3)/100))  where antiguedad = 1; 
-
-	-- Aumentamos 10% a los empleados con 2 años de antiguedad
-	update empleados set salario_anual = (salario_anual + ((salario_anual*10)/100))  where antiguedad = 2; 
-
-	-- Aumentamos 15% a los empleados con 3 años de antiguedad
-	update empleados set salario_anual = (salario_anual + ((salario_anual*15)/100))  where antiguedad = 3; 
 	
-	-- Aumentamos 21% a los empleados con 4 años de antiguedad
-	update empleados set salario_anual = (salario_anual + ((salario_anual*21)/100))  where antiguedad = 4; 
+	update empleados set salario_anual = (salario_anual + (salario_anual * primer_aumento))  where antiguedad = 1; 
+
+	
+	update empleados set salario_anual = (salario_anual + (salario_anual * segundo_aumento))  where antiguedad = 2; 
+
+	
+	update empleados set salario_anual = (salario_anual + (salario_anual * tercer_aumento))  where antiguedad = 3; 
+	
+	
+	update empleados set salario_anual = (salario_anual + (salario_anual * cuarto_aumento))  where antiguedad = 4; 
 	
 
 	
@@ -680,6 +825,210 @@ begin
 	update inmuebles set descripcion = replace(descripcion, 'Baños', 'Sanitarios');
 	update inmuebles set descripcion = replace(descripcion, ',', ' ');
 	update inmuebles set tipo = replace(tipo, 'Ph/Casa', 'Ph');
+
+end
+
+$$ language plpgsql;
+
+
+
+
+-- --------- CAMPOS DIRECCION, UBICACION ---------------
+
+
+select * from inmuebles;
+
+-- Depuracion general de direccion
+create or replace function depurar_direccion_ubicacion_inmuebles() returns void as $$
+
+begin
+		
+
+	-- Todas las palabras con su inicial en Mayuscula
+	update inmuebles set direccion = initcap(direccion);
+	update inmuebles set ubicacion = initcap(ubicacion);
+
+	-- Quitamos los puntos
+	update inmuebles set direccion = replace(direccion, '.', ' ');
+
+
+	
+end
+
+$$ language plpgsql;
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA CITAS_INMUEBLES ===========
+
+
+-- --------- CAMPOS DESCRIPCION_CITA ---------------
+
+
+select * from citas_inmuebles;
+
+-- Depuracion general de descripcion_cita
+create or replace function depurar_descripcion_cita_citas_inmuebles() returns void as $$
+
+begin
+		
+
+	-- Todas las palabras con su inicial en Mayuscula
+	update citas_inmuebles set descripcion_cita = initcap(descripcion_cita);
+	
+
+
+	
+end
+
+$$ language plpgsql;
+
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA SERVICIOS_INMUEBLES ===========
+
+
+-- --------- CAMPOS DESCRIPCION_CITA ---------------
+
+
+select * from servicios_inmuebles;
+
+-- Depuracion general de descripcion_cita
+create or replace function depurar_descripcion_servicios_inmuebles() returns void as $$
+
+begin
+		
+
+	-- Todas las palabras con su inicial en Mayuscula
+	update servicios_inmuebles set descripcion_servicios = initcap(descripcion_servicios);
+	
+	update servicios_inmuebles set descripcion_servicios = replace(descripcion_servicios,'-','');
+	
+
+
+	
+end
+
+$$ language plpgsql;
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA INSPECCIONES_INMUEBLES ===========
+
+
+-- --------- CAMPO DESCRIPCION_INSPECCION ---------------
+
+
+select * from inspecciones_inmuebles;
+
+-- Depuracion general de descripcion_inspeccion
+create or replace function depurar_descripcion_inspeccion_inspecciones_inmuebles() returns void as $$
+
+begin
+		
+
+	-- Todas las palabras con su inicial en Mayuscula
+	update inspecciones_inmuebles set descripcion_inspeccion = initcap(descripcion_inspeccion);
+	update inspecciones_inmuebles set descripcion_inspeccion = replace(descripcion_inspeccion,'Caba','Cabo');
+	
+
+end
+
+$$ language plpgsql;
+
+
+
+-- --------- CAMPOS EMPRESA, DIRECCION ---------------
+
+
+select * from inspecciones_inmuebles;
+
+-- Depuracion general de los campos
+create or replace function depurar_empresa_direccion_inspecciones_inmuebles() returns void as $$
+
+begin
+		
+
+	-- Todas las palabras con su inicial en Mayuscula
+	update inspecciones_inmuebles set empresa = initcap(empresa);
+	update inspecciones_inmuebles set direccion = initcap(direccion);
+	
+	-- Reemplazamos caracteres
+	update inspecciones_inmuebles set direccion = replace(direccion,'Caba','Cabo');
+	
+
+end
+
+$$ language plpgsql;
+
+
+
+-- --------- CAMPO NUMERO_TELEFONO ---------------
+
+
+select * from inspecciones_inmuebles;
+
+-- Depuracion general de los campos
+create or replace function depurar_nro_tel_inspecciones_inmuebles() returns void as $$
+
+begin
+		
+
+	-- Reemplazamos caracteres
+	update inspecciones_inmuebles set nro_telefono = replace(nro_telefono,'-','');
+	
+
+end
+
+$$ language plpgsql;
+
+
+
+-- --------- CAMPO COSTO ---------------
+
+
+select * from inspecciones_inmuebles;
+
+
+-- Depuracion general del campo costo
+create or replace function depurar_costo_inspecciones_inmuebles() returns void as $$
+
+declare 
+	 aumento_depto decimal := 1.6/100;
+	 aumento_casa_ph decimal := 2.3/100;
+	
+
+begin
+		
+
+	update inspecciones_inmuebles set costo = (costo + (costo * aumento_depto))  where tipo_inspeccion = 'DEPARTAMENTO'; 
+	
+	
+	update inspecciones_inmuebles set costo = (costo + (costo * aumento_casa_ph))  where tipo_inspeccion = 'CASA';
+
+
+	update inspecciones_inmuebles set costo = (costo + (costo * aumento_casa_ph))  where tipo_inspeccion = 'PH';
+
 
 end
 

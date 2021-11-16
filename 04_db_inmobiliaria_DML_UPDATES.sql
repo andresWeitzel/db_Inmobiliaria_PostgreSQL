@@ -22,7 +22,8 @@ information_schema.columns where table_name = 'oficinas';
 
 -- ---------- TODOS LOS CAMPOS ---------------
 -- Actualizamos todos los campos
-select cambiar_campos_oficinas(1, 'Torre San Vicente', 'Paraguay 770', '+54911735345','inmobiliariaDuckson@gmail.com');
+select cambiar_campos_oficinas(1, 'Torre San Vicente'
+, 'Paraguay 770', '+54911735345','inmobiliariaDuckson@gmail.com');
 select * from oficinas;
 
 
@@ -32,14 +33,14 @@ select * from oficinas;
 update oficinas set nro_telefono='+5491152794990' where id = 1;
 
 -- Actualizamos los Nros con funcion
-select cambiar_nro_tel_oficinas('+541152794990', 1);
+select cambiar_nro_tel_oficinas('+541152794690', 1);
 select * from oficinas;
 
 select cambiar_nro_tel_oficinas('+541156541849', 3);
 select * from oficinas;
 
 -- Agregar Digitos con funcion
---select agregar_dig_nro_tel_oficinas('+54', 3);
+select agregar_dig_nro_tel_oficinas('+54', 3);
 
 -- Depurar Numeros Telefonicos Automatico con Funcion
 select depurar_nro_tel_oficinas();
@@ -256,4 +257,96 @@ select * from inmuebles_medidas;
 
 select depurar_descripcion_tipo_inmuebles();
 select * from inmuebles;
+
+
+
+
+-- --------- CAMPOS DIRECCION, UBICACION ---------------
+
+-- Depuracion general de direccion
+select depurar_direccion_ubicacion_inmuebles();
+select * from inmuebles;
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA CITAS_INMUEBLES ===========
+
+
+-- --------- CAMPOS DESCRIPCION_CITA ---------------
+
+
+-- Depuracion general de descripcion_cita
+select depurar_descripcion_cita_citas_inmuebles();
+select * from citas_inmuebles;
+		
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA SERVICIOS_INMUEBLES ===========
+
+
+-- --------- CAMPOS DESCRIPCION_CITA ---------------
+
+
+-- Depuracion general de descripcion_servicios
+select depurar_descripcion_servicios_inmuebles();
+select * from servicios_inmuebles;
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA INSPECCIONES_INMUEBLES ===========
+
+
+-- --------- CAMPO DESCRIPCION_INSPECCION ---------------
+
+
+-- Depuracion general de descripcion_inspeccion
+select depurar_descr_inspeccion_inspecciones_inmuebles();
+select * from inspecciones_inmuebles;
+
+
+
+
+-- --------- CAMPOS EMPRESA, DIRECCION ---------------
+
+
+-- Depuracion general de los campos
+select depurar_empresa_direccion_inspecciones_inmuebles();
+select * from inspecciones_inmuebles;
+
+
+
+-- --------- CAMPO NUMERO_TELEFONO ---------------
+
+
+-- Depuracion general de los campos
+select depurar_nro_tel_inspecciones_inmuebles();
+select * from inspecciones_inmuebles;
+
+
+
+-- --------- CAMPO COSTO ---------------
+
+
+-- Depuracion general del campo costo
+select  depurar_costo_inspecciones_inmuebles();
+select * from inspecciones_inmuebles;
+
+
+
 

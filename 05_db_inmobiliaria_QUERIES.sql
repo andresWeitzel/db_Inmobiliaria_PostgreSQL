@@ -6,7 +6,7 @@
  * ========= QUERIES =============
  */
 
-
+-- https://www.postgresqltutorial.com/plpgsql-function-returns-a-table/
 -- ---------------------------------------------------------------------------
 
 -- ======= CATALOGO DE TABLAS =======

@@ -49,7 +49,7 @@ declare
 begin
 	
 	raise notice '-----------------------------------------------------';
-	raise notice '-- Modificación de Todos los Campos Tabla Oficinas --';
+	raise notice '-- Modificación de Todos los Campos Tabla "oficinas" --';
 	raise notice '-----------------------------------------------------';
 
 	raise notice '';
@@ -107,9 +107,9 @@ begin
 	
 	
 	
-	raise notice '--------------------------------------------------------';
-	raise notice '-- Modificación del Campo nro_telefono Tabla Oficinas --';
-	raise notice '--------------------------------------------------------';
+	raise notice '------------------------------------------------------------';
+	raise notice '-- Modificación  Campo "nro_telefono" Tabla "oficinas" --';
+	raise notice '------------------------------------------------------------';
 
 	raise notice '';
 	raise notice '-- Registro Anterior --';
@@ -154,9 +154,9 @@ nro_tel_actual varchar;
 
 begin 
 	
-	raise notice '--------------------------------------------------------';
-	raise notice '-- Modificación del Campo nro_telefono Tabla Oficinas --';
-	raise notice '--------------------------------------------------------';
+	raise notice '------------------------------------------------------------';
+	raise notice '-- Modificación  Campo "nro_telefono" Tabla "oficinas" --';
+	raise notice '------------------------------------------------------------';
 
 	raise notice '';
 	raise notice '-- Registro Anterior --';
@@ -204,9 +204,9 @@ declare
 
 begin 
 	
-	raise notice '--------------------------------------------------------------';
-	raise notice '-- Depuración General del Campo nro_telefono Tabla Oficinas --';
-	raise notice '--------------------------------------------------------------';
+	raise notice '------------------------------------------------------------------';
+	raise notice '-- Depuración General  Campo "nro_telefono" Tabla "oficinas" --';
+	raise notice '------------------------------------------------------------------';
 
 	
 	-- Remplazamos todos los Patrones de Caracteristica de Buenos Aires (11)
@@ -245,9 +245,9 @@ create or replace function depurar_dir_oficinas() returns void as $$
 
 begin
 	
-	raise notice '-----------------------------------------------------------';
-	raise notice '-- Depuración General del Campo direccion Tabla Oficinas --';
-	raise notice '-----------------------------------------------------------';
+	raise notice '---------------------------------------------------------------';
+	raise notice '-- Depuración General  Campo "direccion" Tabla "oficinas" --';
+	raise notice '---------------------------------------------------------------';
 
 		
 	
@@ -276,6 +276,7 @@ $$ language plpgsql;
 -- ======= TABLA OFICINAS_DETALLES ===========
 
 
+-- --------- CAMPO LOCALIDAD --------------
 
 select * from oficinas_detalles;
 
@@ -283,31 +284,92 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'oficinas_detalles';
 
 
--- --------- CAMPO LOCALIDAD --------------
-
 -- Cambiamos la localidad a traves del id
 create or replace function cambiar_loc_oficinas_detalles(loc_input varchar, id_input int ) returns void as $$
 
+declare 
+
+id_anterior varchar := (select id from oficinas_detalles where id=id_input);
+loc_anterior varchar := (select localidad from oficinas_detalles where id=id_input);
+
+
 begin 
 	
-	update oficinas_detalles set localidad 	= loc_input where id = id_input ;
+	raise notice '------------------------------------------------------------------';
+	raise notice '-- Modificación Campo "localidad" Tabla "oficinas_detalles" --';
+	raise notice '------------------------------------------------------------------';
+
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice 'Localidad : %', loc_anterior;
+
+
+
+	update oficinas_detalles set localidad = loc_input where id = id_input ;
+
+
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_input;
+	raise notice 'Localidad : %', loc_input;
+
+
 	
 end
 
 $$ language plpgsql;
 
 
+
+
 -- --------- CAMPO TIPO_OFICINA --------------
 
--- Cmabiamos el tipo de oficina enum
 
+select * from oficinas_detalles;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'oficinas_detalles';
+
+
+
+-- Cambiamos el tipo de oficina enum
 create or replace function cambiar_tipo_of_oficinas_detalles(tipo_input tipo_oficina, id_input int) returns void as $$
 
-begin
+declare 
+
+id_anterior varchar := (select id from oficinas_detalles where id=id_input);
+tipo_anterior varchar := (select "tipo_oficina" from oficinas_detalles where id=id_input);
+
+
+begin 
 	
+	raise notice '---------------------------------------------------------------------';
+	raise notice '-- Modificación Campo "tipo_oficina" Tabla "oficinas_detalles" --';
+	raise notice '---------------------------------------------------------------------';
+
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice ' Tipo Oficina : %', tipo_anterior;
 
 	update oficinas_detalles set tipo_oficina = tipo_input where id = id_input; 
 	
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_input;
+	raise notice ' Tipo Oficina : %', tipo_input;
+
 end
 
 $$ language plpgsql;
@@ -319,10 +381,38 @@ $$ language plpgsql;
 
 create or replace function cambiar_superficie_total_oficinas_detalles(sup_total_input decimal, id_input int) returns void as $$
 
-begin
+declare 
+
+id_anterior varchar := (select id from oficinas_detalles where id=id_input);
+sup_total_anterior varchar := (select superficie_total from oficinas_detalles where id=id_input);
+
+
+begin 
 	
+	raise notice '-------------------------------------------------------------------------';
+	raise notice '-- Modificación  Campo "superficie_total" Tabla "oficinas_detalles" --';
+	raise notice '-------------------------------------------------------------------------';
+
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice ' Superficie Total : %', sup_total_anterior;
+
 
 	update oficinas_detalles set superficie_total = sup_total_input where id = id_input; 
+
+	
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_input;
+	raise notice ' Superficie Total : %', sup_total_input;
+
+
 	
 end
 
@@ -337,14 +427,23 @@ $$ language plpgsql;
 
 -- ======= TABLA EMPLEADOS ===========
 
-select * from empleados;
+
 
 -- --------- CAMPO NOMBRE Y CAMPO APELLIDO ---------------
+
+select * from empleados;
 
 -- Depuracionn general de ambos campos
 create or replace function depurar_nombres_apellidos_empleados() returns void as $$
 
 begin
+	
+	raise notice '----------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "nombre" y Campo "apellido" Tabla "empleados" --';
+	raise notice '----------------------------------------------------------------------------';
+
+		
+
 		
 
 	-- Todas las palabras con su inicial en Mayuscula
@@ -354,6 +453,12 @@ begin
 	-- Quitamos los espacios
 	update empleados set nombre = replace(nombre, ' ', '');
 	update empleados set apellido = replace(apellido, ' ', '');
+
+
+	
+	raise notice 'ok!';
+	raise notice ' ';
+
 
 end
 
@@ -369,10 +474,38 @@ select * from empleados;
 -- actualizacion de cuil por id
 create or replace function cambiar_cuil_empleados(cuil_input varchar, id_input int) returns void as $$
 
-begin
+declare 
+
+id_anterior varchar := (select id from empleados where id=id_input);
+cuil_anterior varchar := (select cuil from empleados where id=id_input);
+
+
+begin 
 	
+	raise notice '--------------------------------------------------';
+	raise notice '-- Modificación  Campo "cuil" Tabla "empleados" --';
+	raise notice '--------------------------------------------------';
+
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice ' Cuil : %', cuil_anterior;
+
+
 	--Relleno de Caracteres por la derecha a longitud especificada
 	update empleados set cuil = cuil_input where id = id_input;
+
+
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_input;
+	raise notice ' Cuil : %', cuil_input;
+
 	
 end
 $$ language plpgsql;
@@ -388,6 +521,11 @@ select * from empleados;
 create or replace function depurar_direccion_empleados() returns void as $$
 
 begin
+	
+	raise notice '------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "direccion" Tabla "empleados" --';
+	raise notice '------------------------------------------------------------';
+
 		
 
 	-- Todas las palabras con su inicial en Mayuscula
@@ -396,6 +534,10 @@ begin
 	-- Quitamos los puntos
 	update empleados set direccion = replace(direccion, '.', ' ');
 
+	
+	
+	raise notice 'ok!';
+	raise notice ' ';
 
 	
 end
@@ -411,7 +553,13 @@ select * from empleados;
 -- Depuracion general de ambos campos
 create or replace function depurar_nro_telefonos_empleados() returns void as $$
 
-begin 
+begin
+	
+	raise notice '-----------------------------------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "nro_telefono_principal" y Campo "nro_telefono_secundario" Tabla "empleados" --';
+	raise notice '-----------------------------------------------------------------------------------------------------------';
+
+	
 		
 	-- Remplazamos todos los Patrones de Caracteristica de Buenos Aires (11)
 	update empleados set nro_telefono_principal = replace (nro_telefono_principal, '011 ', '11');
@@ -437,6 +585,12 @@ begin
 	update empleados set nro_telefono_principal = replace(nro_telefono_principal, ' ', '');
 	update empleados set nro_telefono_secundario = replace(nro_telefono_secundario, ' ', '');
 	
+	
+		
+	
+	raise notice 'ok!';
+	raise notice ' ';
+
 
 end;
 
@@ -462,11 +616,15 @@ declare
 	
 	-- Aumentamos 15% a los empleados con 4 años de antiguedad
 	 cuarto_aumento decimal := 15.0/100;
-	
+ 
 
 
 begin 
 	
+	raise notice '-----------------------------------------------------------';
+	raise notice '-- Actualización Campo "salario_anual" Tabla "empleados" --';
+	raise notice '-----------------------------------------------------------';
+
 
 	
 	update empleados set salario_anual = (salario_anual + (salario_anual * primer_aumento))  where antiguedad = 1; 
@@ -480,6 +638,17 @@ begin
 	
 	update empleados set salario_anual = (salario_anual + (salario_anual * cuarto_aumento))  where antiguedad = 4; 
 	
+	
+	raise notice '';
+	raise notice '--Aumentamos % a los empleados con 1 año de antiguedad--' , primer_aumento;
+	raise notice '--Aumentamos % a los empleados con 2 años de antiguedad--' , segundo_aumento;
+	raise notice '--Aumentamos % a los empleados con 3 años de antiguedad--' , tercer_aumento;
+	raise notice '--Aumentamos % a los empleados con 4 años de antiguedad--' , cuarto_aumento;
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
 
 	
 end;
@@ -503,6 +672,10 @@ select * from clientes;
 create or replace function depurar_nombres_apellidos_clientes() returns void as $$
 
 begin
+	
+	raise notice '---------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "nombre" y Campo "Apellido" Tabla "clientes" --';
+	raise notice '---------------------------------------------------------------------------';
 		
 
 	-- Todas las palabras con su inicial en Mayuscula
@@ -512,6 +685,12 @@ begin
 	-- Quitamos los espacios
 	update clientes set nombre = replace(nombre, ' ', '');
 	update clientes set apellido = replace(apellido, ' ', '');
+	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
 
 end
 
@@ -528,6 +707,12 @@ select * from clientes;
 create or replace function depurar_nro_telefonos_clientes() returns void as $$
 
 begin 
+	
+	raise notice '----------------------------------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "nro_telefono_principal" y Campo "nro_telefono_secundario" Tabla "clientes" --';
+	raise notice '----------------------------------------------------------------------------------------------------------';
+		
+
 		
 	-- Remplazamos todos los Patrones de Caracteristica de Buenos Aires (11)
 	update clientes set nro_telefono_principal = replace (nro_telefono_principal, '011 ', '11');
@@ -553,6 +738,10 @@ begin
 	update clientes set nro_telefono_principal = replace(nro_telefono_principal, ' ', '');
 	update clientes set nro_telefono_secundario = replace(nro_telefono_secundario, ' ', '');
 	
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
 
 end;
 
@@ -570,6 +759,11 @@ select * from clientes;
 create or replace function depurar_direccion_clientes() returns void as $$
 
 begin
+	
+	raise notice '-----------------------------------------------------------';
+	raise notice '-- Depuración General Campo "direccion" Tabla "clientes" --';
+	raise notice '-----------------------------------------------------------';
+		
 		
 
 	-- Todas las palabras con su inicial en Mayuscula
@@ -578,6 +772,10 @@ begin
 	-- Quitamos los puntos
 	update clientes set direccion = replace(direccion, '.', ' ');
 
+	
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
 
 	
 end
@@ -604,7 +802,13 @@ select * from clientes;
 create or replace function depurar_nombres_apellidos_propietarios_inmuebles() returns void as $$
 
 begin
+	
+	raise notice '-----------------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "nombre" y Campo "apellido" Tabla "propietarios_inmuebles" --';
+	raise notice '-----------------------------------------------------------------------------------------';
 		
+		
+
 
 	-- Todas las palabras con su inicial en Mayuscula
 	update propietarios_inmuebles set nombre = initcap(nombre);
@@ -614,6 +818,13 @@ begin
 	update propietarios_inmuebles set nombre = replace(nombre, ' ', '');
 	update propietarios_inmuebles set apellido = replace(apellido, ' ', '');
 
+
+	
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+		
 end
 
 $$ language plpgsql;
@@ -629,12 +840,15 @@ select * from propietarios_inmuebles;
 -- Depuracion general de ambos campos
 create or replace function depurar_nro_telefonos_propietarios_inmuebles() returns void as $$
 
-declare 
-	
-	num_tel_princ varchar;
-	num_tel_sec varchar;
-
 begin 
+	
+	
+	raise notice '------------------------------------------------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "nro_telefono_principal" y Campo "nro_telefono_secundario" Tabla "propietarios_inmuebles" --';
+	raise notice '------------------------------------------------------------------------------------------------------------------------';
+		
+		
+
 		
 	-- Remplazamos todos los Patrones de Caracteristica de Buenos Aires (11)
 	update propietarios_inmuebles set nro_telefono_principal = replace (nro_telefono_principal, '011 ', '11');
@@ -660,7 +874,12 @@ begin
 	update propietarios_inmuebles set nro_telefono_principal = replace(nro_telefono_principal, ' ', '');
 	update propietarios_inmuebles set nro_telefono_secundario = replace(nro_telefono_secundario, ' ', '');
 	
-
+	
+	
+	
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
 	
 	
 end;
@@ -678,7 +897,13 @@ select * from propietarios_inmuebles;
 create or replace function depurar_direccion_propietarios_inmuebles() returns void as $$
 
 begin
+	
+	raise notice '-------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "direccion" Tabla "propietarios_inmuebles" --';
+	raise notice '-------------------------------------------------------------------------';
 		
+
+	
 
 	-- Todas las palabras con su inicial en Mayuscula
 	update propietarios_inmuebles set direccion = initcap(direccion);
@@ -686,7 +911,13 @@ begin
 	-- Quitamos los puntos
 	update propietarios_inmuebles set direccion = replace(direccion, '.', ' ');
 
-
+	
+		
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+	
+	
 	
 end
 
@@ -707,14 +938,48 @@ $$ language plpgsql;
 
 select * from inmuebles_descripciones;
 
--- Depuracion general de cambos campos
+-- Depuracion general de ambos campos
 create or replace function cambiar_superficie_total_cubierta_inmuebles_descripciones
 (sup_total_input decimal, sup_cubierta_input decimal, id_input int ) returns void as $$
 
-begin
+declare 
+
+id_anterior varchar := (select id from inmuebles_descripciones id where id=id_input);
+sup_total_anterior varchar := (select superficie_total from inmuebles_descripciones id where id=id_input);
+sup_cubierta_anterior varchar := (select superficie_cubierta from inmuebles_descripciones id where id=id_input);
+
+
+begin 
+	
+	raise notice '---------------------------------------------------------------------------------------------------------';
+	raise notice '-- Modificación Campo "superficie_total" y Campo "superficie_cubierta" Tabla "inmuebles_descripciones" --';
+	raise notice '---------------------------------------------------------------------------------------------------------';
+
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice ' Sup_Total: %', sup_total_anterior;
+	raise notice ' Sup_Cubierta: %', sup_cubierta_anterior;
+
+
+
 
 	update inmuebles_descripciones set superficie_total = sup_total_input, superficie_cubierta = sup_cubierta_input
 	where id = id_input;
+
+
+	
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_input;
+	raise notice ' Sup_Total: %', sup_total_input;
+	raise notice ' Sup_Cubierta: %', sup_cubierta_input;
+
 
 	
 end
@@ -734,10 +999,19 @@ $$ language plpgsql;
 
 select * from inmuebles_medidas;
 
--- Depuracion general de cambo dormitorio
+-- Depuracion general del campo dormitorio
 create or replace function depurar_dormitorio_inmuebles_medidas() returns void as $$
 
 begin
+	
+	
+	
+	raise notice '---------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "dormitorio" Tabla "inmuebles_medidas" --';
+	raise notice '---------------------------------------------------------------------';
+		
+		
+
 
 	update inmuebles_medidas set dormitorio = replace(dormitorio, 'Dormitorio1', 'D1');
 	update inmuebles_medidas set dormitorio = replace(dormitorio, 'Dormitorio2', 'D2');
@@ -745,7 +1019,11 @@ begin
 	update inmuebles_medidas set dormitorio = replace(dormitorio, 'Dormitorio4', 'D4');
 	update inmuebles_medidas set dormitorio = replace(dormitorio, '|', ' ');
 
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
 	
+
 end
 
 $$ language plpgsql;
@@ -761,13 +1039,23 @@ select * from inmuebles_medidas;
 create or replace function depurar_sanitario_inmuebles_medidas() returns void as $$
 
 begin
-
+	
+	raise notice '---------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "sanitario" Tabla "inmuebles_medidas" --';
+	raise notice '---------------------------------------------------------------------';
+		
+	
+	
 	update inmuebles_medidas set sanitario = replace(sanitario, 'Baño1', 'S1');
 	update inmuebles_medidas set sanitario = replace(sanitario, 'Baño2', 'S2');
 	update inmuebles_medidas set sanitario = replace(sanitario, 'Baño3', 'S3');
 	update inmuebles_medidas set sanitario = replace(sanitario, '|', ' ');
 
-	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
 end
 
 $$ language plpgsql;
@@ -783,10 +1071,21 @@ select * from inmuebles_medidas;
 create or replace function depurar_patio_jardin_cochera_balcon_inmuebles_medidas() returns void as $$
 
 begin
+	
+	raise notice '---------------------------------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "patio_jardin", Campo "cochera" y Campo "balcon" Tabla "inmuebles_medidas" --';
+	raise notice '---------------------------------------------------------------------------------------------------------';
+		
 
 	update inmuebles_medidas set patio_jardin = replace(patio_jardin, '-', '0.0 x 0.0');
 	update inmuebles_medidas set cochera = replace(cochera, '-', '0.0 x 0.0');
 	update inmuebles_medidas set balcon = replace(balcon, '-', '0.0 x 0.0');
+	
+	
+	
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
 
 	
 end
@@ -814,7 +1113,13 @@ select * from inmuebles;
 create or replace function depurar_descripcion_tipo_inmuebles() returns void as $$
 
 begin
+	
 		
+	raise notice '-----------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "descripcion" y Campo "tipo" Tabla "inmuebles" --';
+	raise notice '-----------------------------------------------------------------------------';
+		
+	
 
 	
 	update inmuebles set descripcion = initcap(descripcion);
@@ -825,6 +1130,14 @@ begin
 	update inmuebles set descripcion = replace(descripcion, 'Baños', 'Sanitarios');
 	update inmuebles set descripcion = replace(descripcion, ',', ' ');
 	update inmuebles set tipo = replace(tipo, 'Ph/Casa', 'Ph');
+
+
+
+	
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+		
 
 end
 
@@ -842,6 +1155,13 @@ select * from inmuebles;
 create or replace function depurar_direccion_ubicacion_inmuebles() returns void as $$
 
 begin
+	
+		
+	raise notice '--------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "direccion" y Campo "ubicacion" Tabla "inmuebles" --';
+	raise notice '--------------------------------------------------------------------------------';
+		
+	
 		
 
 	-- Todas las palabras con su inicial en Mayuscula
@@ -851,7 +1171,11 @@ begin
 	-- Quitamos los puntos
 	update inmuebles set direccion = replace(direccion, '.', ' ');
 
-
+	
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+	
 	
 end
 
@@ -878,11 +1202,19 @@ create or replace function depurar_descripcion_cita_citas_inmuebles() returns vo
 
 begin
 		
+	raise notice '-------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "descripcion_cita" Tabla "citas_inmuebles" --';
+	raise notice '-------------------------------------------------------------------------';
+	
 
 	-- Todas las palabras con su inicial en Mayuscula
 	update citas_inmuebles set descripcion_cita = initcap(descripcion_cita);
 	
-
+	
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+	
 
 	
 end
@@ -902,7 +1234,7 @@ $$ language plpgsql;
 -- ======= TABLA SERVICIOS_INMUEBLES ===========
 
 
--- --------- CAMPOS DESCRIPCION_CITA ---------------
+-- --------- CAMPOS DESCRIPCION_SERVICIOS---------------
 
 
 select * from servicios_inmuebles;
@@ -911,12 +1243,25 @@ select * from servicios_inmuebles;
 create or replace function depurar_descripcion_servicios_inmuebles() returns void as $$
 
 begin
+	
+		
+	raise notice '----------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "descripcion_servicios" Tabla "servicios_inmuebles" --';
+	raise notice '----------------------------------------------------------------------------------';
+	
+
 		
 
 	-- Todas las palabras con su inicial en Mayuscula
 	update servicios_inmuebles set descripcion_servicios = initcap(descripcion_servicios);
 	
 	update servicios_inmuebles set descripcion_servicios = replace(descripcion_servicios,'-','');
+	
+	
+		
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
 	
 
 

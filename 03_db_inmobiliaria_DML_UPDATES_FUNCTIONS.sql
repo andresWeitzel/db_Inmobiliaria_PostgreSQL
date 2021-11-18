@@ -1290,12 +1290,28 @@ select * from inspecciones_inmuebles;
 create or replace function depurar_descripcion_inspeccion_inspecciones_inmuebles() returns void as $$
 
 begin
+	
 		
+	raise notice '--------------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "descripcion_inspeccion" Tabla "inspecciones_inmuebles" --';
+	raise notice '--------------------------------------------------------------------------------------';
+	
+
+
+
+
 
 	-- Todas las palabras con su inicial en Mayuscula
 	update inspecciones_inmuebles set descripcion_inspeccion = initcap(descripcion_inspeccion);
 	update inspecciones_inmuebles set descripcion_inspeccion = replace(descripcion_inspeccion,'Caba','Cabo');
+
+
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
 	
+
 
 end
 
@@ -1312,7 +1328,15 @@ select * from inspecciones_inmuebles;
 create or replace function depurar_empresa_direccion_inspecciones_inmuebles() returns void as $$
 
 begin
-		
+
+	
+	
+	raise notice '-------------------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "empresa" y Campo "direccion" Tabla "inspecciones_inmuebles" --';
+	raise notice '-------------------------------------------------------------------------------------------';
+	
+
+
 
 	-- Todas las palabras con su inicial en Mayuscula
 	update inspecciones_inmuebles set empresa = initcap(empresa);
@@ -1320,6 +1344,13 @@ begin
 	
 	-- Reemplazamos caracteres
 	update inspecciones_inmuebles set direccion = replace(direccion,'Caba','Cabo');
+	
+
+
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
 	
 
 end
@@ -1338,11 +1369,24 @@ create or replace function depurar_nro_tel_inspecciones_inmuebles() returns void
 
 begin
 		
+	raise notice '----------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "nro_telefono" Tabla "inspecciones_inmuebles" --';
+	raise notice '----------------------------------------------------------------------------';
+	
+
+
+
 
 	-- Reemplazamos caracteres
 	update inspecciones_inmuebles set nro_telefono = replace(nro_telefono,'-','');
 	
 
+
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+	
 end
 
 $$ language plpgsql;
@@ -1364,7 +1408,14 @@ declare
 	
 
 begin
-		
+
+			
+	raise notice '----------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "costo" Tabla "inspecciones_inmuebles" --';
+	raise notice '----------------------------------------------------------------------------';
+	
+
+
 
 	update inspecciones_inmuebles set costo = (costo + (costo * aumento_depto))  where tipo_inspeccion = 'DEPARTAMENTO'; 
 	
@@ -1374,6 +1425,342 @@ begin
 
 	update inspecciones_inmuebles set costo = (costo + (costo * aumento_casa_ph))  where tipo_inspeccion = 'PH';
 
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+-- --------- CAMPO HORA Y CAMPO FECHA ---------------
+
+
+select * from inspecciones_inmuebles;
+
+
+-- Cambiar Hora y Fecha
+create or replace function cambiar_fecha_hora_inspecciones_inmuebles(id_input int, fecha_input date
+, hora_input time) returns void as $$
+
+declare 
+	 id_anterior int := (select id from inspecciones_inmuebles where id = id_input);
+	 fecha_anterior date:= (select fecha from inspecciones_inmuebles where id = id_input);
+	 hora_anterior time := (select hora from inspecciones_inmuebles where id = id_input);
+
+begin
+
+			
+	raise notice '----------------------------------------------------------------------------------';
+	raise notice '-- Modificación del Campo "fecha" y Campo "hora" Tabla "inspecciones_inmuebles" --';
+	raise notice '----------------------------------------------------------------------------------';
+	
+	
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice ' Fecha : %', fecha_anterior;
+	raise notice ' Hora : %', hora_anterior;
+
+
+
+	update inspecciones_inmuebles set fecha = fecha_input  where id = id_input; 
+	
+	update inspecciones_inmuebles set hora = hora_input  where id = id_input; 
+		
+
+
+
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_input;
+	raise notice ' Fecha : %', fecha_input;
+	raise notice ' Hora : %', hora_input;
+
+
+end
+
+$$ language plpgsql;
+
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA INMUEBLES_MARKETING ===========
+
+
+
+-- --------- CAMPO TIPO_ANUNCIO_PRINCIPAL Y CAMPO TIPO_ANUNCIO_SECUNDARIO ---------------
+
+
+select * from inmuebles_marketing;
+
+
+
+-- Depuracion general de ambos campos
+create or replace function depurar_tipo_anuncio_principal_secundario_inmuebles_marketing() returns void as $$
+	
+
+begin
+
+			
+	raise notice '---------------------------------------------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "tipo_anuncio_principal" y Campo "tipo_anuncio_secundario" Tabla "inmuebles_marketing" --';
+	raise notice '---------------------------------------------------------------------------------------------------------------------';
+	
+
+
+
+	update inmuebles_marketing set tipo_anuncio_principal = replace(tipo_anuncio_principal,'-',''); 
+	update inmuebles_marketing set tipo_anuncio_principal = initcap(tipo_anuncio_principal); 
+	
+
+	update inmuebles_marketing set tipo_anuncio_secundario = replace(tipo_anuncio_secundario,'-',''); 
+	update inmuebles_marketing set tipo_anuncio_secundario = initcap(tipo_anuncio_secundario); 
+	
+	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+
+-- --------- CAMPO DESCRIPCION_ANUNCIO ---------------
+
+
+select * from inmuebles_marketing;
+
+
+
+-- Depuracion general del campo descripcion_anuncio
+create or replace function depurar_descripcion_anuncio_inmuebles_marketing() returns void as $$
+	
+
+begin
+
+			
+	raise notice '--------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "descripcion_anuncio" Tabla "inmuebles_marketing" --';
+	raise notice '--------------------------------------------------------------------------------';
+	
+
+
+
+	update inmuebles_marketing set descripcion_anuncio = replace(descripcion_anuncio,'-',''); 
+	update inmuebles_marketing set descripcion_anuncio = initcap(descripcion_anuncio); 
+	
+
+	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+
+-- --------- CAMPO INVERSION_TOTAL ---------------
+
+
+select * from inmuebles_marketing;
+
+
+-- Depuracion general del campo inversion_total
+create or replace function depurar_inversion_total_inmuebles_marketing() returns void as $$
+
+declare 
+	 aumento_google_ads decimal := 0.9/100;
+	 aumento_youtube decimal := 0.2/100;
+	 aumento_linkedin decimal := 0.14/100;
+	
+
+begin
+
+			
+	raise notice '----------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "inversion_total" Tabla "inmuebles_marketing" --';
+	raise notice '----------------------------------------------------------------------------';
+	
+
+
+
+	update inmuebles_marketing set inversion_total = (inversion_total + (inversion_total * aumento_google_ads))  
+	where (tipo_anuncio_principal = 'Google Ads' or tipo_anuncio_secundario = 'Google Ads'); 
+	
+
+	update inmuebles_marketing set inversion_total = (inversion_total + (inversion_total * aumento_youtube))  
+	where (tipo_anuncio_principal = 'Youtube' or tipo_anuncio_secundario = 'Youtube'); 
+	
+
+	update inmuebles_marketing set inversion_total = (inversion_total + (inversion_total * aumento_linkedin))  
+	where (tipo_anuncio_principal = 'Linkedin' or tipo_anuncio_secundario = 'Linkedin'); 
+	
+	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA ADMINISTRADORES ===========
+
+
+
+-- --------- CAMPO TIPO_INMUEBLE ---------------
+
+
+select * from administradores;
+
+
+-- Depuracion general del campo tipo_inmueble
+create or replace function depurar_tipo_inmuebles_administradores() returns void as $$
+	
+
+begin
+
+			
+	raise notice '----------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "tipo_inmueble" Tabla "administradores" --';
+	raise notice '----------------------------------------------------------------------';
+	
+
+
+	update administradores set tipo_inmueble = initcap(tipo_inmueble); 
+	update administradores set tipo_inmueble = replace(tipo_inmueble ,'Departamento','Depart');
+	update administradores set tipo_inmueble = replace(tipo_inmueble ,'Departamento-Casa','Depart/Casa');
+	
+	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+-- --------- CAMPO CERTIFICACIONES ---------------
+
+
+select * from administradores;
+
+
+
+-- Depuracion general del campo certificaciones
+create or replace function depurar_certificaciones_administradores() returns void as $$
+	
+
+begin
+
+			
+	raise notice '------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "certificaciones" Tabla "administradores" --';
+	raise notice '------------------------------------------------------------------------';
+	
+
+
+	update administradores set certificaciones = initcap(certificaciones);
+ 	
+	update administradores set certificaciones = replace(certificaciones,',','/');
+ 	update administradores set certificaciones = replace(certificaciones,'.','');
+ 	
+ 	update administradores set certificaciones = replace(certificaciones,'Aministrativas','Admin');
+    update administradores set certificaciones = replace(certificaciones,'Aministración','Admin');
+ 	update administradores set certificaciones = replace(certificaciones,'Administrativas','Admin');
+ 	update administradores set certificaciones = replace(certificaciones,'Administración','Admin');
+ 	update administradores set certificaciones = replace(certificaciones,'Administrativo','Admin');
+ 	
+	
+	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA GERENTES ===========
+
+
+
+-- --------- CAMPO TITULO ---------------
+
+
+select * from gerentes;
+
+
+-- Depuracion general del campo titulo
+create or replace function depurar_titulo_gerentes() returns void as $$
+	
+
+begin
+
+			
+	raise notice '--------------------------------------------------------';
+	raise notice '-- Depuración General Campo "titulo" Tabla "gerentes" --';
+	raise notice '--------------------------------------------------------';
+	
+
+
+	update gerentes set titulo = initcap(titulo); 
+	update gerentes set titulo = replace(titulo ,'Licenciado','Lic');
+	update gerentes set titulo = replace(titulo ,'Licenciada','Lic');
+	update gerentes set titulo = replace(titulo ,'Administración','Adm');
+
+	
+	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
 
 end
 

@@ -316,7 +316,7 @@ select * from servicios_inmuebles;
 
 
 -- Depuracion general de descripcion_inspeccion
-select depurar_descr_inspeccion_inspecciones_inmuebles();
+select depurar_descripcion_inspeccion_inspecciones_inmuebles();
 select * from inspecciones_inmuebles;
 
 
@@ -346,6 +346,94 @@ select * from inspecciones_inmuebles;
 -- Depuracion general del campo costo
 select  depurar_costo_inspecciones_inmuebles();
 select * from inspecciones_inmuebles;
+
+
+
+
+-- --------- CAMPO FECHA Y CAMPO HORA ---------------
+
+-- Modificacion del campo fecha y campo hora
+select  cambiar_fecha_hora_inspecciones_inmuebles(1,'2021-02-13','08:00:00');
+select * from inspecciones_inmuebles;
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA INMUEBLES_MARKETING ===========
+
+
+-- --------- CAMPO TIPO_ANUNCIO_PRINCIPAL Y CAMPO TIPO_ANUNCIO_SECUNDARIO ---------------
+
+-- Modificacion del campo tipo_anuncio_principal y campo tipo_anuncio_secundario
+select  depurar_tipo_anuncio_principal_secundario_inmuebles_marketing();
+select * from inmuebles_marketing;
+
+
+
+
+
+-- --------- CAMPO DESCRIPCION_ANUNCIO ---------------
+
+-- Modificacion del campo descripcion_anuncio
+select  depurar_descripcion_anuncio_inmuebles_marketing();
+select * from inmuebles_marketing;
+
+
+
+-- --------- CAMPO INVERSION_TOTAL ---------------
+
+-- Modificacion del campo inversion_total
+select  depurar_inversion_total_inmuebles_marketing();
+select * from inmuebles_marketing;
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA ADMINISTRADORES ===========
+
+
+
+-- --------- CAMPO TIPO_INMUEBLES ---------------
+
+-- Modificacion del campo tipo_inmuebles
+select  depurar_tipo_inmuebles_administradores();
+select * from administradores;
+
+
+
+-- --------- CAMPO CERTIFICACIONES ---------------
+
+-- Modificacion del campo certificaciones
+select  depurar_certificaciones_administradores();
+select * from administradores;
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA GERENTES ===========
+
+
+
+-- --------- CAMPO TITULO ---------------
+
+-- Depuracion general del campo titulo
+select depurar_titulo_gerentes();
+select * from gerentes;
+
 
 
 

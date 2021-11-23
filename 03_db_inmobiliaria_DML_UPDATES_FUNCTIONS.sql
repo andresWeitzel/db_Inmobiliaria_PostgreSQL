@@ -76,8 +76,9 @@ begin
 	raise notice 'Nro Telefono : %', nro_tel_input;
 	raise notice 'Email : %', email_input;
 
-	raise notice '';
-	
+	raise notice ' ';
+	raise notice 'ok!';
+	raise notice ' ';	
 
 	
 	
@@ -129,14 +130,17 @@ begin
 	raise notice ' Id : %',  id_input;
 	raise notice 'Nro Telefono : %', nro_tel_input;
 
-	raise notice '';
-	
+		raise notice ' ';
+	raise notice 'ok!';
+	raise notice ' ';
 
 end;
 
 $$ language plpgsql;
 
+
 -- ---------------------------------------------------------------------------
+
 
 -- ----------- CAMPO NRO_TELEFONO --------------
 
@@ -183,7 +187,9 @@ begin
 	raise notice 'Nro Telefono : %', nro_tel_actual;
 
 	
-	raise notice '';
+		raise notice ' ';
+	raise notice 'ok!';
+	raise notice ' ';
 	
 
 end;
@@ -227,8 +233,10 @@ begin
 	-- Quitamos los espacios en Blanco
 	 update oficinas set nro_telefono = replace(nro_telefono, ' ', '');
 	
+	raise notice ' ';
 	raise notice 'ok!';
 	raise notice ' ';
+
 
 end;
 
@@ -259,9 +267,9 @@ begin
 	update oficinas set direccion = replace(direccion, '/', '-');
 
 
+		raise notice ' ';
 	raise notice 'ok!';
 	raise notice ' ';
-
 	
 end
 
@@ -319,7 +327,10 @@ begin
 	raise notice ' Id : %',  id_input;
 	raise notice 'Localidad : %', loc_input;
 
-
+	
+		raise notice ' ';
+	raise notice 'ok!';
+	raise notice ' ';
 	
 end
 
@@ -369,6 +380,13 @@ begin
 
 	raise notice ' Id : %',  id_input;
 	raise notice ' Tipo Oficina : %', tipo_input;
+	
+
+
+		raise notice ' ';
+	raise notice 'ok!';
+	raise notice ' ';
+
 
 end
 
@@ -412,6 +430,9 @@ begin
 	raise notice ' Id : %',  id_input;
 	raise notice ' Superficie Total : %', sup_total_input;
 
+		raise notice ' ';
+	raise notice 'ok!';
+	raise notice ' ';	
 
 	
 end
@@ -456,9 +477,9 @@ begin
 
 
 	
+	raise notice ' ';
 	raise notice 'ok!';
 	raise notice ' ';
-
 
 end
 
@@ -506,6 +527,10 @@ begin
 	raise notice ' Id : %',  id_input;
 	raise notice ' Cuil : %', cuil_input;
 
+
+		raise notice ' ';
+	raise notice 'ok!';
+	raise notice ' ';
 	
 end
 $$ language plpgsql;
@@ -536,9 +561,9 @@ begin
 
 	
 	
+	raise notice ' ';
 	raise notice 'ok!';
 	raise notice ' ';
-
 	
 end
 
@@ -588,9 +613,9 @@ begin
 	
 		
 	
+	raise notice ' ';
 	raise notice 'ok!';
 	raise notice ' ';
-
 
 end;
 
@@ -625,26 +650,26 @@ begin
 	raise notice '-- Actualización Campo "salario_anual" Tabla "empleados" --';
 	raise notice '-----------------------------------------------------------';
 
-
-	
-	update empleados set salario_anual = (salario_anual + (salario_anual * primer_aumento))  where antiguedad = 1; 
-
-	
-	update empleados set salario_anual = (salario_anual + (salario_anual * segundo_aumento))  where antiguedad = 2; 
-
-	
-	update empleados set salario_anual = (salario_anual + (salario_anual * tercer_aumento))  where antiguedad = 3; 
-	
-	
-	update empleados set salario_anual = (salario_anual + (salario_anual * cuarto_aumento))  where antiguedad = 4; 
-	
-	
 	raise notice '';
-	raise notice '--Aumentamos % a los empleados con 1 año de antiguedad--' , primer_aumento;
-	raise notice '--Aumentamos % a los empleados con 2 años de antiguedad--' , segundo_aumento;
-	raise notice '--Aumentamos % a los empleados con 3 años de antiguedad--' , tercer_aumento;
-	raise notice '--Aumentamos % a los empleados con 4 años de antiguedad--' , cuarto_aumento;
+	raise notice '--Aumentamos % porciento a los empleados con 1 año de antiguedad--' , primer_aumento;
+	raise notice '--Aumentamos % porciento a los empleados con 2 años de antiguedad--' , segundo_aumento;
+	raise notice '--Aumentamos % porciento a los empleados con 3 años de antiguedad--' , tercer_aumento;
+	raise notice '--Aumentamos % porciento a los empleados con 4 años de antiguedad--' , cuarto_aumento;
 
+	
+	update empleados set salario_anual = (salario_anual + (salario_anual * primer_aumento)) 
+	where antiguedad = 1; 
+
+	update empleados set salario_anual = (salario_anual + (salario_anual * segundo_aumento))
+	where antiguedad = 2; 
+	
+	update empleados set salario_anual = (salario_anual + (salario_anual * tercer_aumento))  
+	where antiguedad = 3; 
+		
+	update empleados set salario_anual = (salario_anual + (salario_anual * cuarto_aumento))  
+	where antiguedad = 4; 
+	
+	
 	raise notice '';
 	raise notice 'ok!';
 	raise notice ' ';
@@ -980,6 +1005,9 @@ begin
 	raise notice ' Sup_Total: %', sup_total_input;
 	raise notice ' Sup_Cubierta: %', sup_cubierta_input;
 
+		raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
 
 	
 end
@@ -1295,10 +1323,6 @@ begin
 	raise notice '--------------------------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "descripcion_inspeccion" Tabla "inspecciones_inmuebles" --';
 	raise notice '--------------------------------------------------------------------------------------';
-	
-
-
-
 
 
 	-- Todas las palabras con su inicial en Mayuscula
@@ -1374,9 +1398,6 @@ begin
 	raise notice '----------------------------------------------------------------------------';
 	
 
-
-
-
 	-- Reemplazamos caracteres
 	update inspecciones_inmuebles set nro_telefono = replace(nro_telefono,'-','');
 	
@@ -1410,20 +1431,25 @@ declare
 begin
 
 			
-	raise notice '----------------------------------------------------------------------------';
+	raise notice '---------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "costo" Tabla "inspecciones_inmuebles" --';
-	raise notice '----------------------------------------------------------------------------';
+	raise notice '---------------------------------------------------------------------';
 	
 
-
-
-	update inspecciones_inmuebles set costo = (costo + (costo * aumento_depto))  where tipo_inspeccion = 'DEPARTAMENTO'; 
 	
-	
-	update inspecciones_inmuebles set costo = (costo + (costo * aumento_casa_ph))  where tipo_inspeccion = 'CASA';
+	raise notice '';
+	raise notice 'Se aumenta el % porciento al tipo de inpección Departamento',aumento_depto;
+	raise notice 'Se aumenta el % porciento al tipo de inpección Casa/Ph',aumento_casa_ph;
 
 
-	update inspecciones_inmuebles set costo = (costo + (costo * aumento_casa_ph))  where tipo_inspeccion = 'PH';
+	update inspecciones_inmuebles set costo = (costo + (costo * aumento_depto)) 
+	where tipo_inspeccion = 'DEPARTAMENTO'; 
+		
+	update inspecciones_inmuebles set costo = (costo + (costo * aumento_casa_ph))  
+	where tipo_inspeccion = 'CASA';
+
+	update inspecciones_inmuebles set costo = (costo + (costo * aumento_casa_ph))
+	where tipo_inspeccion = 'PH';
 
 
 	raise notice '';
@@ -1484,6 +1510,10 @@ begin
 	raise notice ' Id : %',  id_input;
 	raise notice ' Fecha : %', fecha_input;
 	raise notice ' Hora : %', hora_input;
+
+		raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
 
 
 end
@@ -1605,7 +1635,13 @@ begin
 	raise notice '-- Depuración General Campo "inversion_total" Tabla "inmuebles_marketing" --';
 	raise notice '----------------------------------------------------------------------------';
 	
-
+	
+	raise notice '';
+	raise notice 'Se aumenta el % porciento al tipo de anuncio Google Ads',aumento_google_ads;
+	raise notice 'Se aumenta el % porciento al tipo de anuncio Youtube',aumento_youtube;
+	raise notice 'Se aumenta el % porciento al tipo de anuncio Linkedin',aumento_linkedin;
+	
+	
 
 
 	update inmuebles_marketing set inversion_total = (inversion_total + (inversion_total * aumento_google_ads))  
@@ -1618,7 +1654,6 @@ begin
 
 	update inmuebles_marketing set inversion_total = (inversion_total + (inversion_total * aumento_linkedin))  
 	where (tipo_anuncio_principal = 'Linkedin' or tipo_anuncio_secundario = 'Linkedin'); 
-	
 	
 
 	raise notice '';
@@ -1766,3 +1801,579 @@ end
 
 $$ language plpgsql;
 
+
+
+-- --------- CAMPO TITULO ---------------
+
+
+select * from gerentes;
+
+
+-- Depuracion general del campo titulo
+create or replace function depurar_titulo_gerentes() returns void as $$
+	
+
+begin
+
+			
+	raise notice '--------------------------------------------------------';
+	raise notice '-- Depuración General Campo "titulo" Tabla "gerentes" --';
+	raise notice '--------------------------------------------------------';
+	
+
+
+	update gerentes set titulo = initcap(titulo); 
+	update gerentes set titulo = replace(titulo ,'Licenciado','Lic');
+	update gerentes set titulo = replace(titulo ,'Licenciada','Lic');
+	update gerentes set titulo = replace(titulo ,'Administración','Adm');
+
+	
+	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+-- --------- CAMPO BENEFICIOS ---------------
+
+
+select * from gerentes;
+
+
+-- Depuracion general
+create or replace function depurar_beneficios_gerentes() returns void as $$
+	
+
+begin
+
+			
+	raise notice '------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "beneficios" Tabla "gerentes" --';
+	raise notice '------------------------------------------------------------';
+	
+
+
+	update gerentes set beneficios = initcap(beneficios);
+	update gerentes set beneficios = replace(beneficios ,'2 Veces X Sem','');
+	update gerentes set beneficios = replace(beneficios ,'35%','');
+	update gerentes set beneficios = replace(beneficios ,'40%','');	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+-- --------- CAMPO RETRIBUCION_SALARIAL_ANUAL ---------------
+
+
+select * from gerentes;
+
+
+-- Depuracion general
+create or replace function depurar_retribucion_salarial_anual_gerentes() returns void as $$
+	
+declare 
+	
+	primer_aumento decimal := 0.2/100;
+	 segundo_aumento decimal := 0.4/100;
+	 tercer_aumento decimal := 0.9/100;
+	
+
+begin
+
+			
+	raise notice '----------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "retribucion_salarial_anual" Tabla "gerentes" --';
+	raise notice '----------------------------------------------------------------------------';
+	
+	
+	
+	raise notice '';
+	raise notice 'Se aumenta el % porciento a los Gerentes que tengas entre 2 y 6 años de experiencia',primer_aumento; 
+	raise notice 'Se aumenta el % porciento a los Gerentes que tengas entre 7 y 9 años de experiencia',segundo_aumento; 
+	raise notice 'Se aumenta el % porciento a los Gerentes que tengas entre 10 y 15 años de experiencia',tercer_aumento; 
+	
+
+
+
+	update gerentes set retribucion_salarial_anual = 
+	(retribucion_salarial_anual + (retribucion_salarial_anual * primer_aumento))  
+	where (aneos_experiencia_laboral >= 2 and aneos_experiencia_laboral <= 6); 
+	
+
+	update gerentes set retribucion_salarial_anual = 
+	(retribucion_salarial_anual + (retribucion_salarial_anual * segundo_aumento))  
+	where (aneos_experiencia_laboral > 6 and aneos_experiencia_laboral <= 9); 
+		
+
+	
+	update gerentes set retribucion_salarial_anual = 
+	(retribucion_salarial_anual + (retribucion_salarial_anual * tercer_aumento))  
+	where (aneos_experiencia_laboral > 9 and aneos_experiencia_laboral <= 15); 
+		
+	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA VENDEDORES ===========
+
+
+
+-- --------- CAMPO CANTIDAD_VENTAS ---------------
+
+
+select * from vendedores;
+
+
+
+-- Modificación campo cantidad_ventas
+create or replace function cambiar_cantidad_ventas_vendedores(id_input int, cant_ventas_input int) returns void as $$
+
+declare 
+	 id_anterior int := (select id from vendedores where id = id_input );
+	 cant_ventas_anterior int  := (select cantidad_ventas from vendedores where id = id_input );
+	 	
+
+begin
+
+			
+	raise notice '--------------------------------------------------------------';
+	raise notice '-- Modificación  Campo "cantidad_ventas" Tabla "vendedores" --';
+	raise notice '--------------------------------------------------------------';
+	
+
+
+
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice ' Cantidad de Ventas : %', cant_ventas_anterior;
+
+
+	update vendedores set cantidad_ventas = cant_ventas_input where id = id_input; 
+
+
+
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_input;
+	raise notice ' Cantidad de Ventas : %', cant_ventas_input;
+
+	
+	
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+-- --------- CAMPO BONIFICACION_VENTAS ---------------
+
+
+select * from vendedores;
+
+
+-- Depuracion general
+create or replace function depurar_bonificacion_ventas_vendedores() returns void as $$
+	
+declare 
+
+	 primera_bonif decimal := 1.15/100;
+	 segunda_bonif decimal := 2.21/100;
+	 tercera_bonif decimal := 3.41/100;
+
+begin
+
+			
+	raise notice '-----------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "bonificacion_ventas" Tabla "vendedores" --';
+	raise notice '-----------------------------------------------------------------------';
+	
+	
+
+	raise notice '';
+	raise notice 'Se aumenta el % porciento como bonificacion a los Vendedores que tengan 1 Venta',primera_bonif;
+	raise notice 'Se aumenta el % porciento como bonificacion a los Vendedores que tengan 2 o 3 Ventas',segunda_bonif;
+	raise notice 'Se aumenta el % porciento como bonificacion a los Vendedores que tengan 4 o 5 Ventas',tercera_bonif;
+
+
+
+
+	update vendedores set bonificacion_ventas = 
+	(bonificacion_ventas + (bonificacion_ventas * primera_bonif))  
+	where (cantidad_ventas = 1); 
+
+
+	update vendedores set bonificacion_ventas = 
+	(bonificacion_ventas + (bonificacion_ventas * segunda_bonif))  
+	where (cantidad_ventas = 2 or cantidad_ventas = 3); 
+			
+	update vendedores set bonificacion_ventas = 
+	(bonificacion_ventas + (bonificacion_ventas * tercera_bonif))  
+	where (cantidad_ventas = 4 or cantidad_ventas = 5); 
+			
+
+	-- modificamos la bonif y puntuacion
+	update vendedores set bonificacion_ventas = 2000 where (cantidad_ventas = 1 and bonificacion_ventas = 0);
+	update vendedores set puntuacion_ventas = 'Buena' where (cantidad_ventas < 2 and cantidad_ventas > 0);
+
+
+
+
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA COMPRADORES ===========
+
+
+
+-- --------- CAMPO DESCUENTO_CLIENTE_USD Y CAMPO BENEFICIOS_COMPRAS---------------
+
+
+select * from compradores;
+
+
+-- Depuracion general
+create or replace function depurar_descuento_cliente_usd_beneficios_compras_compradores() returns void as $$
+	
+declare 
+	 primer_desc decimal := 7/100;
+	 segundo_desc decimal := 10/100;
+begin
+
+			
+	raise notice '-------------------------------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "descuento_cliente_usd" y campo "beneficios_compras" Tabla "compradores" --';
+	raise notice '-------------------------------------------------------------------------------------------------------';
+	
+	
+	raise notice '';			
+	raise notice 'Se aplica el descuento del  % porciento a los Compradores que hayan comprado 1 Inmueble',primer_desc;
+	raise notice 'Se aplica el descuento del  % porciento a los Compradores que hayan comprado 2 Inmuebles',segundo_desc;
+
+
+
+	update compradores set descuento_cliente_usd = 
+	(descuento_cliente_usd + (descuento_cliente_usd * primer_desc))  
+	where (cantidad_inmuebles_comprados = 1); 
+
+	update compradores set descuento_cliente_usd = 
+	(descuento_cliente_usd + (descuento_cliente_usd * segundo_desc))  
+	where (cantidad_inmuebles_comprados = 2); 
+
+	-- cambiamos los beneficios de compras
+	update compradores set beneficios_compras = 'Descuento del 15% en la Próxima Compra' where cantidad_inmuebles_comprados = 1;
+	update compradores set beneficios_compras = 'Descuento del 20% en la Próxima Compra' where cantidad_inmuebles_comprados = 2;
+
+	update compradores set beneficios_compras = initcap(beneficios_compras);
+
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA VENTAS ===========
+
+
+
+
+-- --------- CAMPO FECHA_VENTA Y CAMPO HORA_VENTA ---------------
+
+
+select * from ventas;
+
+
+
+-- Modificación campo fecha_venta y campo hora_venta
+create or replace function cambiar_fecha_hora_venta_ventas(id_input int, fecha_venta_input date, hora_venta_input time) returns void as $$
+
+declare 
+	 id_anterior int := (select id from ventas where id = id_input );
+	 fecha_venta_anterior date  := (select fecha_venta from ventas where id = id_input );
+	 hora_venta_anterior time  := (select hora_venta from ventas where id = id_input );
+	 	
+
+begin
+
+			
+	raise notice '---------------------------------------------------------------------------';
+	raise notice '-- Modificación  Campo "fecha_venta" y Campo "hora_venta" Tabla "ventas" --';
+	raise notice '---------------------------------------------------------------------------';
+	
+
+
+
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice ' Fecha de Venta  : %', fecha_venta_anterior;
+	raise notice ' Hora de Venta  : %', hora_venta_anterior;
+
+
+	update ventas set fecha_venta = fecha_venta_input where id = id_input; 
+	update ventas set hora_venta = hora_venta_input where id = id_input; 
+
+
+
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_input;
+	raise notice ' Fecha de Venta  : %', fecha_venta_input;
+	raise notice ' Hora de Venta  : %', hora_venta_input;
+
+		raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA FACTURAS ===========
+
+
+
+-- --------- CAMPO PRECIO_TOTAL_VENTA_USD ---------------
+
+select * from facturas;
+
+
+-- Depuracion general
+create or replace function depurar_precio_total_venta_usd_facturas() returns void as $$
+	
+declare 
+	 impuesto_venta  decimal := 0.7/100;
+	 impuesto_agregado decimal := 0.6/100;
+
+begin
+
+			
+	raise notice '------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "precio_total_venta_usd" Tabla "facturas" --';
+	raise notice '------------------------------------------------------------------------';
+	
+	raise notice '';
+	raise notice 'Se aumenta el % porciento al impuesto de venta',impuesto_venta;
+	raise notice 'Se aumenta el % porciento al impuesto agregado',impuesto_agregado;
+
+
+	update facturas set precio_total_venta_usd = 
+	(precio_total_venta_usd + (precio_total_venta_usd * impuesto_venta)); 
+
+	update facturas set precio_total_venta_usd = 
+	(precio_total_venta_usd + (precio_total_venta_usd * impuesto_agregado)); 
+
+
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA FACTURAS_DETALLES ===========
+
+
+
+-- --------- CAMPO DESCRIPCION_FACTURA Y CAMPO DESCRIPCION_PAGO ---------------
+
+select * from facturas_detalles;
+
+
+-- Depuracion general
+create or replace function depurar_descripcion_factura_pago_facturas_detalles() returns void as $$
+	
+
+begin
+
+			
+	raise notice '---------------------------------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "descripcion_factura" y Campo "descripcion_pago" Tabla "facturas_detalles" --';
+	raise notice '---------------------------------------------------------------------------------------------------------';
+	
+
+
+	update facturas_detalles set descripcion_factura = initcap(descripcion_factura);
+
+	update facturas_detalles set descripcion_pago = initcap(descripcion_pago);
+	
+	update facturas_detalles set descripcion_pago = replace(descripcion_pago ,'1 Sólo','1');
+	
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+
+
+-- --------- CAMPO VALOR_INMUEBLE_USD---------------
+
+
+select * from facturas_detalles;
+
+
+-- Depuracion general
+create or replace function depurar_valor_inmueble_usd_facturas_detalles() returns void as $$
+	
+declare 
+	 aumento_valor decimal := 7.88/100;
+
+begin
+
+			
+	raise notice '-----------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "valor_inmueble_usd" Tabla "facturas_detalles" --';
+	raise notice '-----------------------------------------------------------------------------';
+	
+	raise notice '';
+	raise notice 'Se aumenta el % porciento al valor del Inmueble',aumento_valor;
+
+
+	update facturas_detalles set valor_inmueble_usd = 
+	(valor_inmueble_usd + (valor_inmueble_usd * aumento_valor)); 
+
+	
+
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;
+
+
+
+
+-- --------- CAMPO COSTO_ASOCIADO_USD Y CAMPO IMPUESTOS_ASOCIADOS_USD---------------
+
+
+select * from facturas_detalles;
+
+
+-- Depuracion general
+create or replace function depurar_costo_impuestos_asociados_usd_facturas_detalles() returns void as $$
+	
+declare 
+	 aumento_costos decimal := 7.88/100;
+	 aumento_impuestos decimal := 9.12/100;
+
+begin
+
+			
+	raise notice '---------------------------------------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "costo_asociado_usd" y Campo "impuestos_asociados_usd" Tabla "facturas_detalles" --';
+	raise notice '---------------------------------------------------------------------------------------------------------------';
+	
+	raise notice '';
+	raise notice 'Se aumenta el % porciento a los costos asociados',aumento_costos;
+	raise notice 'Se aumenta el % porciento a los impuestos asociados',aumento_impuestos;
+
+
+	update facturas_detalles set costo_asociado_usd = 
+	(costo_asociado_usd  + (costo_asociado_usd  * aumento_costos)); 
+	
+	update facturas_detalles set impuestos_asociados_usd = 
+	(impuestos_asociados_usd  + (impuestos_asociados_usd  * aumento_impuestos)); 
+	
+
+	raise notice ' ';
+	raise notice 'ok!';
+	raise notice ' ';
+
+end
+
+$$ language plpgsql;

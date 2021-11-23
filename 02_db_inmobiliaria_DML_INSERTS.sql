@@ -409,7 +409,7 @@ information_schema.columns where table_name = 'compradores';
 
 insert into compradores(id, id_cliente, cantidad_inmuebles_comprados, importe_maximo_por_compra_usd
 , importe_total_compras_usd, beneficios_compras, descuento_cliente_usd) values 
-(1, 1, 1, 168000, 168000, 'Descuento del 15% en la Próxima Compra', 200),
+(1, 1, 1, 168000, 168000, 'Descuento del 7% en la Próxima Compra', 200),
 (2, 2, 1, 110000, 110000, 'Descuento del 10% en la Próxima Compra',200);
 
 

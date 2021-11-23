@@ -436,5 +436,159 @@ select * from gerentes;
 
 
 
+-- --------- CAMPO BENEFICIOS ---------------
+
+-- Depuracion general
+select depurar_beneficios_gerentes();
+select * from gerentes;
+
+
+
+
+-- --------- CAMPO RETRIBUCION_SALARIAL_ANUAL ---------------
+
+-- Depuracion general
+select depurar_retribucion_salarial_anual_gerentes();
+select * from gerentes;
+
+	
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA VENDEDORES ===========
+
+
+
+-- --------- CAMPO CANTIDAD_VENTAS ---------------
+
+
+-- Modificacion cantidad_ventas
+select cambiar_cantidad_ventas_vendedores(1, 1);
+select * from vendedores;
+
+
+
+
+-- --------- CAMPO BONIFICACION_VENTAS ---------------
+
+-- Depuracion general
+select depurar_bonificacion_ventas_vendedores();
+select * from vendedores;
+
+	
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA COMPRADORES ===========
+
+
+
+-- --------- CAMPO DESCUENTO_CLIENTE_USD Y CAMPO BENEFICIOS_COMPRAS---------------
+
+-- Depuracion general
+select depurar_descuento_cliente_usd_beneficios_compras_compradores();
+
+select * from compradores;
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA VENTAS ===========
+
+
+
+-- --------- CAMPO DETALLE_VENTA---------------
+
+-- Depuracion general
+select depurar_detalle_ventas_ventas();
+
+select * from ventas;
+
+
+
+
+-- --------- CAMPO FECHA_VENTA Y CAMPO HORA_VENTA ---------------
+
+-- Modificación campo fecha_venta y campo hora_venta
+select cambiar_fecha_hora_venta_ventas(1, '2020-12-22', '09:00:00');
+select * from ventas;
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======= TABLA FACTURAS ===========
+
+
+
+-- --------- CAMPO PRECIO_TOTAL_VENTA_USD ---------------
+
+
+-- Depuracion general
+select depurar_precio_total_venta_usd_facturas();
+select * from facturas;
+
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
+-- ======= TABLA FACTURAS_DETALLES ===========
+
+
+
+-- --------- CAMPO DESCRIPCION_FACTURA Y CAMPO DESCRIPCION_PAGO ---------------
+
+-- Depuracion general
+select depurar_descripcion_factura_pago_facturas_detalles();
+
+select * from facturas_detalles;
+
+
+
+
+-- --------- CAMPO VALOR_INMUEBLE_USD---------------
+
+-- Depuracion general
+select depurar_valor_inmueble_usd_facturas_detalles();
+
+select * from facturas_detalles;
+
+
+
+
+-- --------- CAMPO COSTO_ASOCIADO_USD Y CAMPO IMPUESTOS_ASOCIADOS_USD---------------
+
+-- Depuracion general
+select depurar_costo_impuestos_asociados_usd_facturas_detalles();
+
+select * from facturas_detalles;
+
+
 
 

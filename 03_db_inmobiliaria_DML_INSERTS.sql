@@ -41,12 +41,25 @@ select * from oficinas;
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'oficinas';
 
+-- ----------- INSERCIÓN DE 1 REGISTRO ------------------
 
-insert into oficinas (id, nombre, direccion, nro_telefono, email) values 
-(1 , 'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'),
-(2 , 'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'),
-(3 , 'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com');
+select insertar_registro_oficinas('Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com');
 
+
+
+
+-- ----------- INSERCIÓN DE 2 REGISTROS O MÁS ------------
+
+-- Primer valor es la cantidad de registros a ingresar
+select insertar_registros_oficinas('Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
+,'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com'
+);
+
+
+
+
+
+/*
 
 
 -- ---------------------------------------------------------------------------
@@ -476,6 +489,6 @@ insert into facturas_detalles (id, id_factura, tipo, descripcion_factura, valor_
 
 
 
-
+*/
 
 

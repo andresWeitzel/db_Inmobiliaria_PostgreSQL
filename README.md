@@ -88,7 +88,7 @@
 
 | **Tecnologías Empleadas** | **Versión** | **Finalidad** |               
 | ------------- | ------------- | ------------- |
-| Git Bash | 2.29.1.windows.1  | Control de Versiones |
+| Git Bash | 2.29.1  | Control de Versiones |
 | PostgreSQL | 13.4  | SGDB  |
 | DBeaver | 21.1  | Gestor de Base de Datos | 
 

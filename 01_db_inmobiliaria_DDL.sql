@@ -35,29 +35,30 @@ drop sequence if exists id_secuencia cascade;
 
 
 -- Enumerados tabla oficinas_detalles
-drop type if exists estado_oficina cascade;
-drop type if exists tipo_oficina cascade;
+drop type if exists estado_oficina_enum cascade;
+drop type if exists tipo_oficina_enum cascade;
+
 
 -- Enumerados tabla inspecciones_inmuebles
-drop type if exists tipo_inspeccion cascade;
-drop type if exists estado_inspeccion cascade;
+drop type if exists tipo_inspeccion_enum cascade;
+drop type if exists estado_inspeccion_enum cascade;
 
 -- Enumerados tabla inmuebles
-drop type if exists estado_inmueble cascade;
+drop type if exists estado_inmueble_enum cascade;
 
 -- Enumerados tabla servicios_inmuebles
-drop type if exists division_comercial cascade;
-drop type if exists division_vivienda cascade;
-drop type if exists tasaciones cascade;
-drop type if exists administracion cascade;
+drop type if exists division_comercial_enum cascade;
+drop type if exists division_vivienda_enum cascade;
+drop type if exists tasaciones_enum cascade;
+drop type if exists administracion_enum cascade;
 
 -- Enumerados tabla citas_inmuebles
-drop type if exists estado_cita cascade;
+drop type if exists estado_cita_enum cascade;
 
 
 -- Enumerados tabla facturas_detalles
-drop type if exists tipo_factura cascade;
-drop type if exists tipo_pago cascade;
+drop type if exists tipo_factura_enum cascade;
+drop type if exists tipo_pago_enum cascade;
 
 -- ---------------------------------------------------------------------------
 
@@ -102,17 +103,17 @@ unique(nro_telefono);
 
 -- ======= TABLA OFICINAS_DETALLES ===========
 
-create type estado_oficina as enum('ALQUILADA','PROPIA'); 
-create type tipo_oficina as enum('PEQUEÑA','ESTANDAR','EJECUTIVA'); 
+create type estado_oficina_enum as enum('ALQUILADA','PROPIA'); 
+create type tipo_oficina_enum as enum('PEQUEÑA','ESTANDAR','EJECUTIVA'); 
 
 
 create table oficinas_detalles(
 	
 id int primary key,
-id_oficina int ,
+id_oficina int not null,
 localidad varchar(40) not null,
-tipo_oficina tipo_oficina not null, 
-estado_oficina estado_oficina not null,
+tipo_oficina tipo_oficina_enum not null, 
+estado_oficina estado_oficina_enum not null,
 superficie_total decimal(8,2) not null,
 cantidad_ambientes smallint not null, -- 1,2,3,etc | smallint-->2bytes, int-->4bytes |
 cantidad_sanitarios smallint not null, -- Reemplazamos baños por caracter especial
@@ -503,7 +504,7 @@ unique(id);
 -- ======= TABLA INMUEBLES ===========
 
 
-create type estado_inmueble as enum('VENDIDO','DISPONIBLE','NO DISPONIBLE','FALTA INSPECCION');
+create type estado_inmueble_enum as enum('VENDIDO','DISPONIBLE','NO DISPONIBLE','FALTA INSPECCION');
 
 
 create table inmuebles(
@@ -515,7 +516,7 @@ id_inmueble_descripcion int not null,
 id_oficina int not null,
 descripcion varchar(200) not null,-- ej: semipiso de 3 Amb en Palermo
 tipo varchar(20) not null, -- depto, casa, etc
-estado_inmueble estado_inmueble not null,
+estado_inmueble estado_inmueble_enum not null,
 precio_inmueble_usd decimal(10,2) not null,
 direccion varchar(40) not null,-- San sarasa 123
 ubicacion varchar(40) not null, -- zona:palermo, recoleta, etc
@@ -582,7 +583,7 @@ check (precio_inmueble_usd > 0);
 
 -- ======= TABLA CITAS_INMUEBLES ===========
 
-create type estado_cita as enum('PENDIENTE','COMPLETADA','INCOMPLETA');
+create type estado_cita_enum as enum('PENDIENTE','COMPLETADA','INCOMPLETA');
 
 
 create table citas_inmuebles(
@@ -591,7 +592,7 @@ id int primary key,
 id_inmueble int not null,
 id_empleado int NOT NULL,-- Puede ser un gerente o vendedor
 id_cliente int NOT null,-- Si hay cita automaticamente pasa a ser un cliente
-estado_cita estado_cita not null,
+estado_cita estado_cita_enum not null,
 descripcion_cita varchar(200) not null,
 fecha_cita date NOT null,-- ej '2001-10-07'
 hora_cita time NOT NULL  -- ej '09:00:07'
@@ -634,16 +635,16 @@ REFERENCES clientes(id);
 -- ======= TABLA SERVICIOS_INMUEBLES ===========
 -- https://www.mosquerabrokers.com.ar/es/informacion/servicios
 
-create type division_comercial as enum('LOCALES','OFICINAS','TERRENOS'
+create type division_comercial_enum as enum('LOCALES','OFICINAS','TERRENOS'
 ,'LOCALES-OFICINAS-TERRENOS','NO APLICA');
 
-create type division_vivienda as enum('DEPARTAMENTOS','CASAS','TERRENOS'
+create type division_vivienda_enum as enum('DEPARTAMENTOS','CASAS','TERRENOS'
 ,'DEPARTAMENTOS-CASAS-TERRENOS','NO APLICA');
 
-create type tasaciones as enum('PROFESIONAL','JUDICIAL','PROFESIONAL-JUDICIAL'
+create type tasaciones_enum as enum('PROFESIONAL','JUDICIAL','PROFESIONAL-JUDICIAL'
 ,'NO APLICA');
 
-create type administracion as enum('ALQUILERES','CUENTAS','ALQUILERES-CUENTAS' 
+create type administracion_enum as enum('ALQUILERES','CUENTAS','ALQUILERES-CUENTAS' 
 ,'NO APLICA');
 
 
@@ -651,10 +652,10 @@ create table servicios_inmuebles(
 	
 id int primary key,
 id_oficina int not null,
-tipo_comercial division_comercial not null,
-tipo_vivienda division_vivienda not null,
-tipo_tasaciones tasaciones not null,
-tipo_administracion administracion not null,
+tipo_comercial division_comercial_enum not null,
+tipo_vivienda division_vivienda_enum not null,
+tipo_tasaciones tasaciones_enum not null,
+tipo_administracion administracion_enum not null,
 descripcion_servicios varchar(200)
 
 );
@@ -684,15 +685,15 @@ references oficinas(id);
 -- ======= TABLA INSPECCIONES_INMUEBLES ===========
 -- http://checkhouse.com.ar/inspecciones-para-inquilinos/#amenities-content
 
-create type estado_inspeccion as enum('ACEPTADA','NO ACEPTADA','PENDIENTE REVISION');
-create type tipo_inspeccion as enum('DEPARTAMENTO','CASA','PH');
+create type estado_inspeccion_enum as enum('ACEPTADA','NO ACEPTADA','PENDIENTE REVISION');
+create type tipo_inspeccion_enum as enum('DEPARTAMENTO','CASA','PH');
 
 create table inspecciones_inmuebles(
 	
 id int primary key,
 id_inmueble int not null,
-estado_inspeccion estado_inspeccion not null,
-tipo_inspeccion tipo_inspeccion not null,
+estado_inspeccion estado_inspeccion_enum not null,
+tipo_inspeccion tipo_inspeccion_enum not null,
 descripcion_inspeccion varchar(200) not null,
 empresa varchar(30) not null,
 direccion varchar(30) not null,
@@ -1071,8 +1072,8 @@ check ( precio_total_venta_usd > 0);
 
 -- Los enumerados deben estar declarados fuera de la creacion de tabla 
 
-create type tipo_factura as enum('A','B','C','D');
-create type tipo_pago as enum('EFECTIVO','CHEQUE','TARJETA');
+create type tipo_factura_enum as enum('A','B','C','D');
+create type tipo_pago_enum as enum('EFECTIVO','CHEQUE','TARJETA');
 
 
 
@@ -1080,12 +1081,12 @@ create table facturas_detalles(
 	
 id int primary key,
 id_factura int not null,
-tipo tipo_factura not null, -- A,C ETC
+tipo tipo_factura_enum not null, -- A,C ETC
 descripcion_factura varchar(100) not null,-- venta departamento inscripto en la partida N° 14567..
 valor_inmueble_usd decimal(10,2) not null,-- Valor Real del Inmueble sin impuestos, etc
 costo_asociado_usd decimal(8,2) not null, -- Escritura del vendedor, sellos, comisiones, etc 
 impuestos_asociados_usd decimal(8,2) not null, -- IVA 10%, imp a las ganancias, imp tranf. de inmuebles, etc
-medio_de_pago tipo_pago not null,
+medio_de_pago tipo_pago_enum not null,
 descripcion_pago varchar(100) not null
 
 );

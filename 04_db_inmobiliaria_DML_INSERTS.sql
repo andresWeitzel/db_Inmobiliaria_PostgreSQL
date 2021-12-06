@@ -27,6 +27,7 @@ delete from clientes cascade;
 delete from empleados cascade;
 delete from oficinas_detalles cascade;
 delete from oficinas cascade;
+delete from logs_inserts cascade;
 
 
 
@@ -36,53 +37,105 @@ delete from oficinas cascade;
 
 -- ======= TABLA OFICINAS ===========
 
-select * from oficinas;
-
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'oficinas';
 
+
+
 -- ----------- INSERCIÓN DE 1 REGISTRO ------------------
 
-select insertar_registro_oficinas('Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com');
+select insertar_registro_oficinas(
+'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'
+);
 
+
+select listado_oficinas();
+select listado_logs_inserts();
+
+
+
+/* DESCOMENTAR PARA SU USO
 
 
 
 -- ----------- INSERCIÓN DE 2 REGISTROS O MÁS ------------
 
 -- Primer valor es la cantidad de registros a ingresar
-select insertar_registros_oficinas('Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
+select insertar_registros_oficinas(
+'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
 ,'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com'
 );
 
+select listado_oficinas();
 
+
+
+
+-- ----------- INSERCIÓN DE 3 REGISTROS O MÁS ------------
+
+-- Primer valor es la cantidad de registros a ingresar
+select insertar_registros_oficinas(
+'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'
+,'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
+,'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com'
+);
+
+select listado_oficinas();
+
+
+
+-- ----------- INSERCIÓN DE 4 REGISTROS ------------
+
+-- Primer valor es la cantidad de registros a ingresar
+select insertar_registros_oficinas(
+'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'
+,'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
+,'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com'
+,'Oficina de Gestión Le Bluen' , 'Av. Corrientes 445 Microcentro' , '11 3343-7729' , 'inmobiliariaDuckson@gmail.com');
+
+
+
+select listado_oficinas();
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA OFICINAS_DETALLES ===========
+
+
+-- ----------- INSERCIÓN DE 1 REGISTRO ------------------
+*/
+
+
+/*
+
+select insertar_registro_oficinas_detalles(
+1 , 'Retiro' , 'EJECUTIVA' , 'ALQUILADA' , 140.0 , 6 , 4 , 15 , 'www.inmobiliariaDuckson-torre-Nepkiul.com.ar'
+);
+
+
+select listado_oficinas_detalles();
+
+
+*/
 
 
 
 /*
 
 
+
 -- ---------------------------------------------------------------------------
 
 -- ======= TABLA OFICINAS_DETALLES ===========
-
--- ENUM estado_oficina ('ALQUILADA','PROPIA'); 
--- ENUM  tipo_oficina('PEQUEÑA','ESTANDAR','EJECUTIVA'); 
-
-
-
-select * from oficinas_detalles;
-
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'oficinas_detalles';
-
 
 insert into oficinas_detalles (id, id_oficina, localidad, tipo_oficina, estado_oficina, superficie_total
 , cantidad_ambientes, cantidad_sanitarios, antiguedad, sitio_web) values
 (1 , 1 , 'Retiro' , 'EJECUTIVA' , 'ALQUILADA' , 140.0 , 6 , 4 , 15 , 'www.inmobiliariaDuckson-torre-Nepkiul.com.ar'),-- sup_total en m^2
 (2 , 2 , 'Belgrano' , 'PEQUEÑA' , 'PROPIA' , 35.0 , 1 , 1 , 35 , 'www.inmobiliariaDuckson-torre-Alem.com.ar'),
 (3 , 3 , 'Balvanera' , 'ESTANDAR' , 'PROPIA' , 60.0 , 2 , 4 , 22 , 'www.inmobiliariaDuckson-oficina-principal.com.ar');
-
 
 
 

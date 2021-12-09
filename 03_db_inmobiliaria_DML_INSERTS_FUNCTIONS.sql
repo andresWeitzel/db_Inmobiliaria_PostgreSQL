@@ -52,7 +52,6 @@ $$ language plpgsql;
 -- https://www.palomargc.com/posts/Introducci%C3%B3n-a-la-administraci%C3%B3n-de-PostgreSQL/
 
 -- ----------- SELECT DE TODOS LOS REGISTROS DE LA TABLA LOGS_INSERTS -------
-drop function listado_logs_inserts() returns setof logs_inserts;
 
 create or replace function listado_logs_inserts() returns setof logs_inserts as $$
 
@@ -113,10 +112,10 @@ $$ language plpgsql;
 
 
 
-
-
 -- ----------- INSERCION DE 1 REGISTRO ------------
---drop function insertar_registro_oficinas( varchar, varchar, varchar, varchar);
+
+select * from oficinas ;
+
 
 create or replace function insertar_registro_oficinas(
 
@@ -126,20 +125,20 @@ nombre_input varchar, dir_input varchar, nro_tel_input varchar, email_input varc
 
 declare
 
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_check_of boolean;
+id_last_of int;
+
+
 -- Nos aseguramos que no exista un registro repetido ademas del check de la db
  nombre_of_check boolean := exists(select nombre from oficinas where nombre = nombre_input);
  direccion_of_check boolean := exists(select direccion from oficinas where direccion = dir_input);
 
--- == Variables para el log_insert ==
-
--- Ultimo id ingresado
-id_of_last int := (select currval(pg_get_serial_sequence('logs_inserts','id')));
-
--- Identificar unico del registro
--- uuid_of_last int := ();
 
 begin
 	
+
+
 	if(
 	(nombre_of_check = true) or (direccion_of_check = true)
 	
@@ -166,13 +165,42 @@ begin
 		raise notice '-- Inserción de Registro Tabla "oficinas" --';
 		raise notice '----------------------------------------------';
 	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
 	
+	
+		insert into oficinas(nombre, direccion, nro_telefono, email) values 
+		(nombre_input , dir_input , nro_tel_input , email_input);
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_check_of := exists(select id from oficinas);
+	
+		-- Comprobacion id
+		if (id_last_check_of = true) then
+			
+			id_last_of := (select max(id) from oficinas);
+		
+		else 
+			
+			id_last_of := 0;
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+		
+	
+		
 		raise notice '';
 		raise notice '';
 		raise notice '-- Registro de Inserción --';
 		raise notice '';
 	
-		raise notice 'ID : %' , id_of_last;
+		raise notice 'ID : %' , id_last_of;
 		raise notice 'Nombre : %', nombre_input;
 		raise notice 'Dirección : %', dir_input;
 		raise notice 'Nro Telefono : %', nro_tel_input;
@@ -180,26 +208,12 @@ begin
 	
 	
 	
-		
-		insert into oficinas(nombre, direccion, nro_telefono, email) values 
-		(nombre_input , dir_input , nro_tel_input , email_input);
-	
-	
-		-- Actualizamos la tabla de logs_inserts
-		-- insert into logs_inserts (id_registro
-		-- nombre_tabla, accion, fecha, hora, rol_nivel, motor_db ) VALUES
-		
-		insert into logs_inserts(id_registro, nombre_tabla, accion, fecha, hora, usuario, rol_nivel, motor_db) values
-		( id_of_last, "oficinas", "update", current_date, current_time, current_user
-		, information_schema.enabled_roles , information_schema."attributes");
-
-		
 	
 		raise notice ' ';
 		raise notice 'ok!';
 		raise notice ' ';	
 	
-	
+
 	else
 	
 	raise exception ' SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_oficinas()'
@@ -211,6 +225,117 @@ begin
 end;
 	
 $$ language plpgsql;
+
+
+
+
+
+
+
+
+-- ----------- INSERCION LOGS_INSERTS OFICINAS  ------------
+
+select * from logs_inserts;
+
+
+create or replace function insertar_logs_inserts_oficinas() returns void as $$
+
+
+
+declare
+
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_check_of boolean;
+id_last_of int;
+
+	
+uuid_registro_of uuid;
+nombre_tabla_of varchar := 'oficinas';
+accion_of varchar := 'insert';
+fecha_of date ;
+hora_of time ;
+usuario_of varchar := 'testUsuario';
+rol_nivel_of varchar := 'testRolNivel';
+motor_db_of varchar := 'testMotorDB';
+
+
+
+begin
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Inserción --';
+		raise notice '';
+	
+	
+	
+		
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_check_of := exists(select id from oficinas);
+	
+		-- Comprobacion id
+		if (id_last_check_of = true) then
+			
+			id_last_of := (select max(id) from oficinas);
+		
+		else 
+			
+			id_last_of := 0;
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+		
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, uuid_registro,  nombre_tabla
+		, accion, fecha, hora, usuario, rol_nivel, motor_db) values
+		
+		(id_last_of, uuid_registro_of , nombre_tabla_of , accion_of 
+		, fecha_of , hora_of, usuario_of, rol_nivel_of, motor_db_of);
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+	
+
+		raise notice 'ID Registro: %' , id_last_of;
+		raise notice 'UUID Registro : %', uuid_registro_of;
+		raise notice 'Tabla : %', nombre_tabla_of;
+		raise notice 'Acción : %', accion_of;
+		raise notice 'Fecha : %', fecha_of;
+		raise notice 'Hora : %', hora_of;
+     	raise notice 'Usuario : %', usuario_of;
+        raise notice 'Rol Nivel : %', rol_nivel_of;
+        raise notice 'Motor DB : %', motor_db_of;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+
+
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+
+
 
 
 -- ---------------------------------------------------------------------------

@@ -28,11 +28,11 @@ create table logs_inserts(
 
 	id 					int 		 primary key,
 	id_registro			int 		 not null,
-	uuid_registro 		uuid 		 DEFAULT 	uuid_generate_v4 (),-- 32 digitos hex
+	uuid_registro 		uuid 		 default 	uuid_generate_v4 (),-- 32 digitos hex
 	nombre_tabla		varchar(30)  not null,
 	accion				varchar(30)  not null,
-	fecha				date		 not null,
-	hora 				time		 not null,
+	fecha				date		 default	 current_date,
+	hora 				time		 default	 current_time,
 	usuario				varchar(50)	 not null,
 	rol_nivel			varchar(50),
 	motor_db			varchar(50)
@@ -48,12 +48,12 @@ create table logs_updates(
 
 	id 					int 		 primary key,
 	id_registro			int 		 not null,
-	uuid_registro 		uuid 		 DEFAULT 	uuid_generate_v4 (),-- 32 digitos hex
+	uuid_registro 		uuid 		 default 	uuid_generate_v4 (),-- 32 digitos hex
 	nombre_tabla		varchar(30)  not null,
 	campo_tabla			varchar(50)	 not null,
 	accion				varchar(30)  not null,
-	fecha				date		 not null,
-	hora 				time		 not null,
+	fecha				date		 default	 current_date,
+	hora 				time		 default	 current_time,
 	usuario				varchar(50)	 not null,
 	rol_nivel			varchar(50),
 	motor_db			varchar(50)
@@ -68,11 +68,11 @@ create table logs_deletes(
 
 	id 					int 		 primary key,
 	id_registro			int 		 not null,
-	uuid_registro 		uuid 		 DEFAULT 	uuid_generate_v4 (),-- 32 digitos hex
+	uuid_registro 		uuid 		 default 	uuid_generate_v4 (),-- 32 digitos hex
 	nombre_tabla		varchar(30)  not null,
 	accion				varchar(30)  not null,
-	fecha				date		 not null,
-	hora 				time		 not null,
+	fecha				date		 default	 current_date,
+	hora 				time		 default	 current_time,
 	usuario				varchar(50)	 not null,
 	rol_nivel			varchar(50),
 	motor_db			varchar(50)

@@ -48,6 +48,7 @@ select insertar_registro_oficinas(
 'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'
 );
 
+select insertar_logs_inserts_oficinas();
 
 select listado_oficinas();
 select listado_logs_inserts();

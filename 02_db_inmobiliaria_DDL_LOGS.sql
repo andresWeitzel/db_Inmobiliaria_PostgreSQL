@@ -33,9 +33,10 @@ create table logs_inserts(
 	accion				varchar(30)  not null,
 	fecha				date		 default	 current_date,
 	hora 				time		 default	 current_time,
-	usuario				varchar(50)	 not null,
-	rol_nivel			varchar(50),
-	motor_db			varchar(50)
+	usuario				varchar(50)	 default 	 current_user, -- lo mismo que current_role
+	usuario_sesion		varchar(50)	 default 	 session_user,
+	db					varchar(50)  default 	 current_catalog,
+	db_version			varchar(100) default 	 version()
 
 );
 
@@ -54,7 +55,7 @@ create table logs_updates(
 	accion				varchar(30)  not null,
 	fecha				date		 default	 current_date,
 	hora 				time		 default	 current_time,
-	usuario				varchar(50)	 not null,
+	usuario				varchar(50)	 default 	 current_user,
 	rol_nivel			varchar(50),
 	motor_db			varchar(50)
 

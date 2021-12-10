@@ -53,7 +53,7 @@ select insertar_logs_inserts_oficinas();
 select listado_oficinas();
 select listado_logs_inserts();
 
-
+select version(); 
 
 /* DESCOMENTAR PARA SU USO
 

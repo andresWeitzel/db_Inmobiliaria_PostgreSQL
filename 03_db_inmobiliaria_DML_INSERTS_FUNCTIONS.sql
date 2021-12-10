@@ -237,7 +237,7 @@ $$ language plpgsql;
 
 select * from logs_inserts;
 
-
+--drop function insertar_logs_inserts_oficinas();
 create or replace function insertar_logs_inserts_oficinas() returns void as $$
 
 
@@ -255,9 +255,10 @@ nombre_tabla_of varchar := 'oficinas';
 accion_of varchar := 'insert';
 fecha_of date ;
 hora_of time ;
-usuario_of varchar := 'testUsuario';
-rol_nivel_of varchar := 'testRolNivel';
-motor_db_of varchar := 'testMotorDB';
+usuario_of varchar;
+usuario_sesion_of varchar;
+db_of varchar;
+db_version_of varchar;
 
 
 
@@ -298,17 +299,22 @@ begin
 		--------------------------------------- INSERCION REGISTRO ----------------------------------------
 	
 	
-		insert into logs_inserts(id_registro, uuid_registro,  nombre_tabla
-		, accion, fecha, hora, usuario, rol_nivel, motor_db) values
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
 		
-		(id_last_of, uuid_registro_of , nombre_tabla_of , accion_of 
-		, fecha_of , hora_of, usuario_of, rol_nivel_of, motor_db_of);
+		(id_last_of , nombre_tabla_of , accion_of);
 	
 	
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
-	
-
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_of := (select uuid_registro from logs_inserts where id_registro = id_last_of);
+		fecha_of := (select fecha from logs_inserts where id_registro = id_last_of);
+		hora_of := (select hora from logs_inserts where id_registro = id_last_of);
+		usuario_of := (select usuario from logs_inserts where id_registro = id_last_of);
+		usuario_sesion_of := (select usuario_sesion from logs_inserts where id_registro = id_last_of);	
+		db_of := (select db from logs_inserts where id_registro = id_last_of);
+	 	db_version_of := (select db_version from logs_inserts where id_registro = id_last_of);
+		
 		raise notice 'ID Registro: %' , id_last_of;
 		raise notice 'UUID Registro : %', uuid_registro_of;
 		raise notice 'Tabla : %', nombre_tabla_of;
@@ -316,8 +322,9 @@ begin
 		raise notice 'Fecha : %', fecha_of;
 		raise notice 'Hora : %', hora_of;
      	raise notice 'Usuario : %', usuario_of;
-        raise notice 'Rol Nivel : %', rol_nivel_of;
-        raise notice 'Motor DB : %', motor_db_of;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
+        raise notice 'DB : %', db_of;
+        raise notice 'Versión DB : %', db_version_of;
 	
 
 		raise notice ' ';

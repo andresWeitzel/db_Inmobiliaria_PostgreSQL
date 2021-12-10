@@ -1,11 +1,21 @@
 # Proyecto db_Inmobiliaria con PostgreSQL.
 
-
 * En Este Proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos con el SGBD PostgreSQL.
-* El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiándome por las informaciones y características del mercado Inmobiliario en Argentina(valores, precios, medidas, léxico, etc).
+* El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiándome por las informaciones y características del mercado Inmobiliario en Argentina (valores, precios, medidas, léxico, etc).
 *  Las páginas de inmobiliaria más conocidas en las que me guíe son zonaprop, re/max y baigún.
 *  Para la gran mayoría de las medidas tomadas en inmuebles me guié en anuncios en MercadoLibre, ya que allí se detallan en mayor cantidad.
 *  Se incluye el pdf guía del proyecto dentro de la documentacion.
+
+</br>
+
+## Descripción Técnica
+
+* Para este proyecto se aplica un Diseño Normalizado, se separan las tablas que contengan varios campos y se aplica la convención de nombres, tanto para tablas como para campos.
+* Para el Modelado se aplican relaciones de Uno a Uno y relaciones de Uno a Varios. Posteriormente a esta descripción se anexa el DER de la db junto con la descripción de Relaciones.
+* Dentro de la Creación y Desarrollo de la sección DDL se aplican todas las Restricciones correspondientes para cada uno de los campos desarrollados, las mismas incluyen los tipos UNIQUE y se aplican los FOREIGN KEY  para la relación de tablas, además de los tipos CHECKS para comprobación de valores de campos.
+* Dentro de la sección del DML se comienza con la Programación de la Base de Datos, generando funciones que nos permitan insertar registros de la forma requerida y deseada.
+* Se aplica un Nivel de Seguridad de Respaldo con la creación de tablas y funciones para almacenar todos los cambios que se generen en la Base de Datos. Es evidente que se podría generar tablas temporales o trabajar con el propio sistema de log de PostgreSql, pero se aplica una administración a Nivel más Bajo de esta db y se crean estas tablas por gusto y manejo. Cabe aclarar que las funciones que se desarrollaron se aplican siempre que se borre, actualice o agregue un registro y se almacena dicha información en tablas individuales
+* El Proyecto está separado por varios archivos .sql enumerados para facilitar la comprensión del desarrollo y la ejecución de los mismos.
 
 
 </br>
@@ -21,7 +31,7 @@
 </br>
 
 
-#### Tabla Descriptiva Entidad-Relación Uno a Muchos (1:N).
+#### Tabla Descriptiva Entidad-Relación Uno a Varios (1:N).
 
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
@@ -110,72 +120,112 @@
 <hr>
 
 ## `Documentación y Guía Del Proyecto`
-#### (Esta Documentación y Guía que Desarrollé es para la Creación, Configuración, Manejo, etc de la Base de Datos db_inmuebles con PostgreSQL en DBeaver. Como así también para el Manejo de los Posibles Errores que pudiesen surgir, manejo de Git, consideraciones y declaraciones del Proyecto, etc. Recomiendo Leerla y Realizar todo paso a paso como se indica en la misma, cualquier aporte o sugerencia, informar al respecto).
+#### (Esta Documentación y Guía que Desarrollé es para la Creación, Configuración, Manejo, etc de la Base de Datos db_inmuebles con PostgreSQL en DBeaver. Como así también para el Desarrollo de este Proyecto, Aplicaciones del Código, Manejo de los Posibles Errores que pudiesen surgir, manejo de Git, Consideraciones y Declaraciones del Proyecto, etc. Recomiendo Leerla y Realizar todo paso a paso como se indica en la misma, cualquier aporte o sugerencia, informar al respecto).
 
 ## Indice
-- [Configuiración y Puesta en Marcha de la Base de Datos.](#configuración-y-puesta-en-marcha-de-la-base-de-datos-db-inmuebles)
 
-- [Configuración del Servidor de Despliegue (Wildfly).](#configuración-del-servidor-de-despliegue-wildfly)
-- [Herramienta Cygwin para el uso de Git.](#uso-de-cygwin)
+  #### Sección 1) Configuración de la Base de Datos
+
+  - [ Paso 1) Configuración y Puesta en Marcha de la Base de Datos.](#paso-1-configuración-y-puesta-en-marcha-de-la-base-de-datos-db-inmuebles)
+
+  - [ Paso 2) Ejecución de los Archivos .SQL .](#paso-2-ejecución-dee-los-archivos-sql)
+
+  
+   #### Sección Apéndice
+   
+   -[ Funciones Implementadas Predefinidas para los Logs del Usuario](#funciones-predefinidas-para-los-logs-del-usuario)
+
 
 
 </br>
 
-## Configuración y Puesta en Marcha de la Base de Datos db_inmuebles.
+## Sección 1) Configuración de la Base de Datos
+
+</br>
+
+### Paso 1) Configuración y Puesta en Marcha de la Base de Datos `db_inmuebles`
 #### (Primeramente deberás descargar el SGDB PostgreSQL , luego algún GDB como por ej. DBeaver y crear la db ).
 
-#### 1) Descarga de DBeaver
-* --> https://dbeaver.io/
-* --> Descargar, Ejecutar e Instalar (Siguiente, Siguiente).
+#### 1.1) Descarga de DBeaver
+* https://dbeaver.io/
+* Descargar, Ejecutar e Instalar (Siguiente, Siguiente).
 
 
-#### 2) Descarga de PostgreSQL
-* -->  https://www.postgresql.org/download/
-* --> Descargar, Ejecutar e Instalar (Siguiente, Siguiente).
+#### 1.2) Descarga de PostgreSQL
+*  https://www.postgresql.org/download/
+*  Descargar, Ejecutar e Instalar (Siguiente, Siguiente).
 
 
-#### 3) Configuración de PostgreSQL en DBeaver (Conexión a PostgreSQL).
-* --> Click sobre la Pestaña Archivo.
-* --> Nuevo
-* --> Database Connection, Siguiente.
-* --> Seleccionar el SGDB PostgreSQL, Siguiente.
-* --> En Propiedades de Conexión dejamos todo por defecto ( Host, Port, Database, etc ).
-* --> Finalizar, ya está la conexión configurada.
+#### 1.3) Configuración de PostgreSQL en DBeaver (Conexión a PostgreSQL).
+* Click sobre la Pestaña Archivo.
+    * --> Nuevo
+    * --> Database Connection, Siguiente.
+    * --> Seleccionar el SGDB PostgreSQL, Siguiente.
+    * --> En Propiedades de Conexión dejamos todo por defecto ( Host, Port, Database, etc ).
+    * --> Finalizar, ya está la conexión configurada.
 
 
-#### 4) Creación de nuestra DB db_inmuebles.
-* --> Se debería haber desplegado la Conexión PostgreSQL, sino desplagar para visualizar 
-* --> Click Der sobre postgres
-* --> Crear, Base de Datos
-* --> En Database Name colocamos db_inmobiliaria.
-* --> En owner Seleccionamos postgres o dejarlo seleccionado por defecto.
-* --> Template database vacío.
-* --> En Encoding Seleccionamos UTF8 o dejarlo seleccionado por defecto.
-* --> Tablespace pg_default o dejarlo seleccionado por defecto.
-* --> Aceptar, ya está la db creada.
+#### 1.4) Creación de nuestra DB `db_inmuebles`.
+#### ( En DBeaver tuve problemas al incluir código sql para la creación de la db, así que vamos a crear la db manualmente)
+* Una vez realizado el paso anterior, se debería haber desplegado la Conexión PostgreSQL, sino desplagar para visualizar 
+*  Click Der sobre postgres
+    * --> Crear, Base de Datos
+    * --> En Database Name colocamos db_inmobiliaria.
+    * --> En owner Seleccionamos postgres o dejarlo seleccionado por defecto.
+    * --> Template database vacío.
+    * --> En Encoding Seleccionamos UTF8 o dejarlo seleccionado por defecto.
+    * --> Tablespace pg_default o dejarlo seleccionado por defecto.
+    * --> Aceptar, ya está la db creada.
 
 </br>
 
-## Uso y Ejecución de los Scripts .sql para la Base de Datos
-#### (Vamos a trabajar con los Archivos sql dentro de DBeaver).
+### Paso 2) Ejecución de los Archivos `.SQL`
+#### (Vamos a trabajar con los Archivos sql dentro de DBeaver, los mismos están enumerados para su orden de ejecución).
 
-#### 1) Primeramente asegurate de haber descargado este Repositorio
+#### 2.1) Importamos los Archivos SQL a DBeaver
+* Click sobre Archivo (Barra Superior)
+    * --> Buscar Archivo Denominado..
+    * --> Seleccionas los .sql y Open.
+    * --> Listo
+ 
 
-#### 2) Importamos los Archivos SQL a DBeaver
-* --> Click sobre Archivo (Barra Superior)
-* --> Buscar Archivo Denominado..
-* --> Seleccionas los .sql y Open.
-* --> Listo
-
-#### 3) Orden de Ejecución de los Scripts
-* --> 1) db_inmobiliaria_DDL.sql
-
-
+#### 2.2) Orden de Ejecución de los Scripts
+* Cada uno de los Archivos están enumerados para que se realice el orden de ejecución correspondiente.
+* 
 
 
 
 
 
+
+
+</br>
+
+## Sección Apéndice
+
+</br>
+
+
+
+### Funciones Predefinidas para los LOGS del Usuario. 
+* Referencia : https://www.postgresql.org/docs/current/functions-info.html
+
+
+| **Tipo de Función** | **Finalidad** |               
+| ------------- | ------------- |
+
+</br>
+
+
+
+
+
+
+
+</br>
+</br>
+</br>
+</br>
 </br>
 
 

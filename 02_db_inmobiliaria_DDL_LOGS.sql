@@ -38,8 +38,27 @@ create table logs_inserts(
 	db					varchar(50)  default 	 current_catalog,
 	db_version			varchar(100) default 	 version()
 
-);
+);                                                 
 
+
+-- ======= Restricciones Tabla logs_inserts ===========
+
+-- UNIQUE ID
+alter table logs_inserts
+add constraint UNIQUE_logs_inserts_id
+unique(id);
+
+-- UNIQUE ID_REGISTRO
+alter table logs_inserts 
+add constraint UNIQUE_logs_inserts_id_registro
+unique(id_registro);
+
+
+-- ---------------------------------------------------------------------------
+
+
+
+-- ---------------------------------------------------------------------------
 
 
 -- ======= TABLA LOGS UPDATES ===========
@@ -55,11 +74,33 @@ create table logs_updates(
 	accion				varchar(30)  not null,
 	fecha				date		 default	 current_date,
 	hora 				time		 default	 current_time,
-	usuario				varchar(50)	 default 	 current_user,
-	rol_nivel			varchar(50),
-	motor_db			varchar(50)
+	usuario				varchar(50)	 default 	 current_user, -- lo mismo que current_role
+	usuario_sesion		varchar(50)	 default 	 session_user,
+	db					varchar(50)  default 	 current_catalog,
+	db_version			varchar(100) default 	 version()
 
 );
+
+
+-- ======= Restricciones Tabla logs_updates ===========
+
+-- UNIQUE ID
+alter table logs_updates
+add constraint UNIQUE_logs_updates_id
+unique(id);
+
+-- UNIQUE ID_REGISTRO
+alter table logs_updates 
+add constraint UNIQUE_logs_updates_id_registro
+unique(id_registro);
+
+-- ---------------------------------------------------------------------------
+
+
+
+
+-- ---------------------------------------------------------------------------
+
 
 
 -- ======= TABLA LOGS DELETES ===========
@@ -71,14 +112,34 @@ create table logs_deletes(
 	id_registro			int 		 not null,
 	uuid_registro 		uuid 		 default 	uuid_generate_v4 (),-- 32 digitos hex
 	nombre_tabla		varchar(30)  not null,
+	campo_tabla			varchar(50)	 not null,
 	accion				varchar(30)  not null,
 	fecha				date		 default	 current_date,
 	hora 				time		 default	 current_time,
-	usuario				varchar(50)	 not null,
-	rol_nivel			varchar(50),
-	motor_db			varchar(50)
+	usuario				varchar(50)	 default 	 current_user, -- lo mismo que current_role
+	usuario_sesion		varchar(50)	 default 	 session_user,
+	db					varchar(50)  default 	 current_catalog,
+	db_version			varchar(100) default 	 version()
 
 );
+
+-- ======= Restricciones Tabla logs_deletes ===========
+
+-- UNIQUE ID
+alter table logs_deletes
+add constraint UNIQUE_logs_deletes_id
+unique(id);
+
+-- UNIQUE ID_REGISTRO
+alter table logs_deletes 
+add constraint UNIQUE_logs_deletes_id_registro
+unique(id_registro);
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
 
 
 

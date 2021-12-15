@@ -35,11 +35,16 @@ delete from logs_inserts cascade;
 
 -- ---------------------------------------------------------------------------
 
+-- ==================================
 -- ======= TABLA OFICINAS ===========
+-- ==================================
+
 
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'oficinas';
 
+
+/* DESCOMENTAR PARA SU USO
 
 
 -- ----------- INSERCIÓN DE 1 REGISTRO ------------------
@@ -48,14 +53,9 @@ select insertar_registro_oficinas(
 'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'
 );
 
-select insertar_logs_inserts_oficinas();
-
 select listado_oficinas();
 select listado_logs_inserts();
 
-select version(); 
-
-/* DESCOMENTAR PARA SU USO
 
 
 
@@ -68,7 +68,7 @@ select insertar_registros_oficinas(
 );
 
 select listado_oficinas();
-
+select listado_logs_inserts();
 
 
 
@@ -82,6 +82,11 @@ select insertar_registros_oficinas(
 );
 
 select listado_oficinas();
+select listado_logs_inserts();
+
+
+*/
+
 
 
 
@@ -97,40 +102,35 @@ select insertar_registros_oficinas(
 
 
 select listado_oficinas();
+select listado_logs_inserts();
 
 
 -- ---------------------------------------------------------------------------
 
 -- ---------------------------------------------------------------------------
-
--- ======= TABLA OFICINAS_DETALLES ===========
-
-
--- ----------- INSERCIÓN DE 1 REGISTRO ------------------
-*/
 
 
 /*
+-- ===========================================
+-- ======= TABLA OFICINAS_DETALLES ===========
+-- ===========================================
+
+
+
+-- ----------- INSERCIÓN DE 1 REGISTRO ------------------
 
 select insertar_registro_oficinas_detalles(
-1 , 'Retiro' , 'EJECUTIVA' , 'ALQUILADA' , 140.0 , 6 , 4 , 15 , 'www.inmobiliariaDuckson-torre-Nepkiul.com.ar'
+1::int , 'Retiro'::varchar , 'EJECUTIVA'::tipo_oficina_enum , 'ALQUILADA'::estado_oficina_enum , 140.0::decimal , 6::smallint , 4::smallint , 15::smallint 
+, 'www.inmobiliariaDuckson-torre-Nepkiul.com.ar'::varchar
 );
 
 
 select listado_oficinas_detalles();
 
 
-*/
-
-
-
-/*
-
-
-
 -- ---------------------------------------------------------------------------
 
--- ======= TABLA OFICINAS_DETALLES ===========
+-- ----------- INSERCIÓN DE 2 REGISTROS ------------------
 
 insert into oficinas_detalles (id, id_oficina, localidad, tipo_oficina, estado_oficina, superficie_total
 , cantidad_ambientes, cantidad_sanitarios, antiguedad, sitio_web) values
@@ -138,11 +138,45 @@ insert into oficinas_detalles (id, id_oficina, localidad, tipo_oficina, estado_o
 (2 , 2 , 'Belgrano' , 'PEQUEÑA' , 'PROPIA' , 35.0 , 1 , 1 , 35 , 'www.inmobiliariaDuckson-torre-Alem.com.ar'),
 (3 , 3 , 'Balvanera' , 'ESTANDAR' , 'PROPIA' , 60.0 , 2 , 4 , 22 , 'www.inmobiliariaDuckson-oficina-principal.com.ar');
 
+select listado_oficinas_detalles();
+
+
+*/
+
+-- ---------------------------------------------------------------------------
 
 
 -- ---------------------------------------------------------------------------
 
+-- ==================================
+-- ======= TABLA EMPLEADOS ===========
+-- ==================================
+
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'empleados';
+
+
+select listado_oficinas();
+select * from empleados;
+
+select insertar_registro_empleados(9, 'Juan', 'Contreras', 28, '1992/9/9'
+, 'DNI', '37998637', '30-37998637-9', 'Av. Las Heras 7567', '1145367655', '-' 
+, 'juanContreras.iptre@gmail.com', 'Agente Inmobiliario/ Gerente', 4 
+, '2018/4/2', 78000);
+
+select listado_empleados();
+select listado_logs_inserts();
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+/*
+-- ================================================
 -- ======= TABLA PROPIETARIOS_INMUEBLES ===========
+-- ================================================
+
 
 select * from propietarios_inmuebles;
 

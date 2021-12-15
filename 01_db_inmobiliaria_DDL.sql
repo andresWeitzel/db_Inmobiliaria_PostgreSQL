@@ -106,6 +106,7 @@ unique(nro_telefono);
 create type estado_oficina_enum as enum('ALQUILADA','PROPIA'); 
 create type tipo_oficina_enum as enum('PEQUEÑA','ESTANDAR','EJECUTIVA'); 
 
+-- select *  from pg_enum;
 
 create table oficinas_detalles(
 	

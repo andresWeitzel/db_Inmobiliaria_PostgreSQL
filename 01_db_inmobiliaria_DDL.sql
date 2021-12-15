@@ -171,6 +171,71 @@ check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
 
 -- ---------------------------------------------------------------------------
 
+-- ======= TABLA PROPIETARIOS_INMUEBLES ===========
+
+
+create table propietarios_inmuebles(
+
+id int primary key,
+nombre varchar(40) not null,
+apellido varchar(40) not null,
+edad int not null,
+fecha_nacimiento date not null,
+tipo_documento varchar(20) not null,
+nro_documento varchar(20) not null,
+direccion varchar(40) not null, 
+nro_telefono_principal varchar(40) not null,
+nro_telefono_secundario varchar(40),
+email varchar(40)
+
+);
+
+-- ======= Restricciones Tabla propietarios_inmuebles ===========
+
+-- UNIQUE ID
+alter table propietarios_inmuebles 
+add constraint UNIQUE_propietarios_inmuebles_id
+unique(id);
+
+
+
+-- UNIQUE NOMBRE/APELLIDO
+alter table propietarios_inmuebles 
+add constraint UNIQUE_propietarios_inmuebles_nombre_apellido
+unique(nombre,apellido);
+
+
+-- CHECK EDAD
+alter table propietarios_inmuebles 
+add constraint CHECK_propietarios_inmuebles_edad
+check (edad >= 18);
+
+
+-- UNIQUE TELEFONO
+alter table propietarios_inmuebles
+add constraint UNIQUE_propietarios_inmuebles_nro_telefono_principal
+unique(nro_telefono_principal);
+
+
+
+-- CHECK FECHA_NACIMIENTO
+alter table propietarios_inmuebles 
+add constraint CHECK_propietarios_inmuebles_fecha_nacimiento
+check (current_date > fecha_nacimiento);
+
+
+--- UNIQUE NRO_DOCUMENTO
+alter table propietarios_inmuebles 
+add constraint UNIQUE_propietarios_inmuebles_nro_documento
+unique(nro_documento);
+
+
+
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+
 
 -- ======= TABLA EMPLEADOS ===========
 
@@ -319,72 +384,6 @@ check (current_date > fecha_nacimiento and current_date >= fecha_alta );
 
 -- ---------------------------------------------------------------------------
 
-
-
-
--- ---------------------------------------------------------------------------
-
--- ======= TABLA PROPIETARIOS_INMUEBLES ===========
-
-
-create table propietarios_inmuebles(
-
-id int primary key,
-nombre varchar(40) not null,
-apellido varchar(40) not null,
-edad int not null,
-fecha_nacimiento date not null,
-tipo_documento varchar(20) not null,
-nro_documento varchar(20) not null,
-direccion varchar(40) not null, 
-nro_telefono_principal varchar(40) not null,
-nro_telefono_secundario varchar(40),
-email varchar(40)
-
-);
-
--- ======= Restricciones Tabla propietarios_inmuebles ===========
-
--- UNIQUE ID
-alter table propietarios_inmuebles 
-add constraint UNIQUE_propietarios_inmuebles_id
-unique(id);
-
-
-
--- UNIQUE NOMBRE/APELLIDO
-alter table propietarios_inmuebles 
-add constraint UNIQUE_propietarios_inmuebles_nombre_apellido
-unique(nombre,apellido);
-
-
--- CHECK EDAD
-alter table propietarios_inmuebles 
-add constraint CHECK_propietarios_inmuebles_edad
-check (edad >= 18);
-
-
--- UNIQUE TELEFONO
-alter table propietarios_inmuebles
-add constraint UNIQUE_propietarios_inmuebles_nro_telefono_principal
-unique(nro_telefono_principal);
-
-
-
--- CHECK FECHA_NACIMIENTO
-alter table propietarios_inmuebles 
-add constraint CHECK_propietarios_inmuebles_fecha_nacimiento
-check (current_date > fecha_nacimiento);
-
-
---- UNIQUE NRO_DOCUMENTO
-alter table propietarios_inmuebles 
-add constraint UNIQUE_propietarios_inmuebles_nro_documento
-unique(nro_documento);
-
-
-
--- ---------------------------------------------------------------------------
 
 
 -- ---------------------------------------------------------------------------

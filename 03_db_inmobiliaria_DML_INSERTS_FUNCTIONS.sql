@@ -2429,6 +2429,8 @@ begin
 		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
 		-- -------------------------------------------------------------------------------------
 
+
+	
 	
 		
 		-- ================================================================
@@ -2560,7 +2562,266 @@ begin
 		-- -------------------------------------------------------------------------------------
 
 	
+			
+		
+		-- ================================================================
+		-- ===================== TERCER REGISTRO =========================
+		-- ================================================================
+
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA OFICINAS 3ER REGISTRO -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+		--------------------------- INSERCION 3ER REGISTRO ----------------------------------------
+		
+		insert into empleados (id_oficina, nombre, apellido, edad, fecha_nacimiento
+		, tipo_documento, nro_documento, cuil, direccion, nro_telefono_principal
+		, nro_telefono_secundario, email, cargo, antiguedad, fecha_ingreso, salario_anual)
+		values
+		(id_of_input_03, nombre_input_03, apellido_input_03, edad_input_03
+		, fecha_nac_input_03, tipo_doc_input_03, nro_doc_input_03, cuil_input_03
+		, direc_input_03, nro_tel_princ_input_03, nro_tel_sec_input_03
+		, email_input_03, cargo_input_03, antig_input_03, fecha_ingreso_input_03
+		, sal_anual_input_03);
+
+		---------------------------- FIN INSERCION 3ER REGISTRO ----------------------------------------
+
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_check_of := exists(select id from empleados);
 	
+		-- Comprobacion id
+		if (id_last_check_of = true) then
+			
+			id_last_of := (select max(id) from empleados);
+		
+		else 
+			
+			id_last_of := 0;
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Inserción 03 Tabla "empleados" --';
+		raise notice '';
+	
+		raise notice 'Id : %',id_last_of;
+		raise notice 'Id Oficina : %',id_of_input_03;
+		raise notice 'Nombre : %', nombre_input_03;
+		raise notice 'Apellido : %', apellido_input_03;
+		raise notice 'Edad : %', edad_input_03;
+		raise notice 'Fecha Nacimiento : %', fecha_nac_input_03;
+		raise notice 'Tipo de Documento : %', tipo_doc_input_03;
+		raise notice 'Número de Documento : %', nro_doc_input_03;
+		raise notice 'Cuil : %', cuil_input_03;
+		raise notice 'Dirección : %', direc_input_03;
+		raise notice 'Nro Telefono Principal : %', nro_tel_princ_input_03;
+		raise notice 'Nro Telefono Secundario : %', nro_tel_sec_input_03;
+		raise notice 'Email : %', email_input_03;
+		raise notice 'Cargo : %', cargo_input_03;
+		raise notice 'Antiguedad : %', antig_input_03;
+		raise notice 'Fecha de Ingreso  : %', fecha_ingreso_input_03;
+		raise notice 'Salario Anual : %', sal_anual_input_03;
+		
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- FIN TABLA EMPLEADOS 3ER REGISTRO -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+			
+		
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+		------------------------------INSERCION 3ER REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_of , nombre_tabla_of , accion_of);
+	
+	
+		----------------------------- FIN INSERCION 3ER REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_of := (select uuid_registro from logs_inserts where id_registro = id_last_of);
+		fecha_of := (select fecha from logs_inserts where id_registro = id_last_of);
+		hora_of := (select hora from logs_inserts where id_registro = id_last_of);
+		usuario_of := (select usuario from logs_inserts where id_registro = id_last_of);
+		usuario_sesion_of := (select usuario_sesion from logs_inserts where id_registro = id_last_of);	
+		db_of := (select db from logs_inserts where id_registro = id_last_of);
+	 	db_version_of := (select db_version from logs_inserts where id_registro = id_last_of);
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Inserción 03 Tabla "logs_inserts" --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_last_of;
+		raise notice 'UUID Registro : %', uuid_registro_of;
+		raise notice 'Tabla : %', nombre_tabla_of;
+		raise notice 'Acción : %', accion_of;
+		raise notice 'Fecha : %', fecha_of;
+		raise notice 'Hora : %', hora_of;
+     	raise notice 'Usuario : %', usuario_of;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
+        raise notice 'DB : %', db_of;
+        raise notice 'Versión DB : %', db_version_of;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+	
+			
+		
+		-- ================================================================
+		-- ===================== CUARTO REGISTRO =========================
+		-- ================================================================
+
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA OFICINAS 4TO REGISTRO -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+		--------------------------- INSERCION 4TO REGISTRO ----------------------------------------
+		
+		insert into empleados (id_oficina, nombre, apellido, edad, fecha_nacimiento
+		, tipo_documento, nro_documento, cuil, direccion, nro_telefono_principal
+		, nro_telefono_secundario, email, cargo, antiguedad, fecha_ingreso, salario_anual)
+		values
+		(id_of_input_04, nombre_input_04, apellido_input_04, edad_input_04
+		, fecha_nac_input_04, tipo_doc_input_04, nro_doc_input_04, cuil_input_04
+		, direc_input_04, nro_tel_princ_input_04, nro_tel_sec_input_04
+		, email_input_04, cargo_input_04, antig_input_04, fecha_ingreso_input_04
+		, sal_anual_input_04);
+
+		---------------------------- FIN INSERCION 4TO REGISTRO ----------------------------------------
+
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_check_of := exists(select id from empleados);
+	
+		-- Comprobacion id
+		if (id_last_check_of = true) then
+			
+			id_last_of := (select max(id) from empleados);
+		
+		else 
+			
+			id_last_of := 0;
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Inserción 04 Tabla "empleados" --';
+		raise notice '';
+	
+		raise notice 'Id : %',id_last_of;
+		raise notice 'Id Oficina : %',id_of_input_04;
+		raise notice 'Nombre : %', nombre_input_04;
+		raise notice 'Apellido : %', apellido_input_04;
+		raise notice 'Edad : %', edad_input_04;
+		raise notice 'Fecha Nacimiento : %', fecha_nac_input_04;
+		raise notice 'Tipo de Documento : %', tipo_doc_input_04;
+		raise notice 'Número de Documento : %', nro_doc_input_04;
+		raise notice 'Cuil : %', cuil_input_04;
+		raise notice 'Dirección : %', direc_input_04;
+		raise notice 'Nro Telefono Principal : %', nro_tel_princ_input_04;
+		raise notice 'Nro Telefono Secundario : %', nro_tel_sec_input_04;
+		raise notice 'Email : %', email_input_04;
+		raise notice 'Cargo : %', cargo_input_04;
+		raise notice 'Antiguedad : %', antig_input_04;
+		raise notice 'Fecha de Ingreso  : %', fecha_ingreso_input_04;
+		raise notice 'Salario Anual : %', sal_anual_input_04;
+		
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- FIN TABLA EMPLEADOS 4TO REGISTRO -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+			
+		
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+		------------------------------INSERCION 4TO REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_of , nombre_tabla_of , accion_of);
+	
+	
+		----------------------------- FIN INSERCION 4TO REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_of := (select uuid_registro from logs_inserts where id_registro = id_last_of);
+		fecha_of := (select fecha from logs_inserts where id_registro = id_last_of);
+		hora_of := (select hora from logs_inserts where id_registro = id_last_of);
+		usuario_of := (select usuario from logs_inserts where id_registro = id_last_of);
+		usuario_sesion_of := (select usuario_sesion from logs_inserts where id_registro = id_last_of);	
+		db_of := (select db from logs_inserts where id_registro = id_last_of);
+	 	db_version_of := (select db_version from logs_inserts where id_registro = id_last_of);
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Inserción 04 Tabla "logs_inserts" --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_last_of;
+		raise notice 'UUID Registro : %', uuid_registro_of;
+		raise notice 'Tabla : %', nombre_tabla_of;
+		raise notice 'Acción : %', accion_of;
+		raise notice 'Fecha : %', fecha_of;
+		raise notice 'Hora : %', hora_of;
+     	raise notice 'Usuario : %', usuario_of;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
+        raise notice 'DB : %', db_of;
+        raise notice 'Versión DB : %', db_version_of;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
 	
 	
 

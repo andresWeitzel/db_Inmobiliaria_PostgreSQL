@@ -146,7 +146,9 @@ unique(id_registro);
 
 -- ======== TODOS LOS ID´S PK DE LAS TABLAS COMO AUTO_INCREMENT =======
 
-alter table logs_inserts alter id set default nextval('id_secuencia');
-alter table logs_updates alter id set default nextval('id_secuencia');
-alter table logs_deletes alter id set default nextval('id_secuencia');
+create sequence id_secuencia_logs;
+
+alter table logs_inserts alter id set default nextval('id_secuencia_logs');
+alter table logs_updates alter id set default nextval('id_secuencia_logs');
+alter table logs_deletes alter id set default nextval('id_secuencia_logs');
 

@@ -147,46 +147,90 @@ select listado_oficinas();
 select listado_empleados();
 
 
-delete from empleados cascade;
+--delete from empleados cascade;
 
 -- Oficina 1 (Torre San Vicente)
 select insertar_registros_empleados(
-39, 'Macarena', 'Gutierrez', 32, '1989/04/06', 'DNI', '334565243'
+1, 'Macarena', 'Gutierrez', 32, '1989/04/06', 'DNI', '334565243'
 , '12-334565243-7', 'Av. Gaona 352', '1164575222', '1164575222'
 , 'maca.gutieerez756@hotmail.com', 'Administradora', 2 
 , '2019/03/01', 45000
-, 39 , 'marcos', 'Castro', 45, '1971/05/01', 'DNI', '48967156'
+, 1 , 'marcos', 'Castro', 45, '1971/05/01', 'DNI', '48967156'
 ,'33489671564', 'Figueroa Alcorta 22', '1178654356', '+5491178654356'
-, 'marcosCastro2002_lop@hotmail.com', 'Agente Inmobiliario(Gerente)'
-, 4, '2017/09/6', 150000
-, 39 , 'José', 'bastituta', 34, '1988/09/07', 'DNI', '409876546'
+, 'marcosCastro2002_lop@hotmail.com', 'Agente Inmobiliario(Gerente)', 4
+, '2017/09/6', 150000
+, 1 , 'José', 'bastituta', 34, '1988/09/07', 'DNI', '409876546'
 , '12409876546-0', 'San Acrosio 15781', '1157670000', '+5491157670000'
-, 'joseBastituta_88@gmail.com', 'Agente Inmobiliario(Vendedor)'
-, 1, '2020/07/12', 65000
-, 39, 'Juan', 'Contreras', 28, '1992/9/9'
-, 'DNI', '37998637', '30-37998637-9', 'Av. Las Heras 7567', '1145367655', '-' 
-, 'juanContreras.iptre@gmail.com', 'Agente Inmobiliario/ Gerente', 4 
+, 'joseBastituta_88@gmail.com', 'Agente Inmobiliario(Vendedor)', 1
+, '2020/07/12', 65000
+, 1, 'Juan', 'Contreras', 28, '1992/9/9'
+, 'DNI', '37998637', '30-37998637-9', 'Av. Las Heras 7567', '1145367655'
+, '-' , 'juanContreras.iptre@gmail.com', 'Agente Inmobiliario/ Gerente', 4 
 , '2018/4/2', 78000
 );
 
+--Oficina 2 (Edificio Torre Alem)
+select insertar_registros_empleados(
+2, 'Damian', 'gutierrez', 39, '1978/09/14', 'DNI', '33869556', '20-33869556-3'
+, 'Av Alberdi 05', '+5491176844456', '+5491157684445', 'damian_gut.756@gmail.com'
+, 'Agente Inmobiliario(Gerente)', 3, '2018/3/4', 139000
+, 2, 'Marcelo', 'Perez', 28, '1988/03/17', 'DNI', '39345679', '12-39345679-9'
+, 'Carabobo 06', '+5491138765433', '-', 'MarceloPerez@gmail.com'
+, 'Administrador', 2, '2019/04/14', 56000
+, 2, 'Jimena', 'D Ambrosio', 37, '1991/11/06', 'DNI', '417896537','2-417896537-2'
+, 'Valentin Figueroa 33', '1175680377', '+5491175680338', 'lic_DAmbrosio@gmail.com'
+, 'Agente Inmobiliario(Vendedora)', 3, '2018/08/14', 71000 
+, 2, 'Carlos', 'Gustamante', 31, '1982/04/03', 'DNI', '290076726', '11-290076726-2'
+, 'Av. Figueroa Alcorta 22', '1145639987', '-', 'c.gustamante@gmail.com'
+, 'Administrador', 2, '2019/12/02', 57000
+);
+
+
+-- Oficina 3 (Oficina Comercial Principal)
+select insertar_registros_empleados(
+3,'Sofia', 'Aguilar', 35, '1981/07/01', 'DNI', '33456733', '8-33456733-9'
+, 'Av. Corrientes 2564', '1175678844', '+5491130928783', 'lic_sofiaAguilar@gmail.com'
+, 'Agente Inmobiliario(Gerenta)', 3, '2018/08/02', 156000
+, 3, 'Luis', 'Gonzalez', 26, '1991/09/21', 'DNI', '397865432', '56-397865432-99'
+, 'La Pampa 22', '+549113764522', '-', 'luisGonzalez_jsu@gmail.com', 'Administrador', 2
+, '2019/07/12', 50000
+, 3, 'Marcelo', 'Castro', 28, '1989/04/06', 'DNI', '39886386', '14-39886386-5'
+, 'Los Patos 123', '+549118567453', '+549118567453', 'marcelocastro.746_jj@gmail.com'
+, 'Administrador', 2, '2019/02/11', 51000
+, 3,  'Juan', 'Notowski', 41, '1988/02/21', 'DNI', '432765411', '22-432765411-93'
+, 'Av Rivadavia 9100', '+5491175680827', '+5491175680827', 'notowski_Juan_7238@gmail.com'
+, 'Agente Inmobiliario(Vendedor)', 2, '2019/04/22', 74000
+);
+
+-- Oficina 4 (Oficinas de Gestión Le Bluen)
+select insertar_registros_empleados(
+4,'Marcos', 'Norwey', 39, '1967/10/06', 'DNI', '27888651', '22-27888651-5'
+, 'Entre Ríos 222', '1176874567', '1176874567', 'MarcosNorWorkllo@gmail.com'
+, 'Gerente', 6, '2015/3/1', 14000
+, 4, 'Micaela', 'Fernandez', 24, '1997/03/02', 'DNI', '299765234', '19-299765234-2'
+, 'Av. Acoyte 33', '+5491136547766', '+5491136547766', 'micaela.fernandez.97@gmail.com'
+, 'Administradora', 1, '2020/04/09', 44000
+, 4, 'Antonio', 'Torres', 26, '1995/4/16', 'DNI', '38223344', '19-38223344-1'
+, 'Azul 12', '+54911987365', '-', 'antonioJose_cabj@gmail.com', 'Administrador', 3
+, '2018/01/09', 55000
+, 4,  'Ramon', 'Farias', 44, '1977/09/18', 'DNI', '50456789', '11-50456789-0'
+, 'Castro Barros 937', '118765541', '-', 'ramonFarias@gmail.com'
+, 'Administrador', 5, '2015/06/12', 80000
+);
+
+select listado_oficinas();
 select listado_empleados();
 select listado_logs_inserts();
 
 
 /*
--- Oficina 1 (Torre San Vicente)
-insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
-, tipo_documento, nro_documento, cuil, direccion, nro_telefono_principal, nro_telefono_secundario
-, email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
-(1, 1, 'marcos', 'Castro', 45, '1971/05/01', 'DNI', '48967156','33489671564', 'Figueroa Alcorta 22'
-, '1178654356', '+5491178654356', 'marcosCastro2002_lop@hotmail.com', 'Agente Inmobiliario(Gerente)'
-, 4, '2017/09/6', 150000 ),
-(2, 1, 'Luciana', 'martinez', 23, '1999/07/12', 'DNI', '37997256', '32-37997256-9', 'Av. Corrientes 234'
-, '11 74568399', '-', 'lu_martinez_trabajo@gmail.com', 'Administradora'
-, 1, '2020/10/09', 55000 ),
-(3, 1, 'José', 'bastituta', 34, '1988/09/07', 'DNI', '409876546', '12409876546-0', 'San Acrosio 15781'
-, '1157670000', '+5491157670000', 'joseBastituta_88@gmail.com', 'Agente Inmobiliario(Vendedor)'
-, 1, '2020/07/12', 65000 );
+-- ======= TABLA EMPLEADOS ===========
+
+
+(9, 3, 'Juan', 'Notowski', 41, '1988/02/21', 'DNI', '432765411', '22-432765411-93', 'Av Rivadavia 9100'
+, '+5491175680827', '+5491175680827', 'notowski_Juan_7238@gmail.com', 'Agente Inmobiliario(Vendedor)'
+, 2, '2019/04/22', 74000 );
+
 
 */
 
@@ -404,42 +448,6 @@ insert into servicios_inmuebles (id, id_oficina, tipo_comercial, tipo_vivienda, 
 
 
 -- ---------------------------------------------------------------------------
-
--- ======= TABLA EMPLEADOS ===========
-
-select * from empleados;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'empleados';
-
-
--- Oficina 2 (Edificio Torre Alem)
-insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
-, tipo_documento, nro_documento, cuil, direccion, nro_telefono_principal, nro_telefono_secundario
-, email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
-(4, 2, 'Damian', 'gutierrez', 39, '1978/09/14', 'DNI', '33869556', '20-33869556-3', 'Av Alberdi 05'
-, '+5491176844456', '+5491157684445', 'damian_gut.756@gmail.com', 'Agente Inmobiliario(Gerente)'
-, 3, '2018/3/4', 139000 ),
-(5, 2, 'Marcelo', 'Perez', 28, '1988/03/17', 'DNI', '39345679', '12-39345679-9', 'Carabobo 06'
-, '+5491138765433', '-', 'MarceloPerez@gmail.com', 'Administrador'
-, 2, '2019/04/14', 56000 ),
-(6, 2, 'Jimena', 'D Ambrosio', 37, '1991/11/06', 'DNI', '417896537', '2-417896537-2', 'Valentin Figueroa 33'
-, '1175680377', '+5491175680338', 'lic_DAmbrosio@gmail.com', 'Agente Inmobiliario(Vendedora)'
-, 3, '2018/08/14', 71000 );
-
--- Oficina 3 (Oficina Comercial Principal)
-insert into empleados (id, id_oficina, nombre, apellido, edad, fecha_nacimiento
-, tipo_documento, nro_documento, cuil, direccion, nro_telefono_principal, nro_telefono_secundario
-, email, cargo, antiguedad, fecha_ingreso, salario_anual ) values
-(7, 3, 'Sofia', 'Aguilar', 35, '1981/07/01', 'DNI', '33456733', '8-33456733-9', 'Av. Corrientes 2564'
-, '1175678844', '+5491130928783', 'lic_sofiaAguilar@gmail.com', 'Agente Inmobiliario(Gerenta)'
-, 3, '2018/08/02', 156000 ),
-(8, 3, 'Luis', 'Gonzalez', 26, '1991/09/21', 'DNI', '397865432', '56-397865432-99', 'La Pampa 22'
-, '+549113764522', '-', 'luisGonzalez_jsu@gmail.com', 'Administrador'
-, 2, '2019/07/12', 50000 ),
-(9, 3, 'Juan', 'Notowski', 41, '1988/02/21', 'DNI', '432765411', '22-432765411-93', 'Av Rivadavia 9100'
-, '+5491175680827', '+5491175680827', 'notowski_Juan_7238@gmail.com', 'Agente Inmobiliario(Vendedor)'
-, 2, '2019/04/22', 74000 );
 
 
 -- ---------------------------------------------------------------------------

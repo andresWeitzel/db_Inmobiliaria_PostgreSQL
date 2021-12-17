@@ -223,16 +223,39 @@ select listado_empleados();
 select listado_logs_inserts();
 
 
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
+
 /*
--- ======= TABLA EMPLEADOS ===========
+-- ================================================
+-- ======= TABLA PROPIETARIOS_INMUEBLES ===========
+-- ================================================
 
 
-(9, 3, 'Juan', 'Notowski', 41, '1988/02/21', 'DNI', '432765411', '22-432765411-93', 'Av Rivadavia 9100'
-, '+5491175680827', '+5491175680827', 'notowski_Juan_7238@gmail.com', 'Agente Inmobiliario(Vendedor)'
-, 2, '2019/04/22', 74000 );
+select * from propietarios_inmuebles;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'propietarios_inmuebles';
+
+insert into propietarios_inmuebles (id, nombre, apellido, edad, fecha_nacimiento, tipo_documento, nro_documento
+,direccion, nro_telefono_principal, nro_telefono_secundario , email) values
+(1, 'Fabian', 'Gonzalez', 45, '1975/10/09', 'DNI', 45897677, 'San Vicente 879', '+5491156749874', '6578-3786'
+, 'viccentin3k@gmail.com'),
+(2, 'Guillermo', 'Zulenski', 65, '1955/10/09', 'DNI', 35897677, 'Av. Calloa 879', '+5491156788', '+5491156788'
+, 'zulenskiVentas2019@gmail.com');
 
 
-*/
+
+-- https://inmueble.mercadolibre.com.ar/MLA-1106193666-ph-sin-expensas-_JM#position=2&search_layout=grid&type=item&tracking_id=7d3f63be-4762-490b-a886-4cd1ac9c00a6
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
@@ -275,40 +298,7 @@ select listado_oficinas_detalles();
 
 
 */
-
--- ---------------------------------------------------------------------------
-
--- ---------------------------------------------------------------------------
-
-
 /*
--- ================================================
--- ======= TABLA PROPIETARIOS_INMUEBLES ===========
--- ================================================
-
-
-select * from propietarios_inmuebles;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'propietarios_inmuebles';
-
-insert into propietarios_inmuebles (id, nombre, apellido, edad, fecha_nacimiento, tipo_documento, nro_documento
-,direccion, nro_telefono_principal, nro_telefono_secundario , email) values
-(1, 'Fabian', 'Gonzalez', 45, '1975/10/09', 'DNI', 45897677, 'San Vicente 879', '+5491156749874', '6578-3786'
-, 'viccentin3k@gmail.com'),
-(2, 'Guillermo', 'Zulenski', 65, '1955/10/09', 'DNI', 35897677, 'Av. Calloa 879', '+5491156788', '+5491156788'
-, 'zulenskiVentas2019@gmail.com');
-
-
-
--- https://inmueble.mercadolibre.com.ar/MLA-1106193666-ph-sin-expensas-_JM#position=2&search_layout=grid&type=item&tracking_id=7d3f63be-4762-490b-a886-4cd1ac9c00a6
-
-
-
--- ---------------------------------------------------------------------------
-
--- ---------------------------------------------------------------------------
-
 
 -- ======= TABLA INMUEBLES_DESCRIPCIONES ===========
 

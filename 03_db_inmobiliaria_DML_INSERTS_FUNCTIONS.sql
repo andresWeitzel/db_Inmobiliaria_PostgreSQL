@@ -166,18 +166,16 @@ db_version_of varchar;
 
 
 begin
-	
-
 
 	if(
 	(nombre_of_check = true) or (direccion_of_check = true)
 	
 	) then
 	
-		raise exception 'NO SE PUEDE INGRESAR UN REGISTRO REPETIDO '
-						using hint = ' | DETALLE | -->REVISAR NOMBRE Y DIRECCION DE LA OFICINA';
-						
-		
+		raise exception '===== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ===== '
+						using hint=	    '------- REVISAR NOMBRE Y DIRECCION DE LA OFICINA -------';
+										
+									
 	
 	elsif (
 		
@@ -292,12 +290,12 @@ begin
 		raise notice ' ';	
 	
 	
-	
+
 
 	else
 	
-	raise exception ' SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_oficinas()'
-						using hint = ' | DETALLE | --> insertar_registros_oficinas(nombre varchar, direccion varchar, nro_telefono varchar, email varchar); ';
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_oficinas() ====='
+						using hint = '------- insertar_registros_oficinas(nombre varchar, direccion varchar, nro_telefono varchar, email varchar); ------- ';
 		
 	end if;
 	
@@ -354,9 +352,8 @@ db_version_of varchar;
 
 
 
-
-
-
+							
+			
 
 begin
 	
@@ -369,10 +366,9 @@ begin
 	
 	) then
 	
-		raise exception 'NO SE PUEDE INGRESAR UN REGISTRO REPETIDO '
-						using hint = ' | DETALLE | --> REVISAR NOMBRES Y DIRECCIONES DE LA OFICINA';
-						
-		
+				raise exception '===== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ===== '
+						using hint=	    '------- REVISAR NOMBRES Y DIRECCIONES DE LA OFICINA -------';
+					
 	
 	elsif ( 
 		(direccion_of_check_01 = false) and (direccion_of_check_02 = false)
@@ -620,11 +616,10 @@ begin
 	
 		else
 			
-			raise exception ' SE DEBEN AGREGAR TODOS LOS VALORES DE LOS REGISTRO PARA LA FUNCIÓN insertar_registros_oficinas()'
-						using hint = ' | DETALLE | --> insertar_registros_oficinas(
-									nombre_01 varchar, direccion_01 varchar, nro_telefono_01 varchar, email_01 varchar
-									,nombre_02 varchar, direccion_02 varchar, nro_telefono_02 varchar, email_02 varchar); ';
-		
+			raise exception '====== SE DEBEN AGREGAR TODOS LOS VALORES DE LOS REGISTRO PARA LA FUNCIÓN insertar_registros_oficinas() ======'
+						using hint = '------ insertar_registros_oficinas(nombre_01 varchar, direccion_01 varchar, nro_telefono_01 varchar, email_01 varchar,nombre_02 varchar, direccion_02 varchar, nro_telefono_02 varchar, email_02 varchar); -------- ';
+					
+					
 		end if;
 
 	
@@ -708,8 +703,8 @@ begin
 	
 	) then
 	
-		raise exception 'NO SE PUEDE INGRESAR UN REGISTRO REPETIDO '
-						using hint = ' | DETALLE | --> REVISAR NOMBRES Y DIRECCIONES DE LA OFICINA';
+		raise exception ' ====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ======'
+						using hint = '------ REVISAR NOMBRES Y DIRECCIONES DE LA OFICINA ------';
 						
 		
 	
@@ -1066,11 +1061,8 @@ begin
 	
 		else
 			
-			raise exception ' SE DEBEN AGREGAR TODOS LOS VALORES DE LOS REGISTROS PARA LA FUNCIÓN insertar_registros_oficinas()'
-							using hint = ' | DETALLE | --> insertar_registros_oficinas(
-										nombre_01 varchar, direccion_01 varchar, nro_telefono_01 varchar, email_01 varchar
-										,nombre_02 varchar, direccion_02 varchar, nro_telefono_02 varchar, email_02 varchar
-										,nombre_03 varchar, direccion_03 varchar, nro_telefono_03 varchar, email_03 varchar); ';
+			raise exception '====== SE DEBEN AGREGAR TODOS LOS VALORES DE LOS REGISTROS PARA LA FUNCIÓN insertar_registros_oficinas() ========'
+							using hint = '--------- insertar_registros_oficinas(nombre_01 varchar, direccion_01 varchar, nro_telefono_01 varchar, email_01 varchar,nombre_02 varchar, direccion_02 varchar, nro_telefono_02 varchar, email_02 varchar,nombre_03 varchar, direccion_03 varchar, nro_telefono_03 varchar, email_03 varchar); -----------';
 			
 		end if;
 	
@@ -1080,8 +1072,15 @@ end;
 $$ language plpgsql;
 
 
+
+
+
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
+
+
+
 
 
 
@@ -1142,26 +1141,33 @@ db_version_of varchar;
 begin
 	
 	if(
-	--Nombre y direccion repetida
 	((nombre_of_check_01 = true) and (direccion_of_check_01 = true))
-	or ((nombre_of_check_02 = true) and (direccion_of_check_02 = true))
-	or ((nombre_of_check_03 = true) and (direccion_of_check_03 = true))
-	or ((dir_input_01 = dir_input_02) or (dir_input_01 = dir_input_03) or (dir_input_01 = dir_input_04)) 
-	or ((dir_input_02 = dir_input_03) or (dir_input_02 = dir_input_04) or (dir_input_03 = dir_input_04))
+	or 
+	((nombre_of_check_02 = true) and (direccion_of_check_02 = true))
+	or 
+	((nombre_of_check_03 = true) and (direccion_of_check_03 = true))
+	or 
+	((dir_input_01 = dir_input_02) or (dir_input_01 = dir_input_03) or (dir_input_01 = dir_input_04)) 
+	or 
+	((dir_input_02 = dir_input_03) or (dir_input_02 = dir_input_04) or (dir_input_03 = dir_input_04))
 	
 	) then
 	
-		raise exception 'NO SE PUEDE INGRESAR UN REGISTRO REPETIDO '
-						using hint = ' | DETALLE | --> REVISAR NOMBRES Y DIRECCIONES DE LA OFICINA';
+		raise exception '====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========='
+						using hint = '------- REVISAR NOMBRES Y DIRECCIONES DE LA OFICINA ---------';
 						
 		
 	
 	elsif ( 
 		((direccion_of_check_01 = false) and (direccion_of_check_02 = false)) 
-		and ((direccion_of_check_03 = false) and (direccion_of_check_04 = false))
-		and nombre_input_01 <> '' and dir_input_01 <> '' and nro_tel_input_01 <> '' and email_input_01 <> ''
-		and nombre_input_02 <> '' and dir_input_02 <> '' and nro_tel_input_02 <> '' and email_input_02 <> ''
-		and nombre_input_03 <> '' and dir_input_03 <> '' and nro_tel_input_03 <> '' and email_input_03 <> ''
+		and 
+		((direccion_of_check_03 = false) and (direccion_of_check_04 = false))
+		and 
+		((nombre_input_01 <> '') and (dir_input_01 <> '') and (nro_tel_input_01 <> '') and (email_input_01 <> ''))
+		and 
+		((nombre_input_02 <> '') and (dir_input_02 <> '') and (nro_tel_input_02 <> '') and (email_input_02 <> ''))
+		and 
+		((nombre_input_03 <> '') and (dir_input_03 <> '') and (nro_tel_input_03 <> '') and (email_input_03 <> ''))
 		) then
 			
 			raise notice '';
@@ -1494,22 +1500,18 @@ begin
 		raise notice ' ';
 		raise notice 'ok!';
 		raise notice ' ';	
-	
-	
-		
+			
 		-- ------------------------- FIN TABLA LOGS_INSERTS 3ER REGISTRO -------------------------------
 		-- -------------------------------------------------------------------------------------
 
 		
-	
 		-- ----------------------------------------------------------------
 		-- --------------------- CUARTO REGISTRO -------------------------
 		-- ----------------------------------------------------------------
 	
 		-- -------------------------------------------------------------------------------------
 		-- ------------------------- TABLA OFICINAS 4TO REGISTRO -------------------------------
-		
-
+	
 	
 		--------------------------------------- INSERCION 4TO REGISTRO ----------------------------------------
 		
@@ -1613,12 +1615,8 @@ begin
 	
 		else
 			
-			raise exception ' SE DEBEN AGREGAR TODOS LOS VALORES DE LOS REGISTROS PARA LA FUNCIÓN insertar_registros_oficinas()'
-							using hint = ' | DETALLE | --> insertar_registros_oficinas(
-										nombre_01 varchar, direccion_01 varchar, nro_telefono_01 varchar, email_01 varchar
-										,nombre_02 varchar, direccion_02 varchar, nro_telefono_02 varchar, email_02 varchar
-										,nombre_03 varchar, direccion_03 varchar, nro_telefono_03 varchar, email_03 varchar
-										,nombre_04 varchar , direccion_04 varchar, nro_telefono_04 varchar, email_04 varchar); ';
+			raise exception '====== SE DEBEN AGREGAR TODOS LOS VALORES DE LOS REGISTROS PARA LA FUNCIÓN insertar_registros_oficinas() ========'
+							using hint = '---------- insertar_registros_oficinas(nombre_01 varchar, direccion_01 varchar, nro_telefono_01 varchar, email_01 varchar,nombre_02 varchar, direccion_02 varchar, nro_telefono_02 varchar, email_02 varchar,nombre_03 varchar, direccion_03 varchar, nro_telefono_03 varchar, email_03 varchar,nombre_04 varchar , direccion_04 varchar, nro_telefono_04 varchar, email_04 varchar); ---------';
 			
 		end if;
 	
@@ -1814,9 +1812,16 @@ $$ language plpgsql;
 
 
 
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
  
+
+
+
+
+
+
 -- ===================================
 -- ======= TABLA EMPLEADOS ===========
 -- ===================================
@@ -1860,18 +1865,9 @@ $$ language plpgsql;
 
 
 
--- ------------------------------------------------------------------------
+-- =======================================================================
 -- ----------- INSERCION DE 1 REGISTRO TABLA EMPLEADOS -------------------- 
--- ------------------------------------------------------------------------
-/*
-drop function insertar_registro_empleados(
-id_of_input int, nombre_input varchar, apellido_input varchar, edad_input int
-, fecha_nac_input date, tipo_doc_input varchar, nro_doc_input varchar
-, cuil_input varchar, direc_input varchar, nro_tel_princ_input varchar
-, nro_tel_sec_input varchar, email_input varchar, cargo_input varchar
-, antig_input int, fecha_ingreso_input date, sal_anual_input decimal
-);
-*/
+-- =======================================================================
 
 create or replace function insertar_registro_empleados(
 
@@ -1890,18 +1886,16 @@ declare
 -- TABLA EMPLEADOS
 
 -- Comprobamos que exista un id y cual es el ultimo
-id_last_check_of boolean;
+id_last_of_check boolean;
 id_last_of int;
 
 --Nos aseguramos que el id de oficinas exista
 id_of_check boolean := exists(select id from oficinas where id = id_of_input);
 
 -- Nos aseguramos que no exista un registro repetido ademas del check de la db
- nombre_empl_check boolean := exists(select nombre from empleados where nombre = nombre_input);
- apellido_empl_check boolean := exists(select apellido from empleados where apellido = apellido_input);
- nro_doc_empl_check boolean := exists(select nro_documento from empleados where nro_documento = nro_doc_input);
- cuil_empl_check boolean := exists(select cuil from empleados where cuil = cuil_input);
-
+ nombre_apellido_empl_check boolean := exists(select nombre,apellido from empleados where ((nombre = nombre_input) and (apellido = apellido_input)));
+ nro_doc_cuil_empl_check boolean := exists(select nro_documento, cuil from empleados where ((nro_documento = nro_doc_input) and (cuil = cuil_input)));
+ 
 
 
 -- TABLA LOGS_INSERTS
@@ -1924,35 +1918,40 @@ begin
 	
 	if (id_of_check = false)then
 		
-		raise exception 'NO SE PUEDE INGRESAR UN EMPLEADO SIN UNA OFICINA EXISTENTE '
-						using hint = ' | DETALLE | --> REVISAR EL ID DE LA OFICINA ASIGNADA';
+		raise exception '===== NO SE PUEDE INGRESAR UN EMPLEADO SIN UNA OFICINA EXISTENTE ====='
+						using hint = '	--------- REVISAR EL ID DE LA OFICINA ASIGNADA ---------';
 						
-	
 	
 	elsif( 
-		((nombre_empl_check = true) and (apellido_empl_check = true))
-		or ((nro_doc_empl_check = true) and (cuil_empl_check = true))
-	
+		((nombre_apellido_empl_check = true) or (nro_doc_cuil_empl_check = true))
 	) then
 	
-		raise exception 'NO SE PUEDE INGRESAR UN REGISTRO REPETIDO '
-						using hint = ' | DETALLE | --> REVISAR LOS VALORES DE LOS REGISTROS A INGRESAR';
+		raise exception '===== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ===== '
+						using hint=	    '------- REVISAR NOMBRE Y APELLIDO DEL EMPLEADO -------'
+										'------- REVISAR NRO. DE DOCUMENTO Y CUIL DEL EMPLEADO ------';
+									  
 						
 		
-	
 	elsif (
-		(id_of_check = true)
-		or ((nombre_empl_check = false) and (apellido_empl_check = false))
-		or ((nro_doc_empl_check = false) and (cuil_empl_check = false))
-		or ((nombre_input <> '') and (apellido_input <> ''))
-		or ((fecha_nac_input <> null) and (direc_input <> ''))
-		or ((tipo_doc_input <> '') and (nro_doc_input <> ''))
-		or ((nro_tel_princ_input <> '') and (nro_tel_sec_input <> ''))
-		or ((email_input <> '') and (cargo_input <> ''))
-		or ((edad_input < 80) and (edad_input > 0))
-		or ((antig_input < 60) and (antig_input > 0))
-		or (sal_anual_input > 0 and (fecha_ingreso_input <> null))
-		
+		((id_of_check = true))
+		and 
+		((nombre_apellido_empl_check = false) and (nro_doc_cuil_empl_check = false))
+		and 
+		((nombre_input <> '') and (apellido_input <> ''))
+		and 
+		((fecha_nac_input <= current_date) and (direc_input <> ''))
+		and 
+		((tipo_doc_input <> '') and (nro_doc_input <> ''))
+		and
+		((nro_tel_princ_input <> '') and (nro_tel_sec_input <> ''))
+		and 
+		((email_input <> '') and (cargo_input <> ''))
+		and 
+		((edad_input <= 80) and (edad_input > 0))
+		and
+		((antig_input <= 60) and (antig_input > 0))
+		and 
+		((fecha_ingreso_input <= current_date) and (sal_anual_input > 0))
 		) then
 		
 		
@@ -1973,17 +1972,16 @@ begin
 		, nro_doc_input, cuil_input, direc_input, nro_tel_princ_input, nro_tel_sec_input
 		, email_input, cargo_input, antig_input, fecha_ingreso_input, sal_anual_input);
 
-
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 		
 	
 	
 		--------------------------------------- ÚLTIMO ID ----------------------------------------
 		
-		id_last_check_of := exists(select id from empleados);
+		id_last_of_check := exists(select id from empleados);
 	
 		-- Comprobacion id
-		if (id_last_check_of = true) then
+		if (id_last_of_check = true) then
 			
 			id_last_of := (select max(id) from empleados);
 		
@@ -1992,7 +1990,6 @@ begin
 			id_last_of := 0;
 			
 		end if;
-
 		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
 	
 		raise notice '';
@@ -2036,11 +2033,9 @@ begin
 	
 		--------------------------------------- INSERCION REGISTRO ----------------------------------------
 	
-	
 		insert into logs_inserts(id_registro, nombre_tabla , accion) values
 		
 		(id_last_of , nombre_tabla_of , accion_of);
-	
 	
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
@@ -2076,17 +2071,11 @@ begin
 		raise notice ' ';
 		raise notice 'ok!';
 		raise notice ' ';	
-	
-	
-		
-	
 
-
-	
 	else
 	
-	raise exception ' SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_oficinas()'
-						using hint = ' | DETALLE | --> insertar_registros_oficinas(nombre varchar, direccion varchar, nro_telefono varchar, email varchar); ';
+		raise exception '========= SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_oficinas() =========='
+						using hint = '----------- insertar_registros_empleados(id_oficina int, nombre varchar, apellido varchar, edad int, fecha_nacimiento date, tipo_documento varchar, nro_documento varchar, cuil varchar, direccion varchar, nro_telefono_principal varchar, nro_telefono_secundario varchar, email varchar, cargo varchar, antiguedad int, fecha_ingreso date, salario_anual decimal); ----------------';
 		
 	end if;
 	
@@ -2097,14 +2086,19 @@ $$ language plpgsql;
 
 
 
--- ---------------------------------------------------------------------------
+
+
+
 
 -- ---------------------------------------------------------------------------
 
+-- ---------------------------------------------------------------------------
 
--- ------------------------------------------------------------------------
+
+
+-- =========================================================================
 -- ----------- INSERCION DE 4 REGISTROS TABLA EMPLEADOS -------------------- 
--- ------------------------------------------------------------------------
+-- =========================================================================
 
 
 create or replace function insertar_registros_empleados(
@@ -2196,79 +2190,72 @@ begin
 		
 		)then
 		
-		raise exception 'NO SE PUEDE INGRESAR UN EMPLEADO SIN UNA OFICINA EXISTENTE '
-						using hint = ' | DETALLE | --> REVISAR EL ID DE LA OFICINA ASIGNADA';
+		raise exception '======= NO SE PUEDE INGRESAR UN EMPLEADO SIN UNA OFICINA EXISTENTE ======'
+						using hint = '------- REVISAR EL ID DE LA OFICINA ASIGNADA -----------';
 						
 	
 	
 	elsif( 
-		(
-		 	(nombre_apellido_empl_check_01 = true) and (nombre_apellido_empl_check_02 = true) and
-		 	(nombre_apellido_empl_check_03 = true) and (nombre_apellido_empl_check_04 = true)
-		 )
-		 or (
-		 	(nro_doc_cuil_empl_check_01 = true) and (nro_doc_cuil_empl_check_02 = true)and
-		 	(nro_doc_cuil_empl_check_03 = true) and (nro_doc_cuil_empl_check_04 = true) 	
-		 	)
-
+		((nombre_apellido_empl_check_01 = true) or (nro_doc_cuil_empl_check_01 = true))
+		or
+		((nombre_apellido_empl_check_02 = true) or (nro_doc_cuil_empl_check_02 = true))
+		or 
+		((nombre_apellido_empl_check_03 = true) or (nro_doc_cuil_empl_check_03 = true)) 
+		or
+		((nombre_apellido_empl_check_04 = true) or (nro_doc_cuil_empl_check_04 = true))
 	) then
 	
-		raise exception 'NO SE PUEDE INGRESAR UN REGISTRO REPETIDO '
-						using hint = ' | DETALLE | --> REVISAR LOS VALORES DE LOS REGISTROS A INGRESAR';
-						
+	
+		raise exception ' ======== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========='
+						using hint = '------------ REVISAR NOMBRE Y APELLIDO DE LOS EMPLEADO -------------'
+									'------------- REVISAR NRO. DE DOCUMENTO Y CUIL DE LOS EMPLEADO ------------';
 		
 	
 	elsif (
-			(id_of_check_01 = true) and (id_of_check_02 = true)and
-			(id_of_check_03 = true) and (id_of_check_04 = true)
-		or (
-			(nombre_apellido_empl_check_01 = false) and (nombre_apellido_empl_check_02 = false)and
-			(nombre_apellido_empl_check_03 = false) and (nombre_apellido_empl_check_04 = false ))
-		or (
-			(nro_doc_cuil_empl_check_01 = false) and (nro_doc_cuil_empl_check_02 = false)and
-		 	(nro_doc_cuil_empl_check_03 = false) and (nro_doc_cuil_empl_check_04 = false)) 	
-		or (
-			(nombre_input_01 <> '') and (nombre_input_02 <> '') and 
-			(nombre_input_03 <> '') and (nombre_input_04 <> ''))
-		or (
-			(apellido_input_01 <> '') and (apellido_input_02 <> '') and
-			(apellido_input_03 <> '') and (apellido_input_04 <> ''))
-		or (
-			(edad_input_01 <> null) and (edad_input_02 <> null)and
-			(edad_input_03 <> null) and (edad_input_04 <> null))
-		or (
-			(tipo_doc_input_01 <> '') and (tipo_doc_input_02 <> '')and
-			(tipo_doc_input_03 <> '') and (tipo_doc_input_04 <> ''))
-		or (
-			(nro_doc_input_01 <> '') and (nro_doc_input_02 <> '')and
-			(nro_doc_input_03 <> '') and (nro_doc_input_04 <> ''))
-		or (
-			(cuil_input_01 <> '') and (cuil_input_02 <> '')and
-			(cuil_input_03 <> '') and (cuil_input_04 <> ''))
-		or (
-			(direc_input_01 <> '') and (direc_input_02 <> '')and
-			(direc_input_03 <> '') and (direc_input_04 <> ''))
-		or (
-			(nro_tel_princ_input_01 <> '') and (nro_tel_princ_input_02 <> '')and
-			(nro_tel_princ_input_03 <> '') and (nro_tel_princ_input_04 <> ''))
-		or (
-			(nro_tel_sec_input_01 <> '') and (nro_tel_sec_input_02 <> '')and
-			(nro_tel_sec_input_03 <> '') and (nro_tel_sec_input_04 <> ''))
-		or (
-			(email_input_01 <> '') and (email_input_02 <> '')and
-			(email_input_03 <> '') and (email_input_04 <> ''))
-		or (
-			(cargo_input_01 <> '') and (cargo_input_02 <> '')and
-			(cargo_input_03 <> '') and (cargo_input_04 <> ''))
-		or (
-			(antig_input_01 <> null) and (antig_input_02 <> null)and
-			(antig_input_03 <> null) and (antig_input_04 <> null))
-		or (
-			(fecha_ingreso_input_01 <> null) and (fecha_ingreso_input_02 <> null)and
-			(fecha_ingreso_input_03 <> null) and (fecha_ingreso_input_04 <> null))			
-		or (
-			(sal_anual_input_01 <> null) and (sal_anual_input_02 <> null)and
-			(sal_anual_input_03 <> null) and (sal_anual_input_04 <> null))		
+		((id_of_check_01 = true) and (nombre_apellido_empl_check_01 = false) and (nro_doc_cuil_empl_check_01 = false))			
+		or 
+		((id_of_check_02 = true) and (nombre_apellido_empl_check_02 = false) and (nro_doc_cuil_empl_check_02 = false))
+		or 
+		((id_of_check_03 = true) and (nombre_apellido_empl_check_03 = false) and (nro_doc_cuil_empl_check_03 = false))
+		or
+		((id_of_check_04 = true) and (nombre_apellido_empl_check_04 = false) and (nro_doc_cuil_empl_check_04 = false))
+		or 
+		(
+		(nombre_input_01 <> '') and (apellido_input_01 <> '') and (edad_input_01 <> null) and
+		(fecha_nac_input_01 <= current_date) and (tipo_doc_input_01 <> '') and 
+		(nro_doc_input_01 <> '') and (cuil_input_01 <> '') and (direc_input_01 <> '') and 
+		(nro_tel_princ_input_01 <> '') and (nro_tel_sec_input_01 <> '') and 
+		(email_input_01 <> '') and (cargo_input_01 <> '') and (antig_input_01 <> null) and
+		(fecha_ingreso_input_01 <= current_date) and (sal_anual_input_01 <> null)
+		)
+		or 
+		(
+		(nombre_input_02 <> '') and (apellido_input_02 <> '') and (edad_input_02 <> null) and
+		(fecha_nac_input_02 <= current_date) and (tipo_doc_input_02 <> '') and 
+		(nro_doc_input_02 <> '') and (cuil_input_02 <> '') and (direc_input_02 <> '') and
+		(nro_tel_princ_input_02 <> '') and (nro_tel_sec_input_02 <> '') and
+		(email_input_02 <> '') and (cargo_input_02 <> '') and (antig_input_02 <> null) and
+		(fecha_ingreso_input_02 <= current_date) and (sal_anual_input_02 <> null)
+		)
+		or 
+		(
+		(nombre_input_03 <> '') and (apellido_input_03 <> '') and (edad_input_03 <> null) and
+		(fecha_nac_input_03 <= current_date) and (tipo_doc_input_03 <> '') and 
+		(nro_doc_input_03 <> '') and (cuil_input_03 <> '') and (direc_input_03 <> '') and 
+		(nro_tel_princ_input_03 <> '') and (nro_tel_sec_input_03 <> '') and
+		(email_input_03 <> '') and (cargo_input_03 <> '') and (antig_input_03 <> null) and
+		(fecha_ingreso_input_03 <= current_date) and (sal_anual_input_03 <> null)
+		)
+		or 
+		(
+		(nombre_input_04 <> '') and (apellido_input_04 <> '') and (edad_input_04 <> null) and
+		(fecha_nac_input_04 <= current_date) and (tipo_doc_input_04 <> '') and 
+		(nro_doc_input_04 <> '') and (cuil_input_04 <> '') and (direc_input_04 <> '') and 
+		(nro_tel_princ_input_04 <> '') and (nro_tel_sec_input_04 <> '') and
+		(email_input_04 <> '') and (cargo_input_04 <> '') and (antig_input_04 <> null) and
+		(fecha_ingreso_input_04 <= current_date) and (sal_anual_input_04 <> null)
+		)
+		
 		) then
 
 		
@@ -2818,9 +2805,8 @@ begin
 	
 	else
 	
-	raise exception ' SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_oficinas()'
-						using hint = ' | DETALLE | --> insertar_registros_oficinas(nombre varchar, direccion varchar, nro_telefono varchar, email varchar); ';
-		
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_oficinas() ===========';
+				
 	end if;
 	
 
@@ -2884,7 +2870,7 @@ end;
 	
 $$ language plpgsql;
 
-
+/*
 -- -----------------------------------------------------------------------------
 
 
@@ -2913,18 +2899,18 @@ declare
 -- TABLA PROPIETARIOS_INMUEBLES
 
 -- Comprobamos que exista un id y cual es el ultimo
-id_last_check_prop_inm boolean;
+id_last_prop_inm_check boolean;
 id_last_prop_inm int;
 
 -- Nos aseguramos que no exista un registro repetido ademas del check de la db
-nombre_apellido_check_prop_inm boolean := 
+nombre_apellido_prop_inm_check boolean := 
 exists(
 select nombre,apellido from propietarios_inmuebles 
 where ((nombre = nombre_input) and (apellido = apellido_input)
 );
 
 
-tipo_nro_doc_check_prop_inm boolean := 
+tipo_nro_doc_prop_inm_check boolean := 
 exists(
 select tipo_documento, nro_documento from propietarios_inmuebles 
 where (tipo_documento = tipo_doc_input) and (nro_documento = nro_doc_input)
@@ -2951,26 +2937,21 @@ begin
 
 
 	if(
-	(nombre_apellido_check_prop_inm = true) or (tipo_nro_doc_check_prop_inm = true)
+	(nombre_apellido_prop_inm_check = true) or (tipo_nro_doc_prop_inm_check = true)
 	
 	) then
 	
-		raise exception 'NO SE PUEDE INGRESAR UN REGISTRO REPETIDO '
+		raise exception '====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========'
 						using hint = 
-					' | DETALLE | -->REVISAR NOMBRE Y APELLIDO DEL PROPIETARIO
-					  | DETALLE | -->REVISAR TIPO Y NÚMERO DE DOCUMENTO DEL PROPIETARIO
-					';
+					'-------- REVISAR NOMBRE Y APELLIDO DEL PROPIETARIO -------------'
+					'-------- REVISAR TIPO Y NÚMERO DE DOCUMENTO DEL PROPIETARIO ------';
 						
 		
 	
 	elsif (
-		
-		(nombre_apellido_check_prop_inm = false) and (tipo_nro_doc_check_prop_inm = false)
-		and nombre_input <> '' 
-		and dir_input <> '' 
-		and nro_tel_input <> '' 
-		and email_input <> ''
-		
+		((nombre_apellido_prop_inm_check = false) and (tipo_nro_doc_prop_inm_check = false)
+		and 
+		((nombre_input <> '') and (dir_input <> '')) and (nro_tel_input <> '') and (email_input <> '') 
 		) then
 	
 		
@@ -3092,3 +3073,4 @@ $$ language plpgsql;
 
 -- ----------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
+*/

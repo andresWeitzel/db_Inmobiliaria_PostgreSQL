@@ -119,9 +119,11 @@ select listado_logs_inserts();
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'empleados';
 
+select * from empleados;
+
+
 
 select listado_oficinas();
-select * from empleados;
 
 
 /*
@@ -129,8 +131,8 @@ select * from empleados;
 -- ----------- INSERCIÓN DE 1 REGISTRO ------------
 -- -------------------------------------------------
 
-select insertar_registro_empleados(9, 'Juan', 'Contreras', 28, '1992/9/9'
-, 'DNI', '37998637', '30-37998637-9', 'Av. Las Heras 7567', '1145367655', '-' 
+select insertar_registro_empleados(1, 'Juan', 'Contreras', 28, '1992/9/9'
+, 'DNI', '37998637', '30-37998637-9', 'Av. Las Heras 7567', '1145367655', '454545' 
 , 'juanContreras.iptre@gmail.com', 'Agente Inmobiliario/ Gerente', 4 
 , '2018/4/2', 78000);
 
@@ -138,6 +140,7 @@ select listado_empleados();
 select listado_logs_inserts();
 
 */
+
 
 -- -------------------------------------------------
 -- ----------- INSERCIÓN DE 4 REGISTROS ------------
@@ -228,7 +231,9 @@ select listado_logs_inserts();
 -- ---------------------------------------------------------------------------
 
 
+
 /*
+
 -- ================================================
 -- ======= TABLA PROPIETARIOS_INMUEBLES ===========
 -- ================================================
@@ -238,6 +243,14 @@ select * from propietarios_inmuebles;
 
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'propietarios_inmuebles';
+
+select insertar_registro_propietarios_inmuebles(
+
+
+
+);
+
+
 
 insert into propietarios_inmuebles (id, nombre, apellido, edad, fecha_nacimiento, tipo_documento, nro_documento
 ,direccion, nro_telefono_principal, nro_telefono_secundario , email) values
@@ -260,9 +273,8 @@ insert into propietarios_inmuebles (id, nombre, apellido, edad, fecha_nacimiento
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
-
-
-
+ 
+ */
 
 
 

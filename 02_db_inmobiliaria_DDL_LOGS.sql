@@ -12,6 +12,10 @@ drop table if exists logs_updates cascade;
 drop table if exists logs_deletes cascade;
 
 
+-- Todos lo id PK auto_increment
+drop sequence if exists id_secuencia_logs cascade;
+
+
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------

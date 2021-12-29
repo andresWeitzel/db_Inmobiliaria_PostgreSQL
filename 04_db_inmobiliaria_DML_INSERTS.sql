@@ -232,7 +232,6 @@ select listado_logs_inserts();
 
 
 
-/*
 
 -- ================================================
 -- ======= TABLA PROPIETARIOS_INMUEBLES ===========
@@ -244,13 +243,13 @@ select * from propietarios_inmuebles;
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'propietarios_inmuebles';
 
-select insertar_registro_propietarios_inmuebles(
-
-
-
+ select insertar_registro_propietarios_inmuebles(
+'Fabian', 'Gonzalez', 45, '1975/10/09', 'DNI', '45897677', 'San Vicente 879'
+, '+5491156749874', '6578-3786', 'viccentin3k@gmail.com'
 );
 
 
+/*
 
 insert into propietarios_inmuebles (id, nombre, apellido, edad, fecha_nacimiento, tipo_documento, nro_documento
 ,direccion, nro_telefono_principal, nro_telefono_secundario , email) values

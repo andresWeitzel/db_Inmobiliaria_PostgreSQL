@@ -44,8 +44,8 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'oficinas';
 
 
-/* DESCOMENTAR PARA SU USO
 
+/*
 -- ------------------------------------------------------
 -- ----------- INSERCIÓN DE 1 REGISTRO ------------------
 -- ------------------------------------------------------
@@ -57,7 +57,7 @@ select insertar_registro_oficinas(
 select listado_oficinas();
 select listado_logs_inserts();
 
-
+*/
 
 -- -------------------------------------------------
 -- ----------- INSERCIÓN DE 2 REGISTROS ------------
@@ -65,50 +65,30 @@ select listado_logs_inserts();
 
 
 select insertar_registros_oficinas(
-'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
-,'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com'
-);
-
-select listado_oficinas();
-select listado_logs_inserts();
-
-
--- --------------------------------------------------
--- ----------- INSERCIÓN DE 3 REGISTROS  ------------
--- --------------------------------------------------
-
-
-select insertar_registros_oficinas(
 'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'
 ,'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
-,'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com'
 );
 
-select listado_oficinas();
-select listado_logs_inserts();
-
-
-*/
-
--- -------------------------------------------------
--- ----------- INSERCIÓN DE 4 REGISTROS ------------
--- -------------------------------------------------
-
 select insertar_registros_oficinas(
-'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'
-,'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
-,'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com'
-,'Oficina de Gestión Le Bluen' , 'Av. Corrientes 445 Microcentro' , '11 3343-7729' , 'inmobiliariaDuckson@gmail.com');
+'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com'
+,'Oficina de Gestión Le Bluen' , 'Av. Corrientes 445 Microcentro' , '11 3343-7729' , 'inmobiliariaDuckson@gmail.com'
+);
+
 
 
 
 select listado_oficinas();
 select listado_logs_inserts();
+
 
 
 -- ---------------------------------------------------------------------------
 
 -- ---------------------------------------------------------------------------
+
+
+
+
 
 
 -- ==================================
@@ -121,36 +101,28 @@ information_schema.columns where table_name = 'empleados';
 
 select * from empleados;
 
-
-
 select listado_oficinas();
+select listado_empleados();
 
 
-/*
+
 -- -------------------------------------------------
 -- ----------- INSERCIÓN DE 1 REGISTRO ------------
 -- -------------------------------------------------
 
-select insertar_registro_empleados(1, 'Juan', 'Contreras', 28, '1992/9/9'
-, 'DNI', '37998637', '30-37998637-9', 'Av. Las Heras 7567', '1145367655', '454545' 
-, 'juanContreras.iptre@gmail.com', 'Agente Inmobiliario/ Gerente', 4 
-, '2018/4/2', 78000);
+select insertar_registro_empleados(1, 'Juan', 'Levbier', 22, '1994/1/2'
+, 'DNI', '408736633', '31-408736633-9', 'La Rioja 2221', '1122334321', '-' 
+, 'juanLevbier@gmail.com', 'Agente Inmobiliario/ Vendedor', 2 
+, '2019/1/1', 50000);
 
-select listado_empleados();
-select listado_logs_inserts();
 
-*/
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 4 REGISTROS ------------
+-- ----------- INSERCIÓN DE 2 REGISTROS ------------
 -- -------------------------------------------------
 
-select listado_oficinas();
-select listado_empleados();
 
-
---delete from empleados cascade;
 
 -- Oficina 1 (Torre San Vicente)
 select insertar_registros_empleados(
@@ -162,15 +134,23 @@ select insertar_registros_empleados(
 ,'33489671564', 'Figueroa Alcorta 22', '1178654356', '+5491178654356'
 , 'marcosCastro2002_lop@hotmail.com', 'Agente Inmobiliario(Gerente)', 4
 , '2017/09/6', 150000
-, 1 , 'José', 'bastituta', 34, '1988/09/07', 'DNI', '409876546'
+);
+
+-- Oficina 1 (Torre San Vicente)
+select insertar_registros_empleados(
+ 1 , 'José', 'bastituta', 34, '1988/09/07', 'DNI', '409876546'
 , '12409876546-0', 'San Acrosio 15781', '1157670000', '+5491157670000'
 , 'joseBastituta_88@gmail.com', 'Agente Inmobiliario(Vendedor)', 1
 , '2020/07/12', 65000
-, 1, 'Juan', 'Contreras', 28, '1992/9/9'
-, 'DNI', '37998637', '30-37998637-9', 'Av. Las Heras 7567', '1145367655'
-, '-' , 'juanContreras.iptre@gmail.com', 'Agente Inmobiliario/ Gerente', 4 
+, 1, 'Juan', 'Contreras', 28, '1992/9/9', 'DNI', '37998637'
+, '30-37998637-9', 'Av. Las Heras 7567', '1145367655', '-' 
+, 'juanContreras.iptre@gmail.com', 'Agente Inmobiliario/ Gerente', 4 
 , '2018/4/2', 78000
 );
+
+
+
+
 
 --Oficina 2 (Edificio Torre Alem)
 select insertar_registros_empleados(
@@ -180,13 +160,22 @@ select insertar_registros_empleados(
 , 2, 'Marcelo', 'Perez', 28, '1988/03/17', 'DNI', '39345679', '12-39345679-9'
 , 'Carabobo 06', '+5491138765433', '-', 'MarceloPerez@gmail.com'
 , 'Administrador', 2, '2019/04/14', 56000
-, 2, 'Jimena', 'D Ambrosio', 37, '1991/11/06', 'DNI', '417896537','2-417896537-2'
+);
+
+--Oficina 2 (Edificio Torre Alem)
+select insertar_registros_empleados(
+2, 'Jimena', 'D Ambrosio', 37, '1991/11/06', 'DNI', '417896537','2-417896537-2'
 , 'Valentin Figueroa 33', '1175680377', '+5491175680338', 'lic_DAmbrosio@gmail.com'
 , 'Agente Inmobiliario(Vendedora)', 3, '2018/08/14', 71000 
 , 2, 'Carlos', 'Gustamante', 31, '1982/04/03', 'DNI', '290076726', '11-290076726-2'
 , 'Av. Figueroa Alcorta 22', '1145639987', '-', 'c.gustamante@gmail.com'
 , 'Administrador', 2, '2019/12/02', 57000
 );
+
+
+
+
+
 
 
 -- Oficina 3 (Oficina Comercial Principal)
@@ -197,7 +186,11 @@ select insertar_registros_empleados(
 , 3, 'Luis', 'Gonzalez', 26, '1991/09/21', 'DNI', '397865432', '56-397865432-99'
 , 'La Pampa 22', '+549113764522', '-', 'luisGonzalez_jsu@gmail.com', 'Administrador', 2
 , '2019/07/12', 50000
-, 3, 'Marcelo', 'Castro', 28, '1989/04/06', 'DNI', '39886386', '14-39886386-5'
+);
+
+-- Oficina 3 (Oficina Comercial Principal)
+select insertar_registros_empleados(
+ 3, 'Marcelo', 'Castro', 28, '1989/04/06', 'DNI', '39886386', '14-39886386-5'
 , 'Los Patos 123', '+549118567453', '+549118567453', 'marcelocastro.746_jj@gmail.com'
 , 'Administrador', 2, '2019/02/11', 51000
 , 3,  'Juan', 'Notowski', 41, '1988/02/21', 'DNI', '432765411', '22-432765411-93'
@@ -205,15 +198,23 @@ select insertar_registros_empleados(
 , 'Agente Inmobiliario(Vendedor)', 2, '2019/04/22', 74000
 );
 
+
+
+
+
 -- Oficina 4 (Oficinas de Gestión Le Bluen)
 select insertar_registros_empleados(
 4,'Marcos', 'Norwey', 39, '1967/10/06', 'DNI', '27888651', '22-27888651-5'
 , 'Entre Ríos 222', '1176874567', '1176874567', 'MarcosNorWorkllo@gmail.com'
-, 'Gerente', 6, '2015/3/1', 14000
+, 'Gerente', 6, '2015/3/1', 46000
 , 4, 'Micaela', 'Fernandez', 24, '1997/03/02', 'DNI', '299765234', '19-299765234-2'
 , 'Av. Acoyte 33', '+5491136547766', '+5491136547766', 'micaela.fernandez.97@gmail.com'
 , 'Administradora', 1, '2020/04/09', 44000
-, 4, 'Antonio', 'Torres', 26, '1995/4/16', 'DNI', '38223344', '19-38223344-1'
+);
+
+-- Oficina 4 (Oficinas de Gestión Le Bluen)
+select insertar_registros_empleados(
+4, 'Antonio', 'Torres', 26, '1995/4/16', 'DNI', '38223344', '19-38223344-1'
 , 'Azul 12', '+54911987365', '-', 'antonioJose_cabj@gmail.com', 'Administrador', 3
 , '2018/01/09', 55000
 , 4,  'Ramon', 'Farias', 44, '1977/09/18', 'DNI', '50456789', '11-50456789-0'
@@ -226,9 +227,11 @@ select listado_empleados();
 select listado_logs_inserts();
 
 
--- ---------------------------------------------------------------------------
 
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
 
 
 
@@ -243,29 +246,87 @@ select * from propietarios_inmuebles;
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'propietarios_inmuebles';
 
+
+select listado_propietarios_inmuebles();
+select listado_logs_inserts();
+
+
+
+
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- -------------------------------------------------
+
  select insertar_registro_propietarios_inmuebles(
 'Fabian', 'Gonzalez', 45, '1975/10/09', 'DNI', '45897677', 'San Vicente 879'
 , '+5491156749874', '6578-3786', 'viccentin3k@gmail.com'
 );
 
 
-/*
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- -------------------------------------------------
 
-insert into propietarios_inmuebles (id, nombre, apellido, edad, fecha_nacimiento, tipo_documento, nro_documento
-,direccion, nro_telefono_principal, nro_telefono_secundario , email) values
-(1, 'Fabian', 'Gonzalez', 45, '1975/10/09', 'DNI', 45897677, 'San Vicente 879', '+5491156749874', '6578-3786'
-, 'viccentin3k@gmail.com'),
-(2, 'Guillermo', 'Zulenski', 65, '1955/10/09', 'DNI', 35897677, 'Av. Calloa 879', '+5491156788', '+5491156788'
-, 'zulenskiVentas2019@gmail.com');
+ select insertar_registros_propietarios_inmuebles(
+'Marcela', 'Sanchez', 49, '1971/12/08', 'DNI', '4298762543', 'San AZUL 222'
+, '+5491173654378', '-', 'marcelaSanchez222@gmail.com',
+'Guillermo', 'Zulenski', 65, '1955/10/09', 'DNI', '35897677', 'Av. Calloa 879'
+, '+5491156788', '+5491156788', 'zulenskiVentas2019@gmail.com'
+);
+
+select listado_propietarios_inmuebles();
+select listado_logs_inserts();
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 
 
 
--- https://inmueble.mercadolibre.com.ar/MLA-1106193666-ph-sin-expensas-_JM#position=2&search_layout=grid&type=item&tracking_id=7d3f63be-4762-490b-a886-4cd1ac9c00a6
+-- ================================================
+-- ======= TABLA INMUEBLES_DESCRIPCIONES ===========
+-- ================================================
+
+
+select * from inmuebles_descripciones;
+
+select column_name, data_type, is_nullable from
+information_schema.columns where table_name = 'inmuebles_descripciones';
+
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- -------------------------------------------------
+
+-- EJ. 254.8m^2, 198.9m^2,  4 ambientes, 3 dormis, 2 sanitarios, 1 patio, 1 cochera, 1 balcon, 50 años antiguedad
+
+select insertar_registro_inmuebles_descripciones(
+265.8, 198.9 , 4, 3, 2, 1, 1, 1, 50 
+);
+
+
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- -------------------------------------------------
+
+select insertar_registros_inmuebles_descripciones(
+185.8, 185.8 , 3, 4, 1, 0, 1, 0, 80 
+,97.8, 60.3 , 2, 3, 2, 1, 0, 1, 30 
+);
+
+
+select listado_inmuebles_descripciones();
+
+select listado_logs_inserts();
+
 
 
 
 -- ---------------------------------------------------------------------------
-
 -- ---------------------------------------------------------------------------
 
 
@@ -273,11 +334,67 @@ insert into propietarios_inmuebles (id, nombre, apellido, edad, fecha_nacimiento
 -- ---------------------------------------------------------------------------
 
  
- */
+
+
+-- ================================================
+-- ======= TABLA INMUEBLES_MEDIDAS ===========
+-- ================================================
+
+
+select * from inmuebles_medidas;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'inmuebles_medidas';
+
+
+
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- -------------------------------------------------
+
+-- EJ dormitorio: Dormitorio01: 23 x 2,9 | Dormitorio 2: 43 x 1,9
+-- Medidas ALTO X ANCHO
+
+select insertar_registro_inmuebles_medidas(
+'17.0 x 5.9' , '6.0 x 4.0' , 'Dormitorio1: 5.0 x 5.0 | Dormitorio2: 7.0 x 4.0 | Dormitorio3: 6.0 x 6.0'
+, 'Baño1: 2.0 x 1.4 | Baño2: 1.67 x 1.89' , '6.0 x 7.56' , '3.0 x 3.66' , '1.0 x 1.23'
+);
+
+
+select listado_inmuebles_medidas();
+
+
+select listado_logs_inserts();
 
 
 
 /*
+insert into inmuebles_medidas(id, living_comedor, cocina, dormitorio, sanitario, patio_jardin, cochera, balcon) values 
+
+(2, '6.0 x 3.5' , '4.0 x 2.0' , 'Dormitorio1: 2.0 x 1.66 | Dormitorio2: 3.0 x 2.0 | Dormitorio3: 2.0 x 1.4 | 
+Dormitorio4: 1.3 x 1.2', '1.88 x 2.20' , '-' , '2.77 x 1.02' , '-'),
+(3, '2.34 x 1.89' , '2.02 x 2.66' , 'Dormitorio1: 2.45 x 2.09 | Dormitorio2: 2.03 x 1.88 | Dormitorio3: 1.89 x 1.20'
+, 'Baño1: 1.50 x 1.04 | Baño2: 1.90 x 1.3' , '1.34 x 1.88' , '-' , '1.33 x 1.22');
+
+*/
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+
+
+
+
+/* DESCOMENTAR PARA SU USO
+
 -- ===========================================
 -- ======= TABLA OFICINAS_DETALLES ===========
 -- ===========================================
@@ -308,46 +425,6 @@ insert into oficinas_detalles (id, id_oficina, localidad, tipo_oficina, estado_o
 select listado_oficinas_detalles();
 
 
-*/
-/*
-
--- ======= TABLA INMUEBLES_DESCRIPCIONES ===========
-
-
-select * from inmuebles_descripciones;
-
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'inmuebles_descripciones';
-
--- EJ. 254.8m^2, 198.9m^2,  4 ambientes, 3 dormis, 2 sanitarios, 1 patio, 1 cochera, 1 balcon, 50 años antiguedad
-
-insert into inmuebles_descripciones (id, superficie_total, superficie_cubierta, cantidad_ambientes
-, cantidad_dormitorios, cantidad_sanitarios , cantidad_patios_jardines, cantidad_cocheras, cantidad_balcones
-, antiguedad) values 
-(1, 265.8, 198.9 , 4, 3, 2, 1, 1, 1, 50 ), 
-(2, 185.8, 185.8 , 3, 4, 1, 0, 1, 0, 80 ),
-(3, 97.8, 60.3 , 2, 3, 2, 1, 0, 1, 30 );
-
--- ---------------------------------------------------------------------------
-
--- ======= TABLA INMUEBLES_MEDIDAS ===========
-
-
-select * from inmuebles_medidas;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'inmuebles_medidas';
-
--- EJ dormitorio: Dormitorio01: 23 x 2,9 | Dormitorio 2: 43 x 1,9
--- Medidas ALTO X ANCHO
-
-insert into inmuebles_medidas(id, living_comedor, cocina, dormitorio, sanitario, patio_jardin, cochera, balcon) values 
-(1, '17.0 x 5.9' , '6.0 x 4.0' , 'Dormitorio1: 5.0 x 5.0 | Dormitorio2: 7.0 x 4.0 | Dormitorio3: 6.0 x 6.0'
-, 'Baño1: 2.0 x 1.4 | Baño2: 1.67 x 1.89' , '6.0 x 7.56' , '3.0 x 3.66' , '1.0 x 1.23'),
-(2, '6.0 x 3.5' , '4.0 x 2.0' , 'Dormitorio1: 2.0 x 1.66 | Dormitorio2: 3.0 x 2.0 | Dormitorio3: 2.0 x 1.4 | 
-Dormitorio4: 1.3 x 1.2', '1.88 x 2.20' , '-' , '2.77 x 1.02' , '-'),
-(3, '2.34 x 1.89' , '2.02 x 2.66' , 'Dormitorio1: 2.45 x 2.09 | Dormitorio2: 2.03 x 1.88 | Dormitorio3: 1.89 x 1.20'
-, 'Baño1: 1.50 x 1.04 | Baño2: 1.90 x 1.3' , '1.34 x 1.88' , '-' , '1.33 x 1.22');
 
 
 

@@ -32,8 +32,13 @@ delete from logs_inserts cascade;
 
 
 
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
 
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
 
 -- ==================================
 -- ======= TABLA OFICINAS ===========
@@ -82,10 +87,60 @@ select listado_logs_inserts();
 
 
 
+
+/*
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ===========================================
+-- ======= TABLA OFICINAS_DETALLES ===========
+-- ===========================================
+
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- -------------------------------------------------
+
+
+select insertar_registro_oficinas_detalles(
+1, 'Retiro', 'EJECUTIVA', 'ALQUILADA', 140.00, 6 , 4 , 15 
+, 'www.inmobiliariaDuckson-torre-Nepkiul.com.ar'
+);
+
+
+select listado_oficinas_detalles();
+
 
 -- ---------------------------------------------------------------------------
 
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- -------------------------------------------------
+
+
+insert into oficinas_detalles (id, id_oficina, localidad, tipo_oficina, estado_oficina, superficie_total
+, cantidad_ambientes, cantidad_sanitarios, antiguedad, sitio_web) values
+(1 , 1 , 'Retiro' , 'EJECUTIVA' , 'ALQUILADA' , 140.0 , 6 , 4 , 15 , 'www.inmobiliariaDuckson-torre-Nepkiul.com.ar'),-- sup_total en m^2
+(2 , 2 , 'Belgrano' , 'PEQUEÑA' , 'PROPIA' , 35.0 , 1 , 1 , 35 , 'www.inmobiliariaDuckson-torre-Alem.com.ar'),
+(3 , 3 , 'Balvanera' , 'ESTANDAR' , 'PROPIA' , 60.0 , 2 , 4 , 22 , 'www.inmobiliariaDuckson-oficina-principal.com.ar');
+
+select listado_oficinas_detalles();
+
+*/
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 
 
 
@@ -362,6 +417,18 @@ select insertar_registro_inmuebles_medidas(
 );
 
 
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- -------------------------------------------------
+
+select insertar_registros_inmuebles_medidas(
+'6.0 x 3.5' , '4.0 x 2.0' , 'Dormitorio1: 2.0 x 1.66 | Dormitorio2: 3.0 x 2.0 | Dormitorio3: 2.0 x 1.4 | 
+Dormitorio4: 1.3 x 1.2', '1.88 x 2.20' , '-' , '2.77 x 1.02' , '-'
+,'2.34 x 1.89' , '2.02 x 2.66' , 'Dormitorio1: 2.45 x 2.09 | Dormitorio2: 2.03 x 1.88 | Dormitorio3: 1.89 x 1.20'
+, 'Baño1: 1.50 x 1.04 | Baño2: 1.90 x 1.3' , '1.34 x 1.88' , '-' , '1.33 x 1.22'
+);
+
+
 select listado_inmuebles_medidas();
 
 
@@ -369,17 +436,6 @@ select listado_logs_inserts();
 
 
 
-/*
-insert into inmuebles_medidas(id, living_comedor, cocina, dormitorio, sanitario, patio_jardin, cochera, balcon) values 
-
-(2, '6.0 x 3.5' , '4.0 x 2.0' , 'Dormitorio1: 2.0 x 1.66 | Dormitorio2: 3.0 x 2.0 | Dormitorio3: 2.0 x 1.4 | 
-Dormitorio4: 1.3 x 1.2', '1.88 x 2.20' , '-' , '2.77 x 1.02' , '-'),
-(3, '2.34 x 1.89' , '2.02 x 2.66' , 'Dormitorio1: 2.45 x 2.09 | Dormitorio2: 2.03 x 1.88 | Dormitorio3: 1.89 x 1.20'
-, 'Baño1: 1.50 x 1.04 | Baño2: 1.90 x 1.3' , '1.34 x 1.88' , '-' , '1.33 x 1.22');
-
-*/
-
-
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
@@ -388,50 +444,10 @@ Dormitorio4: 1.3 x 1.2', '1.88 x 2.20' , '-' , '2.77 x 1.02' , '-'),
 -- ---------------------------------------------------------------------------
 
 
-
-
-
-
-
-/* DESCOMENTAR PARA SU USO
-
--- ===========================================
--- ======= TABLA OFICINAS_DETALLES ===========
--- ===========================================
-
-
-
--- ----------- INSERCIÓN DE 1 REGISTRO ------------------
-
-select insertar_registro_oficinas_detalles(
-1::int , 'Retiro'::varchar , 'EJECUTIVA'::tipo_oficina_enum , 'ALQUILADA'::estado_oficina_enum , 140.0::decimal , 6::smallint , 4::smallint , 15::smallint 
-, 'www.inmobiliariaDuckson-torre-Nepkiul.com.ar'::varchar
-);
-
-
-select listado_oficinas_detalles();
-
-
--- ---------------------------------------------------------------------------
-
--- ----------- INSERCIÓN DE 2 REGISTROS ------------------
-
-insert into oficinas_detalles (id, id_oficina, localidad, tipo_oficina, estado_oficina, superficie_total
-, cantidad_ambientes, cantidad_sanitarios, antiguedad, sitio_web) values
-(1 , 1 , 'Retiro' , 'EJECUTIVA' , 'ALQUILADA' , 140.0 , 6 , 4 , 15 , 'www.inmobiliariaDuckson-torre-Nepkiul.com.ar'),-- sup_total en m^2
-(2 , 2 , 'Belgrano' , 'PEQUEÑA' , 'PROPIA' , 35.0 , 1 , 1 , 35 , 'www.inmobiliariaDuckson-torre-Alem.com.ar'),
-(3 , 3 , 'Balvanera' , 'ESTANDAR' , 'PROPIA' , 60.0 , 2 , 4 , 22 , 'www.inmobiliariaDuckson-oficina-principal.com.ar');
-
-select listado_oficinas_detalles();
-
-
-
-
-
-
--- ---------------------------------------------------------------------------
-
+-- ===================================
 -- ======= TABLA INMUEBLES ===========
+-- ===================================
+
 
 -- ENUM estado_inmueble ('VENDIDO','DISPONIBLE','NO DISPONIBLE','FALTA INSPECCION');
 
@@ -441,19 +457,165 @@ select * from inmuebles;
 select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'inmuebles';
 
-insert into inmuebles (id, id_propietario_inmueble, id_inmueble_medidas, id_inmueble_descripcion, id_oficina,
-descripcion, tipo, estado_inmueble, precio_inmueble_usd, direccion, ubicacion, sitioWeb) values 
-(1, 1, 1, 1, 1, 'PH de 4 Ambientes, 3 dormis, 2 baños, Amplio Espacio,jardin y balcon, Sin Expensas, Lujoso'
-, 'PH/Casa','DISPONIBLE', 177000, 'San Cristobla 456', 'Palermo', 'www.avisosAlInstante.com.ar' ),
-(2, 1, 2, 2, 2, 'Casa 3 Ambientes, 4 Dormitorios, 1 baño y Cochera', 'Casa','VENDIDO'
-, 168000, 'Aristobulo del Valle 608 ', 'Belgrano', 'www.avisosAlInstante.com.ar' ),
-(3, 2, 3, 3, 3, 'Departamento de 2 Ambientes', 'Departamento','VENDIDO', 110000, 'Av. Corrientes'
-, 'Caballito', 'www.avisosAlInstante.com.ar');
+
+
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- -------------------------------------------------
+
+select listado_propietarios_inmuebles();
+select listado_inmuebles_medidas();
+select listado_inmuebles_descripciones();
+select listado_oficinas();
+
+select insertar_registros_inmuebles(
+22, 28, 25, 1, 'PH de 4 Ambientes, 3 dormis, 2 baños, Amplio Espacio,jardin y balcon, Sin Expensas, Lujoso'
+, 'PH/Casa','DISPONIBLE', 177.000, 'San Cristobla 456', 'Palermo'
+, 'www.avisosAlInstante.com.ar'
+);
+
+select insertar_registros_inmuebles(
+23, 29, 26, 2,  'Casa 3 Ambientes, 4 Dormitorios, 1 baño y Cochera', 'Casa','VENDIDO'
+, 168.000, 'Aristobulo del Valle 608 ', 'Belgrano', 'www.avisosAlInstante.com.ar'
+, 24, 30, 27, 3 , 'Departamento de 2 Ambientes', 'Departamento','VENDIDO'
+, 110.000, 'Av. Corrientes', 'Caballito', 'www.avisosAlInstante.com.ar'
+);
+
+
+
+select listado_inmuebles();
+
+select listado_logs_inserts();
 
 
 
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ===================================
+-- ======= TABLA CLIENTES ===========
+-- ===================================
+
+select * from clientes;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'clientes';
+
+-- fecha_nacimiento date ejemplo '2001/10/07'
+-- fecha_alta date ejemplo '2002/10/07'
+
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- -------------------------------------------------
+select insertar_registro_clientes(
+'Rodrigo', 'Bustamante', 29, '1991/03/02', 'DNI', '36879254'
+, 'Aristobulo del Valle 887', '+5491176534456', '3765-9978'
+, 'rodrigo_bustamante@gmail.com', '2021/06/12'
+);
+
+select insertar_registros_clientes(
+'Marcela', 'Pérez', 31, '1989-12-12', 'DNI', '33895854', 'Av. Callao 213'
+, '+5491143534456', '+5491143534456', 'marcela_perez@gmail.com', '2020-03-06'
+,'Jaime', 'Rodriguez', 48, '1977-02-16', 'DNI', '29937852', 'Av. La Pampa 218'
+, '+5491183675544', '+5491183675544', 'jaime.CL_la@gmail.com', '2020-11-23'
+);
+
+select listado_clientes();
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ===================================
+-- ======= TABLA CITAS_INMUEBLES ===========
+-- ===================================
+
+
+-- ENUM estadoCita('PENDIENTE','COMPLETADA','INCOMPLETA');
+-- fecha_cita date '2001/10/07'
+-- hora_cita time '09:00:07'
+
+
+
+select * from citas_inmuebles;
+
+
+select column_name, data_type, is_nullable from
+information_schema.columns where table_name = 'citas_inmuebles';
+
+
+select listado_propietarios_inmuebles();
+select listado_inmuebles_medidas();
+select listado_inmuebles_descripciones();
+select listado_oficinas();
+select listado_empleados();
+select listado_clientes();
+select listado_inmuebles();
+
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- -------------------------------------------------
+
+
+select insertar_registro_citas_inmuebles(
+31, 5, 36, 'COMPLETADA' , 'Cita Finalizada y Venta Efectuada de Forma Exitosa'
+, '2020/03/01', '11:00:00'    
+);
+
+
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- -------------------------------------------------
+
+select insertar_registros_citas_inmuebles(
+32, 6 , 37 , 'PENDIENTE' , 'Se reserva cita para la fecha estipulada' 
+, '2022/01/12', '09:00:00'
+, 33 , 7 , 38 , 'COMPLETADA' , 'Venta Efectuada de forma exitosa'
+, '2020/06/11', '12:00:00'
+);
+
+
+
+select listado_citas_inmuebles();
+
+
+
+
+
+
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+*/
+
+
+
+/*
 -- ======= TABLA INMUEBLES_MARKETING ===========
 
 
@@ -589,55 +751,6 @@ orientacion_tipo_inmueble, cualidades) values
 
 
 
-
--- ---------------------------------------------------------------------------
-
--- ======= TABLA CLIENTES ===========
-
--- fecha_nacimiento date ejemplo '2001-10-07'
--- fecha_alta date ejemplo '2002-10-07'
-
-select * from clientes;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'clientes';
-
-insert into clientes(id, nombre, apellido, edad, fecha_nacimiento, tipo_documento, nro_documento
-, direccion, nro_telefono_principal, nro_telefono_secundario, email, fecha_alta)values
-(1, 'Rodrigo', 'Bustamante', 29, '1991-03-02', 'DNI', '36879254', 'Aristobulo del Valle 887'
-, '+5491176534456', '3765-9978', 'rodrigo_bustamante@gmail.com', '2021-06-12'),
-(2, 'Marcela', 'Pérez', 31, '1989-12-12', 'DNI', '33895854', 'Av. Callao 213'
-, '+5491143534456', '+5491143534456', 'marcela_perez@gmail.com', '2020-03-06'),
-(3, 'Jaime', 'Rodriguez', 48, '1977-02-16', 'DNI', '29937852', 'Av. La Pampa 218'
-, '+5491183675544', '+5491183675544', 'jaime.CL_la@gmail.com', '2020-11-23');
-
-
-
-
--- ---------------------------------------------------------------------------
-
--- ======= TABLA CITAS_INMUEBLES ===========
-
--- ENUM estadoCita('PENDIENTE','COMPLETADA','INCOMPLETA');
--- fecha_cita date '2001-10-07'
--- hora_cita time '09:00:07'
-
-
-select * from citas_inmuebles;
-
-
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'citas_inmuebles';
-
-insert into citas_inmuebles (id, id_inmueble, id_empleado, id_cliente, estado_cita
-, descripcion_cita,  fecha_cita, hora_cita)values
-(1, 3, 3, 1, 'INCOMPLETA', 'Cita Pendiente', '2020-03-01', '11:00:00' ),
-(2, 2, 6, 2, 'COMPLETADA', 'Cita Finalizada y Venta Efectuada de Forma Exitosa', '2020-09-02', '09:15:00' ),
-(3, 3, 3, 1, 'COMPLETADA', 'Venta Efectuada de Forma Exitosa', '2020-12-22', '08:30:00' );
-
-
-
--- ---------------------------------------------------------------------------
 
 
 -- ======= TABLA COMPRADORES ===========

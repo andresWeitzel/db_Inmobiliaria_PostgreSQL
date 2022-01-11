@@ -518,9 +518,9 @@ descripcion varchar(200) not null,-- ej: semipiso de 3 Amb en Palermo
 tipo varchar(20) not null, -- depto, casa, etc
 estado_inmueble estado_inmueble_enum not null,
 precio_inmueble_usd decimal(10,2) not null,
-direccion varchar(40) not null,-- San sarasa 123
-ubicacion varchar(40) not null, -- zona:palermo, recoleta, etc
-sitioWeb varchar(40)-- link de la pag de la descripcion
+direccion varchar(60) not null,-- San sarasa 123
+ubicacion varchar(60) not null, -- zona:palermo, recoleta, etc
+sitio_web varchar(60)-- link de la pag de la descripcion
 
 );
 
@@ -1167,34 +1167,6 @@ alter table facturas_detalles alter id set default nextval('id_secuencia');
 
 -- ---------------------------------------------------------------------------
 
-/*
-
-select * from pg_catalog.pg_tables 
-where  schemaname != 'information_schema' 
-and schemaname != 'pg_catalog';
- 
- 
-select * from oficinas;
-select * from oficinas_detalles;
-select * from inmuebles;
-select * from inmuebles_descripciones;
-select * from inmuebles_medidas;
-select * from inmuebles_marketing;
-select * from servicios_inmuebles;
-select * from inspecciones_inmuebles;
-select * from citas_inmuebles;
-select * from propietarios_inmuebles;
-select * from empleados;
-select * from clientes;
-select * from administradores;
-select * from gerentes;
-select * from vendedores;
-select * from compradores;
-select * from ventas;
-select * from facturas;
-select * from facturas_detalles;
-
-*/
 
 
 

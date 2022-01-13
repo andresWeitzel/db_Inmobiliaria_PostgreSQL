@@ -40,7 +40,6 @@
 | ------------- | ------------- |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |
-| oficinas(1) | servicios_inmuebles(N) |
 | inmuebles(1) | ventas(N)  |
 | inmuebles(1) | inmuebles_marketing(N)  |
 | inmuebles(1) |  citas_inmuebles(N)  |
@@ -62,6 +61,7 @@
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
 | oficinas(1) | oficinas_detalles(1) |
+| oficinas(1) | servicios_oficinas(1) |
 | inmuebles(1) | inmuebles_descripciones(1) |
 | inmuebles(1) | inmuebles_medidas(1) |
 | empleados(1) | vendedores(1) |
@@ -79,7 +79,8 @@
 
 | **Tabla** | **Campo** |               
 | ------------- | ------------- |
-| oficinas_detalles | FK id_oficina UNIQUE | 
+| oficinas_detalles | FK id_oficina UNIQUE |
+| servicios_oficinas | FK id_oficina UNIQUE  |
 | inmuebles | FK id_inmueble_medidas UNIQUE | 
 | inmuebles | FK id_inmueble_descripcion UNIQUE | 
 | administradores | FK id_empleado UNIQUE |
@@ -101,9 +102,10 @@
 
 | **Tecnologías Empleadas** | **Versión** | **Finalidad** |               
 | ------------- | ------------- | ------------- |
-| Git Bash | 2.29.1  | Control de Versiones |
 | PostgreSQL | 13.4  | SGDB  |
 | DBeaver | 21.1  | Gestor de Base de Datos | 
+| Git Bash | 2.29.1  | Control de Versiones |
+| CMD | 10 | Manipular los Servicios de Postgres mediante linea de comandos | 
 
 </br>
 

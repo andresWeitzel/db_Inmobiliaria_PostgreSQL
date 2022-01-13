@@ -14,7 +14,6 @@ drop table if exists inmuebles cascade;
 drop table if exists inmuebles_descripciones cascade;
 drop table if exists inmuebles_medidas cascade;
 drop table if exists inmuebles_marketing cascade;
-drop table if exists servicios_inmuebles cascade;
 drop table if exists inspecciones_inmuebles cascade;
 drop table if exists citas_inmuebles cascade;
 drop table if exists propietarios_inmuebles cascade;
@@ -29,14 +28,41 @@ drop table if exists clientes cascade;
 drop table if exists empleados cascade;
 drop table if exists oficinas cascade;
 drop table if exists oficinas_detalles cascade;
+drop table if exists servicios_oficinas cascade;
 
 -- Todos lo id PK auto_increment
-drop sequence if exists id_secuencia cascade;
+drop sequence if exists id_sec_of cascade;
+drop sequence if exists id_sec_serv_of cascade;
+drop sequence if exists id_sec_of_det cascade;
+drop sequence if exists id_sec_inm cascade;
+drop sequence if exists id_sec_inm_descr cascade;
+drop sequence if exists id_sec_inm_med cascade;
+drop sequence if exists id_sec_inm_mark cascade;
+drop sequence if exists id_sec_insp_inm cascade;
+drop sequence if exists id_sec_cit_inm cascade;
+drop sequence if exists id_sec_prop_inm cascade;
+drop sequence if exists id_sec_empl cascade;
+drop sequence if exists id_sec_cli cascade;
+drop sequence if exists id_sec_adm cascade;
+drop sequence if exists id_sec_ger cascade;
+drop sequence if exists id_sec_vend cascade;
+drop sequence if exists id_sec_comp cascade;
+drop sequence if exists id_sec_vent cascade;
+drop sequence if exists id_sec_fact cascade;
+drop sequence if exists id_sec_fact_det cascade;
+
+
 
 
 -- Enumerados tabla oficinas_detalles
 drop type if exists estado_oficina_enum cascade;
 drop type if exists tipo_oficina_enum cascade;
+
+-- Enumerados tabla servicios_oficinas
+drop type if exists division_comercial_enum cascade;
+drop type if exists division_vivienda_enum cascade;
+drop type if exists tasaciones_enum cascade;
+drop type if exists administracion_enum cascade;
 
 
 -- Enumerados tabla inspecciones_inmuebles
@@ -45,12 +71,6 @@ drop type if exists estado_inspeccion_enum cascade;
 
 -- Enumerados tabla inmuebles
 drop type if exists estado_inmueble_enum cascade;
-
--- Enumerados tabla servicios_inmuebles
-drop type if exists division_comercial_enum cascade;
-drop type if exists division_vivienda_enum cascade;
-drop type if exists tasaciones_enum cascade;
-drop type if exists administracion_enum cascade;
 
 -- Enumerados tabla citas_inmuebles
 drop type if exists estado_cita_enum cascade;
@@ -166,6 +186,63 @@ check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
 
 
 -- ---------------------------------------------------------------------------
+
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA SERVICIOS_OFICINAS ===========
+-- https://www.mosquerabrokers.com.ar/es/informacion/servicios
+
+create type division_comercial_enum as enum('LOCALES','OFICINAS','TERRENOS'
+,'LOCALES-OFICINAS-TERRENOS','NO APLICA');
+
+create type division_vivienda_enum as enum('DEPARTAMENTOS','CASAS','TERRENOS'
+,'DEPARTAMENTOS-CASAS-TERRENOS','NO APLICA');
+
+create type tasaciones_enum as enum('PROFESIONAL','JUDICIAL','PROFESIONAL-JUDICIAL'
+,'NO APLICA');
+
+create type administracion_enum as enum('ALQUILERES','CUENTAS','ALQUILERES-CUENTAS' 
+,'NO APLICA');
+
+
+create table servicios_oficinas(
+	
+id int primary key,
+id_oficina int not null,
+tipo_comercial division_comercial_enum not null,
+tipo_vivienda division_vivienda_enum not null,
+tipo_tasaciones tasaciones_enum not null,
+tipo_administracion administracion_enum not null,
+descripcion_servicios varchar(200)
+
+);
+
+-- ======= Restricciones Tabla servicios_oficinas ===========
+
+-- UNIQUE ID
+alter table servicios_oficinas 
+add constraint UNIQUE_servicios_oficinas_id
+unique(id);
+
+
+-- FK ID_OFICINA
+alter table servicios_oficinas
+add constraint FK_servicios_oficinas_id_oficina
+foreign key(id_oficina)
+references oficinas(id);
+
+-- UNIQUE ID_OFICINA
+alter table servicios_oficinas 
+add constraint UNIQUE_servicios_oficinas_id_oficina
+unique(id_oficina);
+
+
+
+-- ---------------------------------------------------------------------------
+
+
 
 
 
@@ -630,54 +707,6 @@ REFERENCES clientes(id);
 -- ---------------------------------------------------------------------------
 
 
--- ---------------------------------------------------------------------------
-
--- ======= TABLA SERVICIOS_INMUEBLES ===========
--- https://www.mosquerabrokers.com.ar/es/informacion/servicios
-
-create type division_comercial_enum as enum('LOCALES','OFICINAS','TERRENOS'
-,'LOCALES-OFICINAS-TERRENOS','NO APLICA');
-
-create type division_vivienda_enum as enum('DEPARTAMENTOS','CASAS','TERRENOS'
-,'DEPARTAMENTOS-CASAS-TERRENOS','NO APLICA');
-
-create type tasaciones_enum as enum('PROFESIONAL','JUDICIAL','PROFESIONAL-JUDICIAL'
-,'NO APLICA');
-
-create type administracion_enum as enum('ALQUILERES','CUENTAS','ALQUILERES-CUENTAS' 
-,'NO APLICA');
-
-
-create table servicios_inmuebles(
-	
-id int primary key,
-id_oficina int not null,
-tipo_comercial division_comercial_enum not null,
-tipo_vivienda division_vivienda_enum not null,
-tipo_tasaciones tasaciones_enum not null,
-tipo_administracion administracion_enum not null,
-descripcion_servicios varchar(200)
-
-);
-
--- ======= Restricciones Tabla servicios_inmuebles ===========
-
--- UNIQUE ID
-alter table servicios_inmuebles 
-add constraint UNIQUE_servicios_inmuebles_id
-unique(id);
-
-
--- FK ID_OFICINA
-alter table servicios_inmuebles
-add constraint FK_servicios_inmuebles_id_oficina
-foreign key(id_oficina)
-references oficinas(id);
-
-
--- ---------------------------------------------------------------------------
-
-
 
 
 -- ---------------------------------------------------------------------------
@@ -1138,32 +1167,52 @@ check( impuestos_asociados_usd > 0);
 
 -- ======== TODOS LOS ID´S PK DE LAS TABLAS COMO AUTO_INCREMENT =======
 
-CREATE SEQUENCE id_secuencia;
-
-alter table oficinas alter id set default nextval('id_secuencia');
-alter table oficinas_detalles alter id set default nextval('id_secuencia');
-alter table inmuebles alter id set default nextval('id_secuencia');
-alter table inmuebles_descripciones alter id set default nextval('id_secuencia');
-alter table inmuebles_medidas alter id set default nextval('id_secuencia');
-alter table inmuebles_marketing alter id set default nextval('id_secuencia');
-alter table servicios_inmuebles alter id set default nextval('id_secuencia');
-alter table inspecciones_inmuebles alter id set default nextval('id_secuencia');
-alter table citas_inmuebles alter id set default nextval('id_secuencia');
-alter table propietarios_inmuebles alter id set default nextval('id_secuencia');
-alter table empleados alter id set default nextval('id_secuencia');
-alter table clientes alter id set default nextval('id_secuencia');
-alter table administradores alter id set default nextval('id_secuencia');
-alter table gerentes alter id set default nextval('id_secuencia');
-alter table vendedores alter id set default nextval('id_secuencia');
-alter table compradores alter id set default nextval('id_secuencia');
-alter table ventas alter id set default nextval('id_secuencia');
-alter table facturas alter id set default nextval('id_secuencia');
-alter table facturas_detalles alter id set default nextval('id_secuencia');
+CREATE SEQUENCE id_sec_of;
+CREATE SEQUENCE id_sec_serv_of;
+CREATE SEQUENCE id_sec_of_det;
+CREATE SEQUENCE id_sec_inm;
+CREATE SEQUENCE id_sec_inm_descr;
+CREATE SEQUENCE id_sec_inm_med;
+CREATE SEQUENCE id_sec_inm_mark;
+CREATE SEQUENCE id_sec_insp_inm;
+CREATE SEQUENCE id_sec_cit_inm;
+CREATE SEQUENCE id_sec_prop_inm;
+CREATE SEQUENCE id_sec_empl;
+CREATE SEQUENCE id_sec_cli;
+CREATE SEQUENCE id_sec_adm;
+CREATE SEQUENCE id_sec_ger;
+CREATE SEQUENCE id_sec_vend;
+CREATE SEQUENCE id_sec_comp;
+CREATE SEQUENCE id_sec_vent;
+CREATE SEQUENCE id_sec_fact;
+CREATE SEQUENCE id_sec_fact_det;
 
 
 
--- -------------------------------------------------------------------
 
+alter table oficinas alter id set default nextval('id_sec_of');
+alter table servicios_oficinas alter id set default nextval('id_sec_serv_of');
+alter table oficinas_detalles alter id set default nextval('id_sec_of_det');
+alter table inmuebles alter id set default nextval('id_sec_inm');
+alter table inmuebles_descripciones alter id set default nextval('id_sec_inm_descr');
+alter table inmuebles_medidas alter id set default nextval('id_sec_inm_med');
+alter table inmuebles_marketing alter id set default nextval('id_sec_inm_mark');
+alter table inspecciones_inmuebles alter id set default nextval('id_sec_insp_inm');
+alter table citas_inmuebles alter id set default nextval('id_sec_cit_inm');
+alter table propietarios_inmuebles alter id set default nextval('id_sec_prop_inm');
+alter table empleados alter id set default nextval('id_sec_empl');
+alter table clientes alter id set default nextval('id_sec_cli');
+alter table administradores alter id set default nextval('id_sec_adm');
+alter table gerentes alter id set default nextval('id_sec_ger');
+alter table vendedores alter id set default nextval('id_sec_vend');
+alter table compradores alter id set default nextval('id_sec_comp');
+alter table ventas alter id set default nextval('id_sec_vent');
+alter table facturas alter id set default nextval('id_sec_fact');
+alter table facturas_detalles alter id set default nextval('id_sec_fact_det');
+
+
+
+-- --------------------------------------------------------------------------
 
 -- ---------------------------------------------------------------------------
 

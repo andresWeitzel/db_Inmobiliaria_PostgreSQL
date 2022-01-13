@@ -319,13 +319,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_inserts where id_registro = id_last_of);
-		fecha_of := (select fecha from logs_inserts where id_registro = id_last_of);
-		hora_of := (select hora from logs_inserts where id_registro = id_last_of);
-		usuario_of := (select usuario from logs_inserts where id_registro = id_last_of);
-		usuario_sesion_of := (select usuario_sesion from logs_inserts where id_registro = id_last_of);	
-		db_of := (select db from logs_inserts where id_registro = id_last_of);
-	 	db_version_of := (select db_version from logs_inserts where id_registro = id_last_of);
+		uuid_registro_of := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+		
+		fecha_of := (select fecha from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+		
+		hora_of := (select hora from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		usuario_of := (select usuario from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		usuario_sesion_of := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		db_of := (select db from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	 	
+		db_version_of := (select db_version from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
 		
 	 
 	 	
@@ -529,14 +542,28 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_inserts where id_registro = id_last_of);
-		fecha_of := (select fecha from logs_inserts where id_registro = id_last_of);
-		hora_of := (select hora from logs_inserts where id_registro = id_last_of);
-		usuario_of := (select usuario from logs_inserts where id_registro = id_last_of);
-		usuario_sesion_of := (select usuario_sesion from logs_inserts where id_registro = id_last_of);	
-		db_of := (select db from logs_inserts where id_registro = id_last_of);
-	 	db_version_of := (select db_version from logs_inserts where id_registro = id_last_of);
+		uuid_registro_of := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
 		
+		fecha_of := (select fecha from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+		
+		hora_of := (select hora from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		usuario_of := (select usuario from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		usuario_sesion_of := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		db_of := (select db from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	 	
+		db_version_of := (select db_version from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+		
+	 
 	 
 	 	
 	
@@ -642,14 +669,28 @@ begin
 		-- ------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_inserts where id_registro = id_last_of);
-		fecha_of := (select fecha from logs_inserts where id_registro = id_last_of);
-		hora_of := (select hora from logs_inserts where id_registro = id_last_of);
-		usuario_of := (select usuario from logs_inserts where id_registro = id_last_of);
-		usuario_sesion_of := (select usuario_sesion from logs_inserts where id_registro = id_last_of);	
-		db_of := (select db from logs_inserts where id_registro = id_last_of);
-	 	db_version_of := (select db_version from logs_inserts where id_registro = id_last_of);
+			uuid_registro_of := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
 		
+		fecha_of := (select fecha from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+		
+		hora_of := (select hora from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		usuario_of := (select usuario from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		usuario_sesion_of := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		db_of := (select db from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	 	
+		db_version_of := (select db_version from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+		
+	 
 	 
 	 	
 	
@@ -771,12 +812,9 @@ select * from oficinas_detalles;
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'oficinas_detalles';
 
-/*
-drop function if exists insertar_registro_oficinas_detalles(
-id_of_input int, loc_input varchar, tipo_of_input tipo_oficina_enum
-, estado_of_input estado_oficina_enum, sup_total_input decimal, cant_amb_input smallint 
-,  cant_sanit_input smallint , antig_input smallint , sitio_web_input varchar
-);*/
+
+
+
 
 create or replace function insertar_registro_oficinas_detalles(
 
@@ -836,7 +874,8 @@ begin
 		and
 		((id_of_input > 0) and (loc_input_input > 0))
 		and 
-		((tipo_of_input = 'PEQUEÑA') or (tipo_of_input = 'ESTANDAR') or (tipo_of_input = 'EJECUTIVA')) 
+		((tipo_of_input = 'PEQUEÑA') or (tipo_of_input = 'ESTANDAR') or 
+		(tipo_of_input = 'EJECUTIVA')) 
 		and
 		((estado_of_input = 'ALQUILADA') or (estado_of_input = 'PROPIA'))
 		and
@@ -934,14 +973,28 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_of_det := (select uuid_registro from logs_inserts where id_registro = id_last_of_det);
-		fecha_of_det := (select fecha from logs_inserts where id_registro = id_last_of_det);
-		hora_of_det := (select hora from logs_inserts where id_registro = id_last_of_det);
-		usuario_of_det := (select usuario from logs_inserts where id_registro = id_last_of_det);
-		usuario_sesion_of_det := (select usuario_sesion from logs_inserts where id_registro = id_last_of_det);	
-		db_of_det := (select db from logs_inserts where id_registro = id_last_of_det);
-	 	db_version_of_det := (select db_version from logs_inserts where id_registro = id_last_of_det);
+		uuid_registro_of_det := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_of_det) and (nombre_tabla = 'oficinas_detalles'));
+	
+		fecha_of_det := (select fecha from logs_inserts 
+		where (id_registro = id_last_of_det) and (nombre_tabla = 'oficinas_detalles'));
+	
 		
+		hora_of_det := (select hora from logs_inserts 
+		where (id_registro = id_last_of_det) and (nombre_tabla = 'oficinas_detalles'));
+	
+		usuario_of_det := (select usuario from logs_inserts 
+		where (id_registro = id_last_of_det) and (nombre_tabla = 'oficinas_detalles'));
+	
+		usuario_sesion_of_det := (select usuario_sesion from logs_inserts 	
+		where (id_registro = id_last_of_det) and (nombre_tabla = 'oficinas_detalles'));
+	
+		db_of_det := (select db from logs_inserts 
+	 	where (id_registro = id_last_of_det) and (nombre_tabla = 'oficinas_detalles'));
+	
+		db_version_of_det := (select db_version from logs_inserts 
+		where (id_registro = id_last_of_det) and (nombre_tabla = 'oficinas_detalles'));
+	
 	 
 	 	
 	
@@ -989,12 +1042,324 @@ $$ language plpgsql;
 
 
 
+-- ----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- =========================================
+-- ======= TABLA SERVICIOS_OFICINAS =======
+-- =========================================
+
+
+
+
+select * from servicios_oficinas;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'servicios_oficinas';
+
+
+
+
+-- ==================================================================================
+-- ----------- SELECT DE TODOS LOS REGISTROS DE LA TABLA SERVICIOS_OFICINAS --------
+-- ==================================================================================
+
+
+
+create or replace function listado_servicios_oficinas() returns setof servicios_oficinas as $$
+
+declare
+
+	registro_actual_serv_of RECORD;
+
+begin 
+	
+	for registro_actual_serv_of in (select * from servicios_oficinas) loop
+	
+		return next registro_actual_serv_of;
+	
+	end loop;
+	return;
+	
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- =======================================================================
+-- ----------- INSERCION DE 1 REGISTRO TABLA SERVICIOS_OFICINAS ---------
+-- =======================================================================
+
+
+
+
+
+select * from servicios_oficinas;
+
+
+select column_name, data_type, is_nullable from
+information_schema.columns where table_name = 'servicios_oficinas';
+
+
+
+
+
+create or replace function insertar_registro_servicios_oficinas(
+
+id_of_input int, tipo_com_input division_comercial_enum, tipo_viv_input division_vivienda_enum
+, tipo_tasac_input tasaciones_enum, tipo_adm_input administracion_enum
+, descr_serv_input varchar 
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA servicios_oficinas
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_serv_of_check boolean;
+id_last_serv_of int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID de la Oficina, Servicio tipo comercial, vivienda, tasaciones y administracion  
+id_of_serv_com_viv_tas_serv_of_check boolean := exists(
+select id_oficina , tipo_comercial , tipo_vivienda , tipo_tasaciones , tipo_administracion 
+from servicios_oficinas 
+where ((id_oficina = id_of_input) and (tipo_comercial = tipo_com_input) 
+and (tipo_vivienda = tipo_viv_input) and (tipo_tasaciones = tipo_tasac_input)
+and (tipo_administracion = tipo_adm_input)));
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_serv_of uuid;
+nombre_tabla_serv_of varchar := 'servicios_oficinas';
+accion_serv_of varchar := 'insert';
+fecha_serv_of date ;
+hora_serv_of time ;
+usuario_serv_of varchar;
+usuario_sesion_serv_of varchar;
+db_serv_of varchar;
+db_version_serv_of varchar;
+
+
+
+begin
+	
+
+
+	if(
+	(id_of_serv_com_viv_tas_serv_of_check = true)
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========'
+						using hint = 
+					'-------- REVISAR ID DE LA OFICINA -------------'
+					'-------- REVISAR LOS TIPOS DE SERVICIO DE LA OFICINA -------------';
+						
+
+	elsif (
+		((id_of_serv_com_viv_tas_serv_of_check = false))
+		and
+		((id_of_input > 0))
+		and 
+		((tipo_com_input = 'LOCALES') or (tipo_com_input = 'OFICINAS') or
+		(tipo_com_input = 'TERRENOS') or (tipo_com_input = 'LOCALES-OFICINAS-TERRENOS') or
+		(tipo_com_input = 'NO APLICA')) 
+		and 
+		((tipo_viv_input = 'DEPARTAMENTOS') or (tipo_viv_input = 'CASAS') or
+		(tipo_viv_input = 'TERRENOS') or (tipo_viv_input = 'DEPARTAMENTOS-CASAS-TERRENOS') or
+		(tipo_viv_input = 'NO APLICA'))
+		and
+		((tipo_tasac_input = 'PROFESIONAL') or (tipo_tasac_input = 'JUDICIAL') or
+		(tipo_tasac_input = 'PROFESIONAL-JUDICIAL') or(tipo_tasac_input = 'NO APLICA'))
+		and 
+		((tipo_adm_input = 'ALQUILERES') or (tipo_adm_input = 'CUENTAS') or
+		(tipo_adm_input = 'ALQUILERES-CUENTAS') or(tipo_adm_input = 'NO APLICA'))
+		and
+		((descr_serv_input <> ''))
+		) then
+			
+		
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA SERVICIOS_OFICINAS  -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into servicios_oficinas(
+		id_oficina, tipo_comercial , tipo_vivienda , tipo_tasaciones 
+		, tipo_administracion , descripcion_servicios) values
+		
+		(
+		id_of_input, tipo_com_input::division_comercial_enum
+		, tipo_viv_input::division_vivienda_enum, tipo_tasac_input::tasaciones_enum
+		, tipo_adm_input::administracion_enum, descr_serv_input::varchar
+		);
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_serv_of_check := exists(select id from servicios_oficinas);
+	
+		-- Comprobacion id
+		if (id_last_serv_of_check = true) then
+			
+			id_last_serv_of := (select max(id) from servicios_oficinas);
+		
+		else 
+			
+			id_last_serv_of := 0;
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '----------------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "servicios_oficinas" --';
+		raise notice '----------------------------------------------------';
+	
+		raise notice 'ID Servicio: %' , id_last_serv_of;
+		raise notice 'ID de la Oficina: %' , id_of_input;
+		raise notice 'Tipo de Comercio : %', tipo_com_input;
+	 	raise notice 'Tipo de Vivienda : %', tipo_viv_input;
+	  	raise notice 'Tipo de Tasaciones : %', tipo_tasac_input;
+	  	raise notice 'Tipo de Administración : %', tipo_adm_input;
+	  	raise notice 'Descripción de Servicios : %', descr_serv_input;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA SERVICIOS_OFICINAS  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_serv_of , nombre_tabla_serv_of , accion_serv_of);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_serv_of := (select uuid_registro from logs_inserts
+		where (id_registro = id_last_serv_of) and (nombre_tabla = 'servicios_oficinas'));
+		
+		fecha_serv_of := (select fecha from logs_inserts
+		where (id_registro = id_last_serv_of) and (nombre_tabla = 'servicios_oficinas'));
+	
+		hora_serv_of := (select hora from logs_inserts 
+		where (id_registro = id_last_serv_of) and (nombre_tabla = 'servicios_oficinas'));
+
+		usuario_serv_of := (select usuario from logs_inserts 
+		where (id_registro = id_last_serv_of) and (nombre_tabla = 'servicios_oficinas'));
+
+		usuario_sesion_serv_of := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_serv_of) and (nombre_tabla = 'servicios_oficinas'));	
+
+		db_serv_of := (select db from logs_inserts 
+		where (id_registro = id_last_serv_of) and (nombre_tabla = 'servicios_oficinas'));
+
+		db_version_serv_of := (select db_version from logs_inserts
+		where (id_registro = id_last_serv_of) and (nombre_tabla = 'servicios_oficinas'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_serv_of;
+		raise notice 'UUID Registro : %', uuid_registro_serv_of;
+		raise notice 'Tabla : %', nombre_tabla_serv_of;
+		raise notice 'Acción : %', accion_serv_of;
+		raise notice 'Fecha : %', fecha_serv_of;
+		raise notice 'Hora : %', hora_serv_of;
+     	raise notice 'Usuario : %', usuario_serv_of;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_serv_of;
+        raise notice 'DB : %', db_serv_of;
+        raise notice 'Versión DB : %', db_version_serv_of;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_servicios_oficinas() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
+
+
+
+
+
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
 
 
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
+
+
 
 
 
@@ -1220,16 +1585,28 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 					-- Traemos los valores del Registro Insertado
-		uuid_registro_empl := (select uuid_registro from logs_inserts where id_registro = id_last_empl);
-		fecha_empl := (select fecha from logs_inserts where id_registro = id_last_empl);
-		hora_empl := (select hora from logs_inserts where id_registro = id_last_empl);
-		usuario_empl := (select usuario from logs_inserts where id_registro = id_last_empl);
-		usuario_sesion_empl := (select usuario_sesion from logs_inserts where id_registro = id_last_empl);	
-		db_empl := (select db from logs_inserts where id_registro = id_last_empl);
-	 	db_version_empl := (select db_version from logs_inserts where id_registro = id_last_empl);
+		uuid_registro_empl := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
 		
+		fecha_empl := (select fecha from logs_inserts
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
+			
+		hora_empl := (select hora from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));	
+	
+		usuario_empl := (select usuario from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));		
+
+		usuario_sesion_empl := (select usuario_sesion from logs_inserts	
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
+		
+		db_empl := (select db from logs_inserts
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
+
+		db_version_empl := (select db_version from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
 	 
-	 	
+	 
 	
 		raise notice '';
 		raise notice '';
@@ -1499,16 +1876,27 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_empl := (select uuid_registro from logs_inserts where id_registro = id_last_empl);
-		fecha_empl := (select fecha from logs_inserts where id_registro = id_last_empl);
-		hora_empl := (select hora from logs_inserts where id_registro = id_last_empl);
-		usuario_empl := (select usuario from logs_inserts where id_registro = id_last_empl);
-		usuario_sesion_empl := (select usuario_sesion from logs_inserts where id_registro = id_last_empl);	
-		db_empl := (select db from logs_inserts where id_registro = id_last_empl);
-	 	db_version_empl := (select db_version from logs_inserts where id_registro = id_last_empl);
+			uuid_registro_empl := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
 		
+		fecha_empl := (select fecha from logs_inserts
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
+			
+		hora_empl := (select hora from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));	
+	
+		usuario_empl := (select usuario from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));		
+
+		usuario_sesion_empl := (select usuario_sesion from logs_inserts	
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
+		
+		db_empl := (select db from logs_inserts
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
+
+		db_version_empl := (select db_version from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
 	 
-	 	
 	
 		raise notice '';
 		raise notice '';
@@ -1626,14 +2014,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 			-- Traemos los valores del Registro Insertado
-		uuid_registro_empl := (select uuid_registro from logs_inserts where id_registro = id_last_empl);
-		fecha_empl := (select fecha from logs_inserts where id_registro = id_last_empl);
-		hora_empl := (select hora from logs_inserts where id_registro = id_last_empl);
-		usuario_empl := (select usuario from logs_inserts where id_registro = id_last_empl);
-		usuario_sesion_empl := (select usuario_sesion from logs_inserts where id_registro = id_last_empl);	
-		db_empl := (select db from logs_inserts where id_registro = id_last_empl);
-	 	db_version_empl := (select db_version from logs_inserts where id_registro = id_last_empl);
+		uuid_registro_empl := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
 		
+		fecha_empl := (select fecha from logs_inserts
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
+			
+		hora_empl := (select hora from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));	
+	
+		usuario_empl := (select usuario from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));		
+
+		usuario_sesion_empl := (select usuario_sesion from logs_inserts	
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
+		
+		db_empl := (select db from logs_inserts
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
+
+		db_version_empl := (select db_version from logs_inserts 
+		where (id_registro = id_last_empl) and (nombre_tabla = 'empleados'));
 	 
 	 	
 	
@@ -1904,13 +2304,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_prop_inm := (select uuid_registro from logs_inserts where id_registro = id_last_prop_inm);
-		fecha_prop_inm := (select fecha from logs_inserts where id_registro = id_last_prop_inm);
-		hora_prop_inm := (select hora from logs_inserts where id_registro = id_last_prop_inm);
-		usuario_prop_inm := (select usuario from logs_inserts where id_registro = id_last_prop_inm);
-		usuario_sesion_prop_inm := (select usuario_sesion from logs_inserts where id_registro = id_last_prop_inm);	
-		db_prop_inm := (select db from logs_inserts where id_registro = id_last_prop_inm);
-	 	db_version_prop_inm := (select db_version from logs_inserts where id_registro = id_last_prop_inm);
+		uuid_registro_prop_inm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		fecha_prop_inm := (select fecha from logs_inserts
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+	
+		hora_prop_inm := (select hora from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		usuario_prop_inm := (select usuario from logs_inserts
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		usuario_sesion_prop_inm := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));	
+
+		db_prop_inm := (select db from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		db_version_prop_inm := (select db_version from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
 		
 	 
 	 	
@@ -2159,15 +2572,27 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_prop_inm := (select uuid_registro from logs_inserts where id_registro = id_last_prop_inm);
-		fecha_prop_inm := (select fecha from logs_inserts where id_registro = id_last_prop_inm);
-		hora_prop_inm := (select hora from logs_inserts where id_registro = id_last_prop_inm);
-		usuario_prop_inm := (select usuario from logs_inserts where id_registro = id_last_prop_inm);
-		usuario_sesion_prop_inm := (select usuario_sesion from logs_inserts where id_registro = id_last_prop_inm);	
-		db_prop_inm := (select db from logs_inserts where id_registro = id_last_prop_inm);
-	 	db_version_prop_inm := (select db_version from logs_inserts where id_registro = id_last_prop_inm);
+			uuid_registro_prop_inm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		fecha_prop_inm := (select fecha from logs_inserts
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+	
+		hora_prop_inm := (select hora from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		usuario_prop_inm := (select usuario from logs_inserts
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		usuario_sesion_prop_inm := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));	
+
+		db_prop_inm := (select db from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		db_version_prop_inm := (select db_version from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
 		
-	 	
 	 		
 		raise notice '';
 		raise notice '----------------------------------------------';
@@ -2283,13 +2708,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_prop_inm := (select uuid_registro from logs_inserts where id_registro = id_last_prop_inm);
-		fecha_prop_inm := (select fecha from logs_inserts where id_registro = id_last_prop_inm);
-		hora_prop_inm := (select hora from logs_inserts where id_registro = id_last_prop_inm);
-		usuario_prop_inm := (select usuario from logs_inserts where id_registro = id_last_prop_inm);
-		usuario_sesion_prop_inm := (select usuario_sesion from logs_inserts where id_registro = id_last_prop_inm);	
-		db_prop_inm := (select db from logs_inserts where id_registro = id_last_prop_inm);
-	 	db_version_prop_inm := (select db_version from logs_inserts where id_registro = id_last_prop_inm);
+		uuid_registro_prop_inm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		fecha_prop_inm := (select fecha from logs_inserts
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+	
+		hora_prop_inm := (select hora from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		usuario_prop_inm := (select usuario from logs_inserts
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		usuario_sesion_prop_inm := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));	
+
+		db_prop_inm := (select db from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
+
+		db_version_prop_inm := (select db_version from logs_inserts 
+		where (id_registro = id_last_prop_inm) and (nombre_tabla  = 'propietarios_inmuebles'));
 		
 	 	
 	 		
@@ -2562,13 +3000,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_inm_descr := (select uuid_registro from logs_inserts where id_registro = id_last_inm_descr);
-		fecha_inm_descr := (select fecha from logs_inserts where id_registro = id_last_inm_descr);
-		hora_inm_descr := (select hora from logs_inserts where id_registro = id_last_inm_descr);
-		usuario_inm_descr := (select usuario from logs_inserts where id_registro = id_last_inm_descr);
-		usuario_sesion_inm_descr := (select usuario_sesion from logs_inserts where id_registro = id_last_inm_descr);	
-		db_inm_descr := (select db from logs_inserts where id_registro = id_last_inm_descr);
-	 	db_version_inm_descr := (select db_version from logs_inserts where id_registro = id_last_inm_descr);
+		uuid_registro_inm_descr := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+		
+		fecha_inm_descr := (select fecha from logs_inserts 
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+	
+		hora_inm_descr := (select hora from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+
+		usuario_inm_descr := (select usuario from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+
+		usuario_sesion_inm_descr := (select usuario_sesion from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));	
+
+		db_inm_descr := (select db from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+
+		db_version_inm_descr := (select db_version from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
 		
 	 
 	 	
@@ -2813,13 +3264,26 @@ begin
 		--------------------------------------- FIN INSERCION 1ER REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_inm_descr := (select uuid_registro from logs_inserts where id_registro = id_last_inm_descr);
-		fecha_inm_descr := (select fecha from logs_inserts where id_registro = id_last_inm_descr);
-		hora_inm_descr := (select hora from logs_inserts where id_registro = id_last_inm_descr);
-		usuario_inm_descr := (select usuario from logs_inserts where id_registro = id_last_inm_descr);
-		usuario_sesion_inm_descr := (select usuario_sesion from logs_inserts where id_registro = id_last_inm_descr);	
-		db_inm_descr := (select db from logs_inserts where id_registro = id_last_inm_descr);
-	 	db_version_inm_descr := (select db_version from logs_inserts where id_registro = id_last_inm_descr);
+		uuid_registro_inm_descr := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+		
+		fecha_inm_descr := (select fecha from logs_inserts 
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+	
+		hora_inm_descr := (select hora from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+
+		usuario_inm_descr := (select usuario from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+
+		usuario_sesion_inm_descr := (select usuario_sesion from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));	
+
+		db_inm_descr := (select db from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+
+		db_version_inm_descr := (select db_version from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
 		
 	 
 	 	
@@ -2941,15 +3405,27 @@ begin
 		--------------------------------------- FIN INSERCION 2DO REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_inm_descr := (select uuid_registro from logs_inserts where id_registro = id_last_inm_descr);
-		fecha_inm_descr := (select fecha from logs_inserts where id_registro = id_last_inm_descr);
-		hora_inm_descr := (select hora from logs_inserts where id_registro = id_last_inm_descr);
-		usuario_inm_descr := (select usuario from logs_inserts where id_registro = id_last_inm_descr);
-		usuario_sesion_inm_descr := (select usuario_sesion from logs_inserts where id_registro = id_last_inm_descr);	
-		db_inm_descr := (select db from logs_inserts where id_registro = id_last_inm_descr);
-	 	db_version_inm_descr := (select db_version from logs_inserts where id_registro = id_last_inm_descr);
+		uuid_registro_inm_descr := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
 		
-	 
+		fecha_inm_descr := (select fecha from logs_inserts 
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+	
+		hora_inm_descr := (select hora from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+
+		usuario_inm_descr := (select usuario from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+
+		usuario_sesion_inm_descr := (select usuario_sesion from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));	
+
+		db_inm_descr := (select db from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+
+		db_version_inm_descr := (select db_version from logs_inserts
+		where (id_registro = id_last_inm_descr) and (nombre_tabla = 'inmuebles_descripciones'));
+		
 	 	
 	
 		raise notice '';
@@ -3212,13 +3688,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_inm_med := (select uuid_registro from logs_inserts where id_registro = id_last_inm_med);
-		fecha_inm_med := (select fecha from logs_inserts where id_registro = id_last_inm_med);
-		hora_inm_med := (select hora from logs_inserts where id_registro = id_last_inm_med);
-		usuario_inm_med := (select usuario from logs_inserts where id_registro = id_last_inm_med);
-		usuario_sesion_inm_med := (select usuario_sesion from logs_inserts where id_registro = id_last_inm_med);	
-		db_inm_med := (select db from logs_inserts where id_registro = id_last_inm_med);
-	 	db_version_inm_med := (select db_version from logs_inserts where id_registro = id_last_inm_med);
+		uuid_registro_inm_med := (select uuid_registro from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+		
+		fecha_inm_med := (select fecha from logs_inserts
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+	
+		hora_inm_med := (select hora from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+
+		usuario_inm_med := (select usuario from logs_inserts
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+
+		usuario_sesion_inm_med := (select usuario_sesion from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));	
+
+		db_inm_med := (select db from logs_inserts
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+
+		db_version_inm_med := (select db_version from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
 		
 	 
 	 	
@@ -3457,13 +3946,26 @@ begin
 		--------------------------------------- FIN INSERCION 1ER REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_inm_med := (select uuid_registro from logs_inserts where id_registro = id_last_inm_med);
-		fecha_inm_med := (select fecha from logs_inserts where id_registro = id_last_inm_med);
-		hora_inm_med := (select hora from logs_inserts where id_registro = id_last_inm_med);
-		usuario_inm_med := (select usuario from logs_inserts where id_registro = id_last_inm_med);
-		usuario_sesion_inm_med := (select usuario_sesion from logs_inserts where id_registro = id_last_inm_med);	
-		db_inm_med := (select db from logs_inserts where id_registro = id_last_inm_med);
-	 	db_version_inm_med := (select db_version from logs_inserts where id_registro = id_last_inm_med);
+		uuid_registro_inm_med := (select uuid_registro from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+		
+		fecha_inm_med := (select fecha from logs_inserts
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+	
+		hora_inm_med := (select hora from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+
+		usuario_inm_med := (select usuario from logs_inserts
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+
+		usuario_sesion_inm_med := (select usuario_sesion from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));	
+
+		db_inm_med := (select db from logs_inserts
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+
+		db_version_inm_med := (select db_version from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
 		
 	 
 	 	
@@ -3579,13 +4081,26 @@ begin
 	
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_inm_med := (select uuid_registro from logs_inserts where id_registro = id_last_inm_med);
-		fecha_inm_med := (select fecha from logs_inserts where id_registro = id_last_inm_med);
-		hora_inm_med := (select hora from logs_inserts where id_registro = id_last_inm_med);
-		usuario_inm_med := (select usuario from logs_inserts where id_registro = id_last_inm_med);
-		usuario_sesion_inm_med := (select usuario_sesion from logs_inserts where id_registro = id_last_inm_med);	
-		db_inm_med := (select db from logs_inserts where id_registro = id_last_inm_med);
-	 	db_version_inm_med := (select db_version from logs_inserts where id_registro = id_last_inm_med);
+		uuid_registro_inm_med := (select uuid_registro from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+		
+		fecha_inm_med := (select fecha from logs_inserts
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+	
+		hora_inm_med := (select hora from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+
+		usuario_inm_med := (select usuario from logs_inserts
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+
+		usuario_sesion_inm_med := (select usuario_sesion from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));	
+
+		db_inm_med := (select db from logs_inserts
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
+
+		db_version_inm_med := (select db_version from logs_inserts 
+		where ((id_registro = id_last_inm_med) and (nombre_tabla = 'inmuebles_medidas')));
 		
 	 
 	 	
@@ -3685,9 +4200,6 @@ $$ language plpgsql;
 
 
 
--- VACUUM FULL inmuebles; 
-
-
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
 
@@ -3706,13 +4218,7 @@ select * from inmuebles;
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'inmuebles';
 
-/*
-drop function insertar_registro_inmuebles(
-id_prop_inm_input int, id_inm_med_input int, id_inm_descr_input int
-, id_of_input int, descr_input varchar, tipo_input varchar 
-,estado_inm_input estado_inmueble_enum , precio_inm_usd_input decimal
-,direc_input varchar , ubic_input varchar , sitio_web_input varchar);
-*/
+
 
 
 create or replace function insertar_registros_inmuebles(
@@ -3878,13 +4384,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_inm := (select uuid_registro from logs_inserts where id_registro = id_last_inm);
-		fecha_inm := (select fecha from logs_inserts where id_registro = id_last_inm);
-		hora_inm := (select hora from logs_inserts where id_registro = id_last_inm);
-		usuario_inm := (select usuario from logs_inserts where id_registro = id_last_inm);
-		usuario_sesion_inm := (select usuario_sesion from logs_inserts where id_registro = id_last_inm);	
-		db_inm := (select db from logs_inserts where id_registro = id_last_inm);
-	 	db_version_inm := (select db_version from logs_inserts where id_registro = id_last_inm);
+		uuid_registro_inm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+		
+		fecha_inm := (select fecha from logs_inserts
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+	
+		hora_inm := (select hora from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+
+		usuario_inm := (select usuario from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+
+		usuario_sesion_inm := (select usuario_sesion from logs_inserts
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));	
+
+		db_inm := (select db from logs_inserts
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+
+		db_version_inm := (select db_version from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
 		
 	 
 	 	
@@ -4143,13 +4662,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_inm := (select uuid_registro from logs_inserts where id_registro = id_last_inm);
-		fecha_inm := (select fecha from logs_inserts where id_registro = id_last_inm);
-		hora_inm := (select hora from logs_inserts where id_registro = id_last_inm);
-		usuario_inm := (select usuario from logs_inserts where id_registro = id_last_inm);
-		usuario_sesion_inm := (select usuario_sesion from logs_inserts where id_registro = id_last_inm);	
-		db_inm := (select db from logs_inserts where id_registro = id_last_inm);
-	 	db_version_inm := (select db_version from logs_inserts where id_registro = id_last_inm);
+			uuid_registro_inm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+		
+		fecha_inm := (select fecha from logs_inserts
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+	
+		hora_inm := (select hora from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+
+		usuario_inm := (select usuario from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+
+		usuario_sesion_inm := (select usuario_sesion from logs_inserts
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));	
+
+		db_inm := (select db from logs_inserts
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+
+		db_version_inm := (select db_version from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
 		
 	 
 	 	
@@ -4270,13 +4802,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_inm := (select uuid_registro from logs_inserts where id_registro = id_last_inm);
-		fecha_inm := (select fecha from logs_inserts where id_registro = id_last_inm);
-		hora_inm := (select hora from logs_inserts where id_registro = id_last_inm);
-		usuario_inm := (select usuario from logs_inserts where id_registro = id_last_inm);
-		usuario_sesion_inm := (select usuario_sesion from logs_inserts where id_registro = id_last_inm);	
-		db_inm := (select db from logs_inserts where id_registro = id_last_inm);
-	 	db_version_inm := (select db_version from logs_inserts where id_registro = id_last_inm);
+			uuid_registro_inm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+		
+		fecha_inm := (select fecha from logs_inserts
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+	
+		hora_inm := (select hora from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+
+		usuario_inm := (select usuario from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+
+		usuario_sesion_inm := (select usuario_sesion from logs_inserts
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));	
+
+		db_inm := (select db from logs_inserts
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
+
+		db_version_inm := (select db_version from logs_inserts 
+		where (id_registro = id_last_inm) and (nombre_tabla = 'inmuebles'));
 		
 	 
 	 	
@@ -4556,13 +5101,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_cli := (select uuid_registro from logs_inserts where id_registro = id_last_cli);
-		fecha_cli := (select fecha from logs_inserts where id_registro = id_last_cli);
-		hora_cli := (select hora from logs_inserts where id_registro = id_last_cli);
-		usuario_cli := (select usuario from logs_inserts where id_registro = id_last_cli);
-		usuario_sesion_cli := (select usuario_sesion from logs_inserts where id_registro = id_last_cli);	
-		db_cli := (select db from logs_inserts where id_registro = id_last_cli);
-	 	db_version_cli := (select db_version from logs_inserts where id_registro = id_last_cli);
+		uuid_registro_cli := (select uuid_registro from logs_inserts
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+	
+		fecha_cli := (select fecha from logs_inserts
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		hora_cli := (select hora from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		usuario_cli := (select usuario from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		usuario_sesion_cli := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));	
+
+		db_cli := (select db from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		db_version_cli := (select db_version from logs_inserts
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
 		
 	 
 	 	
@@ -4816,13 +5374,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_cli := (select uuid_registro from logs_inserts where id_registro = id_last_cli);
-		fecha_cli := (select fecha from logs_inserts where id_registro = id_last_cli);
-		hora_cli := (select hora from logs_inserts where id_registro = id_last_cli);
-		usuario_cli := (select usuario from logs_inserts where id_registro = id_last_cli);
-		usuario_sesion_cli := (select usuario_sesion from logs_inserts where id_registro = id_last_cli);	
-		db_cli := (select db from logs_inserts where id_registro = id_last_cli);
-	 	db_version_cli := (select db_version from logs_inserts where id_registro = id_last_cli);
+			uuid_registro_cli := (select uuid_registro from logs_inserts
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+	
+		fecha_cli := (select fecha from logs_inserts
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		hora_cli := (select hora from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		usuario_cli := (select usuario from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		usuario_sesion_cli := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));	
+
+		db_cli := (select db from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		db_version_cli := (select db_version from logs_inserts
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
 		
 	 
 	 	
@@ -4942,13 +5513,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_cli := (select uuid_registro from logs_inserts where id_registro = id_last_cli);
-		fecha_cli := (select fecha from logs_inserts where id_registro = id_last_cli);
-		hora_cli := (select hora from logs_inserts where id_registro = id_last_cli);
-		usuario_cli := (select usuario from logs_inserts where id_registro = id_last_cli);
-		usuario_sesion_cli := (select usuario_sesion from logs_inserts where id_registro = id_last_cli);	
-		db_cli := (select db from logs_inserts where id_registro = id_last_cli);
-	 	db_version_cli := (select db_version from logs_inserts where id_registro = id_last_cli);
+		uuid_registro_cli := (select uuid_registro from logs_inserts
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+	
+		fecha_cli := (select fecha from logs_inserts
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		hora_cli := (select hora from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		usuario_cli := (select usuario from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		usuario_sesion_cli := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));	
+
+		db_cli := (select db from logs_inserts 
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
+
+		db_version_cli := (select db_version from logs_inserts
+		where (id_registro = id_last_cli) and (nombre_tabla = 'clientes'));
 		
 	 
 	 	
@@ -5222,13 +5806,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_cit_inm := (select uuid_registro from logs_inserts where id_registro = id_last_cit_inm);
-		fecha_cit_inm := (select fecha from logs_inserts where id_registro = id_last_cit_inm);
-		hora_cit_inm := (select hora from logs_inserts where id_registro = id_last_cit_inm);
-		usuario_cit_inm := (select usuario from logs_inserts where id_registro = id_last_cit_inm);
-		usuario_sesion_cit_inm := (select usuario_sesion from logs_inserts where id_registro = id_last_cit_inm);	
-		db_cit_inm := (select db from logs_inserts where id_registro = id_last_cit_inm);
-	 	db_version_cit_inm := (select db_version from logs_inserts where id_registro = id_last_cit_inm);
+		uuid_registro_cit_inm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+		
+		fecha_cit_inm := (select fecha from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+	
+		hora_cit_inm := (select hora from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+
+		usuario_cit_inm := (select usuario from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+
+		usuario_sesion_cit_inm := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));	
+
+		db_cit_inm := (select db from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+
+		db_version_cit_inm := (select db_version from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
 		
 	 
 	 	
@@ -5378,11 +5975,11 @@ begin
 		and 
 		((id_cli_input_01 > 0) and (id_cli_input_02 > 0)) 
 		and 
-		((est_cit_input_01 = 'PENDIENTE') or (est_cit_input_02 = 'PENDIENTE')) 
+		((est_cit_input_01 = 'PENDIENTE') or (est_cit_input_01 = 'COMPLETADA') or
+		(est_cit_input_01 = 'INCOMPLETA'))
 		and 
-		((est_cit_input_01 = 'COMPLETADA') or (est_cit_input_02 = 'COMPLETADA'))
-		and
-		((est_cit_input_01 = 'INCOMPLETA') or (est_cit_input_02 = 'INCOMPLETA')) 
+		((est_cit_input_02 = 'PENDIENTE') or (est_cit_input_02 = 'COMPLETADA') or
+		(est_cit_input_02 = 'INCOMPLETA'))  
 		and
 		((descr_cit_input_01 <> '') or (descr_cit_input_02 <> ''))
 		and 
@@ -5445,8 +6042,8 @@ begin
 	 	raise notice 'ID del Cliente : %', id_cli_input_01;
 	  	raise notice 'Estado de la Cita : %', est_cit_input_01;
 	  	raise notice 'Descripción de la Cita : %', descr_cit_input_01;
-	  	raise notice 'Fecha de la Cita : %', fecha_cit_input_01;
-	  	raise notice 'Hora de la Cita : %', hora_cit_input_01;
+	  	raise notice 'Fecha de la Cita : %', fecha_cit_input_01::date;
+	  	raise notice 'Hora de la Cita : %', hora_cit_input_01::time;
 	  	raise notice ' ';
 		raise notice 'ok!';
 		raise notice ' ';	
@@ -5477,13 +6074,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_cit_inm := (select uuid_registro from logs_inserts where id_registro = id_last_cit_inm);
-		fecha_cit_inm := (select fecha from logs_inserts where id_registro = id_last_cit_inm);
-		hora_cit_inm := (select hora from logs_inserts where id_registro = id_last_cit_inm);
-		usuario_cit_inm := (select usuario from logs_inserts where id_registro = id_last_cit_inm);
-		usuario_sesion_cit_inm := (select usuario_sesion from logs_inserts where id_registro = id_last_cit_inm);	
-		db_cit_inm := (select db from logs_inserts where id_registro = id_last_cit_inm);
-	 	db_version_cit_inm := (select db_version from logs_inserts where id_registro = id_last_cit_inm);
+				uuid_registro_cit_inm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+		
+		fecha_cit_inm := (select fecha from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+	
+		hora_cit_inm := (select hora from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+
+		usuario_cit_inm := (select usuario from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+
+		usuario_sesion_cit_inm := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));	
+
+		db_cit_inm := (select db from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+
+		db_version_cit_inm := (select db_version from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
 		
 	 
 	 	
@@ -5565,8 +6175,8 @@ begin
 	 	raise notice 'ID del Cliente : %', id_cli_input_02;
 	  	raise notice 'Estado de la Cita : %', est_cit_input_02;
 	  	raise notice 'Descripción de la Cita : %', descr_cit_input_02;
-	  	raise notice 'Fecha de la Cita : %', fecha_cit_input_02;
-	  	raise notice 'Hora de la Cita : %', hora_cit_input_02;
+	  	raise notice 'Fecha de la Cita : %', fecha_cit_input_02::date;
+	  	raise notice 'Hora de la Cita : %', hora_cit_input_02::time;
 	  	raise notice ' ';
 		raise notice 'ok!';
 		raise notice ' ';	
@@ -5597,13 +6207,26 @@ begin
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 	
 		-- Traemos los valores del Registro Insertado
-		uuid_registro_cit_inm := (select uuid_registro from logs_inserts where id_registro = id_last_cit_inm);
-		fecha_cit_inm := (select fecha from logs_inserts where id_registro = id_last_cit_inm);
-		hora_cit_inm := (select hora from logs_inserts where id_registro = id_last_cit_inm);
-		usuario_cit_inm := (select usuario from logs_inserts where id_registro = id_last_cit_inm);
-		usuario_sesion_cit_inm := (select usuario_sesion from logs_inserts where id_registro = id_last_cit_inm);	
-		db_cit_inm := (select db from logs_inserts where id_registro = id_last_cit_inm);
-	 	db_version_cit_inm := (select db_version from logs_inserts where id_registro = id_last_cit_inm);
+				uuid_registro_cit_inm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+		
+		fecha_cit_inm := (select fecha from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+	
+		hora_cit_inm := (select hora from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+
+		usuario_cit_inm := (select usuario from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+
+		usuario_sesion_cit_inm := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));	
+
+		db_cit_inm := (select db from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
+
+		db_version_cit_inm := (select db_version from logs_inserts 
+		where (id_registro = id_last_cit_inm) and (nombre_tabla = 'citas_inmuebles'));
 		
 	 
 	 	
@@ -5649,15 +6272,4 @@ end;
 	
 $$ language plpgsql;
 
-
-
-
-
-
--- ----------------------------------------------------------------------------
--- -----------------------------------------------------------------------------
-
-
--- ---------------------------------------------------------------------------
--- ---------------------------------------------------------------------------
 

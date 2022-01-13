@@ -7,6 +7,8 @@
  */
 
 
+
+-- Eliminamos todos los registros de las tablas
 delete from facturas_detalles cascade;
 delete from facturas cascade;
 delete from ventas cascade;
@@ -16,7 +18,6 @@ delete from inmuebles_marketing cascade;
 delete from inmuebles cascade;
 delete from inmuebles_descripciones cascade;
 delete from inmuebles_medidas cascade;
-delete from servicios_inmuebles cascade;
 delete from propietarios_inmuebles cascade;
 delete from administradores cascade; 
 delete from gerentes cascade;
@@ -25,9 +26,37 @@ delete from compradores_clientes cascade;
 delete from compradores cascade;
 delete from clientes cascade;
 delete from empleados cascade;
+delete from servicios_oficinas cascade;
 delete from oficinas_detalles cascade;
 delete from oficinas cascade;
 delete from logs_inserts cascade;
+
+
+-- Alteramos la secuencia auto incrementable id 
+alter sequence id_sec_of restart with 1;
+alter sequence id_sec_of_det restart with 1;
+alter sequence id_sec_serv_of restart with 1;
+alter sequence id_sec_inm restart with 1;
+alter sequence id_sec_inm_descr restart with 1;
+alter sequence id_sec_inm_med restart with 1;
+alter sequence id_sec_inm_mark restart with 1;
+alter sequence id_sec_insp_inm restart with 1;
+alter sequence id_sec_cit_inm restart with 1;
+alter sequence id_sec_prop_inm restart with 1;
+alter sequence id_sec_empl restart with 1;
+alter sequence id_sec_cli restart with 1;
+alter sequence id_sec_adm restart with 1;
+alter sequence id_sec_ger restart with 1;
+alter sequence id_sec_vend restart with 1;
+alter sequence id_sec_comp restart with 1;
+alter sequence id_sec_vent restart with 1;
+alter sequence id_sec_fact restart with 1;
+alter sequence id_sec_fact_det restart with 1;
+
+alter sequence id_sec_logs_ins restart with 1;
+alter sequence id_sec_logs_upd restart with 1;
+alter sequence id_sec_logs_del restart with 1;
+
 
 
 
@@ -50,7 +79,7 @@ information_schema.columns where table_name = 'oficinas';
 
 
 
-/*
+
 -- ------------------------------------------------------
 -- ----------- INSERCIÓN DE 1 REGISTRO ------------------
 -- ------------------------------------------------------
@@ -59,20 +88,15 @@ select insertar_registro_oficinas(
 'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'
 );
 
-select listado_oficinas();
-select listado_logs_inserts();
+select insertar_registro_oficinas(
+'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
+);
 
-*/
 
 -- -------------------------------------------------
 -- ----------- INSERCIÓN DE 2 REGISTROS ------------
 -- -------------------------------------------------
 
-
-select insertar_registros_oficinas(
-'Torre San Vicente' , 'Paraguay 780' , '+54 11 5279-4790' , 'inmobiliariaDuckson@gmail.com'
-,'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
-);
 
 select insertar_registros_oficinas(
 'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com'
@@ -135,6 +159,68 @@ select listado_oficinas_detalles();
 */
 
 
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- =============================================
+-- ======= TABLA SERVICIOS_OFICINAS ===========
+-- =============================================
+
+
+-- enum division_comercial_enum ('LOCALES','OFICINAS','TERRENOS'
+-- ,'LOCALES-OFICINAS-TERRENOS','NO APLICA');
+
+-- enum division_vivienda_enum ('DEPARTAMENTOS','CASAS','TERRENOS'
+-- ,'DEPARTAMENTOS-CASAS-TERRENOS','NO APLICA');
+
+-- enum tasaciones_enum ('PROFESIONAL','JUDICIAL','PROFESIONAL-JUDICIAL'
+-- ,'NO APLICA');
+
+-- enum administracion_enum ('ALQUILERES','CUENTAS','ALQUILERES-CUENTAS' 
+-- ,'NO APLICA');
+
+
+select * from servicios_oficinas;
+
+
+select column_name, data_type, is_nullable from
+information_schema.columns where table_name = 'servicios_oficinas';
+
+
+select listado_oficinas();
+
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- -------------------------------------------------
+
+
+select insertar_registro_servicios_oficinas(
+1 , 'LOCALES-OFICINAS-TERRENOS' , 'NO APLICA' , 'PROFESIONAL' 
+, 'ALQUILERES-CUENTAS' , 'La Oficina San Vicente maneja servicios de tipo comercial, tasaccional y de administración'
+);
+
+
+
+select listado_servicios_oficinas();
+select listado_logs_inserts();
+
+
+
+
+
+
+
+
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
@@ -158,6 +244,9 @@ select * from empleados;
 
 select listado_oficinas();
 select listado_empleados();
+
+select listado_logs_inserts();
+
 
 
 
@@ -470,15 +559,15 @@ select listado_inmuebles_descripciones();
 select listado_oficinas();
 
 select insertar_registros_inmuebles(
-22, 28, 25, 1, 'PH de 4 Ambientes, 3 dormis, 2 baños, Amplio Espacio,jardin y balcon, Sin Expensas, Lujoso'
+1, 1, 1, 1, 'PH de 4 Ambientes, 3 dormis, 2 baños, Amplio Espacio,jardin y balcon, Sin Expensas, Lujoso'
 , 'PH/Casa','DISPONIBLE', 177.000, 'San Cristobla 456', 'Palermo'
 , 'www.avisosAlInstante.com.ar'
 );
 
 select insertar_registros_inmuebles(
-23, 29, 26, 2,  'Casa 3 Ambientes, 4 Dormitorios, 1 baño y Cochera', 'Casa','VENDIDO'
+2, 2, 2, 2,  'Casa 3 Ambientes, 4 Dormitorios, 1 baño y Cochera', 'Casa','VENDIDO'
 , 168.000, 'Aristobulo del Valle 608 ', 'Belgrano', 'www.avisosAlInstante.com.ar'
-, 24, 30, 27, 3 , 'Departamento de 2 Ambientes', 'Departamento','VENDIDO'
+, 3, 3, 3, 3 , 'Departamento de 2 Ambientes', 'Departamento','VENDIDO'
 , 110.000, 'Av. Corrientes', 'Caballito', 'www.avisosAlInstante.com.ar'
 );
 
@@ -559,14 +648,9 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'citas_inmuebles';
 
 
-select listado_propietarios_inmuebles();
-select listado_inmuebles_medidas();
-select listado_inmuebles_descripciones();
-select listado_oficinas();
+select listado_inmuebles();
 select listado_empleados();
 select listado_clientes();
-select listado_inmuebles();
-
 
 -- -------------------------------------------------
 -- ----------- INSERCIÓN DE 1 REGISTRO ------------
@@ -574,7 +658,7 @@ select listado_inmuebles();
 
 
 select insertar_registro_citas_inmuebles(
-31, 5, 36, 'COMPLETADA' , 'Cita Finalizada y Venta Efectuada de Forma Exitosa'
+1, 1, 1, 'COMPLETADA' , 'Cita Finalizada y Venta Efectuada de Forma Exitosa'
 , '2020/03/01', '11:00:00'    
 );
 
@@ -585,19 +669,16 @@ select insertar_registro_citas_inmuebles(
 -- -------------------------------------------------
 
 select insertar_registros_citas_inmuebles(
-32, 6 , 37 , 'PENDIENTE' , 'Se reserva cita para la fecha estipulada' 
+2, 2 , 2 , 'PENDIENTE' , 'Se reserva cita para la fecha estipulada' 
 , '2022/01/12', '09:00:00'
-, 33 , 7 , 38 , 'COMPLETADA' , 'Venta Efectuada de forma exitosa'
+, 3 , 3 , 3 , 'COMPLETADA' , 'Venta Efectuada de forma exitosa'
 , '2020/06/11', '12:00:00'
 );
 
 
 
 select listado_citas_inmuebles();
-
-
-
-
+select listado_logs_inserts();
 
 
 
@@ -610,8 +691,6 @@ select listado_citas_inmuebles();
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
-
-*/
 
 
 

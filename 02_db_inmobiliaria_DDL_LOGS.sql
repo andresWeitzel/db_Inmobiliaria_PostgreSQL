@@ -13,8 +13,9 @@ drop table if exists logs_deletes cascade;
 
 
 -- Todos lo id PK auto_increment
-drop sequence if exists id_secuencia_logs cascade;
-
+drop sequence if exists id_sec_logs_ins cascade;
+drop sequence if exists id_sec_logs_upd cascade;
+drop sequence if exists id_sec_logs_del cascade;
 
 
 -- ---------------------------------------------------------------------------
@@ -52,10 +53,6 @@ alter table logs_inserts
 add constraint UNIQUE_logs_inserts_id
 unique(id);
 
--- UNIQUE ID_REGISTRO
-alter table logs_inserts 
-add constraint UNIQUE_logs_inserts_id_registro
-unique(id_registro);
 
 
 -- ---------------------------------------------------------------------------
@@ -93,10 +90,6 @@ alter table logs_updates
 add constraint UNIQUE_logs_updates_id
 unique(id);
 
--- UNIQUE ID_REGISTRO
-alter table logs_updates 
-add constraint UNIQUE_logs_updates_id_registro
-unique(id_registro);
 
 -- ---------------------------------------------------------------------------
 
@@ -134,11 +127,6 @@ alter table logs_deletes
 add constraint UNIQUE_logs_deletes_id
 unique(id);
 
--- UNIQUE ID_REGISTRO
-alter table logs_deletes 
-add constraint UNIQUE_logs_deletes_id_registro
-unique(id_registro);
-
 
 -- ---------------------------------------------------------------------------
 
@@ -150,9 +138,11 @@ unique(id_registro);
 
 -- ======== TODOS LOS ID´S PK DE LAS TABLAS COMO AUTO_INCREMENT =======
 
-create sequence id_secuencia_logs;
+create sequence id_sec_logs_ins;
+create sequence id_sec_logs_upd;
+create sequence id_sec_logs_del;
 
-alter table logs_inserts alter id set default nextval('id_secuencia_logs');
-alter table logs_updates alter id set default nextval('id_secuencia_logs');
-alter table logs_deletes alter id set default nextval('id_secuencia_logs');
+alter table logs_inserts alter id set default nextval('id_sec_logs_ins');
+alter table logs_updates alter id set default nextval('id_sec_logs_upd');
+alter table logs_deletes alter id set default nextval('id_sec_logs_del');
 

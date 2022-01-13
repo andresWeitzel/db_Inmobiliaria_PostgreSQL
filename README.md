@@ -1,6 +1,6 @@
-# Proyecto db_Inmobiliaria con PostgreSQL.
+# Proyecto db_inmobiliaria con PostgreSQL.
 
-* En Este Proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos con el SGBD PostgreSQL.
+* En Este Proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos acerca de nua Inmobiliaria con el SGBD PostgreSQL.
 * El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiándome por las informaciones y características del mercado Inmobiliario en Argentina (valores, precios, medidas, léxico, etc).
 *  Las páginas de inmobiliaria más conocidas en las que me guíe son zonaprop, re/max y baigún.
 *  Para la gran mayoría de las medidas tomadas en inmuebles me guié en anuncios en MercadoLibre, ya que allí se detallan en mayor cantidad.
@@ -40,7 +40,6 @@
 | ------------- | ------------- |
 | oficinas(1) | inmuebles(N)  |
 | oficinas(1) | empleados(N)  |
-| oficinas(1) | servicios_inmuebles(N) |
 | inmuebles(1) | ventas(N)  |
 | inmuebles(1) | inmuebles_marketing(N)  |
 | inmuebles(1) |  citas_inmuebles(N)  |
@@ -62,6 +61,7 @@
 | **Entidad-Relacion** | **Entidad-Relacion** |               
 | ------------- | ------------- |
 | oficinas(1) | oficinas_detalles(1) |
+| oficinas(1) | servicios_oficinas(1) |
 | inmuebles(1) | inmuebles_descripciones(1) |
 | inmuebles(1) | inmuebles_medidas(1) |
 | empleados(1) | vendedores(1) |
@@ -79,7 +79,8 @@
 
 | **Tabla** | **Campo** |               
 | ------------- | ------------- |
-| oficinas_detalles | FK id_oficina UNIQUE | 
+| oficinas_detalles | FK id_oficina UNIQUE |
+| servicios_oficinas | FK id_oficina UNIQUE  |
 | inmuebles | FK id_inmueble_medidas UNIQUE | 
 | inmuebles | FK id_inmueble_descripcion UNIQUE | 
 | administradores | FK id_empleado UNIQUE |
@@ -101,9 +102,10 @@
 
 | **Tecnologías Empleadas** | **Versión** | **Finalidad** |               
 | ------------- | ------------- | ------------- |
-| Git Bash | 2.29.1  | Control de Versiones |
 | PostgreSQL | 13.4  | SGDB  |
 | DBeaver | 21.1  | Gestor de Base de Datos | 
+| Git Bash | 2.29.1  | Control de Versiones |
+| CMD | 10 | Manipular los Servicios de Postgres mediante linea de comandos | 
 
 </br>
 
@@ -164,11 +166,17 @@
     * --> Nuevo
     * --> Database Connection, Siguiente.
     * --> Seleccionar el SGDB PostgreSQL, Siguiente.
-    * --> En Propiedades de Conexión dejamos todo por defecto ( Host, Port, Database, etc ).
-    * --> Finalizar, ya está la conexión configurada.
+    * --> En Propiedades de Conexión vamos a escribir `db_inmobiliaria` en Database.
+    * --> Seguidamente vamos a agregar una contraseña, en password escribimos `postgres`
+    * --> El resto lo dejamos todo por defecto ( Host, Port, etc ).
+    * --> Finalizar, asegurarse que se haya creado la db con su configuración
+    * --> Ya está la conexión configurada y la db.
+    * --> IMPORTANTE : Lo único configurable es `Database: db_inmobiliaria` y `Contraseña:postgres`
+
+</br>
 
 
-#### 1.4) Creación de nuestra DB `db_inmuebles`.
+#### 1.4) Creación de nuestra DB `db_inmobiliaria`.
 #### ( En DBeaver tuve problemas al incluir código sql para la creación de la db, así que vamos a crear la db manualmente)
 * Una vez realizado el paso anterior, se debería haber desplegado la Conexión PostgreSQL, sino desplagar para visualizar 
 *  Click Der sobre postgres

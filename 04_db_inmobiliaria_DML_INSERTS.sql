@@ -210,6 +210,22 @@ select insertar_registro_servicios_oficinas(
 
 
 
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- -------------------------------------------------
+
+
+select insertar_registros_servicios_oficinas(
+2 , 'LOCALES' , 'DEPARTAMENTOS' , 'PROFESIONAL-JUDICIAL' 
+, 'ALQUILERES-CUENTAS' , 'Esta Oficina Aplica para todos los Servicios Disponibles'
+, 3 , 'LOCALES-OFICINAS-TERRENOS' , 'NO APLICA' , 'NO APLICA' 
+, 'NO APLICA' , 'La Oficina Comercial Principal solo maneja servicios de tipo Comercial'
+
+);
+
+
+
 select listado_servicios_oficinas();
 select listado_logs_inserts();
 
@@ -693,9 +709,9 @@ select listado_logs_inserts();
 -- ---------------------------------------------------------------------------
 
 
-
-/*
+-- =============================================
 -- ======= TABLA INMUEBLES_MARKETING ===========
+-- =============================================
 
 
 select * from inmuebles_marketing;
@@ -703,6 +719,18 @@ select * from inmuebles_marketing;
 select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'inmuebles_marketing';
 
+
+select insertar_registro_inmuebles_marketing(
+1, 'GOOGLE' , 'TWITTER' , 'Posicionamiento SEO de nuestra página en google y uso de Redes Sociales, se cotiza por visitas'
+, 2000
+);
+
+
+select listado_inmuebles_marketing();
+
+
+
+/*
 
 insert into inmuebles_marketing(id, id_inmueble, tipo_anuncio_principal, tipo_anuncio_secundario
 , descripcion_anuncio, inversion_total) values

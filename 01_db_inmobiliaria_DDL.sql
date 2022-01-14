@@ -769,7 +769,7 @@ id int primary key,
 id_inmueble int not null,
 tipo_anuncio_principal varchar(50) not null,
 tipo_anuncio_secundario varchar(50),
-descripcion_anuncio varchar(100) not null,
+descripcion_anuncio varchar(300) not null,
 inversion_total decimal(8,2) not null
 );
 

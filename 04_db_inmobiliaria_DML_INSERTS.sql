@@ -725,19 +725,17 @@ select insertar_registro_inmuebles_marketing(
 , 2000
 );
 
+select insertar_registros_inmuebles_marketing(
+2 , 'Google Ads', 'Linkedin', 'Sección Ventas en Inmuebles', 5000
+, 3 , 'Google Ads', '-', 'Sección Ventas en Inmuebles', 3000
+);
+
 
 select listado_inmuebles_marketing();
 
 
 
 /*
-
-insert into inmuebles_marketing(id, id_inmueble, tipo_anuncio_principal, tipo_anuncio_secundario
-, descripcion_anuncio, inversion_total) values
-(1, 1, 'Google Ads', 'Youtube', 'Marketing en Páginas de Búsqueda de Inmuebles', 4000),
-(2, 2, 'Google Ads', 'Linkedin', 'Sección Ventas en Inmuebles', 5000),
-(3, 3, 'Google Ads', '-', 'Sección Ventas en Inmuebles', 3000);
-
 
 
 

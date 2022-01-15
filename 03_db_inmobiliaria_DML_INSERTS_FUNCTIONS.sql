@@ -6865,7 +6865,7 @@ begin
 		
 		else 
 			
-			id_last_inm_mark := 0;
+			id_last_inm_mark := 0; 
 			
 		end if;
 
@@ -6964,6 +6964,407 @@ begin
 
 	
 
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_inmuebles_marketing() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- =======================================================================
+-- ----------- INSERCION DE 2 REGISTROS TABLA INMUEBLES_MARKETING ----------
+-- =======================================================================
+
+
+
+
+
+select * from inmuebles_marketing;
+
+
+select column_name, data_type, is_nullable from
+information_schema.columns where table_name = 'inmuebles_marketing';
+
+
+
+
+
+create or replace function insertar_registros_inmuebles_marketing(
+
+id_inm_input_01 int, tip_anun_princ_input_01 varchar, tip_anun_sec_input_01 varchar
+, descr_anun_input_01 varchar, inv_total_input_01 decimal
+
+, id_inm_input_02 int, tip_anun_princ_input_02 varchar, tip_anun_sec_input_02 varchar
+, descr_anun_input_02 varchar, inv_total_input_02 decimal
+
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA inmuebles_marketing
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_inm_mark_check boolean;
+id_last_inm_mark int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID del Inmueble, Descripción del Anuncio e Inversión Total  
+id_inm_descr_anun_inv_total_inm_mark_check_01 boolean := exists(
+select id_inmueble , descripcion_anuncio, inversion_total from inmuebles_marketing 
+where ((id_inmueble = id_inm_input_01) and (descripcion_anuncio = descr_anun_input_01) 
+and (inversion_total = inv_total_input_01)));
+
+id_inm_descr_anun_inv_total_inm_mark_check_02 boolean := exists(
+select id_inmueble , descripcion_anuncio, inversion_total from inmuebles_marketing 
+where ((id_inmueble = id_inm_input_02) and (descripcion_anuncio = descr_anun_input_02) 
+and (inversion_total = inv_total_input_02)));
+
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_inm_mark uuid;
+nombre_tabla_inm_mark varchar := 'inmuebles_marketing';
+accion_inm_mark varchar := 'insert';
+fecha_inm_mark date ;
+hora_inm_mark time ;
+usuario_inm_mark varchar;
+usuario_sesion_inm_mark varchar;
+db_inm_mark varchar;
+db_version_inm_mark varchar;
+
+
+
+begin
+	
+
+
+	if(
+	((id_inm_descr_anun_inv_total_inm_mark_check_01 = true) and (id_inm_descr_anun_inv_total_inm_mark_check_02 = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UN/VARIOS REGISTRO/S REPETIDO/s ========'
+						using hint = 
+					'-------- REVISAR ID DEL INMUEBLE -------------'
+					'-------- REVISAR DESCRIP. DEL ANUNCIO Y/O INVERSION TOTAL DEL ANUNCIO -------------';
+						
+
+	
+	elsif (
+		((id_inm_descr_anun_inv_total_inm_mark_check_01 = false) and (id_inm_descr_anun_inv_total_inm_mark_check_02 = false))
+		and
+		((id_inm_input_01 > 0) and (id_inm_input_02 > 0))
+		and 
+		((tip_anun_princ_input_01 <> '') and (tip_anun_princ_input_02 <> '')) 
+		and 
+		((tip_anun_sec_input_01 <> '') and (tip_anun_sec_input_02 <> ''))
+		and
+		((descr_anun_input_01 <> '') and (descr_anun_input_02 <> ''))
+		and
+		((inv_total_input_01 > 0) and (inv_total_input_02 > 0))	
+		) then
+			
+		
+		-- =======================================
+		-- =========== PRIMER REGISTRO ===========
+		-- =======================================
+
+		
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA INMUEBLES_MARKETING  -------------------------------
+		
+		--------------------------------------- INSERCION 1ER REGISTRO ----------------------------------------
+		
+	
+		insert into inmuebles_marketing (
+		id_inmueble, tipo_anuncio_principal , tipo_anuncio_secundario , descripcion_anuncio 
+		, inversion_total ) values
+		
+		(id_inm_input_01 , tip_anun_princ_input_01 , tip_anun_sec_input_01, descr_anun_input_01
+		, inv_total_input_01 );
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_inm_mark_check := exists(select id from inmuebles_marketing);
+	
+		-- Comprobacion id
+		if (id_last_inm_mark_check = true) then
+			
+			id_last_inm_mark := (select max(id) from inmuebles_marketing);
+		
+		else 
+			
+			id_last_inm_mark := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '----------------------------------------------------';
+		raise notice '-- Inserción 1er Registro Tabla "inmuebles_marketing" --';
+		raise notice '----------------------------------------------------';
+	
+		raise notice 'ID de Marketing: %' , id_last_inm_mark;
+		raise notice 'ID del Inmueble: %' , id_inm_input_01;
+		raise notice 'Tipo de Anuncio Principal : %', tip_anun_princ_input_01;
+	 	raise notice 'Tipo de Anuncio Secundario : %', tip_anun_sec_input_01;
+	  	raise notice 'Descripción del Anuncio : %', descr_anun_input_01;
+	  	raise notice 'Inversión Total : %', inv_total_input_01;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA INMUEBLES_MARKETING  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS 1ER REGISTRO -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION 1ER REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_inm_mark , nombre_tabla_inm_mark , accion_inm_mark);
+	
+
+	
+		--------------------------------------- FIN INSERCION 1ER REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_inm_mark := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+		
+		fecha_inm_mark := (select fecha from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+	
+		hora_inm_mark := (select hora from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+
+		usuario_inm_mark := (select usuario from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+
+		usuario_sesion_inm_mark := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));	
+
+		db_inm_mark := (select db from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+
+		db_version_inm_mark := (select db_version from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción 1er Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_inm_mark;
+		raise notice 'UUID Registro : %', uuid_registro_inm_mark;
+		raise notice 'Tabla : %', nombre_tabla_inm_mark;
+		raise notice 'Acción : %', accion_inm_mark;
+		raise notice 'Fecha : %', fecha_inm_mark;
+		raise notice 'Hora : %', hora_inm_mark;
+     	raise notice 'Usuario : %', usuario_inm_mark;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_inm_mark;
+        raise notice 'DB : %', db_inm_mark;
+        raise notice 'Versión DB : %', db_version_inm_mark;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+		-- =======================================
+		-- =========== SEGUNDO REGISTRO ==========
+		-- =======================================
+
+	
+
+			
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA INMUEBLES_MARKETING  -------------------------------
+		
+		--------------------------------------- INSERCION 2DO REGISTRO ----------------------------------------
+		
+	
+		insert into inmuebles_marketing (
+		id_inmueble, tipo_anuncio_principal , tipo_anuncio_secundario , descripcion_anuncio 
+		, inversion_total ) values
+		
+		(id_inm_input_02 , tip_anun_princ_input_02 , tip_anun_sec_input_02, descr_anun_input_02
+		, inv_total_input_02 );
+	
+	
+		--------------------------------------- FIN INSERCION 2DO REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_inm_mark_check := exists(select id from inmuebles_marketing);
+	
+		-- Comprobacion id
+		if (id_last_inm_mark_check = true) then
+			
+			id_last_inm_mark := (select max(id) from inmuebles_marketing);
+		
+		else 
+			
+			id_last_inm_mark := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '----------------------------------------------------';
+		raise notice '-- Inserción 2do Registro Tabla "inmuebles_marketing" --';
+		raise notice '----------------------------------------------------';
+	
+		raise notice 'ID de Marketing: %' , id_last_inm_mark;
+		raise notice 'ID del Inmueble: %' , id_inm_input_02;
+		raise notice 'Tipo de Anuncio Principal : %', tip_anun_princ_input_02;
+	 	raise notice 'Tipo de Anuncio Secundario : %', tip_anun_sec_input_02;
+	  	raise notice 'Descripción del Anuncio : %', descr_anun_input_02;
+	  	raise notice 'Inversión Total : %', inv_total_input_02;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA INMUEBLES_MARKETING  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS 2DO REGISTRO -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION 2DO REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_inm_mark , nombre_tabla_inm_mark , accion_inm_mark);
+	
+
+	
+		--------------------------------------- FIN INSERCION 2DO REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_inm_mark := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+		
+		fecha_inm_mark := (select fecha from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+	
+		hora_inm_mark := (select hora from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+
+		usuario_inm_mark := (select usuario from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+
+		usuario_sesion_inm_mark := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));	
+
+		db_inm_mark := (select db from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+
+		db_version_inm_mark := (select db_version from logs_inserts 
+		where (id_registro = id_last_inm_mark) and (nombre_tabla = 'inmuebles_marketing'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción 2do Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_inm_mark;
+		raise notice 'UUID Registro : %', uuid_registro_inm_mark;
+		raise notice 'Tabla : %', nombre_tabla_inm_mark;
+		raise notice 'Acción : %', accion_inm_mark;
+		raise notice 'Fecha : %', fecha_inm_mark;
+		raise notice 'Hora : %', hora_inm_mark;
+     	raise notice 'Usuario : %', usuario_inm_mark;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_inm_mark;
+        raise notice 'DB : %', db_inm_mark;
+        raise notice 'Versión DB : %', db_version_inm_mark;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	else
 	

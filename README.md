@@ -166,27 +166,40 @@
     * --> Nuevo
     * --> Database Connection, Siguiente.
     * --> Seleccionar el SGDB PostgreSQL, Siguiente.
-    * --> En Propiedades de Conexión vamos a escribir `db_inmobiliaria` en Database.
+    * --> En Database dejamos como aparece `postgres`
     * --> Seguidamente vamos a agregar una contraseña, en password escribimos `postgres`
     * --> El resto lo dejamos todo por defecto ( Host, Port, etc ).
     * --> Finalizar, asegurarse que se haya creado la db con su configuración
-    * --> Ya está la conexión configurada y la db.
-    * --> IMPORTANTE : Lo único configurable es `Database: db_inmobiliaria` y `Contraseña:postgres`
-
-</br>
+    * --> Ya está la conexión configurada.
 
 
-#### 1.4) Creación de nuestra DB `db_inmobiliaria`.
+
+#### 1.4) Creación de la Base de Datos `db_inmobiliaria` en la Conexión de PostgreSQL
 #### ( En DBeaver tuve problemas al incluir código sql para la creación de la db, así que vamos a crear la db manualmente)
 * Una vez realizado el paso anterior, se debería haber desplegado la Conexión PostgreSQL, sino desplagar para visualizar 
-*  Click Der sobre postgres
+*  Click Der sobre la conexión creada `postgres`
     * --> Crear, Base de Datos
-    * --> En Database Name colocamos db_inmobiliaria.
+    * --> En Database Name colocamos `db_inmobiliaria`.
     * --> En owner Seleccionamos postgres o dejarlo seleccionado por defecto.
     * --> Template database vacío.
     * --> En Encoding Seleccionamos UTF8 o dejarlo seleccionado por defecto.
     * --> Tablespace pg_default o dejarlo seleccionado por defecto.
     * --> Aceptar, ya está la db creada.
+
+
+#### 1.5) Creación de una Conexión Independiente de la Base de Datos `db_inmobiliaria`
+* Ya tenemos creada la conexión con Postgres y nuestra base de datos, ahora podemos crear una conexión independiente para su uso, cuestión de comodidad
+* Click sobre la Pestaña Archivo.
+    * --> Nuevo
+    * --> Database Connection, Siguiente.
+    * --> Seleccionar el SGDB PostgreSQL, Siguiente.
+    * --> En Database escribimos nuestra db creada `db_inmobiliaria`
+    * --> Seguidamente vamos a agregar una contraseña, en password escribimos `postgres`
+    * --> El resto lo dejamos todo por defecto ( Host, Port, etc ).
+    * --> Finalizar, asegurarse que se haya creado la db con su configuración
+    * --> Ya está la conexión configurada.
+    * --> IMPORTANTE : Lo único configurable es `Database: db_inmobiliaria` y `Contraseña:postgres`
+
 
 </br>
 

@@ -735,18 +735,26 @@ select listado_inmuebles_marketing();
 
 
 
-/*
 
 
 
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 
--- ======= TABLA INSPECCIONES_INMUEBLES ===========
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- =============================================
+-- ======= TABLA INSPECCIONES_INMUEBLES ========
+-- =============================================
 
 -- ENUM estado_inspeccion ('ACEPTADA','NO ACEPTADA','PENDIENTE REVISION');
 -- ENUM tipo_inspeccion('DEPARTAMENTO','CASA','PH');
--- fecha date  '2001-10-07'
+-- fecha date  '2001/10/07'
 -- hora time   '09:00:07'
+
 
 
 select * from inspecciones_inmuebles;
@@ -754,60 +762,67 @@ select * from inspecciones_inmuebles;
 select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'inspecciones_inmuebles';
 
-insert into inspecciones_inmuebles (id, id_inmueble, estado_inspeccion, tipo_inspeccion
-, descripcion_inspeccion, empresa, direccion, nro_telefono, costo, fecha, hora) values
-(1, 1, 'ACEPTADA', 'PH', 'Se llevo a caba la inspeccion de forma exitosa y sin Novedad'
-, 'Les Venegas', 'Las Pampas 334', '7568-0499', '8600', '2021-02-13', '07:00:00' ),
-(2, 2, 'ACEPTADA', 'CASA', 'Se llevo a caba la inspeccion de forma exitosa y sin Novedad'
-, 'Les Venegas', 'Las Pampas 334', '7568-0499', '7400', '2021-03-18', '10:00:00' ),
-(3, 3, 'ACEPTADA', 'DEPARTAMENTO', 'Se llevo a caba la inspeccion de forma exitosa y sin Novedad'
-, 'Les Venegas', 'Las Pampas 334', '7568-0499', '5100', '2020-01-09', '08:30:00' );
 
 
+select insertar_registro_inspecciones_inmuebles(
+1, 'ACEPTADA', 'PH', 'Se llevo a caba la inspeccion de forma exitosa y sin Novedad'
+, 'Les Venegas', 'Las Pampas 334', '7568-0499', '8600', '2021-02-13', '07:00:00'
+);
 
+select insertar_registros_inspecciones_inmuebles(
+2, 'ACEPTADA', 'CASA', 'Se llevo a caba la inspeccion de forma exitosa y sin Novedad'
+, 'Les Venegas', 'Las Pampas 334', '7568-0499', '7400', '2021-03-18', '10:00:00'
+, 3, 'ACEPTADA', 'DEPARTAMENTO', 'Se llevo a caba la inspeccion de forma exitosa y sin Novedad'
+, 'Les Venegas', 'Las Pampas 334', '7568-0499', '5100', '2020-01-09', '08:30:00'
+);
 
-
--- ---------------------------------------------------------------------------
-
--- ======= TABLA SERVICIOS_INMUEBLES ===========
-
--- ENUM division_comercial ('LOCALES','OFICINAS','TERRENOS','LOCALES-OFICINAS-TERRENOS','NO APLICA');
--- ENUM division_vivienda ('DEPARTAMENTOS','CASAS','TERRENOS','DEPARTAMENTOS-CASAS-TERRENOS','NO APLICA');
--- ENUM tasaciones ('PROFESIONAL','JUDICIAL', 'PROFESIONAL-JUDICIAL','NO APLICA');
--- ENUM administracion ('ALQUILERES','CUENTAS','ALQUILERES-CUENTAS','NO APLICA');
-
-
-select * from servicios_inmuebles;
-
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'servicios_inmuebles';
-
-
-insert into servicios_inmuebles (id, id_oficina, tipo_comercial, tipo_vivienda, tipo_tasaciones
-, tipo_administracion, descripcion_servicios) values 
-(1, 1, 'LOCALES-OFICINAS-TERRENOS','DEPARTAMENTOS-CASAS-TERRENOS','PROFESIONAL','ALQUILERES-CUENTAS','-'),
-(2, 2, 'OFICINAS','DEPARTAMENTOS','PROFESIONAL','ALQUILERES-CUENTAS','-'),
-(3, 3, 'LOCALES-OFICINAS-TERRENOS','DEPARTAMENTOS-CASAS-TERRENOS','PROFESIONAL-JUDICIAL','ALQUILERES-CUENTAS','-');
+select listado_inspecciones_inmuebles();
+select listado_logs_inserts();
 
 
 
 
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 
 
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 
--- ======= TABLA GERENTES ===========
+
+-- ===============================
+-- ======= TABLA GERENTES ========
+-- ===============================
+
+
 
 select * from gerentes;
 
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'gerentes';
 
+
+
+select insertar_registro_gerentes(
+1, 'Contador Público Universitario', 12, 'Planeamiento Eficiente, Ejecución Eficaz, Rendimiento'
+,'Home Office 2 veces x sem, 35% Descuento Pack Viajes, Planes de Ahorro Viviendas', 32000
+);
+
+
+select listado_gerentes();
+
+select listado_logs_inserts();
+
+
+
+/*
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA GERENTES ===========
+
+
 insert into gerentes (id, id_empleado, titulo, aneos_experiencia_laboral, competencias, beneficios
-, retribucion_salarial_anual) values
-(1, 1, 'Contador Público Universitario', 12.8, 'Planeamiento Eficiente, Ejecución Eficaz, Rendimiento'
-,'Home Office 2 veces x sem, 35% Descuento Pack Viajes, Planes de Ahorro Viviendas', 32000),
+, retribucion_salarial_anual) values 
 (2, 4, 'Licenciado en Administración', 5.6, 'Organización, Gestión, Desempeño'
 ,'Horarios Flexibles, 35% Descuento Pack Viajes', 42000),
 (3, 7, 'Licenciada en Marketing', 7.0, 'Ventas, Publicidad, Coordinación'

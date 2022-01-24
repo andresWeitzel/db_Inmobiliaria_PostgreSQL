@@ -10,10 +10,11 @@
 
 ## Descripción Técnica
 
-* Para este proyecto se aplica un Diseño Normalizado, se separan las tablas que contengan varios campos y se aplica la convención de nombres, tanto para tablas como para campos.
-* Para el Modelado se aplican relaciones de Uno a Uno y relaciones de Uno a Varios. Posteriormente a esta descripción se anexa el DER de la db junto con la descripción de Relaciones.
-* Dentro de la Creación y Desarrollo de la sección DDL se aplican todas las Restricciones correspondientes para cada uno de los campos desarrollados, las mismas incluyen los tipos UNIQUE y se aplican los FOREIGN KEY  para la relación de tablas, además de los tipos CHECKS para comprobación de valores de campos.
-* Dentro de la sección del DML se comienza con la Programación de la Base de Datos, generando funciones que nos permitan insertar registros de la forma requerida y deseada.
+* Para este proyecto se aplica un Diseño Normalizado, se separan las tablas que contengan varios campos y se aplica la convención de nombres, tanto para tablas, campos, registros, funciones, etc.
+* Para el Modelado se aplican relaciones de Uno a Uno y relaciones de Uno a Varios. Posteriormente a esta descripción se anexa el DER de la db junto con la descripción de Relaciones de Tablas.
+* Dentro de la Creación y Desarrollo de la sección DDL(Data Definition Language) se aplican todas las Restricciones/ CONSTRAINT correspondientes para cada uno de los campos desarrollados, las mismas incluyen los tipos UNIQUE, se aplican los PRIMARY KEY Y FOREIGN KEY  para la relación de tablas, además de los tipos CHECKS para comprobación de valores de campos.
+* Dentro de la sección del DML(Data Manipulation Language) se comienza con la Programación de la Base de Datos, generando funciones que nos permitan insertar, actualizazr y eliminar registros de la forma requerida y deseada. Sigo el mismo patrón de inserción para cada registro, se agregan los datos a cada tabla y por cada registro insertado se agrega la información del Usuario y de la db en tablas de tipo logs no temporales( INSERTS, UPDATES, DELETES ) 
+* La Creación de las Funciones y la Ejecución de las Mismas se desarrollan en Archivos separados
 * Se aplica un Nivel de Seguridad de Respaldo con la creación de tablas y funciones para almacenar todos los cambios que se generen en la Base de Datos. Es evidente que se podría generar tablas temporales o trabajar con el propio sistema de log de PostgreSql, pero se aplica una administración a Nivel más Bajo de esta db y se crean estas tablas por gusto y manejo. Cabe aclarar que las funciones que se desarrollaron se aplican siempre que se borre, actualice o agregue un registro y se almacena dicha información en tablas individuales
 * El Proyecto está separado por varios archivos .sql enumerados para facilitar la comprensión del desarrollo y la ejecución de los mismos.
 
@@ -125,7 +126,7 @@
 <hr>
 
 ## `Documentación y Guía Del Proyecto`
-#### (Esta Documentación y Guía que Desarrollé es para la Creación, Configuración, Manejo, etc de la Base de Datos db_inmuebles con PostgreSQL en DBeaver. Como así también para el Desarrollo de este Proyecto, Aplicaciones del Código, Manejo de los Posibles Errores que pudiesen surgir, manejo de Git, Consideraciones y Declaraciones del Proyecto, etc. Recomiendo Leerla y Realizar todo paso a paso como se indica en la misma, cualquier aporte o sugerencia, informar al respecto).
+#### (Esta Documentación y Guía que Desarrollé es para la Creación, Configuración, Manejo, Etc de la Base de Datos `db_inmobiliaria` con PostgreSQL en DBeaver. Como así también para el Desarrollo de este Proyecto, Aplicaciones del Código, Programación de Base de Datos con el Lenguaje PL/pgSQL, Manejo de los Posibles Errores que pudiesen surgir, Manejo de Git, Consideraciones y Declaraciones del Proyecto, etc. Recomiendo Leerla y Realizar todo paso a paso como se indica en la misma, cualquier aporte o sugerencia, informar al respecto).
 
 ## Indice
 
@@ -135,11 +136,10 @@
 
   - [ Paso 2) Ejecución de los Archivos .SQL .](#paso-2-ejecución-dee-los-archivos-sql)
 
+  #### Sección 2) Programación de Bases de Datos con PL/pgSQL
   
-   #### Sección Apéndice
-   
-   -[ Funciones Implementadas Predefinidas para los Logs del Usuario](#funciones-predefinidas-para-los-logs-del-usuario)
-
+  - [ Paso 3) Funciones con PL/pgSQL .](#paso-3-funciones-con-pl/pgsql)
+  
 
 
 </br>
@@ -215,30 +215,278 @@
 
 #### 2.2) Orden de Ejecución de los Scripts
 * Cada uno de los Archivos están enumerados para que se realice el orden de ejecución correspondiente.
-* 
 
-
-
-
-
+* 01_db_inmobiliaria_DDL.sql
+* 02_db_inmobiliaria_DDL_LOGS.sql
+* 03_db_inmobiliaria_DML_INSERTS_FUNCTIONS.sql
+* 04_db_inmobiliaria_DML_INSERTS.sql
+* 05_db_inmobiliaria_DML_UPDATES_FUNCTIONS.sql
+* 06_db_inmobiliaria_DML_UPDATES.sql
+* 07_db_inmobiliaria_DML_DELETE_FUNCTIONS.sql
+* 08_db_inmobiliaria_DML_DELETE.sql
+* 09_db_inmobiliaria_DML_QUERIES.sql
 
 
 </br>
 
-## Sección Apéndice
+## Sección 2) Programación de Bases de Datos con PL/pgSQL
+  
 
 </br>
 
 
-
-### Funciones Predefinidas para los LOGS del Usuario. 
-* Referencia : https://www.postgresql.org/docs/current/functions-info.html
-
-
-| **Tipo de Función** | **Finalidad** |               
-| ------------- | ------------- |
+### Paso 3) Funciones con PL/pgSQL
+#### (Se desarrollan funciones que nos permitan realizar las operaciones requeridas en la base de datos (INSERTS, UPDATES, DELETES, ETC)).
 
 </br>
+
+#### 3.0) Modelo de Función de Listado de Registros de una Tabla
+#### (Esta función nos Lista los Registros de la Tabla oficinas, pero la estructura de la función aplica para el resto de las tablas, solamente se debe cambiar el nombre de la función, setof, y la variable de tipo RECORD)
+
+```plpgsql
+
+-- =======================================================================
+-- ----------- SELECT DE TODOS LOS REGISTROS DE LA TABLA OFICINAS -------
+-- =======================================================================
+
+
+drop function if exists listado_oficinas();
+
+create or replace function listado_oficinas() returns setof oficinas as $$
+
+declare
+
+	registro_actual_oficinas RECORD;
+
+begin 
+	
+	for registro_actual_oficinas in (select * from oficinas) loop
+	
+		return next registro_actual_oficinas;-- Por cada iteracion se guarda el registro completo
+	
+	end loop;
+	return;
+	
+end;
+
+	
+$$ language plpgsql;
+
+
+```
+
+</br>
+
+#### 3.1) Modelo de Función de Inserción de Registros en la DB
+#### (Esta función nos permite insertar un Registro para la Tabla oficinas y otro para la Tabla logs_inserts, la estructura de la función aplica para el resto de las tablas, se debe cambiar el nombre de la función, los parametros de la misma, las variables declaradas, las condiciones de inserción, los campos a insertar, etc.)
+
+```plpgsql
+
+-- ---------------------------------------------------------------------
+-- --------------------------------------------------------------------
+
+-- =======================================================================
+-- ----------- INSERCION DE 1 REGISTRO TABLA OFICINAS ------------
+-- =======================================================================
+
+select * from oficinas ;
+
+
+create or replace function insertar_registro_oficinas(
+
+nombre_input varchar, dir_input varchar, nro_tel_input varchar, email_input varchar
+
+) returns void as $$
+
+
+
+declare
+
+
+-- TABLA OFICINAS
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_of_check boolean;
+id_last_of int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+ nombre_of_check boolean := exists(select nombre from oficinas where nombre = nombre_input);
+ direccion_of_check boolean := exists(select direccion from oficinas where direccion = dir_input);
+
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_of uuid;
+nombre_tabla_of varchar := 'oficinas';
+accion_of varchar := 'insert';
+fecha_of date ;
+hora_of time ;
+usuario_of varchar;
+usuario_sesion_of varchar;
+db_of varchar;
+db_version_of varchar;
+
+
+
+begin
+
+	if(
+	(nombre_of_check = true) or (direccion_of_check = true)
+	
+	) then
+	
+		raise exception '===== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ===== '
+						using hint=	    '------- REVISAR NOMBRE Y DIRECCION DE LA OFICINA -------';
+										
+									
+	
+	elsif (
+		
+		((nombre_of_check = false) and (direccion_of_check = false))
+		and (nombre_input <> '') 
+		and (dir_input <> '') 
+		and (nro_tel_input <> '') 
+		and (email_input <> '')
+		
+		) then
+	
+		
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "oficinas" --';
+		raise notice '----------------------------------------------';
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into oficinas(nombre, direccion, nro_telefono, email) values 
+		(nombre_input , dir_input , nro_tel_input , email_input);
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_of_check := exists(select id from oficinas);
+	
+		-- Comprobacion id
+		if (id_last_of_check = true) then
+			
+			id_last_of := (select max(id) from oficinas);
+		
+		else 
+			
+			id_last_of := 0;
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Inserción --';
+		raise notice '';
+	
+		raise notice 'ID : %' , id_last_of;
+		raise notice 'Nombre : %', nombre_input;
+		raise notice 'Dirección : %', dir_input;
+		raise notice 'Nro Telefono : %', nro_tel_input;
+		raise notice 'Email : %', email_input;
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+	
+	
+	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_of , nombre_tabla_of, accion_of);
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_of := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+		
+		fecha_of := (select fecha from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+		
+		hora_of := (select hora from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		usuario_of := (select usuario from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		usuario_sesion_of := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	
+		db_of := (select db from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+	 	
+		db_version_of := (select db_version from logs_inserts 
+		where (id_registro = id_last_of) and (nombre_tabla = 'oficinas'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Inserción --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_last_of;
+		raise notice 'UUID Registro : %', uuid_registro_of;
+		raise notice 'Tabla : %', nombre_tabla_of;
+		raise notice 'Acción : %', accion_of;
+		raise notice 'Fecha : %', fecha_of;
+		raise notice 'Hora : %', hora_of;
+     	raise notice 'Usuario : %', usuario_of;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
+        raise notice 'DB : %', db_of;
+        raise notice 'Versión DB : %', db_version_of;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+
+
+	else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_oficinas() ====='
+						using hint = '------- insertar_registros_oficinas(nombre varchar, direccion varchar, nro_telefono varchar, email varchar); ------- ';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
+
+```
+* Para la inserción de 2 Registros se aplica también una sola función, pero la inserción de los mismos en las Tablas correspondientes no se aplican como inserción en conjunto sino que 1 a 1 por temas de seguridad y procedimiento de inserción junto con la Tabla de Logs
+
+
+
+
 
 
 
@@ -267,7 +515,7 @@
 * git commit -m "agrega un comentario entre comillas"
 
 #### 5)Le indicamos a git donde se va a almacenar nuestro proyecto(fijate en tu repositorio de github cual es el enlace de tu proyecto(esta en code)).
-* git remote add origin https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL
+* git remote add origin https://github.com/andresWeitzel/db_Inmobiliaria_PostgreSQL
 
 #### 6)Subimos nuestro proyecto.
 * git push -u origin master
@@ -289,10 +537,10 @@
 
 #### 4)Sincronizamos y traemos todos los cambios del repositorio remoto a la rama en la que estemos trabajando actualmente.
 ##### (SOLO SI SE REALIZARON CAMBIOS DESDE OTRA LADO, ej: en github u/o/y un equipo de trabajo)
-* git pull https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL
+* git pull https://github.com/andresWeitzel/db_Inmobiliaria_PostgreSQL
 
 #### 5)Enviamos todos los cambios locales al repo en github
-* git push https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL
+* git push https://github.com/andresWeitzel/db_Inmobiliaria_PostgreSQL
 
 #### 6) En casos extremos pisamos todo el repositorio
 * git push -f --set-upstream origin master

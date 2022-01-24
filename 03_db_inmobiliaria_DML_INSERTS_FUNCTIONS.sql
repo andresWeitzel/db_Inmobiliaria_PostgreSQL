@@ -8428,5 +8428,1090 @@ $$ language plpgsql;
 
 
 
+
+
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
+
+-- ===========================================================================
+-- ----------- INSERCION DE 2 REGISTROS TABLA GERENTES ----------
+-- ===========================================================================
+
+
+
+
+
+select * from gerentes;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'gerentes';
+
+
+
+
+
+
+create or replace function insertar_registros_gerentes(
+
+id_empl_input_01 int, tit_input_01 varchar, an_exp_lab_input_01 decimal
+, comp_input_01 varchar , benef_input_01 varchar, retr_sal_anual_input_01 decimal
+
+,id_empl_input_02 int, tit_input_02 varchar, an_exp_lab_input_02 decimal
+, comp_input_02 varchar , benef_input_02 varchar, retr_sal_anual_input_02 decimal
+
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA gerentes
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_ger_check boolean;
+id_last_ger int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID del Empleado , titulo y retribuciión salarial 
+id_empl_tit_retr_sal_anual_check_01 boolean := exists(
+select id_empleado , titulo, retribucion_salarial_anual from gerentes
+where ((id_empleado = id_empl_input_01) and (titulo = tit_input_01) 
+and (retribucion_salarial_anual = retr_sal_anual_input_01)));
+
+id_empl_tit_retr_sal_anual_check_02 boolean := exists(
+select id_empleado , titulo, retribucion_salarial_anual from gerentes
+where ((id_empleado = id_empl_input_02) and (titulo = tit_input_02) 
+and (retribucion_salarial_anual = retr_sal_anual_input_02)));
+
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_ger uuid;
+nombre_tabla_ger varchar := 'gerentes';
+accion_ger varchar := 'insert';
+fecha_ger date ;
+hora_ger time ;
+usuario_ger varchar;
+usuario_sesion_ger varchar;
+db_ger varchar;
+db_version_ger varchar;
+
+
+
+begin
+	
+
+
+	if(
+	((id_empl_tit_retr_sal_anual_check_01 = true) and (id_empl_tit_retr_sal_anual_check_02 = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UNO/VARIOS REGISTRO/S REPETIDO/S ========'
+						using hint = 
+					'-------- REVISAR ID DEL/DE LOS EMPLEADO/S -------------'
+					'-------- REVISAR TITULO, AÑOS DE EXPERIENCIA Y/O RETIRBUCIÓN SALARIAL DEL/DE LOS GERENTE/S -------------';
+						
+
+
+	
+	elsif (
+		((id_empl_tit_retr_sal_anual_check_01 = false) and (id_empl_tit_retr_sal_anual_check_02 = false))
+		and
+		((id_empl_input_01 > 0) and (id_empl_input_02 > 0))
+		and 
+		((tit_input_01 <> '') and (tit_input_02 <> ''))
+		and
+		((an_exp_lab_input_01 > 0.0) and (an_exp_lab_input_02 > 0.0))
+		and
+		((comp_input_01 <> '') and (comp_input_02 <> ''))
+		and
+		((benef_input_01 <> '') and (benef_input_02 <> ''))
+		and
+		((retr_sal_anual_input_01 > 0.0) and (retr_sal_anual_input_02 > 0.0))
+		
+		) then
+		
+		
+		
+		-- =======================================
+		-- =========== PRIMER REGISTRO ===========
+		-- =======================================
+
+	
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA GERENTES  -------------------------------
+		
+		--------------------------------------- INSERCION 1ER REGISTRO ----------------------------------------
+		
+	
+		insert into gerentes (
+		id_empleado, titulo ,aneos_experiencia_laboral , competencias 
+		, beneficios , retribucion_salarial_anual ) values
+		
+		(id_empl_input_01 , tit_input_01 , an_exp_lab_input_01
+		, comp_input_01 , benef_input_01 , retr_sal_anual_input_01);
+	
+	
+
+		--------------------------------------- FIN INSERCION 1ER REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_ger_check := exists(select id from gerentes);
+	
+		-- Comprobacion id
+		if (id_last_ger_check = true) then
+			
+			id_last_ger := (select max(id) from gerentes);
+		
+		else 
+			
+			id_last_ger := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción 1er Registro Tabla "gerentes" --';
+		raise notice '---------------------------------------------';
+	
+		raise notice 'ID de Gerente: %' , id_last_ger;
+		raise notice 'ID del Empleado: %' , id_empl_input_01;
+		raise notice 'Titulo : %', tit_input_01;
+	 	raise notice 'Años de Experiencia Laboral : %', an_exp_lab_input_01;
+	  	raise notice 'Competencias : %', comp_input_01;
+	  	raise notice 'Beneficios : %', benef_input_01;
+	  	raise notice 'Retribución Salarial Laboral : %', retr_sal_anual_input_01;
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA GERENTES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_ger , nombre_tabla_ger , accion_ger);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_ger := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+		
+		fecha_ger := (select fecha from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+	
+		hora_ger := (select hora from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+
+		usuario_ger := (select usuario from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+
+		usuario_sesion_ger := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));	
+
+		db_ger := (select db from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+
+		db_version_ger := (select db_version from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '-------------------------------------------------';
+		raise notice '-- Inserción 1er Registro Tabla "logs_inserts" --';
+		raise notice '-------------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_ger;
+		raise notice 'UUID Registro : %', uuid_registro_ger;
+		raise notice 'Tabla : %', nombre_tabla_ger;
+		raise notice 'Acción : %', accion_ger;
+		raise notice 'Fecha : %', fecha_ger;
+		raise notice 'Hora : %', hora_ger;
+     	raise notice 'Usuario : %', usuario_ger;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_ger;
+        raise notice 'DB : %', db_ger;
+        raise notice 'Versión DB : %', db_version_ger;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+
+	
+		-- =======================================
+		-- =========== SEGUNDO REGISTRO ===========
+		-- =======================================
+
+	
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA GERENTES  -------------------------------
+		
+		--------------------------------------- INSERCION 2DO REGISTRO ----------------------------------------
+		
+	
+		insert into gerentes (
+		id_empleado, titulo ,aneos_experiencia_laboral , competencias 
+		, beneficios , retribucion_salarial_anual ) values
+		
+		(id_empl_input_02 , tit_input_02 , an_exp_lab_input_02
+		, comp_input_02 , benef_input_02 , retr_sal_anual_input_02);
+	
+	
+
+		--------------------------------------- FIN INSERCION 2DO REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_ger_check := exists(select id from gerentes);
+	
+		-- Comprobacion id
+		if (id_last_ger_check = true) then
+			
+			id_last_ger := (select max(id) from gerentes);
+		
+		else 
+			
+			id_last_ger := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción 2do Registro Tabla "gerentes" --';
+		raise notice '---------------------------------------------';
+	
+		raise notice 'ID de Gerente: %' , id_last_ger;
+		raise notice 'ID del Empleado: %' , id_empl_input_02;
+		raise notice 'Titulo : %', tit_input_02;
+	 	raise notice 'Años de Experiencia Laboral : %', an_exp_lab_input_02;
+	  	raise notice 'Competencias : %', comp_input_02;
+	  	raise notice 'Beneficios : %', benef_input_02;
+	  	raise notice 'Retribución Salarial Laboral : %', retr_sal_anual_input_02;
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA GERENTES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_ger , nombre_tabla_ger , accion_ger);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_ger := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+		
+		fecha_ger := (select fecha from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+	
+		hora_ger := (select hora from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+
+		usuario_ger := (select usuario from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+
+		usuario_sesion_ger := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));	
+
+		db_ger := (select db from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+
+		db_version_ger := (select db_version from logs_inserts 
+		where (id_registro = id_last_ger) and (nombre_tabla = 'gerentes'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '-------------------------------------------------';
+		raise notice '-- Inserción 2do Registro Tabla "logs_inserts" --';
+		raise notice '-------------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_ger;
+		raise notice 'UUID Registro : %', uuid_registro_ger;
+		raise notice 'Tabla : %', nombre_tabla_ger;
+		raise notice 'Acción : %', accion_ger;
+		raise notice 'Fecha : %', fecha_ger;
+		raise notice 'Hora : %', hora_ger;
+     	raise notice 'Usuario : %', usuario_ger;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_ger;
+        raise notice 'DB : %', db_ger;
+        raise notice 'Versión DB : %', db_version_ger;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_gerentes() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+-- ----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- ======================================
+-- ======= TABLA ADMINISTRADORES ========
+-- ======================================
+
+select * from administradores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'administradores';
+
+
+
+-- ==============================================================================================
+-- ----------- SELECT DE TODOS LOS REGISTROS DE LA TABLA ADMINISTRADORES --------- -------
+-- ==============================================================================================
+
+
+
+create or replace function listado_administradores() returns setof administradores as $$
+
+declare
+
+	registro_actual_administradores RECORD;
+
+begin 
+	
+	for registro_actual_administradores in (select * from administradores) loop
+	
+		return next registro_actual_administradores;
+	
+	end loop;
+	return;
+	
+end;
+
+	
+$$ language plpgsql;
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ===========================================================================
+-- ----------- INSERCION DE 1 REGISTRO TABLA ADMINISTRADORES ----------
+-- ===========================================================================
+
+select * from administradores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'administradores';
+
+
+
+
+
+
+create or replace function insertar_registro_administradores(
+
+id_empl_input int, tip_inm_input varchar, cert_input varchar
+, niv_exp_input varchar , cualid_input varchar
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA administradores
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_adm_check boolean;
+id_last_adm int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID del Empleado, Tipo del Inmueble y Nivel de Experiencia  
+id_empl_tip_inm_niv_exp_adm_check boolean := exists(
+select id_empleado , tipo_inmueble, nivel_experiencia from administradores
+where ((id_empleado = id_empl_input) and (tipo_inmueble = tip_inm_input) 
+and (nivel_experiencia = niv_exp_input)));
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_adm uuid;
+nombre_tabla_adm varchar := 'administradores';
+accion_adm varchar := 'insert';
+fecha_adm date ;
+hora_adm time ;
+usuario_adm varchar;
+usuario_sesion_adm varchar;
+db_adm varchar;
+db_version_adm varchar;
+
+
+
+begin
+	
+
+
+	if(
+	(id_empl_tip_inm_niv_exp_adm_check = true)
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========'
+						using hint = 
+					'-------- REVISAR ID DEL EMPLEADO -------------'
+					'-------- REVISAR TIPO DE INMUEBLE Y/O NIVEL DE EXPERIENCIA DEL ADMINISTRADOR/A -------------';
+						
+
+
+	
+	elsif (
+		((id_empl_tip_inm_niv_exp_adm_check = false))
+		and
+		((id_empl_input > 0))
+		and 
+		((tip_inm_input <> ''))
+		and
+		((cert_input <> '' ))
+		and
+		((niv_exp_input <> ''))
+		and
+		((cualid_input <> ''))
+		
+		) then
+			
+		
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA ADMINISTRADORES -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into administradores (
+		id_empleado, tipo_inmueble , certificaciones  
+		, nivel_experiencia , cualidades ) values
+		
+		(id_empl_input , tip_inm_input , cert_input
+		, niv_exp_input , cualid_input );
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_adm_check := exists(select id from administradores);
+	
+		-- Comprobacion id
+		if (id_last_adm_check = true) then
+			
+			id_last_adm := (select max(id) from administradores);
+		
+		else 
+			
+			id_last_adm := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '------------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "administradores" --';
+		raise notice '------------------------------------------------';
+	
+		raise notice 'ID del Administrador/a: %' , id_last_adm;
+		raise notice 'ID del Empleado: %' , id_empl_input;
+		raise notice 'Tipo de Inmueble : %', tip_inm_input;
+	 	raise notice 'Certificaciones : %', cert_input;
+	  	raise notice 'Nivel de Experiencia : %', niv_exp_input;
+	  	raise notice 'Cualidades : %', cualid_input;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA ADMINISTRADORES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_adm , nombre_tabla_adm , accion_adm);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_adm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+		
+		fecha_adm := (select fecha from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+	
+		hora_adm := (select hora from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+
+		usuario_adm := (select usuario from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+
+		usuario_sesion_adm := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));	
+
+		db_adm := (select db from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+
+		db_version_adm := (select db_version from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_adm;
+		raise notice 'UUID Registro : %', uuid_registro_adm;
+		raise notice 'Tabla : %', nombre_tabla_adm;
+		raise notice 'Acción : %', accion_adm;
+		raise notice 'Fecha : %', fecha_adm;
+		raise notice 'Hora : %', hora_adm;
+     	raise notice 'Usuario : %', usuario_adm;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_adm;
+        raise notice 'DB : %', db_adm;
+        raise notice 'Versión DB : %', db_version_adm;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_administradores() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ===========================================================================
+-- ----------- INSERCION DE 2 REGISTROS TABLA ADMINISTRADORES ----------
+-- ===========================================================================
+
+select * from administradores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'administradores';
+
+
+
+
+
+
+create or replace function insertar_registros_administradores(
+
+id_empl_input_01 int, tip_inm_input_01 varchar, cert_input_01 varchar
+, niv_exp_input_01 varchar , cualid_input_01 varchar
+
+, id_empl_input_02 int, tip_inm_input_02 varchar, cert_input_02 varchar
+, niv_exp_input_02 varchar , cualid_input_02 varchar
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA administradores
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_adm_check boolean;
+id_last_adm int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID del Empleado, Tipo del Inmueble y Nivel de Experiencia  
+id_empl_tip_inm_niv_exp_adm_check_01 boolean := exists(
+select id_empleado , tipo_inmueble, nivel_experiencia from administradores
+where ((id_empleado = id_empl_input_01) and (tipo_inmueble = tip_inm_input_01) 
+and (nivel_experiencia = niv_exp_input_01)));
+
+id_empl_tip_inm_niv_exp_adm_check_02 boolean := exists(
+select id_empleado , tipo_inmueble, nivel_experiencia from administradores
+where ((id_empleado = id_empl_input_02) and (tipo_inmueble = tip_inm_input_02) 
+and (nivel_experiencia = niv_exp_input_02)));
+
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_adm uuid;
+nombre_tabla_adm varchar := 'administradores';
+accion_adm varchar := 'insert';
+fecha_adm date ;
+hora_adm time ;
+usuario_adm varchar;
+usuario_sesion_adm varchar;
+db_adm varchar;
+db_version_adm varchar;
+
+
+
+begin
+	
+
+
+	if(
+	((id_empl_tip_inm_niv_exp_adm_check_01 = true) and (id_empl_tip_inm_niv_exp_adm_check_01 = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UNO/VARIOS REGISTRO/S REPETIDO/S ========'
+						using hint = 
+					'-------- REVISAR ID DEL/DE LOS EMPLEADO -------------'
+					'-------- REVISAR TIPO DE INMUEBLE Y/O NIVEL DE EXPERIENCIA DEL/DE LOS ADMINISTRADOR/A/ES/AS -------------';
+						
+
+
+	
+	elsif (
+		((id_empl_tip_inm_niv_exp_adm_check_01 = false) and (id_empl_tip_inm_niv_exp_adm_check_01 = false))
+		and
+		((id_empl_input_01 > 0) and (id_empl_input_02 > 0))
+		and 
+		((tip_inm_input_01 <> '') and (tip_inm_input_02 <> ''))
+		and
+		((cert_input_01 <> '' ) and (cert_input_02 <> '' ))
+		and
+		((niv_exp_input_01 <> '') and (niv_exp_input_02 <> ''))
+		and
+		((cualid_input_01 <> '') and (cualid_input_02 <> ''))
+		
+		) then
+			
+		
+			
+		-- =======================================
+		-- =========== PRIMER REGISTRO ===========
+		-- =======================================
+
+		
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA ADMINISTRADORES -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into administradores (
+		id_empleado, tipo_inmueble , certificaciones  
+		, nivel_experiencia , cualidades ) values
+		
+		(id_empl_input_01 , tip_inm_input_01 , cert_input_01
+		, niv_exp_input_01 , cualid_input_01 );
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_adm_check := exists(select id from administradores);
+	
+		-- Comprobacion id
+		if (id_last_adm_check = true) then
+			
+			id_last_adm := (select max(id) from administradores);
+		
+		else 
+			
+			id_last_adm := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '------------------------------------------------';
+		raise notice '-- Inserción 1er Registro Tabla "administradores" --';
+		raise notice '------------------------------------------------';
+	
+		raise notice 'ID del Administrador/a: %' , id_last_adm;
+		raise notice 'ID del Empleado: %' , id_empl_input_01;
+		raise notice 'Tipo de Inmueble : %', tip_inm_input_01;
+	 	raise notice 'Certificaciones : %', cert_input_01;
+	  	raise notice 'Nivel de Experiencia : %', niv_exp_input_01;
+	  	raise notice 'Cualidades : %', cualid_input_01;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA ADMINISTRADORES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_adm , nombre_tabla_adm , accion_adm);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_adm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+		
+		fecha_adm := (select fecha from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+	
+		hora_adm := (select hora from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+
+		usuario_adm := (select usuario from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+
+		usuario_sesion_adm := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));	
+
+		db_adm := (select db from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+
+		db_version_adm := (select db_version from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción 1er Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_adm;
+		raise notice 'UUID Registro : %', uuid_registro_adm;
+		raise notice 'Tabla : %', nombre_tabla_adm;
+		raise notice 'Acción : %', accion_adm;
+		raise notice 'Fecha : %', fecha_adm;
+		raise notice 'Hora : %', hora_adm;
+     	raise notice 'Usuario : %', usuario_adm;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_adm;
+        raise notice 'DB : %', db_adm;
+        raise notice 'Versión DB : %', db_version_adm;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+		-- =======================================
+		-- =========== SEGUNDO REGISTRO ===========
+		-- =======================================
+
+		
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA ADMINISTRADORES -------------------------------
+		
+		--------------------------------------- INSERCION 2DO REGISTRO ----------------------------------------
+		
+	
+		insert into administradores (
+		id_empleado, tipo_inmueble , certificaciones  
+		, nivel_experiencia , cualidades ) values
+		
+		(id_empl_input_02 , tip_inm_input_02 , cert_input_02
+		, niv_exp_input_02 , cualid_input_02);
+	
+	
+
+		--------------------------------------- FIN INSERCION 2DO REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_adm_check := exists(select id from administradores);
+	
+		-- Comprobacion id
+		if (id_last_adm_check = true) then
+			
+			id_last_adm := (select max(id) from administradores);
+		
+		else 
+			
+			id_last_adm := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '------------------------------------------------';
+		raise notice '-- Inserción 2do Registro Tabla "administradores" --';
+		raise notice '------------------------------------------------';
+	
+		raise notice 'ID del Administrador/a: %' , id_last_adm;
+		raise notice 'ID del Empleado: %' , id_empl_input_02;
+		raise notice 'Tipo de Inmueble : %', tip_inm_input_02;
+	 	raise notice 'Certificaciones : %', cert_input_02;
+	  	raise notice 'Nivel de Experiencia : %', niv_exp_input_02;
+	  	raise notice 'Cualidades : %', cualid_input_02;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA ADMINISTRADORES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_adm , nombre_tabla_adm , accion_adm);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_adm := (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+		
+		fecha_adm := (select fecha from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+	
+		hora_adm := (select hora from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+
+		usuario_adm := (select usuario from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+
+		usuario_sesion_adm := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));	
+
+		db_adm := (select db from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+
+		db_version_adm := (select db_version from logs_inserts 
+		where (id_registro = id_last_adm) and (nombre_tabla = 'administradores'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción 2do Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_adm;
+		raise notice 'UUID Registro : %', uuid_registro_adm;
+		raise notice 'Tabla : %', nombre_tabla_adm;
+		raise notice 'Acción : %', accion_adm;
+		raise notice 'Fecha : %', fecha_adm;
+		raise notice 'Hora : %', hora_adm;
+     	raise notice 'Usuario : %', usuario_adm;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_adm;
+        raise notice 'DB : %', db_adm;
+        raise notice 'Versión DB : %', db_version_adm;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registros_administradores() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+
+
+

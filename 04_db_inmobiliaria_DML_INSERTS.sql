@@ -802,52 +802,73 @@ select column_name, data_type, is_nullable from
 information_schema.columns where table_name = 'gerentes';
 
 
+select listado_empleados();
+
 
 select insertar_registro_gerentes(
-1, 'Contador Público Universitario', 12, 'Planeamiento Eficiente, Ejecución Eficaz, Rendimiento'
+2 , 'Contador Público Universitario', 12, 'Planeamiento Eficiente, Ejecución Eficaz, Rendimiento'
 ,'Home Office 2 veces x sem, 35% Descuento Pack Viajes, Planes de Ahorro Viviendas', 32000
 );
 
 
-select listado_gerentes();
+select insertar_registros_gerentes(
+4 , 'Licenciado en Administración', 5.6, 'Organización, Gestión, Desempeño'
+,'Horarios Flexibles, 35% Descuento Pack Viajes', 42000
+, 8 , 'Licenciada en Marketing', 7.0, 'Ventas, Publicidad, Coordinación'
+,'Horarios Flexibles y Días Extras de Descanso, 40% Descuento Pack Viajes', 35000
+);
 
+
+select listado_gerentes();
 select listado_logs_inserts();
 
-
-
-/*
 -- ---------------------------------------------------------------------------
-
--- ======= TABLA GERENTES ===========
-
-
-insert into gerentes (id, id_empleado, titulo, aneos_experiencia_laboral, competencias, beneficios
-, retribucion_salarial_anual) values 
-(2, 4, 'Licenciado en Administración', 5.6, 'Organización, Gestión, Desempeño'
-,'Horarios Flexibles, 35% Descuento Pack Viajes', 42000),
-(3, 7, 'Licenciada en Marketing', 7.0, 'Ventas, Publicidad, Coordinación'
-,'Horarios Flexibles y Días Extras de Descanso, 40% Descuento Pack Viajes', 35000);
-
+-- ---------------------------------------------------------------------------
 
 
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 
--- ======= TABLA ADMINISTRADORES ===========
+
+-- ======================================
+-- ======= TABLA ADMINISTRADORES ========
+-- ======================================
 
 select * from administradores;
 
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'administradores';
 
--- tipo_inmueble --> casa, depto, etc
+
+select listado_empleados();
+
+select insertar_registro_administradores(
+1 , 'Departamento', 'Cert. Habilidades Aministrativas, Cert. Nivel 2 en Aministración de Cuentas'
+, 'Alto', 'Liderazgo y Negociación'
+);
+
+select insertar_registros_administradores(
+5, 'Casa', 'Cert. Administración Viviendas, Cert. Tecnologías Digital, Cert. Servicios de Aministración'
+,'Medio', 'Recursos Tecnológicos, Comunicación y Planificación'
+, 9, 'Departamento-Casa', 'Cert. Gestión Avanzada en Inmuebles, Cert. Especialista Apoyo Administrativo, 
+Cert. Aministración de Oficinas', 'Alto', 'Alta Flexibilidad, Marketing Digital y Planificación'
+);
+
+
+select listado_administradores();
+select listado_logs_inserts();
+
+
+
+/*
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA ADMINISTRADORES ===========
+
 
 insert into administradores(id, id_empleado, tipo_inmueble, certificaciones, nivel_experiencia, cualidades)values
-(1, 2, 'Departamento', 'Cert. Habilidades Aministrativas, Cert. Nivel 2 en Aministración de Cuentas'
-,'Alto', 'Liderazgo y Negocición'),
-(2, 5, 'Casa', 'Cert. Administración Viviendas, Cert. Tecnologías Digital, Cert. Servicios de Aministración'
-,'Medio', 'Recursos Tecnológicos, Comunicación y Planificación'),
-(3, 8, 'Departamento-Casa', 'Cert. Gestión Avanzada en Inmuebles, Cert. Especialista Apoyo Administrativo
-, Cert. Aministración de Oficinas', 'Alto', 'Alta Flexibilidad, Marketing Digital y Planificación');
 
 
 -- ---------------------------------------------------------------------------

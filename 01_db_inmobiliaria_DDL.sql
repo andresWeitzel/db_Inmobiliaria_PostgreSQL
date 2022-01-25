@@ -1019,7 +1019,7 @@ id_cliente int not null,
 id_inmueble int not null,
 fecha_venta date not null,-- ej '2001-10-07'
 hora_venta time not null, -- ej  '09:00:07'
-detalle_ventas varchar(100) not null
+detalle_venta varchar(100) not null
 
 );
 

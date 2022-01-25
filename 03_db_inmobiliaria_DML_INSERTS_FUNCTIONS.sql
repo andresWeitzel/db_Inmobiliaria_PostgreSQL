@@ -9513,5 +9513,748 @@ $$ language plpgsql;
 
 
 
+-- ----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ================================
+-- ======= TABLA VENTAS ===========
+-- ================================
+
+
+
+
+select * from ventas;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'ventas';
+
+
+
+-- ==================================================================================
+-- ----------- SELECT DE TODOS LOS REGISTROS DE LA TABLA VENTAS --------- -------
+-- ==================================================================================
+
+
+
+create or replace function listado_ventas() returns setof ventas as $$
+
+declare
+
+	registro_actual_vent RECORD;
+
+begin 
+	
+	for registro_actual_vent in (select * from ventas) loop
+	
+		return next registro_actual_vent;
+	
+	end loop;
+	return;
+	
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ===============================================================
+-- ----------- INSERCION DE 1 REGISTRO TABLA VENTAS ----------
+-- ===============================================================
+
+
+select * from ventas;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'ventas';
+
+
+
+
+
+create or replace function insertar_registro_ventas(
+
+id_empl_input int, id_cli_input int, id_inm_input int, fech_vent_input date
+,hora_vent_input time, det_vent_input varchar
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA ventas
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_vent_check boolean;
+id_last_vent int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID del Empleado, ID del Inmueble e ID del Cliente
+id_empl_cli_inm_vent_check boolean := exists(
+select id_empleado, id_cliente , id_inmueble from ventas
+where ((id_empleado = id_empl_input) and (id_cliente = id_cli_input)
+and (id_inmueble = id_inm_input)));
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_vent uuid;
+nombre_tabla_vent varchar := 'ventas';
+accion_vent varchar := 'insert';
+fecha_vent date ;
+hora_vent time ;
+usuario_vent varchar;
+usuario_sesion_vent varchar;
+db_vent varchar;
+db_version_vent varchar;
+
+
+
+begin
+	
+
+
+	if(
+	((id_empl_cli_inm_vent_check  = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========'
+						using hint = 
+					'-------- REVISAR ID DEL CLIENTE, DEL EMPLEADO Y/O DEL INMUEBLE -------------';
+
+						
+
+	
+	elsif (
+		((id_empl_cli_inm_vent_check  = false))
+		and
+		((id_empl_input > 0))
+		and
+		((id_cli_input > 0))
+		and
+		((id_inm_input > 0))
+		and 
+		((fech_vent_input <= current_date )) 
+		and 
+		((hora_vent_input <= current_time))
+		and
+		((det_vent_input <> ''))
+		) then
+			
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA VENTAS -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into ventas (
+		id_empleado , id_cliente , id_inmueble ,  fecha_venta , hora_venta 
+		,detalle_venta ) values
+		
+		(id_empl_input , id_cli_input, id_inm_input , fech_vent_input 
+		, hora_vent_input, det_vent_input);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_vent_check := exists(select id from ventas);
+	
+		-- Comprobacion id
+		if (id_last_vent_check = true) then
+			
+			id_last_vent := (select max(id) from ventas);
+		
+		else 
+			
+			id_last_vent := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "ventas" ------';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID de la Venta: %' , id_last_vent;
+		raise notice 'ID del Empleado: %' , id_empl_input;
+		raise notice 'ID del Cliente : %', id_cli_input;
+	 	raise notice 'ID del Inmueble : %', id_inm_input ;
+	  	raise notice 'Fecha de Venta : %', fech_vent_input;
+	  	raise notice 'Hora de Venta : %', hora_vent_input;
+	  	raise notice 'Detalle de Venta : %', det_vent_input;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA VENTAS  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_vent, nombre_tabla_vent , accion_vent);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_vent:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+		
+		fecha_vent := (select fecha from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+	
+		hora_vent := (select hora from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		usuario_vent := (select usuario from logs_inserts		
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		usuario_sesion_vent := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		db_vent := (select db from logs_inserts
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		db_version_vent := (select db_version from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_vent;
+		raise notice 'UUID Registro : %', uuid_registro_vent;
+		raise notice 'Tabla : %', nombre_tabla_vent;
+		raise notice 'Acción : %', accion_vent;
+		raise notice 'Fecha : %', fecha_vent;
+		raise notice 'Hora : %', hora_vent;
+     	raise notice 'Usuario : %', usuario_vent;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_vent;
+        raise notice 'DB : %', db_vent;
+        raise notice 'Versión DB : %', db_version_vent;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_ventas() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- ----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ====================================
+-- ======= TABLA COMPRADORES ===========
+-- ====================================
+
+
+
+
+select * from compradores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'compradores';
+
+
+
+-- ==================================================================================
+-- ----------- SELECT DE TODOS LOS REGISTROS DE LA TABLA COMPRADORES --------- -------
+-- ==================================================================================
+
+
+
+create or replace function listado_compradores() returns setof compradores as $$
+
+declare
+
+	registro_actual_compr RECORD;
+
+begin 
+	
+	for registro_actual_compr in (select * from compradores) loop
+	
+		return next registro_actual_compr;
+	
+	end loop;
+	return;
+	
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ===============================================================
+-- ----------- INSERCION DE 1 REGISTRO TABLA COMPRADORES ----------
+-- ===============================================================
+
+
+select * from compradores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'compradores';
+
+
+
+
+
+create or replace function insertar_registro_compradores(
+
+id_cli_input int, cant_inm_comp_input int, imp_max_por_comp_usd_input decimal
+, imp_tot_compr_usd_input decimal, benef_comp_input varchar , des_cli_usd_input decimal 
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA vendedores
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_comp_check boolean;
+id_last_comp int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID del Cliente, Cantidad de Inmuebles Comprados e Importe Maximo por compra
+id_cli_cant_inm_comp_imp_max_compra_usd_comp_check boolean := exists(
+select id_cliente , cantidad_inmuebles_comprados, importe_maximo_por_compra_usd from compradores
+where ((id_cliente = id_cli_input) and (cantidad_inmuebles_comprados = cant_inm_com_input)));
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_comp uuid;
+nombre_tabla_comp varchar := 'compradores';
+accion_comp varchar := 'insert';
+fecha_comp date ;
+hora_comp time ;
+usuario_comp varchar;
+usuario_sesion_comp varchar;
+db_comp varchar;
+db_version_comp varchar;
+
+
+
+begin
+	
+
+
+	if(
+	((id_cli_cant_inm_comp_imp_max_compra_usd_comp_check  = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========'
+						using hint = 
+					'-------- REVISAR ID DEL CLIENTE -------------'
+					'-------- REVISAR CANTIDAD DE INMUEBLES COMPRADOS Y/O IMPORTE MAXIMO POR COMPRA DEL COMPRADOR -------------';
+						
+
+	
+	elsif (
+		((id_cli_cant_inm_comp_imp_max_compra_usd_comp_check  = false))
+		and
+		((id_cli_input > 0))
+		and 
+		((cant_inm_comp_input > 0 )) 
+		and 
+		((imp_max_por_comp_usd_input > 0.0))
+		and
+		((imp_tot_compr_usd_input > 0.0))
+		and
+		((benef_comp_input <> ''))
+		and
+		((des_cli_usd_input >= 0))
+		) then
+			
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA COMPRADORES -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into vendedores (
+		id_empleado , cantidad_ventas , bonificacion_ventas, puntuacion_ventas 
+		, orientacion_tipo_inmueble, cualidades ) values
+		
+		(id_cli_input, cant_inm_comp_input , imp_max_por_comp_usd_input 
+		, imp_tot_compr_usd_input, benef_comp_input , des_cli_usd_input);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_comp_check := exists(select id from compradores);
+	
+		-- Comprobacion id
+		if (id_last_comp_check = true) then
+			
+			id_last_comp := (select max(id) from compradores);
+		
+		else 
+			
+			id_last_comp := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "compradores" --';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID del Comprador: %' , id_last_comp;
+		raise notice 'ID del Cliente: %' , id_empl_comp;
+		raise notice 'Cantidad de Inmuebles Comprados : %', cant_inm_comp_input;
+	 	raise notice 'Importe Máximo por Compra (USD) : %', imp_max_por_comp_usd_input ;
+	  	raise notice 'Importe Total de Compras (USD) : %', imp_tot_comp_usd_input;
+	  	raise notice 'Beneficios de Compras : %', benef_comp_input;
+	  	raise notice 'Descuento Cliente (USD) : %', des_cli_usd_input;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA COMPRADORES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_comp, nombre_tabla_comp , accion_comp);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_comp:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+		
+		fecha_comp := (select fecha from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+	
+		hora_comp := (select hora from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		usuario_comp := (select usuario from logs_inserts		
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		usuario_sesion_comp := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		db_comp := (select db from logs_inserts
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		db_version_comp := (select db_version from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_comp;
+		raise notice 'UUID Registro : %', uuid_registro_comp;
+		raise notice 'Tabla : %', nombre_tabla_comp;
+		raise notice 'Acción : %', accion_comp;
+		raise notice 'Fecha : %', fecha_comp;
+		raise notice 'Hora : %', hora_comp;
+     	raise notice 'Usuario : %', usuario_comp;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_comp;
+        raise notice 'DB : %', db_comp;
+        raise notice 'Versión DB : %', db_version_comp;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_compradores() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
 
 

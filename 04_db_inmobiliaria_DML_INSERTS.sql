@@ -860,62 +860,58 @@ select listado_logs_inserts();
 
 
 
-/*
-
-
+-- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
--- ======= TABLA ADMINISTRADORES ===========
-
-
-insert into administradores(id, id_empleado, tipo_inmueble, certificaciones, nivel_experiencia, cualidades)values
-
-
+-- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
--- ======= TABLA VENDEDORES ===========
+
+-- =================================
+-- ======= TABLA VENDEDORES ========
+-- =================================
 
 select * from vendedores;
 
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'vendedores';
 
---puntuacion_ventas --> Buena, Normal, Excelente
 
-insert into vendedores(id, id_empleado, cantidad_ventas, bonificacion_ventas, puntuacion_ventas, 
-orientacion_tipo_inmueble, cualidades) values
-(1, 3, 0, 0, 'Sin Ventas', 'Departamento', 'Confianza, Dominio de Venta, Desarrollo Linguístico'),
-(2, 6, 1, 2000, 'Buena', 'Casa', 'Ambición, Comercialización, Determinación'),
-(3, 9, 2, 5000, 'Muy Buena', 'Departamento-Casa', 'Comunicación Eficaz, Creatividad, Convicción');
+select listado_empleados();
 
 
 
+select insertar_registro_vendedores(
+1, 3, 20000 , 'Excelente', 'Departamento', 'Confianza, Dominio de Venta, Desarrollo Linguístico'
+);
+
+
+select insertar_registros_vendedores(
+4, 0, 0, 'Sin Ventas', 'Casa', 'Ambición, Comercialización, Determinación'
+, 8, 2, 10000, 'Buena', 'Departamento-Casa', 'Comunicación Eficaz, Creatividad, Convicción'
+);
 
 
 
 
--- ======= TABLA COMPRADORES ===========
-
--- importe_maximo_por_compra_usd se considera en base a todas las compras 	
--- importe_total_compras_usd se considera la suma de todas las compras
-
-select * from compradores;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'compradores';
+select listado_vendedores();
+select listado_logs_inserts();
 
 
-insert into compradores(id, id_cliente, cantidad_inmuebles_comprados, importe_maximo_por_compra_usd
-, importe_total_compras_usd, beneficios_compras, descuento_cliente_usd) values 
-(1, 1, 1, 168000, 168000, 'Descuento del 7% en la Próxima Compra', 200),
-(2, 2, 1, 110000, 110000, 'Descuento del 10% en la Próxima Compra',200);
 
 
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 
--- ======= TABLA VENTAS ===========
-	
--- fecha_venta date '2001-10-07'
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ==============================
+-- ======= TABLA VENTAS ========
+-- =============================
+
+-- fecha_venta date '2001/10/07'
 -- hora_venta time '09:00:07'
 
 
@@ -924,6 +920,33 @@ select * from ventas;
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'ventas';
 
+
+
+select listado_empleados();
+
+
+
+select insertar_registro_ventas(
+1, 1, 1, '2020-12-22', '08:30:00', 'Se Realiza la Venta de Manera Eficiente'
+);
+
+
+
+
+
+select listado_ventas();
+select listado_logs_inserts();
+
+
+
+
+/*
+
+
+-- ---------------------------------------------------------------------------
+
+-- ======= TABLA VENTAS ===========
+	
 
 insert into ventas(id, id_empleado, id_cliente, id_inmueble, fecha_venta, hora_venta, detalle_ventas) values
 (1, 3, 1, 3, '2020-12-22', '08:30:00', 'Se Realiza la Venta luego de la Primera Cita Inconclusa'),
@@ -973,6 +996,63 @@ insert into facturas_detalles (id, id_factura, tipo, descripcion_factura, valor_
 , 'CHEQUE', 'Se efectuó la compra a Pagar en 3 Pagos');
 
 
+
+*/
+
+
+
+
+
+
+
+/*
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- =================================
+-- ======= TABLA COMPRADORES ========
+-- =================================
+
+-- importe_maximo_por_compra_usd se considera en base a todas las compras 	
+-- importe_total_compras_usd se considera la suma de todas las compras
+
+
+select * from compradores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'compradores';
+
+
+select listado_clientes();
+
+
+
+select insertar_registro_compradores(
+1, 1, 168000, 168000, 'Descuento del 7% en la Próxima Compra', 200
+);
+
+
+
+select listado_compradores();
+select listado_logs_inserts();
+
+
+
+
+-- ======= TABLA COMPRADORES ===========
+
+
+insert into compradores(id, id_cliente, cantidad_inmuebles_comprados, importe_maximo_por_compra_usd
+, importe_total_compras_usd, beneficios_compras, descuento_cliente_usd) values 
+(1, 1, 1, 168000, 168000, 'Descuento del 7% en la Próxima Compra', 200),
+(2, 2, 1, 110000, 110000, 'Descuento del 10% en la Próxima Compra',200);
 
 */
 

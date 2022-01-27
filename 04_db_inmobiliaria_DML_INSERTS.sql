@@ -252,6 +252,8 @@ select listado_logs_inserts();
 -- ======= TABLA EMPLEADOS ===========
 -- ==================================
 
+-- campos DATE -->Ej 2020-09-09
+
 
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'empleados';
@@ -270,7 +272,7 @@ select listado_logs_inserts();
 -- ----------- INSERCIÓN DE 1 REGISTRO ------------
 -- -------------------------------------------------
 
-select insertar_registro_empleados(1, 'Juan', 'Levbier', 22, '1994/1/2'
+select insertar_registro_empleados(1, 'Juan', 'Levbier', 22, '1994-1-2'
 , 'DNI', '408736633', '31-408736633-9', 'La Rioja 2221', '1122334321', '-' 
 , 'juanLevbier@gmail.com', 'Agente Inmobiliario/ Vendedor', 2 
 , '2019/1/1', 50000);
@@ -286,26 +288,26 @@ select insertar_registro_empleados(1, 'Juan', 'Levbier', 22, '1994/1/2'
 
 -- Oficina 1 (Torre San Vicente)
 select insertar_registros_empleados(
-1, 'Macarena', 'Gutierrez', 32, '1989/04/06', 'DNI', '334565243'
+1, 'Macarena', 'Gutierrez', 32, '1989-04-06', 'DNI', '334565243'
 , '12-334565243-7', 'Av. Gaona 352', '1164575222', '1164575222'
 , 'maca.gutieerez756@hotmail.com', 'Administradora', 2 
-, '2019/03/01', 45000
-, 1 , 'marcos', 'Castro', 45, '1971/05/01', 'DNI', '48967156'
+, '2019-03-01', 45000
+, 1 , 'marcos', 'Castro', 45, '1971-05-01', 'DNI', '48967156'
 ,'33489671564', 'Figueroa Alcorta 22', '1178654356', '+5491178654356'
 , 'marcosCastro2002_lop@hotmail.com', 'Agente Inmobiliario(Gerente)', 4
-, '2017/09/6', 150000
+, '2017-09-6', 150000
 );
 
 -- Oficina 1 (Torre San Vicente)
 select insertar_registros_empleados(
- 1 , 'José', 'bastituta', 34, '1988/09/07', 'DNI', '409876546'
+ 1 , 'José', 'bastituta', 34, '1988-09-07', 'DNI', '409876546'
 , '12409876546-0', 'San Acrosio 15781', '1157670000', '+5491157670000'
 , 'joseBastituta_88@gmail.com', 'Agente Inmobiliario(Vendedor)', 1
-, '2020/07/12', 65000
-, 1, 'Juan', 'Contreras', 28, '1992/9/9', 'DNI', '37998637'
+, '2020-07-12', 65000
+, 1, 'Juan', 'Contreras', 28, '1992-9-9', 'DNI', '37998637'
 , '30-37998637-9', 'Av. Las Heras 7567', '1145367655', '-' 
 , 'juanContreras.iptre@gmail.com', 'Agente Inmobiliario/ Gerente', 4 
-, '2018/4/2', 78000
+, '2018-4-2', 78000
 );
 
 
@@ -314,22 +316,22 @@ select insertar_registros_empleados(
 
 --Oficina 2 (Edificio Torre Alem)
 select insertar_registros_empleados(
-2, 'Damian', 'gutierrez', 39, '1978/09/14', 'DNI', '33869556', '20-33869556-3'
+2, 'Damian', 'gutierrez', 39, '1978-09-14', 'DNI', '33869556', '20-33869556-3'
 , 'Av Alberdi 05', '+5491176844456', '+5491157684445', 'damian_gut.756@gmail.com'
-, 'Agente Inmobiliario(Gerente)', 3, '2018/3/4', 139000
-, 2, 'Marcelo', 'Perez', 28, '1988/03/17', 'DNI', '39345679', '12-39345679-9'
+, 'Agente Inmobiliario(Gerente)', 3, '2018-3-4', 139000
+, 2, 'Marcelo', 'Perez', 28, '1988-03-17', 'DNI', '39345679', '12-39345679-9'
 , 'Carabobo 06', '+5491138765433', '-', 'MarceloPerez@gmail.com'
-, 'Administrador', 2, '2019/04/14', 56000
+, 'Administrador', 2, '2019-04-14', 56000
 );
 
 --Oficina 2 (Edificio Torre Alem)
 select insertar_registros_empleados(
-2, 'Jimena', 'D Ambrosio', 37, '1991/11/06', 'DNI', '417896537','2-417896537-2'
+2, 'Jimena', 'D Ambrosio', 37, '1991-11-06', 'DNI', '417896537','2-417896537-2'
 , 'Valentin Figueroa 33', '1175680377', '+5491175680338', 'lic_DAmbrosio@gmail.com'
-, 'Agente Inmobiliario(Vendedora)', 3, '2018/08/14', 71000 
-, 2, 'Carlos', 'Gustamante', 31, '1982/04/03', 'DNI', '290076726', '11-290076726-2'
+, 'Agente Inmobiliario(Vendedora)', 3, '2018-08-14', 71000 
+, 2, 'Carlos', 'Gustamante', 31, '1982-04-03', 'DNI', '290076726', '11-290076726-2'
 , 'Av. Figueroa Alcorta 22', '1145639987', '-', 'c.gustamante@gmail.com'
-, 'Administrador', 2, '2019/12/02', 57000
+, 'Administrador', 2, '2019-12-02', 57000
 );
 
 
@@ -340,22 +342,22 @@ select insertar_registros_empleados(
 
 -- Oficina 3 (Oficina Comercial Principal)
 select insertar_registros_empleados(
-3,'Sofia', 'Aguilar', 35, '1981/07/01', 'DNI', '33456733', '8-33456733-9'
+3,'Sofia', 'Aguilar', 35, '1981-07-01', 'DNI', '33456733', '8-33456733-9'
 , 'Av. Corrientes 2564', '1175678844', '+5491130928783', 'lic_sofiaAguilar@gmail.com'
-, 'Agente Inmobiliario(Gerenta)', 3, '2018/08/02', 156000
-, 3, 'Luis', 'Gonzalez', 26, '1991/09/21', 'DNI', '397865432', '56-397865432-99'
+, 'Agente Inmobiliario(Gerenta)', 3, '2018-08-02', 156000
+, 3, 'Luis', 'Gonzalez', 26, '1991-09-21', 'DNI', '397865432', '56-397865432-99'
 , 'La Pampa 22', '+549113764522', '-', 'luisGonzalez_jsu@gmail.com', 'Administrador', 2
-, '2019/07/12', 50000
+, '2019-07-12', 50000
 );
 
 -- Oficina 3 (Oficina Comercial Principal)
 select insertar_registros_empleados(
- 3, 'Marcelo', 'Castro', 28, '1989/04/06', 'DNI', '39886386', '14-39886386-5'
+ 3, 'Marcelo', 'Castro', 28, '1989-04-06', 'DNI', '39886386', '14-39886386-5'
 , 'Los Patos 123', '+549118567453', '+549118567453', 'marcelocastro.746_jj@gmail.com'
-, 'Administrador', 2, '2019/02/11', 51000
-, 3,  'Juan', 'Notowski', 41, '1988/02/21', 'DNI', '432765411', '22-432765411-93'
+, 'Administrador', 2, '2019-02-11', 51000
+, 3,  'Juan', 'Notowski', 41, '1988-02-21', 'DNI', '432765411', '22-432765411-93'
 , 'Av Rivadavia 9100', '+5491175680827', '+5491175680827', 'notowski_Juan_7238@gmail.com'
-, 'Agente Inmobiliario(Vendedor)', 2, '2019/04/22', 74000
+, 'Agente Inmobiliario(Vendedor)', 2, '2019-04-22', 74000
 );
 
 
@@ -364,22 +366,22 @@ select insertar_registros_empleados(
 
 -- Oficina 4 (Oficinas de Gestión Le Bluen)
 select insertar_registros_empleados(
-4,'Marcos', 'Norwey', 39, '1967/10/06', 'DNI', '27888651', '22-27888651-5'
+4,'Marcos', 'Norwey', 39, '1967-10-06', 'DNI', '27888651', '22-27888651-5'
 , 'Entre Ríos 222', '1176874567', '1176874567', 'MarcosNorWorkllo@gmail.com'
-, 'Gerente', 6, '2015/3/1', 46000
-, 4, 'Micaela', 'Fernandez', 24, '1997/03/02', 'DNI', '299765234', '19-299765234-2'
+, 'Gerente', 6, '2015-3-1', 46000
+, 4, 'Micaela', 'Fernandez', 24, '1997-03-02', 'DNI', '299765234', '19-299765234-2'
 , 'Av. Acoyte 33', '+5491136547766', '+5491136547766', 'micaela.fernandez.97@gmail.com'
-, 'Administradora', 1, '2020/04/09', 44000
+, 'Administradora', 1, '2020-04-09', 44000
 );
 
 -- Oficina 4 (Oficinas de Gestión Le Bluen)
 select insertar_registros_empleados(
-4, 'Antonio', 'Torres', 26, '1995/4/16', 'DNI', '38223344', '19-38223344-1'
+4, 'Antonio', 'Torres', 26, '1995-4-16', 'DNI', '38223344', '19-38223344-1'
 , 'Azul 12', '+54911987365', '-', 'antonioJose_cabj@gmail.com', 'Administrador', 3
-, '2018/01/09', 55000
-, 4,  'Ramon', 'Farias', 44, '1977/09/18', 'DNI', '50456789', '11-50456789-0'
+, '2018-01-09', 55000
+, 4,  'Ramon', 'Farias', 44, '1977-09-18', 'DNI', '50456789', '11-50456789-0'
 , 'Castro Barros 937', '118765541', '-', 'ramonFarias@gmail.com'
-, 'Administrador', 5, '2015/06/12', 80000
+, 'Administrador', 5, '2015-06-12', 80000
 );
 
 select listado_oficinas();
@@ -411,6 +413,7 @@ select listado_propietarios_inmuebles();
 select listado_logs_inserts();
 
 
+-- campos DATE -->Ej 2020-09-09
 
 
 
@@ -419,7 +422,7 @@ select listado_logs_inserts();
 -- -------------------------------------------------
 
  select insertar_registro_propietarios_inmuebles(
-'Fabian', 'Gonzalez', 45, '1975/10/09', 'DNI', '45897677', 'San Vicente 879'
+'Fabian', 'Gonzalez', 45, '1975-10-09', 'DNI', '45897677', 'San Vicente 879'
 , '+5491156749874', '6578-3786', 'viccentin3k@gmail.com'
 );
 
@@ -429,9 +432,9 @@ select listado_logs_inserts();
 -- -------------------------------------------------
 
  select insertar_registros_propietarios_inmuebles(
-'Marcela', 'Sanchez', 49, '1971/12/08', 'DNI', '4298762543', 'San AZUL 222'
+'Marcela', 'Sanchez', 49, '1971-12-08', 'DNI', '4298762543', 'San AZUL 222'
 , '+5491173654378', '-', 'marcelaSanchez222@gmail.com',
-'Guillermo', 'Zulenski', 65, '1955/10/09', 'DNI', '35897677', 'Av. Calloa 879'
+'Guillermo', 'Zulenski', 65, '1955-10-09', 'DNI', '35897677', 'Av. Calloa 879'
 , '+5491156788', '+5491156788', 'zulenskiVentas2019@gmail.com'
 );
 
@@ -613,17 +616,16 @@ select * from clientes;
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'clientes';
 
--- fecha_nacimiento date ejemplo '2001/10/07'
--- fecha_alta date ejemplo '2002/10/07'
+-- campos DATE -->Ej 2020-09-09
 
 
 -- -------------------------------------------------
 -- ----------- INSERCIÓN DE 1 REGISTRO ------------
 -- -------------------------------------------------
 select insertar_registro_clientes(
-'Rodrigo', 'Bustamante', 29, '1991/03/02', 'DNI', '36879254'
+'Rodrigo', 'Bustamante', 29, '1991-13-02', 'DNI', '36879254'
 , 'Aristobulo del Valle 887', '+5491176534456', '3765-9978'
-, 'rodrigo_bustamante@gmail.com', '2021/06/12'
+, 'rodrigo_bustamante@gmail.com', '2021-06-12'
 );
 
 select insertar_registros_clientes(
@@ -652,7 +654,7 @@ select listado_clientes();
 
 
 -- ENUM estadoCita('PENDIENTE','COMPLETADA','INCOMPLETA');
--- fecha_cita date '2001/10/07'
+-- fecha_cita date '2001-10-07'
 -- hora_cita time '09:00:07'
 
 
@@ -675,7 +677,7 @@ select listado_clientes();
 
 select insertar_registro_citas_inmuebles(
 1, 1, 1, 'COMPLETADA' , 'Cita Finalizada y Venta Efectuada de Forma Exitosa'
-, '2020/03/01', '11:00:00'    
+, '2020-03-01', '11:00:00'    
 );
 
 
@@ -686,9 +688,9 @@ select insertar_registro_citas_inmuebles(
 
 select insertar_registros_citas_inmuebles(
 2, 2 , 2 , 'PENDIENTE' , 'Se reserva cita para la fecha estipulada' 
-, '2022/01/12', '09:00:00'
+, '2022-01-12', '09:00:00'
 , 3 , 3 , 3 , 'COMPLETADA' , 'Venta Efectuada de forma exitosa'
-, '2020/06/11', '12:00:00'
+, '2020-06-11', '12:00:00'
 );
 
 
@@ -752,7 +754,7 @@ select listado_inmuebles_marketing();
 
 -- ENUM estado_inspeccion ('ACEPTADA','NO ACEPTADA','PENDIENTE REVISION');
 -- ENUM tipo_inspeccion('DEPARTAMENTO','CASA','PH');
--- fecha date  '2001/10/07'
+-- fecha date  '2001-10-07'
 -- hora time   '09:00:07'
 
 
@@ -911,7 +913,7 @@ select listado_logs_inserts();
 -- ======= TABLA VENTAS ========
 -- =============================
 
--- fecha_venta date '2001/10/07'
+-- campos DATE -->Ej 2020-09-09
 -- hora_venta time '09:00:07'
 
 
@@ -923,6 +925,8 @@ information_schema.columns where table_name = 'ventas';
 
 
 select listado_empleados();
+select listado_clientes();
+select listado_inmuebles();
 
 
 
@@ -930,7 +934,10 @@ select insertar_registro_ventas(
 1, 1, 1, '2020-12-22', '08:30:00', 'Se Realiza la Venta de Manera Eficiente'
 );
 
-
+select insertar_registros_ventas(
+4 , 2 , 2 , '2020-01-12', '11:15:00', 'La Venta fue exitosa'
+, 8 , 3 , 3 , '2021-03-22', '18:45:00', 'La Venta fue exitosa'
+);
 
 
 
@@ -941,16 +948,6 @@ select listado_logs_inserts();
 
 
 /*
-
-
--- ---------------------------------------------------------------------------
-
--- ======= TABLA VENTAS ===========
-	
-
-insert into ventas(id, id_empleado, id_cliente, id_inmueble, fecha_venta, hora_venta, detalle_ventas) values
-(1, 3, 1, 3, '2020-12-22', '08:30:00', 'Se Realiza la Venta luego de la Primera Cita Inconclusa'),
-(2, 6, 2, 2, '2020-09-02', '09:15:00', 'La Venta del Inmueble fue de manera Exitosa');
 
 
 

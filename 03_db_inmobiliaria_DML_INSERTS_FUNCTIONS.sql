@@ -9648,7 +9648,7 @@ begin
 		and 
 		((fech_vent_input <= current_date )) 
 		and 
-		((hora_vent_input <= current_time))
+		((hora_vent_input <= current_time) or (hora_vent_input >= current_time))
 		and
 		((det_vent_input <> ''))
 		) then
@@ -9794,6 +9794,653 @@ begin
 end;
 	
 $$ language plpgsql;
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ===============================================================
+-- ----------- INSERCION DE 2 REGISTROS TABLA VENTAS ----------
+-- ===============================================================
+
+
+select * from ventas;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'ventas';
+
+
+
+
+
+create or replace function insertar_registros_ventas(
+
+id_empl_input_01 int, id_cli_input_01 int, id_inm_input_01 int
+, fech_vent_input_01 date ,hora_vent_input_01 time , det_vent_input_01 varchar
+
+,id_empl_input_02 int, id_cli_input_02 int, id_inm_input_02 int
+, fech_vent_input_02 date ,hora_vent_input_02 time , det_vent_input_02 varchar
+
+
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA ventas
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_vent_check boolean;
+id_last_vent int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID del Empleado, ID del Inmueble e ID del Cliente
+id_empl_cli_inm_vent_check_01 boolean := exists(
+select id_empleado, id_cliente , id_inmueble from ventas
+where ((id_empleado = id_empl_input_01) and (id_cliente = id_cli_input_01)
+and (id_inmueble = id_inm_input_01)));
+
+
+id_empl_cli_inm_vent_check_02 boolean := exists(
+select id_empleado, id_cliente , id_inmueble from ventas
+where ((id_empleado = id_empl_input_02) and (id_cliente = id_cli_input_02)
+and (id_inmueble = id_inm_input_02)));
+
+
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_vent uuid;
+nombre_tabla_vent varchar := 'ventas';
+accion_vent varchar := 'insert';
+fecha_vent date ;
+hora_vent time ;
+usuario_vent varchar;
+usuario_sesion_vent varchar;
+db_vent varchar;
+db_version_vent varchar;
+
+
+
+begin
+	
+
+
+	if(
+	((id_empl_cli_inm_vent_check_01  = true) and (id_empl_cli_inm_vent_check_02  = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========'
+						using hint = 
+					'-------- REVISAR ID DEL/DE LOS CLIENTE/S, DEL/DE LOS EMPLEADO/S Y/O DEL/DE LOS INMUEBLE/S -------------';
+
+						
+
+	
+	elsif (
+		((id_empl_cli_inm_vent_check_01  = false) and (id_empl_cli_inm_vent_check_02  = false))
+		and
+		((id_empl_input_01 > 0) and (id_empl_input_02 > 0))
+		and
+		((id_cli_input_01 > 0) and (id_cli_input_02 > 0))
+		and
+		((id_inm_input_01 > 0) and (id_inm_input_02 > 0))
+		and 
+		((fech_vent_input_01 <= current_date ) or (fech_vent_input_01 >= current_date )) 
+		and 
+		((fech_vent_input_02 <= current_date ) or (fech_vent_input_02 >= current_date )) 
+		and 
+		((hora_vent_input_01 <= current_time) or (hora_vent_input_01 >= current_time))
+		and 
+		((hora_vent_input_02 <= current_time) or (hora_vent_input_02 >= current_time))
+		and
+		((det_vent_input_01 <> '') and (det_vent_input_02 <> ''))
+		) then
+			
+		
+		
+		-- =======================================
+		-- =========== PRIMER REGISTRO ==========
+		-- =======================================
+
+		
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA VENTAS -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into ventas (
+		id_empleado , id_cliente , id_inmueble ,  fecha_venta , hora_venta 
+		,detalle_venta ) values
+		
+		(id_empl_input_01 , id_cli_input_01, id_inm_input_01 , fech_vent_input_01::date
+		, hora_vent_input_01::time , det_vent_input_01);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_vent_check := exists(select id from ventas);
+	
+		-- Comprobacion id
+		if (id_last_vent_check = true) then
+			
+			id_last_vent := (select max(id) from ventas);
+		
+		else 
+			
+			id_last_vent := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción 1er Registro Tabla "ventas" ------';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID de la Venta: %' , id_last_vent;
+		raise notice 'ID del Empleado: %' , id_empl_input_01;
+		raise notice 'ID del Cliente : %', id_cli_input_01;
+	 	raise notice 'ID del Inmueble : %', id_inm_input_01;
+	  	raise notice 'Fecha de Venta : %', fech_vent_input_01;
+	  	raise notice 'Hora de Venta : %', hora_vent_input_01;
+	  	raise notice 'Detalle de Venta : %', det_vent_input_01;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA VENTAS  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_vent, nombre_tabla_vent , accion_vent);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_vent:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+		
+		fecha_vent := (select fecha from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+	
+		hora_vent := (select hora from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		usuario_vent := (select usuario from logs_inserts		
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		usuario_sesion_vent := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		db_vent := (select db from logs_inserts
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		db_version_vent := (select db_version from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción 1er Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_vent;
+		raise notice 'UUID Registro : %', uuid_registro_vent;
+		raise notice 'Tabla : %', nombre_tabla_vent;
+		raise notice 'Acción : %', accion_vent;
+		raise notice 'Fecha : %', fecha_vent;
+		raise notice 'Hora : %', hora_vent;
+     	raise notice 'Usuario : %', usuario_vent;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_vent;
+        raise notice 'DB : %', db_vent;
+        raise notice 'Versión DB : %', db_version_vent;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+	
+	
+	
+	
+	
+			
+		-- =======================================
+		-- =========== SEGUNDO REGISTRO ==========
+		-- =======================================
+
+		
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA VENTAS -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into ventas (
+		id_empleado , id_cliente , id_inmueble ,  fecha_venta , hora_venta 
+		,detalle_venta ) values
+		
+		(id_empl_input_02 , id_cli_input_02, id_inm_input_02 , fech_vent_input_02 
+		, hora_vent_input_02 , det_vent_input_02);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_vent_check := exists(select id from ventas);
+	
+		-- Comprobacion id
+		if (id_last_vent_check = true) then
+			
+			id_last_vent := (select max(id) from ventas);
+		
+		else 
+			
+			id_last_vent := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción 2do Registro Tabla "ventas" ------';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID de la Venta: %' , id_last_vent;
+		raise notice 'ID del Empleado: %' , id_empl_input_02;
+		raise notice 'ID del Cliente : %', id_cli_input_02;
+	 	raise notice 'ID del Inmueble : %', id_inm_input_02;
+	  	raise notice 'Fecha de Venta : %', fech_vent_input_02;
+	  	raise notice 'Hora de Venta : %', hora_vent_input_02;
+	  	raise notice 'Detalle de Venta : %', det_vent_input_02;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA VENTAS  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_vent, nombre_tabla_vent , accion_vent);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_vent:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+		
+		fecha_vent := (select fecha from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+	
+		hora_vent := (select hora from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		usuario_vent := (select usuario from logs_inserts		
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		usuario_sesion_vent := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		db_vent := (select db from logs_inserts
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+
+		db_version_vent := (select db_version from logs_inserts 
+		where (id_registro = id_last_vent) and (nombre_tabla = 'ventas'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción 2do Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_vent;
+		raise notice 'UUID Registro : %', uuid_registro_vent;
+		raise notice 'Tabla : %', nombre_tabla_vent;
+		raise notice 'Acción : %', accion_vent;
+		raise notice 'Fecha : %', fecha_vent;
+		raise notice 'Hora : %', hora_vent;
+     	raise notice 'Usuario : %', usuario_vent;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_vent;
+        raise notice 'DB : %', db_vent;
+        raise notice 'Versión DB : %', db_version_vent;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+	
+	
+		
+	
+
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registros_ventas() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -10252,8 +10899,6 @@ begin
 end;
 	
 $$ language plpgsql;
-
-
 
 
 

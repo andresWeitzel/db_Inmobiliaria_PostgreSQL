@@ -10196,429 +10196,6 @@ $$ language plpgsql;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 -- ----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
 
@@ -10670,6 +10247,8 @@ $$ language plpgsql;
 
 
 
+
+
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
 
@@ -10685,12 +10264,10 @@ information_schema.columns where table_name = 'compradores';
 
 
 
-
-
 create or replace function insertar_registro_compradores(
 
-id_cli_input int, cant_inm_comp_input int, imp_max_por_comp_usd_input decimal
-, imp_tot_compr_usd_input decimal, benef_comp_input varchar , des_cli_usd_input decimal 
+id_cli_input int, id_inm_input int, benef_comp_input varchar 
+, desc_cli_usd_input decimal 
 
 ) returns void as $$
 
@@ -10700,17 +10277,18 @@ declare
 
 
 
--- TABLA vendedores
+-- TABLA compradores
 
 -- Comprobamos que exista un id y cual es el ultimo
 id_last_comp_check boolean;
 id_last_comp int;
 
 -- Nos aseguramos que no exista un registro repetido ademas del check de la db
--- Comprobamos ID del Cliente, Cantidad de Inmuebles Comprados e Importe Maximo por compra
-id_cli_cant_inm_comp_imp_max_compra_usd_comp_check boolean := exists(
-select id_cliente , cantidad_inmuebles_comprados, importe_maximo_por_compra_usd from compradores
-where ((id_cliente = id_cli_input) and (cantidad_inmuebles_comprados = cant_inm_com_input)));
+-- Comprobamos ID del Cliente, ID del Inmueble y descuento
+id_cli_inm_desc_usd_comp_check boolean := exists(
+select id_cliente , id_inmueble, descuento_cliente_usd from compradores
+where ((id_cliente = id_cli_input) and (id_inmueble = id_inm_input) and 
+(descuento_cliente_usd = desc_cli_usd_input)));
 
 
 -- TABLA LOGS_INSERTS
@@ -10728,48 +10306,41 @@ db_version_comp varchar;
 
 
 begin
-	
+
 
 
 	if(
-	((id_cli_cant_inm_comp_imp_max_compra_usd_comp_check  = true))
+	((id_cli_inm_desc_usd_comp_check  = true))
 	) then
 	
 		raise exception '====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========'
 						using hint = 
 					'-------- REVISAR ID DEL CLIENTE -------------'
-					'-------- REVISAR CANTIDAD DE INMUEBLES COMPRADOS Y/O IMPORTE MAXIMO POR COMPRA DEL COMPRADOR -------------';
+					'-------- REVISAR ID DEL INMUEBLE Y/O DESCUENTO COMPRADOR -------------';
 						
 
 	
 	elsif (
-		((id_cli_cant_inm_comp_imp_max_compra_usd_comp_check  = false))
+		((id_cli_inm_desc_usd_comp_check  = false))
 		and
 		((id_cli_input > 0))
 		and 
-		((cant_inm_comp_input > 0 )) 
-		and 
-		((imp_max_por_comp_usd_input > 0.0))
-		and
-		((imp_tot_compr_usd_input > 0.0))
-		and
 		((benef_comp_input <> ''))
 		and
-		((des_cli_usd_input >= 0))
+		((desc_cli_usd_input >= 0))
 		) then
 			
+
 		-- -------------------------------------------------------------------------------------
 		-- ------------------------- TABLA COMPRADORES -------------------------------
 		
 		--------------------------------------- INSERCION REGISTRO ----------------------------------------
 		
 	
-		insert into vendedores (
-		id_empleado , cantidad_ventas , bonificacion_ventas, puntuacion_ventas 
-		, orientacion_tipo_inmueble, cualidades ) values
+		insert into compradores (
+		id_cliente , id_inmueble, beneficios_compras , descuento_cliente_usd ) values
 		
-		(id_cli_input, cant_inm_comp_input , imp_max_por_comp_usd_input 
-		, imp_tot_compr_usd_input, benef_comp_input , des_cli_usd_input);
+		(id_cli_input, id_inm_input, benef_comp_input , desc_cli_usd_input);
 	
 	
 
@@ -10800,16 +10371,15 @@ begin
 		raise notice '-------------------------------------------';
 	
 		raise notice 'ID del Comprador: %' , id_last_comp;
-		raise notice 'ID del Cliente: %' , id_empl_comp;
-		raise notice 'Cantidad de Inmuebles Comprados : %', cant_inm_comp_input;
-	 	raise notice 'Importe Máximo por Compra (USD) : %', imp_max_por_comp_usd_input ;
-	  	raise notice 'Importe Total de Compras (USD) : %', imp_tot_comp_usd_input;
-	  	raise notice 'Beneficios de Compras : %', benef_comp_input;
-	  	raise notice 'Descuento Cliente (USD) : %', des_cli_usd_input;
+		raise notice 'ID del Cliente: %' , id_cli_input;
+		raise notice 'ID del Inmuebles Comprado : %', id_inm_input;
+	 	raise notice 'Beneficios por Compra : %', benef_comp_input ;
+	  	raise notice 'Descuento Cliente (USD) : %', desc_cli_usd_input;
 	  	raise notice ' ';
 		raise notice 'ok!';
 		raise notice ' ';	
 		
+	
 	
 		-- ------------------------- FIN TABLA COMPRADORES  -------------------------------
 		-- -------------------------------------------------------------------------------------
@@ -10899,6 +10469,8 @@ begin
 end;
 	
 $$ language plpgsql;
+
+
 
 
 

@@ -942,16 +942,12 @@ check ( bonificacion_ventas >= 0);
 
 -- ======= TABLA COMPRADORES ===========
 
--- importe_maximo_por_compra_usd se considera en base a todas las compras 	
--- importe_total_compras_usd se considera la suma de todas las compras
 
 create table compradores(
 	
 id int primary key,
 id_cliente int not null,
-cantidad_inmuebles_comprados int not null,
-importe_maximo_por_compra_usd decimal(8,2) not null,
-importe_total_compras_usd decimal(8,2) not null,
+id_inmueble int not null,
 beneficios_compras varchar(100) not null,
 descuento_cliente_usd decimal(8,2) not null
 );
@@ -965,10 +961,11 @@ add constraint UNIQUE_compradores_id
 unique(id);
 
 
--- UNIQUE ID_CLIENTE
+-- UNIQUE ID_INMUEBLE
 alter table compradores
-add constraint UNIQUE_compradores_id_cliente
-unique(id_cliente);
+add constraint UNIQUE_compradores_id_inmueble
+unique(id_inmueble);
+
 
 
 -- FK ID_CLIENTE
@@ -978,22 +975,11 @@ foreign key(id_cliente)
 references clientes(id);
 
 
--- CHECK CANTIDAD_INMUEBLES_COMPRADOS
-alter table compradores 
-add constraint CHECK_compradores_cantidad_inmuebles_comprados
-check ( cantidad_inmuebles_comprados > 0);
-
--- CHECK IMPORTE_MAXIMO_POR_COMPRA
+-- FK ID_INMUEBLE
 alter table compradores
-add constraint CHECK_compradores_importe_maximo_por_compra_usd
-check ( importe_maximo_por_compra_usd > 0);
-
-
--- CHECK IMPORTE_TOTAL_COMPRAS
-alter table compradores
-add constraint CHECK_compradores_importe_total_compras_usd
-check ( importe_total_compras_usd > 0);
-
+add constraint FK_compradores_id_inmueble
+foreign key(id_inmueble)
+references inmuebles(id);
 
 -- CHECK DESCUENTO_CLIENTE
 alter table compradores

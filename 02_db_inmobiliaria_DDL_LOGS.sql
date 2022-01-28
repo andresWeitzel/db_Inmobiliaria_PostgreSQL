@@ -8,7 +8,7 @@
  */
 
 drop table if exists logs_inserts cascade;
-drop table if exists logs_updates cascade;
+drop table if exists logs_updates;
 drop table if exists logs_deletes cascade;
 
 

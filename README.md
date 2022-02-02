@@ -68,7 +68,7 @@
 | empleados(1) | vendedores(1) |
 | empleados(1) | administradores(1) |
 | empleados(1) | gerentes(1)  |
-| clientes(1) | compradores(1)  |
+| compradores(1) | inmuebles(1)  |
 | facturas(1) |  ventas(1) |
 | facturas(1) | facturas_detalles(1) |
 
@@ -86,7 +86,7 @@
 | inmuebles | FK id_inmueble_descripcion UNIQUE | 
 | administradores | FK id_empleado UNIQUE |
 | gerentes | FK id_empleado UNIQUE |
-| compradores | FK id_cliente UNIQUE |
+| compradores | FK id_inmueble UNIQUE |
 | vendedores | FK id_empleado UNIQUE |
 | facturas  | FK id_venta UNIQUE
 | facturas_detalles | FK id_factura UNIQUE | 
@@ -132,13 +132,30 @@
 
   #### Sección 1) Configuración de la Base de Datos
 
-  - [ Paso 1) Configuración y Puesta en Marcha de la Base de Datos.](#paso-1-configuración-y-puesta-en-marcha-de-la-base-de-datos-db-inmuebles)
+  - [ Paso 1) Configuración y Puesta en Marcha de la Base de Datos.](#paso-1-configuración-y-puesta-en-marcha-de-la-base-de-datos-db-inmobiliaria)
 
   - [ Paso 2) Ejecución de los Archivos .SQL .](#paso-2-ejecución-dee-los-archivos-sql)
 
-  #### Sección 2) Programación de Bases de Datos con PL/pgSQL
+  #### Sección 2) Registros de Usuarios (Logs)
+
+   - [ Paso 3) Tablas y Tipos de Logs .](#paso-3-tablas-y-tipos-de-logs)
   
-  - [ Paso 3) Funciones con PL/pgSQL .](#paso-3-funciones-con-pl/pgsql)
+  
+  #### Sección 3) Programación de Bases de Datos con PL/pgSQL
+  
+  - [ Paso 4) Funciones con PL/pgSQL .](#paso-3-funciones-con-plpgsql)
+
+
+ #### Sección 3) Programación de Bases de Datos con PL/pgSQL
+  
+  - [ Paso 4) Funciones con PL/pgSQL .](#paso-3-funciones-con-plpgsql)
+
+
+#### Sección 4) Uso y Manejo de GIT
+
+- [ Uso y Manejo de Git.](#uso-y-manejo-de-git)
+ 
+
   
 
 
@@ -227,6 +244,7 @@
 * 09_db_inmobiliaria_DML_QUERIES.sql
 
 
+
 </br>
 
 ## Sección 2) Programación de Bases de Datos con PL/pgSQL
@@ -235,12 +253,67 @@
 </br>
 
 
-### Paso 3) Funciones con PL/pgSQL
+
+### Paso 3) Tablas y Tipos de Logs
+#### (Se desarrollan 3 Tablas Específicas para el almacenamiento de datos del Usuario/Administrador, las mismas son logs_inserts, logs_update , logs_delete).
+
+</br>
+
+#### 3.0) Tipos de Campos de las Tablas
+* Todas las Tablas de Logs seguirán la misma estructura y tipos de campos, se podría considerar que se aplica redundancia de información, pero se optó por modularizar los logs de esta forma, se podría crear solamente una tabla de logs y allí especificar que tipo de log se aplica.
+* La tabla Modelo es la siguiente..
+```plpgsql
+
+create table logs_inserts(
+
+
+	id 					int 		 primary key,
+	id_registro				int 		 not null,
+	uuid_registro 				uuid 		 default 	uuid_generate_v4 (),-- 32 digitos hex
+	nombre_tabla				varchar(30)  not null,
+	accion					varchar(30)  not null,
+	fecha					date		 default	 current_date,
+	hora 					time		 default	 current_time,
+	usuario					varchar(50)	 default 	 current_user, -- lo mismo que current_role
+	usuario_sesion				varchar(50)	 default 	 session_user,
+	db					varchar(50)  default 	 current_catalog,
+	db_version				varchar(100) default 	 version()
+
+);     
+
+```
+* El uuid pertenece mismo al identificar único que se genera por la inserción en cada registro, previamente a las creaciones de estas tablas se genera un módulo de extensión para la generación de este uuid
+
+```plpgsql
+-- Módulo de PostgreSql para uuid
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+```
+* El campo usuario pertenece al rol y el usuario_sesion a la sesión 
+* Se optó por incluir la versión de uso de la db
+* En este pproyecto se aplica el uso de funciones para las inserciones de cada registro, especificamente el uso de los logs correspondería a la siguiente visualización
+
+![Index app](https://github.com/andresWeitzel/Graphics/blob/master/Proyectos/db_Inmobiliaria/logs_inserts.png)
+
+
+
+
+</br>
+
+## Sección 3) Programación de Bases de Datos con PL/pgSQL
+  
+
+</br>
+
+
+
+
+
+### Paso 4) Funciones con PLpgSQL
 #### (Se desarrollan funciones que nos permitan realizar las operaciones requeridas en la base de datos (INSERTS, UPDATES, DELETES, ETC)).
 
 </br>
 
-#### 3.0) Modelo de Función de Listado de Registros de una Tabla
+#### 4.0) Modelo de Función de Listado de Registros de una Tabla
 #### (Esta función nos Lista los Registros de la Tabla oficinas, pero la estructura de la función aplica para el resto de las tablas, solamente se debe cambiar el nombre de la función, setof, y la variable de tipo RECORD)
 
 ```plpgsql
@@ -274,10 +347,17 @@ $$ language plpgsql;
 
 
 ```
+* Si creamos y ejecutamos dicha función obtenemos..
+
+![Index app](https://github.com/andresWeitzel/Graphics/blob/master/Proyectos/db_Inmobiliaria/funcionListado.png)
+
+* Hipoteticamente que no tengamos registros, la función se ejecutaría pero sin mostrarnos nada, lógicamente
+
+
 
 </br>
 
-#### 3.1) Modelo de Función de Inserción de Registros en la DB
+#### 4.1) Modelo de Función de Inserción de Registros en la DB
 #### (Esta función nos permite insertar un Registro para la Tabla oficinas y otro para la Tabla logs_inserts, la estructura de la función aplica para el resto de las tablas, se debe cambiar el nombre de la función, los parametros de la misma, las variables declaradas, las condiciones de inserción, los campos a insertar, etc.)
 
 ```plpgsql
@@ -482,15 +562,12 @@ end;
 $$ language plpgsql;
 
 ```
+* Si creamos y ejecutamos dichas funciones obtenemos una salida similar a la siguiente
+
+![Index app](https://github.com/andresWeitzel/Graphics/blob/master/Proyectos/db_Inmobiliaria/resultadoFuncion.png)
+
+* Podemos visualizar que se insertan 2 Registros en tablas diferentes, y cada registro de inserción se almacena en una tabla de logs
 * Para la inserción de 2 Registros se aplica también una sola función, pero la inserción de los mismos en las Tablas correspondientes no se aplican como inserción en conjunto sino que 1 a 1 por temas de seguridad y procedimiento de inserción junto con la Tabla de Logs
-
-
-
-
-
-
-
-
 
 
 
@@ -501,11 +578,31 @@ $$ language plpgsql;
 </br>
   
 
-## Subir el proyecto al repositorio desde bash 
+
+</br>
+
+## Sección 9) Uso y Manejo de Git.
+
+</br>
+
+### Uso y Manejo de Git
+### Descarga de Git
+* Nos dirigimos a https://git-scm.com/downloads y descargamos el versionador
+* Como toda aplicacion siguiente.... siguiente....
+* IMPORTANTE:NO TENER DBEAVER ABIERTO DURANTE LA INSTALACION, SINO NO RECONOCE EL PATH
+
+### Abrir una Consola de Git (Git Bash) desde Windows
+* --> Escribimos Git Bash desde el Buscador de Windows
+* --> Desde la consola escribimos el comando cd seguidamente de la ruta del proyecto
+* --> Tenemos que tener la ruta del Proyecto y pegarla en el Git Bash
+* --> Una vez dentro del Proyecto podremos hacer uso de Git
+
+
+### Subir el proyecto al repositorio de github desde la consola de git 
 
 #### 1)Creamos un nuevo repositorio en GitHub.
 
-#### 2)Inicializamos nuestro repositorio local .git desde git bash.
+#### 2)Inicializamos nuestro repositorio local .git desde la terminal.
 * git init
 
 #### 3)Agregamos lo desarrollado a nuestro repo local desde la terminal.
@@ -524,7 +621,7 @@ $$ language plpgsql;
 </br>
 
 
-## Actualización de el proyecto al repositorio con git bash.
+### Actualización del repositorio del proyecto desde la consola de GIT
 
 #### 1)Visualizamos las modificaciones realizadas en local
 * git status
@@ -547,5 +644,6 @@ $$ language plpgsql;
 
 
 </br>
+
 
 

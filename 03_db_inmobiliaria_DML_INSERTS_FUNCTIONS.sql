@@ -9513,6 +9513,398 @@ $$ language plpgsql;
 
 
 
+
+-- ----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ====================================
+-- ======= TABLA VENDEDORES ===========
+-- ====================================
+
+
+
+
+select * from vendedores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'vendedores';
+
+
+
+-- ==================================================================================
+-- ----------- SELECT DE TODOS LOS REGISTROS DE LA TABLA VENDEDORES --------- -------
+-- ==================================================================================
+
+
+
+create or replace function listado_vendedores() returns setof vendedores as $$
+
+declare
+
+	registro_actual_vend RECORD;
+
+begin 
+	
+	for registro_actual_vend in (select * from vendedores) loop
+	
+		return next registro_actual_vend;
+	
+	end loop;
+	return;
+	
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ===============================================================
+-- ----------- INSERCION DE 1 REGISTRO TABLA VENDEDORES ----------
+-- ===============================================================
+
+
+select * from vendedores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'vendedores';
+
+
+
+
+
+create or replace function insertar_registro_vendedores(
+
+id_empl_input int, cant_vent_input int, bonif_vent_input decimal, punt_vent_input varchar
+, orient_tip_inm_input varchar, cualid_input varchar
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA vendedores
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_vend_check boolean;
+id_last_vend int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID del Empleado, cantidad de ventas y la orientacion del inmueble
+id_empl_cant_vent_orient_tip_inm_vend_check boolean := exists(
+select id_empleado, cantidad_ventas , orientacion_tipo_inmueble from vendedores
+where ((id_empleado = id_empl_input) and (cantidad_ventas = cant_vent_input)
+and (orientacion_tipo_inmueble = orient_tip_inm_input)));
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_vend uuid;
+nombre_tabla_vend varchar := 'vendedores';
+accion_vend varchar := 'insert';
+fecha_vend date ;
+hora_vend time ;
+usuario_vend varchar;
+usuario_sesion_vend varchar;
+db_vend varchar;
+db_version_vend varchar;
+
+
+
+begin
+	
+
+
+	if(
+	((id_empl_cant_vent_orient_tip_inm_vend_check  = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========'
+						using hint = 
+					'-------- REVISAR ID DEL EMPLEADO, CANTIDAD DE VENTAS Y/O DEL ORIENTACIÓN 
+								TIPO DE INMUEBLE -------------';
+
+						
+
+	
+	elsif (
+		((id_empl_cant_vent_orient_tip_inm_vend_check  = false))
+		and
+		((id_empl_input > 0))
+		and
+		((cant_vent_input >= 0))
+		and
+		((bonif_vent_input > 0.0))
+		and 
+		((punt_vent_input <> '' )) 
+		and 
+		((orient_tip_inm_input <> ''))
+		and
+		((cualid_input <> ''))
+		) then
+
+			
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA VENDEDORES -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into vendedores (
+		id_empleado , cantidad_ventas , bonificacion_ventas ,  puntuacion_ventas 
+		, orientacion_tipo_inmueble , cualidades ) values
+		
+		(id_empl_input , cant_vent_input, bonif_vent_input , punt_vent_input 
+		, orient_tip_inm_input, cualid_input);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_vend_check := exists(select id from vendedores);
+	
+		-- Comprobacion id
+		if (id_last_vend_check = true) then
+			
+			id_last_vend := (select max(id) from vendedores);
+		
+		else 
+			
+			id_last_vend := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "vendedores" ------';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID del Vendedor: %' , id_last_vend;
+		raise notice 'ID del Empleado: %' , id_empl_input;
+		raise notice 'Cantidad de Ventas : %', cant_vent_input;
+	 	raise notice 'Bonificación de Ventas : %', bonif_vent_input ;
+	  	raise notice 'Puntuación de Ventas : %', punt_vent_input;
+	  	raise notice 'Orientación del Tipo de Inmueble : %', orient_tip_inm_input;
+	  	raise notice 'Cualidades : %', cualid_input;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA VENDEDORES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_vend, nombre_tabla_vend , accion_vend);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_vend:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+		
+		fecha_vend := (select fecha from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+	
+		hora_vend := (select hora from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		usuario_vend := (select usuario from logs_inserts		
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		usuario_sesion_vend := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		db_vend := (select db from logs_inserts
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		db_version_vend := (select db_version from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_vend;
+		raise notice 'UUID Registro : %', uuid_registro_vend;
+		raise notice 'Tabla : %', nombre_tabla_vend;
+		raise notice 'Acción : %', accion_vend;
+		raise notice 'Fecha : %', fecha_vend;
+		raise notice 'Hora : %', hora_vend;
+     	raise notice 'Usuario : %', usuario_vend;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_vend;
+        raise notice 'DB : %', db_vend;
+        raise notice 'Versión DB : %', db_version_vend;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_vendedores() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- ----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
 

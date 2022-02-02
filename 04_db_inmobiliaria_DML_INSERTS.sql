@@ -12,6 +12,7 @@
 delete from facturas_detalles cascade;
 delete from facturas cascade;
 delete from ventas cascade;
+delete from compradores cascade;
 delete from citas_inmuebles cascade;
 delete from inspecciones_inmuebles ;
 delete from inmuebles_marketing cascade;
@@ -23,7 +24,6 @@ delete from administradores cascade;
 delete from gerentes cascade;
 delete from vendedores cascade;
 delete from compradores_clientes cascade;
-delete from compradores cascade;
 delete from clientes cascade;
 delete from empleados cascade;
 delete from servicios_oficinas cascade;
@@ -887,13 +887,13 @@ select insertar_registro_vendedores(
 1, 3, 20000 , 'Excelente', 'Departamento', 'Confianza, Dominio de Venta, Desarrollo Linguístico'
 );
 
-
+/*
 select insertar_registros_vendedores(
 4, 0, 0, 'Sin Ventas', 'Casa', 'Ambición, Comercialización, Determinación'
 , 8, 2, 10000, 'Buena', 'Departamento-Casa', 'Comunicación Eficaz, Creatividad, Convicción'
 );
 
-
+*/
 
 
 select listado_vendedores();

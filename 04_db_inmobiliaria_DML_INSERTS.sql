@@ -887,13 +887,13 @@ select insertar_registro_vendedores(
 1, 3, 20000 , 'Excelente', 'Departamento', 'Confianza, Dominio de Venta, Desarrollo Linguístico'
 );
 
-/*
+
 select insertar_registros_vendedores(
-4, 0, 0, 'Sin Ventas', 'Casa', 'Ambición, Comercialización, Determinación'
-, 8, 2, 10000, 'Buena', 'Departamento-Casa', 'Comunicación Eficaz, Creatividad, Convicción'
+4, 0, 0 , 'Sin Ventas' , 'Casa' , 'Ambición, Comercialización, Determinación'
+, 8, 2, 10000 , 'Buena', 'Departamento-Casa', 'Comunicación Eficaz, Creatividad, Convicción'
 );
 
-*/
+
 
 
 select listado_vendedores();
@@ -978,12 +978,12 @@ select insertar_registro_compradores(
 1, 1 ,'Descuento del 7% en la Próxima Compra', 200
 );
 
-/*
+
 select insertar_registros_compradores(
  2, 1, 110000, 110000, 'Descuento del 10% en la Próxima Compra',200
  , 3, 1, 110000, 110000, 'Descuento del 10% en la Próxima Compra',200
 );
-*/
+
 
 
 select listado_compradores();

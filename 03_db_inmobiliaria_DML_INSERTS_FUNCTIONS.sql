@@ -13,57 +13,89 @@
 -- -------------
 
 -- logs_inserts
-drop function if exists listado_logs_inserts();
+drop function if exists listado_logs_inserts() cascade;
 
 
 -- oficinas
-drop function if exists listado_oficinas();
-drop function if exists insertar_registro_oficinas();
-drop function if exists insertar_registros_oficinas();
+drop function if exists listado_oficinas() cascade;
+drop function if exists insertar_registro_oficinas() cascade;
+drop function if exists insertar_registros_oficinas() cascade;
 
 -- oficinas_detalles
-drop function if exists listado_oficinas_detalles();
-drop function if exists insertar_registro_oficinas_detalles();
-drop function if exists insertar_registros_oficinas_detalles();
+drop function if exists listado_oficinas_detalles() cascade;
+drop function if exists insertar_registro_oficinas_detalles() cascade;
+drop function if exists insertar_registros_oficinas_detalles() cascade;
 
 -- empleados
-drop function if exists listado_empleados();
-drop function if exists insertar_registro_empleados();
-drop function if exists insertar_registros_empleados();
+drop function if exists listado_empleados() cascade;
+drop function if exists insertar_registro_empleados() cascade;
+drop function if exists insertar_registros_empleados() cascade;
 
 -- propietarios_inmuebles
-drop function if exists listado_propietarios_inmuebles(); 
-drop function if exists insertar_registro_propietarios_inmuebles();
-drop function if exists insertar_registros_propietarios_inmuebles();
+drop function if exists listado_propietarios_inmuebles() cascade; 
+drop function if exists insertar_registro_propietarios_inmuebles() cascade;
+drop function if exists insertar_registros_propietarios_inmuebles() cascade;
 
 
 -- inmuebles_descripciones
-drop function if exists listado_inmuebles_descripciones();
-drop function if exists insertar_registro_inmuebles_descripciones();
-drop function if exists insertar_registros_inmuebles_descripciones();
+drop function if exists listado_inmuebles_descripciones() cascade;
+drop function if exists insertar_registro_inmuebles_descripciones() cascade;
+drop function if exists insertar_registros_inmuebles_descripciones() cascade;
 
 
 -- inmuebles_medidas
-drop function if exists listado_inmuebles_medidas();
-drop function if exists insertar_registro_inmuebles_medidas();
-drop function if exists insertar_registros_inmuebles_medidas();
+drop function if exists listado_inmuebles_medidas() cascade;
+drop function if exists insertar_registro_inmuebles_medidas() cascade;
+drop function if exists insertar_registros_inmuebles_medidas() cascade;
 
 
 -- inmuebles
-drop function if exists listado_inmuebles();
-drop function if exists insertar_registro_inmuebles();
-drop function if exists insertar_registros_inmuebles();
+drop function if exists listado_inmuebles() cascade;
+drop function if exists insertar_registro_inmuebles() cascade;
+drop function if exists insertar_registros_inmuebles() cascade;
 
 
 -- inmuebles_marketing
-drop function if exists listado_inmuebles_marketing();
-drop function if exists insertar_registro_inmuebles_marketing();
-drop function if exists insertar_registros_inmuebles_marketing();
+drop function if exists listado_inmuebles_marketing() cascade;
+drop function if exists insertar_registro_inmuebles_marketing() cascade;
+drop function if exists insertar_registros_inmuebles_marketing() cascade;
 
 -- inspecciones_inmuebles
-drop function if exists listado_inspecciones_inmuebles();
-drop function if exists insertar_registro_inspecciones_inmuebles();
-drop function if exists insertar_registros_inspecciones_inmuebles();
+drop function if exists listado_inspecciones_inmuebles() cascade;
+drop function if exists insertar_registro_inspecciones_inmuebles() cascade;
+drop function if exists insertar_registros_inspecciones_inmuebles() cascade;
+
+
+
+-- gerentes
+drop function if exists listado_gerentes() cascade;
+drop function if exists insertar_registro_gerentes() cascade;
+drop function if exists insertar_registros_gerentes() cascade;
+
+
+-- administradores
+drop function if exists listado_administradores() cascade;
+drop function if exists insertar_registro_administradores() cascade;
+drop function if exists insertar_registros_administradores() cascade;
+
+
+
+-- vendedores
+drop function if exists listado_vendedores() cascade;
+drop function if exists insertar_registro_vendedores() cascade;
+drop function if exists insertar_registros_vendedores() cascade;
+
+
+-- ventas
+drop function if exists listado_ventas() cascade;
+drop function if exists insertar_registro_ventas() cascade;
+drop function if exists insertar_registros_ventas() cascade;
+
+
+-- compradores
+drop function if exists listado_compradores() cascade;
+drop function if exists insertar_registro_compradores() cascade;
+drop function if exists insertar_registros_compradores() cascade;
 
 
 
@@ -9646,7 +9678,7 @@ begin
 		and
 		((cant_vent_input >= 0))
 		and
-		((bonif_vent_input > 0.0))
+		((bonif_vent_input >= 0.0))
 		and 
 		((punt_vent_input <> '' )) 
 		and 
@@ -9802,105 +9834,394 @@ $$ language plpgsql;
 
 
 
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 
+-- ===============================================================
+-- ----------- INSERCION DE 2 REGISTROS TABLA VENDEDORES ----------
+-- ===============================================================
 
 
+select * from vendedores;
 
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'vendedores';
 
 
 
+create or replace function insertar_registros_vendedores(
 
+id_empl_input_01 int, cant_vent_input_01 int, bonif_vent_input_01 decimal, punt_vent_input_01 varchar
+, orient_tip_inm_input_01 varchar, cualid_input_01 varchar
 
+, id_empl_input_02 int, cant_vent_input_02 int, bonif_vent_input_02 decimal, punt_vent_input_02 varchar
+, orient_tip_inm_input_02 varchar, cualid_input_02 varchar
 
 
+) returns void as $$
 
 
 
+declare
 
 
 
+-- TABLA vendedores
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_vend_check boolean;
+id_last_vend int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID del Empleado, cantidad de ventas y la orientacion del inmueble
+id_empl_cant_vent_orient_tip_inm_vend_check_01 boolean := exists(
+select id_empleado, cantidad_ventas , orientacion_tipo_inmueble from vendedores
+where ((id_empleado = id_empl_input_01) and (cantidad_ventas = cant_vent_input_01)
+and (orientacion_tipo_inmueble = orient_tip_inm_input_01)));
+
+id_empl_cant_vent_orient_tip_inm_vend_check_02 boolean := exists(
+select id_empleado, cantidad_ventas , orientacion_tipo_inmueble from vendedores
+where ((id_empleado = id_empl_input_02) and (cantidad_ventas = cant_vent_input_02)
+and (orientacion_tipo_inmueble = orient_tip_inm_input_02)));
+
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_vend uuid;
+nombre_tabla_vend varchar := 'vendedores';
+accion_vend varchar := 'insert';
+fecha_vend date ;
+hora_vend time ;
+usuario_vend varchar;
+usuario_sesion_vend varchar;
+db_vend varchar;
+db_version_vend varchar;
+
+
+
+begin
+	
+
+
+	if(
+	((id_empl_cant_vent_orient_tip_inm_vend_check_01  = true) and (id_empl_cant_vent_orient_tip_inm_vend_check_02  = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UNO/VARIOS REGISTRO/S REPETIDO/S ========'
+						using hint = 
+					'-------- REVISAR ID DEL/DE LOS EMPLEADO/S, CANTIDAD DE VENTAS Y/O TIPO DE ORIENTACIÓN 
+								 DEL INMUEBLE -------------';
+
+						
+
+	
+	elsif (
+		((id_empl_cant_vent_orient_tip_inm_vend_check_01  = false) and (id_empl_cant_vent_orient_tip_inm_vend_check_02  = false))
+		and
+		((id_empl_input_01 > 0) and (id_empl_input_02 > 0))
+		and
+		((cant_vent_input_01 >= 0) and (cant_vent_input_02 >= 0))
+		and
+		((bonif_vent_input_01 >= 0.0) and (bonif_vent_input_02 >= 0.0))
+		and 
+		((punt_vent_input_01 <> '' ) and (punt_vent_input_02 <> '' )) 
+		and 
+		((orient_tip_inm_input_01 <> '') and (orient_tip_inm_input_02 <> ''))
+		and
+		((cualid_input_01 <> '') and (cualid_input_02 <> ''))
+		) then
+
+		
+		
+		-- =======================================
+		-- =========== PRIMER REGISTRO ==========
+		-- =======================================
+
+			
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA VENDEDORES -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into vendedores (
+		id_empleado , cantidad_ventas , bonificacion_ventas ,  puntuacion_ventas 
+		, orientacion_tipo_inmueble , cualidades ) values
+		
+		(id_empl_input_01 , cant_vent_input_01, bonif_vent_input_01 , punt_vent_input_01 
+		, orient_tip_inm_input_01, cualid_input_01);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_vend_check := exists(select id from vendedores);
+	
+		-- Comprobacion id
+		if (id_last_vend_check = true) then
+			
+			id_last_vend := (select max(id) from vendedores);
+		
+		else 
+			
+			id_last_vend := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "vendedores" ------';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID del Vendedor: %' , id_last_vend;
+		raise notice 'ID del Empleado: %' , id_empl_input_01;
+		raise notice 'Cantidad de Ventas : %', cant_vent_input_01;
+	 	raise notice 'Bonificación de Ventas : %', bonif_vent_input_01;
+	  	raise notice 'Puntuación de Ventas : %', punt_vent_input_01;
+	  	raise notice 'Orientación del Tipo de Inmueble : %', orient_tip_inm_input_01;
+	  	raise notice 'Cualidades : %', cualid_input_01;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA VENDEDORES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_vend, nombre_tabla_vend , accion_vend);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_vend:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+		
+		fecha_vend := (select fecha from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+	
+		hora_vend := (select hora from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		usuario_vend := (select usuario from logs_inserts		
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		usuario_sesion_vend := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		db_vend := (select db from logs_inserts
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		db_version_vend := (select db_version from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_vend;
+		raise notice 'UUID Registro : %', uuid_registro_vend;
+		raise notice 'Tabla : %', nombre_tabla_vend;
+		raise notice 'Acción : %', accion_vend;
+		raise notice 'Fecha : %', fecha_vend;
+		raise notice 'Hora : %', hora_vend;
+     	raise notice 'Usuario : %', usuario_vend;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_vend;
+        raise notice 'DB : %', db_vend;
+        raise notice 'Versión DB : %', db_version_vend;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+		-- =======================================
+		-- =========== SEGUNDO REGISTRO ==========
+		-- =======================================
+
+
+			
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA VENDEDORES -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into vendedores (
+		id_empleado , cantidad_ventas , bonificacion_ventas ,  puntuacion_ventas 
+		, orientacion_tipo_inmueble , cualidades ) values
+		
+		(id_empl_input_02 , cant_vent_input_02, bonif_vent_input_02 , punt_vent_input_02 
+		, orient_tip_inm_input_02, cualid_input_02);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_vend_check := exists(select id from vendedores);
+	
+		-- Comprobacion id
+		if (id_last_vend_check = true) then
+			
+			id_last_vend := (select max(id) from vendedores);
+		
+		else 
+			
+			id_last_vend := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "vendedores" ------';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID del Vendedor: %' , id_last_vend;
+		raise notice 'ID del Empleado: %' , id_empl_input_02;
+		raise notice 'Cantidad de Ventas : %', cant_vent_input_02;
+	 	raise notice 'Bonificación de Ventas : %', bonif_vent_input_02;
+	  	raise notice 'Puntuación de Ventas : %', punt_vent_input_02;
+	  	raise notice 'Orientación del Tipo de Inmueble : %', orient_tip_inm_input_02;
+	  	raise notice 'Cualidades : %', cualid_input_02;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+		-- ------------------------- FIN TABLA VENDEDORES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_vend, nombre_tabla_vend , accion_vend);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_vend:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+		
+		fecha_vend := (select fecha from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+	
+		hora_vend := (select hora from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		usuario_vend := (select usuario from logs_inserts		
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		usuario_sesion_vend := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		db_vend := (select db from logs_inserts
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+
+		db_version_vend := (select db_version from logs_inserts 
+		where (id_registro = id_last_vend) and (nombre_tabla = 'vendedores'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_vend;
+		raise notice 'UUID Registro : %', uuid_registro_vend;
+		raise notice 'Tabla : %', nombre_tabla_vend;
+		raise notice 'Acción : %', accion_vend;
+		raise notice 'Fecha : %', fecha_vend;
+		raise notice 'Hora : %', hora_vend;
+     	raise notice 'Usuario : %', usuario_vend;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_vend;
+        raise notice 'DB : %', db_vend;
+        raise notice 'Versión DB : %', db_version_vend;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registros_vendedores() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
 
 
 
@@ -10863,6 +11184,377 @@ end;
 $$ language plpgsql;
 
 
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ===============================================================
+-- ----------- INSERCION DE 2 REGISTROS TABLA COMPRADORES ----------
+-- ===============================================================
+
+
+select * from compradores;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'compradores';
+
+
+
+create or replace function insertar_registros_compradores(
+
+id_cli_input_01 int, id_inm_input_01 int, benef_comp_input_01 varchar 
+, desc_cli_usd_input_01 decimal 
+
+, id_cli_input_02 int, id_inm_input_02 int, benef_comp_input_02 varchar 
+, desc_cli_usd_input_02 decimal 
+
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA compradores
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_comp_check boolean;
+id_last_comp int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID del Cliente, ID del Inmueble y descuento
+id_cli_inm_desc_usd_comp_check_01 boolean := exists(
+select id_cliente , id_inmueble, descuento_cliente_usd from compradores
+where ((id_cliente = id_cli_input_01) and (id_inmueble = id_inm_input_01) and 
+(descuento_cliente_usd = desc_cli_usd_input_01)));
+
+id_cli_inm_desc_usd_comp_check_02 boolean := exists(
+select id_cliente , id_inmueble, descuento_cliente_usd from compradores
+where ((id_cliente = id_cli_input_02) and (id_inmueble = id_inm_input_02) and 
+(descuento_cliente_usd = desc_cli_usd_input_02)));
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_comp uuid;
+nombre_tabla_comp varchar := 'compradores';
+accion_comp varchar := 'insert';
+fecha_comp date ;
+hora_comp time ;
+usuario_comp varchar;
+usuario_sesion_comp varchar;
+db_comp varchar;
+db_version_comp varchar;
+
+
+
+begin
+
+
+
+	if(
+	((id_cli_inm_desc_usd_comp_check_01 = true) and (id_cli_inm_desc_usd_comp_check_02 = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UNO/VARIOS REGISTRO/S REPETIDO/S ========'
+						using hint = 
+					'-------- REVISAR ID DEL/DE LOS CLIENTE/S -------------'
+					'-------- REVISAR ID DEL/DE LOS INMUEBLE/S Y/O DESCUENTO DEL/DE LOS COMPRADOR/ES -------------';
+						
+
+	
+	elsif (
+		((id_cli_inm_desc_usd_comp_check_01 = false) and (id_cli_inm_desc_usd_comp_check_02 = false))
+		and
+		((id_cli_input_01 > 0) and (id_cli_input_02 > 0))
+		and 
+		((benef_comp_input_01 <> '') and (benef_comp_input_02 <> ''))
+		and
+		((desc_cli_usd_input_01 >= 0) and (desc_cli_usd_input_02 >= 0))
+		) then
+			
+		
+		
+		-- =======================================
+		-- =========== PRIMER REGISTRO ==========
+		-- =======================================
+
+	
+
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA COMPRADORES -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into compradores (
+		id_cliente , id_inmueble, beneficios_compras , descuento_cliente_usd ) values
+		
+		(id_cli_input_01, id_inm_input_01, benef_comp_input_01 , desc_cli_usd_input_01);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_comp_check := exists(select id from compradores);
+	
+		-- Comprobacion id
+		if (id_last_comp_check = true) then
+			
+			id_last_comp := (select max(id) from compradores);
+		
+		else 
+			
+			id_last_comp := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "compradores" --';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID del Comprador: %' , id_last_comp;
+		raise notice 'ID del Cliente: %' , id_cli_input_01;
+		raise notice 'ID del Inmuebles Comprado : %', id_inm_input_01;
+	 	raise notice 'Beneficios por Compra : %', benef_comp_input_01;
+	  	raise notice 'Descuento Cliente (USD) : %', desc_cli_usd_input_01;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+	
+		-- ------------------------- FIN TABLA COMPRADORES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_comp, nombre_tabla_comp , accion_comp);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_comp:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+		
+		fecha_comp := (select fecha from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+	
+		hora_comp := (select hora from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		usuario_comp := (select usuario from logs_inserts		
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		usuario_sesion_comp := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		db_comp := (select db from logs_inserts
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		db_version_comp := (select db_version from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_comp;
+		raise notice 'UUID Registro : %', uuid_registro_comp;
+		raise notice 'Tabla : %', nombre_tabla_comp;
+		raise notice 'Acción : %', accion_comp;
+		raise notice 'Fecha : %', fecha_comp;
+		raise notice 'Hora : %', hora_comp;
+     	raise notice 'Usuario : %', usuario_comp;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_comp;
+        raise notice 'DB : %', db_comp;
+        raise notice 'Versión DB : %', db_version_comp;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+		
+		-- =======================================
+		-- =========== SEGUNDO REGISTRO ==========
+		-- =======================================
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA COMPRADORES -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into compradores (
+		id_cliente , id_inmueble, beneficios_compras , descuento_cliente_usd ) values
+		
+		(id_cli_input_02, id_inm_input_02, benef_comp_input_02 , desc_cli_usd_input_02);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_comp_check := exists(select id from compradores);
+	
+		-- Comprobacion id
+		if (id_last_comp_check = true) then
+			
+			id_last_comp := (select max(id) from compradores);
+		
+		else 
+			
+			id_last_comp := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "compradores" --';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID del Comprador: %' , id_last_comp;
+		raise notice 'ID del Cliente: %' , id_cli_input_02;
+		raise notice 'ID del Inmuebles Comprado : %', id_inm_input_02;
+	 	raise notice 'Beneficios por Compra : %', benef_comp_input_02;
+	  	raise notice 'Descuento Cliente (USD) : %', desc_cli_usd_input_02;
+	  	raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+	
+		-- ------------------------- FIN TABLA COMPRADORES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_comp, nombre_tabla_comp , accion_comp);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_comp:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+		
+		fecha_comp := (select fecha from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+	
+		hora_comp := (select hora from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		usuario_comp := (select usuario from logs_inserts		
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		usuario_sesion_comp := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		db_comp := (select db from logs_inserts
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+
+		db_version_comp := (select db_version from logs_inserts 
+		where (id_registro = id_last_comp) and (nombre_tabla = 'compradores'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_comp;
+		raise notice 'UUID Registro : %', uuid_registro_comp;
+		raise notice 'Tabla : %', nombre_tabla_comp;
+		raise notice 'Acción : %', accion_comp;
+		raise notice 'Fecha : %', fecha_comp;
+		raise notice 'Hora : %', hora_comp;
+     	raise notice 'Usuario : %', usuario_comp;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_comp;
+        raise notice 'DB : %', db_comp;
+        raise notice 'Versión DB : %', db_version_comp;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+
+	
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registros_compradores() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
 
 
 

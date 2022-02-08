@@ -950,7 +950,6 @@ select listado_logs_inserts();
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
-
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
@@ -980,13 +979,99 @@ select insertar_registro_compradores(
 
 
 select insertar_registros_compradores(
- 2, 1, 110000, 110000, 'Descuento del 10% en la Próxima Compra',200
- , 3, 1, 110000, 110000, 'Descuento del 10% en la Próxima Compra',200
+ 2, 2, 'Descuento del 10% en la Próxima Compra',200
+ , 3, 3, 'Descuento del 10% en la Próxima Compra',200
+);
+
+
+ 
+select listado_compradores();
+select listado_logs_inserts();
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- =================================
+-- ======= TABLA FACTURAS ========
+-- =================================
+
+-- fecha_venta date '2001/10/07'
+-- hora_venta time '09:00:07'
+
+
+select * from facturas;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas';
+
+
+select listado_ventas();
+select listado_inmuebles();
+
+select insertar_registro_facturas(
+ 1, '00001-00000001', '2020/12/22', '08:30:00', 180000
+);
+
+
+select insertar_registros_facturas(
+ 2, '00001-00000002', '2020/01/12', '11:15:00', 170000
+, 3, '00001-00000003', '2020/03/22', '18:45:00', 115000
 );
 
 
 
-select listado_compradores();
+
+
+select listado_facturas();
+select listado_logs_inserts();
+
+
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ========================================
+-- ======= TABLA FACTURAS_DETALLES ========
+-- ========================================
+
+-- ENUM tipo_factura_enum ('A','B','C','D');
+-- ENUM tipo_pago_enum ('EFECTIVO','CHEQUE','TARJETA');
+
+
+
+select * from facturas_detalles;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas_detalles';
+
+
+select listado_ventas();
+select listado_inmuebles();
+select listado_facturas();
+
+
+select insertar_registro_facturas_detalles(
+ 1, 'A', 'Venta de Inmueble Tipo Departamento de 2 Ambientes Zona Caballito'
+ , 177000, 800, 200, 'EFECTIVO', 'Se efectuó la compra en 1 sólo Pago'
+);
+
+
+
+
+
+select listado_facturas_detalles();
 select listado_logs_inserts();
 
 
@@ -997,60 +1082,12 @@ select listado_logs_inserts();
 /*
 
 
--- ======= TABLA COMPRADORES ===========
-
-
-insert into compradores(id, id_cliente, cantidad_inmuebles_comprados, importe_maximo_por_compra_usd
-, importe_total_compras_usd, beneficios_compras, descuento_cliente_usd) values 
-(1, 1, 1, 168000, 168000, 'Descuento del 7% en la Próxima Compra', 200),
-(
-*/
-
-
-
-
-/*
-
-
-
--- ---------------------------------------------------------------------------
-
--- ======= TABLA FACTURAS ===========
-	
--- fecha_venta date '2001/10/07'
--- hora_venta time '09:00:07'
-
-
-select * from facturas;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'facturas';
-
-insert into facturas(id, id_venta, nro_factura, fecha_emision, hora_emision, precio_total_venta_usd)values
-(1, 1, '00001-00000001', '2020/12/22', '08:30:00', 110000),
-(2, 2, '00001-00000002', '2020/09/02', '09:15:00', 168000);
-
-
-
--- ---------------------------------------------------------------------------
 
 -- ======= TABLA FACTURAS_DETALLES ===========
 
--- ENUM tipoFactura ('A','B','C','D');
--- ENUM tipoPago ('EFECTIVO','CHEQUE','TARJETA');
-
-
-
-select * from facturas_detalles;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'facturas_detalles';
-
-
 insert into facturas_detalles (id, id_factura, tipo, descripcion_factura, valor_inmueble_usd
 , costo_asociado_usd, impuestos_asociados_usd, medio_de_pago, descripcion_pago) values
-(1, 1, 'A', 'Venta de Inmueble Tipo Departamento de 2 Ambientes Zona Caballito', 109000, 800, 200
-, 'EFECTIVO', 'Se efectuó la compra en 1 sólo Pago'),
+
 (2, 2, 'A', 'Venta de Inmueble Tipo Casa de 3 Ambientes Zona Belgrano', 167000, 600, 400
 , 'CHEQUE', 'Se efectuó la compra a Pagar en 3 Pagos');
 

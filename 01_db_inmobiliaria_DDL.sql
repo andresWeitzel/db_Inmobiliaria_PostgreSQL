@@ -1043,7 +1043,7 @@ create table facturas(
 	
 id int primary key,
 id_venta int not null,
-nro_factura varchar(30) not null,
+nro_factura varchar(100) not null,
 fecha_emision date not null,-- ej '2001-10-07'
 hora_emision time not null,  -- ej '09:00:07'
 precio_total_venta_usd decimal(10,2) not null -- + impuestos + costos + etc

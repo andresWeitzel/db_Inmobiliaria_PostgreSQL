@@ -11559,3 +11559,985 @@ $$ language plpgsql;
 
 
 
+
+
+-- ----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ====================================
+-- ======= TABLA FACTURAS ===========
+-- ====================================
+
+
+
+
+select * from facturas;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas';
+
+
+
+
+
+-- ==================================================================================
+-- ----------- SELECT DE TODOS LOS REGISTROS DE LA TABLA FACTURAS --------- -------
+-- ==================================================================================
+
+
+
+create or replace function listado_facturas() returns setof facturas as $$
+
+declare
+
+	registro_actual_fact RECORD;
+
+begin 
+	
+	for registro_actual_fact in (select * from facturas) loop
+	
+		return next registro_actual_fact;
+	
+	end loop;
+	return;
+	
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ===============================================================
+-- ----------- INSERCION DE 1 REGISTRO TABLA FACTURAS ----------
+-- ===============================================================
+
+
+
+select * from facturas;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas';
+
+
+
+
+
+
+create or replace function insertar_registro_facturas(
+
+id_vent_input int, nro_fact_input varchar, fecha_emis_input date 
+, hora_emis_input time, prec_tot_vent_usd_input decimal 
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA facturas
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_fact_check boolean;
+id_last_fact int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID de la Venta, Nro de Factura y Precio de Venta
+id_vent_nro_fact_precio_tot_vent_usd_fact_check boolean := exists(
+select id_venta , nro_factura, precio_total_venta_usd from facturas
+where ((id_venta = id_vent_input) and (nro_factura = nro_fact_input) and 
+(precio_total_venta_usd = prec_tot_vent_usd_input)));
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_fact uuid;
+nombre_tabla_fact varchar := 'facturas';
+accion_fact varchar := 'insert';
+fecha_fact date ;
+hora_fact time ;
+usuario_fact varchar;
+usuario_sesion_fact varchar;
+db_fact varchar;
+db_version_fact varchar;
+
+
+
+begin
+
+
+
+	if(
+	((id_vent_nro_fact_precio_tot_vent_usd_fact_check = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========'
+						using hint = 
+					'-------- REVISAR ID DE LA VENTA -------------'
+					'-------- REVISAR NRO DE FACTURA Y/O PRECIO TOTAL DE VENTA EN USD  -------------';
+
+	
+	elsif (
+		((id_vent_nro_fact_precio_tot_vent_usd_fact_check  = false))
+		and
+		((id_vent_input > 0))
+		and 
+		((nro_fact_input <> ''))
+		and
+		((fecha_emis_input >= current_date) or (fecha_emis_input <= current_date))
+		and 
+		((hora_emis_input >= current_time) or (hora_emis_input <= current_time))
+		and
+		((prec_tot_vent_usd_input >= 0.0))
+		) then
+			
+
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA FACTURAS -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into facturas (id_venta ,nro_factura, fecha_emision , hora_emision 
+		, precio_total_venta_usd ) values
+		
+		(id_vent_input, nro_fact_input, fecha_emis_input , hora_emis_input
+		, prec_tot_vent_usd_input);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_fact_check := exists(select id from facturas);
+	
+		-- Comprobacion id
+		if (id_last_fact_check = true) then
+			
+			id_last_fact := (select max(id) from facturas);
+		
+		else 
+			
+			id_last_fact := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "facturas" --';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID de Factura: %' , id_last_fact;
+		raise notice 'ID de la Venta: %' , id_vent_input;
+		raise notice 'Número de Factura : %', nro_fact_input;
+	 	raise notice 'Fecha de Emisión : %', fecha_emis_input ;
+	  	raise notice 'Hora de Emisión : %', hora_emis_input;
+	  	raise notice 'Precio Total de Venta (USD):  %', prec_tot_vent_usd_input;
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+	
+		-- ------------------------- FIN TABLA FACTURAS  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_fact, nombre_tabla_fact , accion_fact);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_fact:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+		
+		fecha_fact := (select fecha from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+	
+		hora_fact:= (select hora from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		usuario_fact := (select usuario from logs_inserts		
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		usuario_sesion_fact := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		db_fact := (select db from logs_inserts
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		db_version_fact := (select db_version from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_fact;
+		raise notice 'UUID Registro : %', uuid_registro_fact;
+		raise notice 'Tabla : %', nombre_tabla_fact;
+		raise notice 'Acción : %', accion_fact;
+		raise notice 'Fecha : %', fecha_fact;
+		raise notice 'Hora : %', hora_fact;
+     	raise notice 'Usuario : %', usuario_fact;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_fact;
+        raise notice 'DB : %', db_fact;
+        raise notice 'Versión DB : %', db_version_fact;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_facturas() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ===============================================================
+-- ----------- INSERCION DE 2 REGISTROS TABLA FACTURAS ----------
+-- ===============================================================
+
+
+
+select * from facturas;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas';
+
+
+
+
+
+
+create or replace function insertar_registros_facturas(
+
+id_vent_input_01 int, nro_fact_input_01 varchar, fecha_emis_input_01 date 
+, hora_emis_input_01 time, prec_tot_vent_usd_input_01 decimal 
+
+,id_vent_input_02 int, nro_fact_input_02 varchar, fecha_emis_input_02 date 
+, hora_emis_input_02 time, prec_tot_vent_usd_input_02 decimal 
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA facturas
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_fact_check boolean;
+id_last_fact int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID de la Venta, Nro de Factura y Precio de Venta
+id_vent_nro_fact_precio_tot_vent_usd_fact_check_01 boolean := exists(
+select id_venta , nro_factura, precio_total_venta_usd from facturas
+where ((id_venta = id_vent_input_01) and (nro_factura = nro_fact_input_01) and 
+(precio_total_venta_usd = prec_tot_vent_usd_input_01)));
+
+id_vent_nro_fact_precio_tot_vent_usd_fact_check_02 boolean := exists(
+select id_venta , nro_factura, precio_total_venta_usd from facturas
+where ((id_venta = id_vent_input_02) and (nro_factura = nro_fact_input_02) and 
+(precio_total_venta_usd = prec_tot_vent_usd_input_02)));
+
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_fact uuid;
+nombre_tabla_fact varchar := 'facturas';
+accion_fact varchar := 'insert';
+fecha_fact date ;
+hora_fact time ;
+usuario_fact varchar;
+usuario_sesion_fact varchar;
+db_fact varchar;
+db_version_fact varchar;
+
+
+
+begin
+
+
+
+	if(
+	((id_vent_nro_fact_precio_tot_vent_usd_fact_check_01 = true) and (id_vent_nro_fact_precio_tot_vent_usd_fact_check_02 = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UN/VARIOS REGISTRO/S REPETIDO/S ========'
+						using hint = 
+					'-------- REVISAR ID DE LA/S VENTA/S -------------'
+					'-------- REVISAR NRO DE FACTURA/S Y/O PRECIO TOTAL DE VENTA/S EN USD  -------------';
+
+	
+	elsif (
+		((id_vent_nro_fact_precio_tot_vent_usd_fact_check_01  = false) and (id_vent_nro_fact_precio_tot_vent_usd_fact_check_02  = false))
+		and
+		((id_vent_input_01 > 0) and (id_vent_input_02 > 0))
+		and 
+		((nro_fact_input_01 <> '') and (nro_fact_input_02 <> ''))
+		and
+		((fecha_emis_input_01 >= current_date) or (fecha_emis_input_01 <= current_date))
+		and
+		((fecha_emis_input_02 >= current_date) or (fecha_emis_input_02 <= current_date))
+		and 
+		((hora_emis_input_01 >= current_time) or (hora_emis_input_01 <= current_time))
+		and 
+		((fecha_emis_input_02 >= current_date) or (fecha_emis_input_02 <= current_date))
+		and
+		((prec_tot_vent_usd_input_01 >= 0.0) and (prec_tot_vent_usd_input_02 >= 0.0))
+		) then
+			
+		
+		-- =======================================
+		-- =========== PRIMER REGISTRO ==========
+		-- =======================================
+
+
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA FACTURAS -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into facturas (id_venta ,nro_factura, fecha_emision , hora_emision 
+		, precio_total_venta_usd ) values
+		
+		(id_vent_input_01, nro_fact_input_01, fecha_emis_input_01 , hora_emis_input_01
+		, prec_tot_vent_usd_input_01);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_fact_check := exists(select id from facturas);
+	
+		-- Comprobacion id
+		if (id_last_fact_check = true) then
+			
+			id_last_fact := (select max(id) from facturas);
+		
+		else 
+			
+			id_last_fact := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "facturas" --';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID de Factura: %' , id_last_fact;
+		raise notice 'ID de la Venta: %' , id_vent_input_01;
+		raise notice 'Número de Factura : %', nro_fact_input_01;
+	 	raise notice 'Fecha de Emisión : %', fecha_emis_input_01;
+	  	raise notice 'Hora de Emisión : %', hora_emis_input_01;
+	  	raise notice 'Precio Total de Venta (USD):  %', prec_tot_vent_usd_input_01;
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+	
+		-- ------------------------- FIN TABLA FACTURAS  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_fact, nombre_tabla_fact , accion_fact);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_fact:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+		
+		fecha_fact := (select fecha from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+	
+		hora_fact:= (select hora from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		usuario_fact := (select usuario from logs_inserts		
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		usuario_sesion_fact := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		db_fact := (select db from logs_inserts
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		db_version_fact := (select db_version from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_fact;
+		raise notice 'UUID Registro : %', uuid_registro_fact;
+		raise notice 'Tabla : %', nombre_tabla_fact;
+		raise notice 'Acción : %', accion_fact;
+		raise notice 'Fecha : %', fecha_fact;
+		raise notice 'Hora : %', hora_fact;
+     	raise notice 'Usuario : %', usuario_fact;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_fact;
+        raise notice 'DB : %', db_fact;
+        raise notice 'Versión DB : %', db_version_fact;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+		-- =======================================
+		-- =========== SEGUNDO REGISTRO ==========
+		-- =======================================
+
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA FACTURAS -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into facturas (id_venta ,nro_factura, fecha_emision , hora_emision 
+		, precio_total_venta_usd ) values
+		
+		(id_vent_input_02, nro_fact_input_02, fecha_emis_input_02 , hora_emis_input_02
+		, prec_tot_vent_usd_input_02);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_fact_check := exists(select id from facturas);
+	
+		-- Comprobacion id
+		if (id_last_fact_check = true) then
+			
+			id_last_fact := (select max(id) from facturas);
+		
+		else 
+			
+			id_last_fact := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '-------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "facturas" --';
+		raise notice '-------------------------------------------';
+	
+		raise notice 'ID de Factura: %' , id_last_fact;
+		raise notice 'ID de la Venta: %' , id_vent_input_02;
+		raise notice 'Número de Factura : %', nro_fact_input_02;
+	 	raise notice 'Fecha de Emisión : %', fecha_emis_input_02;
+	  	raise notice 'Hora de Emisión : %', hora_emis_input_02;
+	  	raise notice 'Precio Total de Venta (USD):  %', prec_tot_vent_usd_input_02;
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+	
+		-- ------------------------- FIN TABLA FACTURAS  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_fact, nombre_tabla_fact , accion_fact);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_fact:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+		
+		fecha_fact := (select fecha from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+	
+		hora_fact:= (select hora from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		usuario_fact := (select usuario from logs_inserts		
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		usuario_sesion_fact := (select usuario_sesion from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		db_fact := (select db from logs_inserts
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+
+		db_version_fact := (select db_version from logs_inserts 
+		where (id_registro = id_last_fact) and (nombre_tabla = 'facturas'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_fact;
+		raise notice 'UUID Registro : %', uuid_registro_fact;
+		raise notice 'Tabla : %', nombre_tabla_fact;
+		raise notice 'Acción : %', accion_fact;
+		raise notice 'Fecha : %', fecha_fact;
+		raise notice 'Hora : %', hora_fact;
+     	raise notice 'Usuario : %', usuario_fact;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_fact;
+        raise notice 'DB : %', db_fact;
+        raise notice 'Versión DB : %', db_version_fact;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+	
+
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_facturas() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+
+-- ----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+-- ===========================================
+-- ======= TABLA FACTURAS_DETALLES ===========
+-- ===========================================
+
+
+
+
+
+select * from facturas_detalles;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas_detalles';
+
+
+
+
+
+
+-- ==================================================================================
+-- ----------- SELECT DE TODOS LOS REGISTROS DE LA TABLA FACTURAS_DETALLES --------- 
+-- ==================================================================================
+
+
+
+create or replace function listado_facturas_detalles() returns setof facturas_detalles as $$
+
+declare
+
+	registro_actual_fact_det RECORD;
+
+begin 
+	
+	for registro_actual_fact_det in (select * from facturas_detalles) loop
+	
+		return next registro_actual_fact_det;
+	
+	end loop;
+	return;
+	
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ======================================================================
+-- ----------- INSERCION DE 1 REGISTRO TABLA FACTURAS_DETALLES ----------
+-- ======================================================================
+
+
+
+select * from facturas_detalles;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas_detalles';
+
+
+
+
+-- ENUM tipo_factura_enum ('A','B','C','D');
+-- ENUM tipo_pago_enum ('EFECTIVO','CHEQUE','TARJETA');
+ 
+
+
+create or replace function insertar_registro_facturas_detalles(
+
+id_fact_input int, tip_input tipo_factura_enum, descr_input varchar 
+, val_inm_usd_input decimal, cost_asoc_usd_input decimal
+, imp_asoc_usd_input decimal, med_pag_input tipo_pago_enum 
+, descr_pago_input varchar
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA facturas_detalles
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_fact_det_check boolean;
+id_last_fact_det int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID de la Factura, Tipo de Factura y Valor del Inmueble
+id_tip_fact_val_inm_fact_det_check boolean := exists(
+select id_factura , tipo, valor_inmueble_usd from facturas_detalles
+where ((id_factura = id_fact_input) and (tipo = tip_input) and 
+( valor_inmueble_usd = val_inm_usd_input)));
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_fact_det uuid;
+nombre_tabla_fact_det varchar := 'facturas_detalles';
+accion_fact_det varchar := 'insert';
+fecha_fact_det date ;
+hora_fact_det time ;
+usuario_fact_det varchar;
+usuario_sesion_fact_det varchar;
+db_fact_det varchar;
+db_version_fact_det varchar;
+
+
+
+begin
+
+
+
+	if(
+	((id_tip_fact_val_inm_fact_det_check = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UN REGISTRO REPETIDO ========'
+						using hint = 
+					'-------- REVISAR ID DE LA FACTURA -------------'
+					'-------- REVISAR TIPO DE FACTURA Y/O VALOR DEL INMUEBLE EN USD  -------------';
+
+
+	elsif (
+		((id_tip_fact_val_inm_fact_det_check  = false))
+		and
+		((id_fact_input > 0))
+		and 
+		((tip_input == 'A') or (tip_input == 'B') or 
+		(tip_input == 'C') or (tip_input == 'D'))
+		and
+		((descr_input <> ''))
+		and 
+		((val_inm_usd_input >= 0.0))
+		and
+		((cost_asoc_usd_input >= 0.0))
+		and
+		((imp_asoc_usd_input >= 0.0))
+		and 
+		((med_pag_input == 'EFECTIVO') or (med_pag_input == 'CHEQUE') or 
+		(med_pag_input == 'TARJETA'))
+		and
+		((descr_pago_input <> ''))
+		) then
+			
+
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA FACTURAS_DETALLES -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into facturas_detalles (id_factura ,tipo , descripcion_factura 
+		, valor_inmueble_usd , costo_asociado_usd , impuestos_asociados_usd 
+		, medio_de_pago , descripcion_pago ) values
+		
+		(id_fact_input, tip_input, descr_fact_input , val_inm_usd_input
+		, cost_asoc_usd_input , imp_asoc_usd_input ,  med_pago_input 
+		, descr_pago_input);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_fact_det_check := exists(select id from facturas_detalles);
+	
+		-- Comprobacion id
+		if (id_last_fact_det_check = true) then
+			
+			id_last_fact_det := (select max(id) from facturas_detalles);
+		
+		else 
+			
+			id_last_fact_det := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '--------------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "facturas_detalles" --';
+		raise notice '--------------------------------------------------';
+	
+		raise notice 'ID del Detalle de Factura: %' , id_last_fact_det;
+		raise notice 'ID de Factura: %' , id_fact_input;
+		raise notice 'Tipo de Factura : %', tip_input;
+	 	raise notice 'Descripción de la Factura : %', descr_fact_input ;
+	  	raise notice 'Valor del Inmueble (USD) : %', val_inm_usd_input;
+	  	raise notice 'Costo Asociado (USD):  %', cost_asoc_usd_input;
+	    raise notice 'Impuestos Asociados (USD):  %', imp_asoc_usd_input;
+	   	raise notice 'Medio de Pago:  %', med_pag_input;
+	    raise notice 'Descripción de Pago:  %', desc_pago_input;
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+	
+		-- ------------------------- FIN TABLA FACTURAS_DETALLES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_fact_det, nombre_tabla_fact_det , accion_fact_det);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_fact_det:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+		
+		fecha_fact_det := (select fecha from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+	
+		hora_fact_det:= (select hora from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		usuario_fact_det := (select usuario from logs_inserts		
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		usuario_sesion_fact_det := (select usuario_sesion from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		db_fact_det := (select db from logs_inserts
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		db_version_fact_det := (select db_version from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_fact_det;
+		raise notice 'UUID Registro : %', uuid_registro_fact_det;
+		raise notice 'Tabla : %', nombre_tabla_fact_det;
+		raise notice 'Acción : %', accion_fact_det;
+		raise notice 'Fecha : %', fecha_fact_det;
+		raise notice 'Hora : %', hora_fact_det;
+     	raise notice 'Usuario : %', usuario_fact_det;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_fact_det;
+        raise notice 'DB : %', db_fact_det;
+        raise notice 'Versión DB : %', db_version_fact_det;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_facturas_detalles() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+

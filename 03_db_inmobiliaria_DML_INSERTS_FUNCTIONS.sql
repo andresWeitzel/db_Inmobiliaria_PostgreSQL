@@ -98,6 +98,18 @@ drop function if exists insertar_registro_compradores() cascade;
 drop function if exists insertar_registros_compradores() cascade;
 
 
+-- facturas
+drop function if exists listado_facturas() cascade;
+drop function if exists insertar_registro_facturas() cascade;
+drop function if exists insertar_registros_facturas() cascade;
+
+
+-- facturas_detalles
+drop function if exists listado_facturas_detalles() cascade;
+drop function if exists insertar_registro_facturas_detalles() cascade;
+drop function if exists insertar_registros_facturas_detalles() cascade;
+
+
 
 
 
@@ -857,12 +869,12 @@ information_schema.columns where table_name = 'oficinas_detalles';
 
 
 
-
-create or replace function insertar_registro_oficinas_detalles(
+create or replace function insertar_registros_oficinas_detalles(
 
 id_of_input int, loc_input varchar, tipo_of_input tipo_oficina_enum
-, estado_of_input estado_oficina_enum, sup_total_input decimal, cant_amb_input smallint 
-,  cant_sanit_input smallint , antig_input smallint , sitio_web_input varchar
+, estado_of_input estado_oficina_enum, sup_total_input decimal
+, cant_amb_input int ,  cant_sanit_input int , antig_input int 
+, sitio_web_input varchar
 
 ) returns void as $$
 
@@ -881,7 +893,7 @@ id_last_of_det int;
 -- Comprobamos Localidad, Tipo de Oficina y Superficie Total
 loc_tipo_sup_total_of_det_check boolean := exists(
 select localidad, tipo_oficina , superficie_total from oficinas_detalles
-where ((localidad = loc_input) and (tipo_oficina = tipo_of_input::tipo_oficina_enum) and
+where ((localidad = loc_input) and (tipo_oficina = tipo_of_input) and
 (superficie_total = sup_total_input)));
 
 
@@ -914,16 +926,16 @@ begin
 	elsif (
 		((loc_tipo_sup_total_of_det_check = false))
 		and
-		((id_of_input > 0) and (loc_input_input > 0))
+		((id_of_input > 0) and (loc_input <> ''))
 		and 
 		((tipo_of_input = 'PEQUEÑA') or (tipo_of_input = 'ESTANDAR') or 
 		(tipo_of_input = 'EJECUTIVA')) 
 		and
 		((estado_of_input = 'ALQUILADA') or (estado_of_input = 'PROPIA'))
 		and
-		((sup_total_input > 0.0) and (cantidad_amb_input > 0))
+		((sup_total_input > 0.0) and (cant_amb_input > 0))
 		and 
-		((cantidad_sanit_input > 0) and (antig_input > 0))
+		((cant_sanit_input > 0) and (antig_input > 0))
 		and 
 		((sitio_web_input <> ''))
 		) then
@@ -941,10 +953,10 @@ begin
 		id_oficina, localidad , tipo_oficina , estado_oficina , superficie_total 
 		,cantidad_ambientes , cantidad_sanitarios , antiguedad , sitio_web ) values
 		
-		(id_of_input::int , loc_input::varchar , tipo_of_input::tipo_oficina_enum 
-		, estado_of_input::estado_oficina_enum, sup_total_input::decimal 
-		, cant_amb_input::smallint , cant_sanit_input::smallint , antig_input::smallint 
-		, sitio_web_input::varchar);
+		(id_of_input , loc_input , tipo_of_input::tipo_oficina_enum 
+		, estado_of_input::estado_oficina_enum, sup_total_input
+		, cant_amb_input, cant_sanit_input , antig_input 
+		, sitio_web_input);
 	
 		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
 		
@@ -1070,7 +1082,7 @@ begin
 	
 	else
 	
-	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registro_oficinas_detalles() ==========='
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registros_oficinas_detalles() ==========='
 								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
 		
 	end if;
@@ -1221,18 +1233,18 @@ begin
 		((id_of_input > 0))
 		and 
 		((tipo_com_input = 'LOCALES') or (tipo_com_input = 'OFICINAS') or
-		(tipo_com_input = 'TERRENOS') or (tipo_com_input = 'LOCALES-OFICINAS-TERRENOS') or
-		(tipo_com_input = 'NO APLICA')) 
+		(tipo_com_input = 'TERRENOS') or (tipo_com_input = 'LOCALES_OFICINAS_TERRENOS') or
+		(tipo_com_input = 'NO_APLICA')) 
 		and 
 		((tipo_viv_input = 'DEPARTAMENTOS') or (tipo_viv_input = 'CASAS') or
-		(tipo_viv_input = 'TERRENOS') or (tipo_viv_input = 'DEPARTAMENTOS-CASAS-TERRENOS') or
-		(tipo_viv_input = 'NO APLICA'))
+		(tipo_viv_input = 'TERRENOS') or (tipo_viv_input = 'DEPARTAMENTOS_CASAS_TERRENOS') or
+		(tipo_viv_input = 'NO_APLICA'))
 		and
 		((tipo_tasac_input = 'PROFESIONAL') or (tipo_tasac_input = 'JUDICIAL') or
-		(tipo_tasac_input = 'PROFESIONAL-JUDICIAL') or(tipo_tasac_input = 'NO APLICA'))
+		(tipo_tasac_input = 'PROFESIONAL_JUDICIAL') or(tipo_tasac_input = 'NO_APLICA'))
 		and 
 		((tipo_adm_input = 'ALQUILERES') or (tipo_adm_input = 'CUENTAS') or
-		(tipo_adm_input = 'ALQUILERES-CUENTAS') or(tipo_adm_input = 'NO APLICA'))
+		(tipo_adm_input = 'ALQUILERES_CUENTAS') or(tipo_adm_input = 'NO_APLICA'))
 		and
 		((descr_serv_input <> ''))
 		) then
@@ -1494,32 +1506,32 @@ begin
 		((id_of_input_01 > 0) and (id_of_input_02 > 0))
 		and 
 		((tipo_com_input_01 = 'LOCALES') or (tipo_com_input_01 = 'OFICINAS') or
-		(tipo_com_input_01 = 'TERRENOS') or (tipo_com_input_01 = 'LOCALES-OFICINAS-TERRENOS') or
-		(tipo_com_input_01 = 'NO APLICA')) 
+		(tipo_com_input_01 = 'TERRENOS') or (tipo_com_input_01 = 'LOCALES_OFICINAS_TERRENOS') or
+		(tipo_com_input_01 = 'NO_APLICA')) 
 		and 
 		((tipo_com_input_02 = 'LOCALES') or (tipo_com_input_02 = 'OFICINAS') or
-		(tipo_com_input_02 = 'TERRENOS') or (tipo_com_input_02 = 'LOCALES-OFICINAS-TERRENOS') or
-		(tipo_com_input_02 = 'NO APLICA')) 
+		(tipo_com_input_02 = 'TERRENOS') or (tipo_com_input_02 = 'LOCALES_OFICINAS_TERRENOS') or
+		(tipo_com_input_02 = 'NO_APLICA')) 
 		and 
 		((tipo_viv_input_01 = 'DEPARTAMENTOS') or (tipo_viv_input_01 = 'CASAS') or
-		(tipo_viv_input_01 = 'TERRENOS') or (tipo_viv_input_01 = 'DEPARTAMENTOS-CASAS-TERRENOS') or
-		(tipo_viv_input_01 = 'NO APLICA'))
+		(tipo_viv_input_01 = 'TERRENOS') or (tipo_viv_input_01 = 'DEPARTAMENTOS_CASAS_TERRENOS') or
+		(tipo_viv_input_01 = 'NO_APLICA'))
 		and 
 		((tipo_viv_input_02 = 'DEPARTAMENTOS') or (tipo_viv_input_02 = 'CASAS') or
-		(tipo_viv_input_02 = 'TERRENOS') or (tipo_viv_input_02 = 'DEPARTAMENTOS-CASAS-TERRENOS') or
-		(tipo_viv_input_02 = 'NO APLICA'))
+		(tipo_viv_input_02 = 'TERRENOS') or (tipo_viv_input_02 = 'DEPARTAMENTOS_CASAS_TERRENOS') or
+		(tipo_viv_input_02 = 'NO_APLICA'))
 		and
 		((tipo_tasac_input_01 = 'PROFESIONAL') or (tipo_tasac_input_01 = 'JUDICIAL') or
-		(tipo_tasac_input_01 = 'PROFESIONAL-JUDICIAL') or(tipo_tasac_input_01 = 'NO APLICA'))
+		(tipo_tasac_input_01 = 'PROFESIONAL_JUDICIAL') or(tipo_tasac_input_01 = 'NO_APLICA'))
 		and
 		((tipo_tasac_input_02 = 'PROFESIONAL') or (tipo_tasac_input_02 = 'JUDICIAL') or
-		(tipo_tasac_input_02 = 'PROFESIONAL-JUDICIAL') or(tipo_tasac_input_02 = 'NO APLICA'))
+		(tipo_tasac_input_02 = 'PROFESIONAL_JUDICIAL') or(tipo_tasac_input_02 = 'NO_APLICA'))
 		and 
 		((tipo_adm_input_01 = 'ALQUILERES') or (tipo_adm_input_01 = 'CUENTAS') or
-		(tipo_adm_input_01 = 'ALQUILERES-CUENTAS') or(tipo_adm_input_01 = 'NO APLICA'))
+		(tipo_adm_input_01 = 'ALQUILERES_CUENTAS') or(tipo_adm_input_01 = 'NO_APLICA'))
 		and 
 		((tipo_adm_input_02 = 'ALQUILERES') or (tipo_adm_input_02 = 'CUENTAS') or
-		(tipo_adm_input_02 = 'ALQUILERES-CUENTAS') or(tipo_adm_input_02 = 'NO APLICA'))
+		(tipo_adm_input_02 = 'ALQUILERES_CUENTAS') or(tipo_adm_input_02 = 'NO_APLICA'))
 		and
 		((descr_serv_input_01 <> '') and (descr_serv_input_02 <> ''))
 		) then
@@ -7560,8 +7572,8 @@ begin
 		and
 		((id_inm_input > 0))
 		and 
-		((est_insp_input = 'ACEPTADA') or (est_insp_input = 'NO ACEPTADA') or 
-		(est_insp_input = 'PENDIENTE REVISION')) 
+		((est_insp_input = 'ACEPTADA') or (est_insp_input = 'NO_ACEPTADA') or 
+		(est_insp_input = 'PENDIENTE_REVISION')) 
 		and 
 		((tip_insp_input = 'DEPARTAMENTO') or (tip_insp_input = 'CASA') or 
 		(tip_insp_input = 'PH'))
@@ -7833,11 +7845,11 @@ begin
 		and
 		((id_inm_input_01 > 0) and (id_inm_input_02 > 0))
 		and 
-		((est_insp_input_01 = 'ACEPTADA') or (est_insp_input_01 = 'NO ACEPTADA') or 
-		(est_insp_input_01 = 'PENDIENTE REVISION'))
+		((est_insp_input_01 = 'ACEPTADA') or (est_insp_input_01 = 'NO_ACEPTADA') or 
+		(est_insp_input_01 = 'PENDIENTE_REVISION'))
 		and 
-		((est_insp_input_02 = 'ACEPTADA') or (est_insp_input_02 = 'NO ACEPTADA') or 
-		(est_insp_input_02 = 'PENDIENTE REVISION'))
+		((est_insp_input_02 = 'ACEPTADA') or (est_insp_input_02 = 'NO_ACEPTADA') or 
+		(est_insp_input_02 = 'PENDIENTE_REVISION'))
 		and 
 		((tip_insp_input_01 = 'DEPARTAMENTO') or (tip_insp_input_01 = 'CASA') or 
 		(tip_insp_input_01 = 'PH'))
@@ -8835,31 +8847,7 @@ begin
 		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
 		-- -------------------------------------------------------------------------------------
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 
 	
 	else
@@ -12309,12 +12297,11 @@ information_schema.columns where table_name = 'facturas_detalles';
 -- ENUM tipo_pago_enum ('EFECTIVO','CHEQUE','TARJETA');
  
 
-
 create or replace function insertar_registro_facturas_detalles(
 
 id_fact_input int, tip_input tipo_factura_enum, descr_input varchar 
 , val_inm_usd_input decimal, cost_asoc_usd_input decimal
-, imp_asoc_usd_input decimal, med_pag_input tipo_pago_enum 
+, imp_asoc_usd_input decimal, med_pago_input tipo_pago_enum 
 , descr_pago_input varchar
 
 ) returns void as $$
@@ -12372,8 +12359,8 @@ begin
 		and
 		((id_fact_input > 0))
 		and 
-		((tip_input == 'A') or (tip_input == 'B') or 
-		(tip_input == 'C') or (tip_input == 'D'))
+		((tip_input = 'A') or (tip_input = 'B') or 
+		(tip_input = 'C') or (tip_input = 'D'))
 		and
 		((descr_input <> ''))
 		and 
@@ -12383,8 +12370,8 @@ begin
 		and
 		((imp_asoc_usd_input >= 0.0))
 		and 
-		((med_pag_input == 'EFECTIVO') or (med_pag_input == 'CHEQUE') or 
-		(med_pag_input == 'TARJETA'))
+		((med_pago_input = 'EFECTIVO') or (med_pago_input = 'CHEQUE') or 
+		(med_pago_input = 'TARJETA'))
 		and
 		((descr_pago_input <> ''))
 		) then
@@ -12400,7 +12387,7 @@ begin
 		, valor_inmueble_usd , costo_asociado_usd , impuestos_asociados_usd 
 		, medio_de_pago , descripcion_pago ) values
 		
-		(id_fact_input, tip_input, descr_fact_input , val_inm_usd_input
+		(id_fact_input, tip_input, descr_input , val_inm_usd_input
 		, cost_asoc_usd_input , imp_asoc_usd_input ,  med_pago_input 
 		, descr_pago_input);
 	
@@ -12435,12 +12422,12 @@ begin
 		raise notice 'ID del Detalle de Factura: %' , id_last_fact_det;
 		raise notice 'ID de Factura: %' , id_fact_input;
 		raise notice 'Tipo de Factura : %', tip_input;
-	 	raise notice 'Descripción de la Factura : %', descr_fact_input ;
+	 	raise notice 'Descripción de la Factura : %', descr_input ;
 	  	raise notice 'Valor del Inmueble (USD) : %', val_inm_usd_input;
 	  	raise notice 'Costo Asociado (USD):  %', cost_asoc_usd_input;
 	    raise notice 'Impuestos Asociados (USD):  %', imp_asoc_usd_input;
-	   	raise notice 'Medio de Pago:  %', med_pag_input;
-	    raise notice 'Descripción de Pago:  %', desc_pago_input;
+	   	raise notice 'Medio de Pago:  %', med_pago_input;
+	    raise notice 'Descripción de Pago:  %', descr_pago_input;
 		raise notice 'ok!';
 		raise notice ' ';	
 		
@@ -12541,3 +12528,417 @@ $$ language plpgsql;
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
 
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
+
+-- ======================================================================
+-- ----------- INSERCION DE 2 REGISTROS TABLA FACTURAS_DETALLES ----------
+-- ======================================================================
+
+
+
+select * from facturas_detalles;
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas_detalles';
+
+
+
+
+-- ENUM tipo_factura_enum ('A','B','C','D');
+-- ENUM tipo_pago_enum ('EFECTIVO','CHEQUE','TARJETA');
+ 
+
+create or replace function insertar_registros_facturas_detalles(
+
+id_fact_input_01 int, tip_input_01 tipo_factura_enum, descr_input_01 varchar 
+, val_inm_usd_input_01 decimal, cost_asoc_usd_input_01 decimal
+, imp_asoc_usd_input_01 decimal, med_pago_input_01 tipo_pago_enum 
+, descr_pago_input_01 varchar
+
+, id_fact_input_02 int, tip_input_02 tipo_factura_enum, descr_input_02 varchar 
+, val_inm_usd_input_02 decimal, cost_asoc_usd_input_02 decimal
+, imp_asoc_usd_input_02 decimal, med_pago_input_02 tipo_pago_enum 
+, descr_pago_input_02 varchar
+
+
+) returns void as $$
+
+
+
+declare
+
+
+
+-- TABLA facturas_detalles
+
+-- Comprobamos que exista un id y cual es el ultimo
+id_last_fact_det_check boolean;
+id_last_fact_det int;
+
+-- Nos aseguramos que no exista un registro repetido ademas del check de la db
+-- Comprobamos ID de la Factura, Tipo de Factura y Valor del Inmueble
+id_tip_fact_val_inm_fact_det_check_01 boolean := exists(
+select id_factura , tipo, valor_inmueble_usd from facturas_detalles
+where ((id_factura = id_fact_input_01) and (tipo = tip_input_01) and 
+( valor_inmueble_usd = val_inm_usd_input_01)));
+
+id_tip_fact_val_inm_fact_det_check_02 boolean := exists(
+select id_factura , tipo, valor_inmueble_usd from facturas_detalles
+where ((id_factura = id_fact_input_02) and (tipo = tip_input_02) and 
+( valor_inmueble_usd = val_inm_usd_input_02)));
+
+
+-- TABLA LOGS_INSERTS
+
+uuid_registro_fact_det uuid;
+nombre_tabla_fact_det varchar := 'facturas_detalles';
+accion_fact_det varchar := 'insert';
+fecha_fact_det date ;
+hora_fact_det time ;
+usuario_fact_det varchar;
+usuario_sesion_fact_det varchar;
+db_fact_det varchar;
+db_version_fact_det varchar;
+
+
+
+begin
+
+
+
+	if(
+	((id_tip_fact_val_inm_fact_det_check_01 = true) or (id_tip_fact_val_inm_fact_det_check_02 = true))
+	) then
+	
+		raise exception '====== NO SE PUEDE INGRESAR UN/VARIOS REGISTRO/S REPETIDO/S ========'
+						using hint = 
+					'-------- REVISAR ID DE LA/S FACTURA/S -------------'
+					'-------- REVISAR TIPO DE FACTURA/S Y/O VALOR/ES DEL/DE LOS INMUEBLE/S EN USD  -------------';
+
+
+	elsif (
+		((id_tip_fact_val_inm_fact_det_check_01  = false) and (id_tip_fact_val_inm_fact_det_check_02  = false))
+		and
+		((id_fact_input_01 > 0) and (id_fact_input_02 > 0))
+		and 
+		((tip_input_01 = 'A') or (tip_input_01 = 'B') or 
+		(tip_input_01 = 'C') or (tip_input_01 = 'D'))
+		and 
+		((tip_input_02 = 'A') or (tip_input_02 = 'B') or 
+		(tip_input_02 = 'C') or (tip_input_02 = 'D'))
+		and
+		((descr_input_01 <> '') and (descr_input_02 <> ''))
+		and 
+		((val_inm_usd_input_01 >= 0.0) and (val_inm_usd_input_02 >= 0.0))
+		and
+		((cost_asoc_usd_input_01 >= 0.0) and (cost_asoc_usd_input_02 >= 0.0))
+		and
+		((imp_asoc_usd_input_01 >= 0.0) and (imp_asoc_usd_input_02 >= 0.0))
+		and 
+		((med_pago_input_01 = 'EFECTIVO') or (med_pago_input_01 = 'CHEQUE') or 
+		(med_pago_input_01 = 'TARJETA'))
+		and 
+		((med_pago_input_02 = 'EFECTIVO') or (med_pago_input_02 = 'CHEQUE') or 
+		(med_pago_input_02 = 'TARJETA'))
+		and
+		((descr_pago_input_01 <> '') and (descr_pago_input_02 <> ''))
+		) then
+			
+		
+		
+		-- =======================================
+		-- =========== PRIMER REGISTRO ==========
+		-- =======================================
+	
+
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA FACTURAS_DETALLES -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into facturas_detalles (id_factura ,tipo , descripcion_factura 
+		, valor_inmueble_usd , costo_asociado_usd , impuestos_asociados_usd 
+		, medio_de_pago , descripcion_pago ) values
+		
+		(id_fact_input_01, tip_input_01, descr_input_01 , val_inm_usd_input_01
+		, cost_asoc_usd_input_01 , imp_asoc_usd_input_01 ,  med_pago_input_01 
+		, descr_pago_input_01);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_fact_det_check := exists(select id from facturas_detalles);
+	
+		-- Comprobacion id
+		if (id_last_fact_det_check = true) then
+			
+			id_last_fact_det := (select max(id) from facturas_detalles);
+		
+		else 
+			
+			id_last_fact_det := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '--------------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "facturas_detalles" --';
+		raise notice '--------------------------------------------------';
+	
+		raise notice 'ID del Detalle de Factura: %' , id_last_fact_det;
+		raise notice 'ID de Factura: %' , id_fact_input_01;
+		raise notice 'Tipo de Factura : %', tip_input_01;
+	 	raise notice 'Descripción de la Factura : %', descr_input_01;
+	  	raise notice 'Valor del Inmueble (USD) : %', val_inm_usd_input_01;
+	  	raise notice 'Costo Asociado (USD):  %', cost_asoc_usd_input_01;
+	    raise notice 'Impuestos Asociados (USD):  %', imp_asoc_usd_input_01;
+	   	raise notice 'Medio de Pago:  %', med_pago_input_01;
+	    raise notice 'Descripción de Pago:  %', descr_pago_input_01;
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+	
+		-- ------------------------- FIN TABLA FACTURAS_DETALLES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_fact_det, nombre_tabla_fact_det , accion_fact_det);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_fact_det:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+		
+		fecha_fact_det := (select fecha from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+	
+		hora_fact_det:= (select hora from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		usuario_fact_det := (select usuario from logs_inserts		
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		usuario_sesion_fact_det := (select usuario_sesion from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		db_fact_det := (select db from logs_inserts
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		db_version_fact_det := (select db_version from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_fact_det;
+		raise notice 'UUID Registro : %', uuid_registro_fact_det;
+		raise notice 'Tabla : %', nombre_tabla_fact_det;
+		raise notice 'Acción : %', accion_fact_det;
+		raise notice 'Fecha : %', fecha_fact_det;
+		raise notice 'Hora : %', hora_fact_det;
+     	raise notice 'Usuario : %', usuario_fact_det;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_fact_det;
+        raise notice 'DB : %', db_fact_det;
+        raise notice 'Versión DB : %', db_version_fact_det;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+
+	
+		-- =======================================
+		-- =========== SEGUNDO REGISTRO ==========
+		-- =======================================
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- ------------------------- TABLA FACTURAS_DETALLES -------------------------------
+		
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+		
+	
+		insert into facturas_detalles (id_factura ,tipo , descripcion_factura 
+		, valor_inmueble_usd , costo_asociado_usd , impuestos_asociados_usd 
+		, medio_de_pago , descripcion_pago ) values
+		
+		(id_fact_input_02, tip_input_02, descr_input_02 , val_inm_usd_input_02
+		, cost_asoc_usd_input_02 , imp_asoc_usd_input_02 ,  med_pago_input_02 
+		, descr_pago_input_02);
+	
+	
+
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+		
+	
+		--------------------------------------- ÚLTIMO ID ----------------------------------------
+		
+		id_last_fact_det_check := exists(select id from facturas_detalles);
+	
+		-- Comprobacion id
+		if (id_last_fact_det_check = true) then
+			
+			id_last_fact_det := (select max(id) from facturas_detalles);
+		
+		else 
+			
+			id_last_fact_det := 0; 
+			
+		end if;
+
+		--------------------------------------- FIN ÚLTIMO ID ----------------------------------------
+	
+			
+		raise notice '';
+		raise notice '--------------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "facturas_detalles" --';
+		raise notice '--------------------------------------------------';
+	
+		raise notice 'ID del Detalle de Factura: %' , id_last_fact_det;
+		raise notice 'ID de Factura: %' , id_fact_input_02;
+		raise notice 'Tipo de Factura : %', tip_input_02;
+	 	raise notice 'Descripción de la Factura : %', descr_input_02;
+	  	raise notice 'Valor del Inmueble (USD) : %', val_inm_usd_input_02;
+	  	raise notice 'Costo Asociado (USD):  %', cost_asoc_usd_input_02;
+	    raise notice 'Impuestos Asociados (USD):  %', imp_asoc_usd_input_02;
+	   	raise notice 'Medio de Pago:  %', med_pago_input_02;
+	    raise notice 'Descripción de Pago:  %', descr_pago_input_02;
+		raise notice 'ok!';
+		raise notice ' ';	
+		
+	
+	
+		-- ------------------------- FIN TABLA FACTURAS_DETALLES  -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+	
+	
+	
+	
+		-- -------------------------------------------------------------------------------------
+		-- -------------------------TABLA LOGS_INSERTS -------------------------------
+		
+	
+	
+		--------------------------------------- INSERCION REGISTRO ----------------------------------------
+	
+	
+		insert into logs_inserts(id_registro, nombre_tabla , accion) values
+		
+		(id_last_fact_det, nombre_tabla_fact_det , accion_fact_det);
+	
+
+	
+		--------------------------------------- FIN INSERCION REGISTRO ----------------------------------------
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_fact_det:= (select uuid_registro from logs_inserts 
+		where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+		
+		fecha_fact_det := (select fecha from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+	
+		hora_fact_det:= (select hora from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		usuario_fact_det := (select usuario from logs_inserts		
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		usuario_sesion_fact_det := (select usuario_sesion from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		db_fact_det := (select db from logs_inserts
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+
+		db_version_fact_det := (select db_version from logs_inserts 
+				where (id_registro = id_last_fact_det) and (nombre_tabla = 'facturas_detalles'));
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción Registro Tabla "logs_inserts" --';
+		raise notice '----------------------------------------------';
+	
+		raise notice 'ID Registro: %' , id_last_fact_det;
+		raise notice 'UUID Registro : %', uuid_registro_fact_det;
+		raise notice 'Tabla : %', nombre_tabla_fact_det;
+		raise notice 'Acción : %', accion_fact_det;
+		raise notice 'Fecha : %', fecha_fact_det;
+		raise notice 'Hora : %', hora_fact_det;
+     	raise notice 'Usuario : %', usuario_fact_det;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_fact_det;
+        raise notice 'DB : %', db_fact_det;
+        raise notice 'Versión DB : %', db_version_fact_det;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+		-- ------------------------- FIN TABLA LOGS_INSERTS -------------------------------
+		-- -------------------------------------------------------------------------------------
+
+	
+		
+	
+	else
+	
+	raise exception '======== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN insertar_registros_facturas_detalles() ==========='
+								using hint = '----------- REVISAR LOS PARAMETROS INGRESADOS ----------------';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------

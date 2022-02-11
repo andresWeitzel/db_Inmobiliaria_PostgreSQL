@@ -136,10 +136,10 @@ localidad varchar(40) not null,
 tipo_oficina tipo_oficina_enum not null, 
 estado_oficina estado_oficina_enum not null,
 superficie_total decimal(8,2) not null,
-cantidad_ambientes smallint not null, -- 1,2,3,etc | smallint-->2bytes, int-->4bytes |
-cantidad_sanitarios smallint not null, -- Reemplazamos baños por caracter especial
-antiguedad smallint, -- 20 años, etc
-sitio_web varchar(80)
+cantidad_ambientes int not null, -- 1,2,3,etc | smallint-->2bytes, int-->4bytes |
+cantidad_sanitarios int not null, -- Reemplazamos baños por caracter especial
+antiguedad int, -- 20 años, etc
+sitio_web varchar(200)
 
 );
 
@@ -195,16 +195,16 @@ check (antiguedad >= 0 or antiguedad = null ); -- Puede ser nulleable
 -- https://www.mosquerabrokers.com.ar/es/informacion/servicios
 
 create type division_comercial_enum as enum('LOCALES','OFICINAS','TERRENOS'
-,'LOCALES-OFICINAS-TERRENOS','NO APLICA');
+,'LOCALES_OFICINAS_TERRENOS','NO_APLICA');
 
 create type division_vivienda_enum as enum('DEPARTAMENTOS','CASAS','TERRENOS'
-,'DEPARTAMENTOS-CASAS-TERRENOS','NO APLICA');
+,'DEPARTAMENTOS_CASAS_TERRENOS','NO_APLICA');
 
-create type tasaciones_enum as enum('PROFESIONAL','JUDICIAL','PROFESIONAL-JUDICIAL'
-,'NO APLICA');
+create type tasaciones_enum as enum('PROFESIONAL','JUDICIAL','PROFESIONAL_JUDICIAL'
+,'NO_APLICA');
 
-create type administracion_enum as enum('ALQUILERES','CUENTAS','ALQUILERES-CUENTAS' 
-,'NO APLICA');
+create type administracion_enum as enum('ALQUILERES','CUENTAS','ALQUILERES_CUENTAS' 
+,'NO_APLICA');
 
 
 create table servicios_oficinas(
@@ -578,7 +578,8 @@ unique(id);
 -- ======= TABLA INMUEBLES ===========
 
 
-create type estado_inmueble_enum as enum('VENDIDO','DISPONIBLE','NO DISPONIBLE','FALTA INSPECCION');
+create type estado_inmueble_enum as enum('VENDIDO','DISPONIBLE','NO_DISPONIBLE'
+,'FALTA_INSPECCION');
 
 
 create table inmuebles(
@@ -711,7 +712,7 @@ REFERENCES clientes(id);
 -- ======= TABLA INSPECCIONES_INMUEBLES ===========
 -- http://checkhouse.com.ar/inspecciones-para-inquilinos/#amenities-content
 
-create type estado_inspeccion_enum as enum('ACEPTADA','NO ACEPTADA','PENDIENTE REVISION');
+create type estado_inspeccion_enum as enum('ACEPTADA','NO_ACEPTADA','PENDIENTE_REVISION');
 create type tipo_inspeccion_enum as enum('DEPARTAMENTO','CASA','PH');
 
 create table inspecciones_inmuebles(
@@ -1199,7 +1200,7 @@ alter table facturas_detalles alter id set default nextval('id_sec_fact_det');
 
 -- ---------------------------------------------------------------------------
 
-
+ 
 
 
 

@@ -112,7 +112,7 @@ select listado_logs_inserts();
 
 
 
-/*
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
@@ -131,32 +131,25 @@ select listado_logs_inserts();
 -- -------------------------------------------------
 
 
-select insertar_registro_oficinas_detalles(
+select insertar_registros_oficinas_detalles(
 1, 'Retiro', 'EJECUTIVA', 'ALQUILADA', 140.00, 6 , 4 , 15 
 , 'www.inmobiliariaDuckson-torre-Nepkiul.com.ar'
 );
 
+select insertar_registros_oficinas_detalles(
+2 , 'Belgrano' , 'PEQUEÑA' , 'PROPIA' , 35.0 , 1 , 1 , 35 
+, 'www.inmobiliariaDuckson-torre-Alem.com.ar'
+);
+
+select insertar_registros_oficinas_detalles(
+3 , 'Balvanera' , 'ESTANDAR' , 'PROPIA' , 60.0 , 2 , 4 , 22 
+, 'www.inmobiliariaDuckson-oficina-principal.com.ar'
+);
+
+
 
 select listado_oficinas_detalles();
-
-
--- ---------------------------------------------------------------------------
-
-
--- -------------------------------------------------
--- ----------- INSERCIÓN DE 2 REGISTROS ------------
--- -------------------------------------------------
-
-
-insert into oficinas_detalles (id, id_oficina, localidad, tipo_oficina, estado_oficina, superficie_total
-, cantidad_ambientes, cantidad_sanitarios, antiguedad, sitio_web) values
-(1 , 1 , 'Retiro' , 'EJECUTIVA' , 'ALQUILADA' , 140.0 , 6 , 4 , 15 , 'www.inmobiliariaDuckson-torre-Nepkiul.com.ar'),-- sup_total en m^2
-(2 , 2 , 'Belgrano' , 'PEQUEÑA' , 'PROPIA' , 35.0 , 1 , 1 , 35 , 'www.inmobiliariaDuckson-torre-Alem.com.ar'),
-(3 , 3 , 'Balvanera' , 'ESTANDAR' , 'PROPIA' , 60.0 , 2 , 4 , 22 , 'www.inmobiliariaDuckson-oficina-principal.com.ar');
-
-select listado_oficinas_detalles();
-
-*/
+select listado_logs_inserts();
 
 
 
@@ -176,16 +169,16 @@ select listado_oficinas_detalles();
 
 
 -- enum division_comercial_enum ('LOCALES','OFICINAS','TERRENOS'
--- ,'LOCALES-OFICINAS-TERRENOS','NO APLICA');
+-- ,'LOCALES_OFICINAS_TERRENOS','NO_APLICA');
 
 -- enum division_vivienda_enum ('DEPARTAMENTOS','CASAS','TERRENOS'
--- ,'DEPARTAMENTOS-CASAS-TERRENOS','NO APLICA');
+-- ,'DEPARTAMENTOS_CASAS_TERRENOS','NO_APLICA');
 
--- enum tasaciones_enum ('PROFESIONAL','JUDICIAL','PROFESIONAL-JUDICIAL'
--- ,'NO APLICA');
+-- enum tasaciones_enum ('PROFESIONAL','JUDICIAL','PROFESIONAL_JUDICIAL'
+-- ,'NO_APLICA');
 
--- enum administracion_enum ('ALQUILERES','CUENTAS','ALQUILERES-CUENTAS' 
--- ,'NO APLICA');
+-- enum administracion_enum ('ALQUILERES','CUENTAS','ALQUILERES_CUENTAS' 
+-- ,'NO_APLICA');
 
 
 select * from servicios_oficinas;
@@ -204,8 +197,8 @@ select listado_oficinas();
 
 
 select insertar_registro_servicios_oficinas(
-1 , 'LOCALES-OFICINAS-TERRENOS' , 'NO APLICA' , 'PROFESIONAL' 
-, 'ALQUILERES-CUENTAS' , 'La Oficina San Vicente maneja servicios de tipo comercial, tasaccional y de administración'
+1 , 'LOCALES_OFICINAS_TERRENOS' , 'NO_APLICA' , 'PROFESIONAL' 
+, 'ALQUILERES_CUENTAS' , 'La Oficina San Vicente maneja servicios de tipo comercial, tasaccional y de administración'
 );
 
 
@@ -217,11 +210,10 @@ select insertar_registro_servicios_oficinas(
 
 
 select insertar_registros_servicios_oficinas(
-2 , 'LOCALES' , 'DEPARTAMENTOS' , 'PROFESIONAL-JUDICIAL' 
-, 'ALQUILERES-CUENTAS' , 'Esta Oficina Aplica para todos los Servicios Disponibles'
-, 3 , 'LOCALES-OFICINAS-TERRENOS' , 'NO APLICA' , 'NO APLICA' 
-, 'NO APLICA' , 'La Oficina Comercial Principal solo maneja servicios de tipo Comercial'
-
+2 , 'LOCALES' , 'DEPARTAMENTOS' , 'PROFESIONAL_JUDICIAL' 
+, 'ALQUILERES_CUENTAS' , 'Esta Oficina Aplica para todos los Servicios Disponibles'
+, 3 , 'LOCALES_OFICINAS_TERRENOS' , 'NO_APLICA' , 'NO_APLICA' 
+, 'NO_APLICA' , 'La Oficina Comercial Principal solo maneja servicios de tipo Comercial'
 );
 
 
@@ -557,7 +549,7 @@ select listado_logs_inserts();
 -- ===================================
 
 
--- ENUM estado_inmueble ('VENDIDO','DISPONIBLE','NO DISPONIBLE','FALTA INSPECCION');
+-- ENUM estado_inmueble ('VENDIDO','DISPONIBLE','NO_DISPONIBLE','FALTA_INSPECCION');
 
 
 select * from inmuebles;
@@ -752,7 +744,7 @@ select listado_inmuebles_marketing();
 -- ======= TABLA INSPECCIONES_INMUEBLES ========
 -- =============================================
 
--- ENUM estado_inspeccion ('ACEPTADA','NO ACEPTADA','PENDIENTE REVISION');
+-- ENUM estado_inspeccion ('ACEPTADA','NO_ACEPTADA','PENDIENTE_REVISION');
 -- ENUM tipo_inspeccion('DEPARTAMENTO','CASA','PH');
 -- fecha date  '2001/10/07'
 -- hora time   '09:00:07'
@@ -1030,7 +1022,7 @@ select insertar_registros_facturas(
 
 
 select listado_facturas();
-select listado_logs_inserts();
+select listado_logs_inserts();s
 
 
 
@@ -1067,6 +1059,13 @@ select insertar_registro_facturas_detalles(
  , 177000, 800, 200, 'EFECTIVO', 'Se efectuó la compra en 1 sólo Pago'
 );
 
+select insertar_registros_facturas_detalles(
+ 2, 'A', 'Venta de Inmueble Tipo Casa de 3 Ambientes Zona Belgrano'
+ , 170000, 1600, 400, 'CHEQUE', 'Se efectuó la compra a Pagar en 3 Pagos'
+ , 3, 'A', 'Venta del Departamento de 2 Ambientes en Caballito'
+ , 170000, 1600, 400, 'EFECTIVO', 'Se efectuó la compra a Pagar en 2 Pagos'
+ );
+
 
 
 
@@ -1077,23 +1076,6 @@ select listado_logs_inserts();
 
 
 
-
-
-/*
-
-
-
--- ======= TABLA FACTURAS_DETALLES ===========
-
-insert into facturas_detalles (id, id_factura, tipo, descripcion_factura, valor_inmueble_usd
-, costo_asociado_usd, impuestos_asociados_usd, medio_de_pago, descripcion_pago) values
-
-(2, 2, 'A', 'Venta de Inmueble Tipo Casa de 3 Ambientes Zona Belgrano', 167000, 600, 400
-, 'CHEQUE', 'Se efectuó la compra a Pagar en 3 Pagos');
-
-
-
-*/
 
 
 

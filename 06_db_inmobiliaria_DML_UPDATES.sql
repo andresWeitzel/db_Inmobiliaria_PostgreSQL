@@ -22,9 +22,15 @@ information_schema.columns where table_name = 'oficinas';
 
 -- ---------- TODOS LOS CAMPOS ---------------
 -- Actualizamos todos los campos
-select cambiar_campos_oficinas(1, 'Torre San Vicente'
+select actualizar_registro_oficinas(1, 'Torre San Vicente'
 , 'Paraguay 770', '+54911735345','inmobiliariaDuckson@gmail.com');
-select * from oficinas;
+
+
+select listado_oficinas();
+
+select listado_logs_updates();
+
+
 
 
 -- --------- CAMPO NRO_TELEFONO --------------
@@ -33,11 +39,19 @@ select * from oficinas;
 update oficinas set nro_telefono='+5491152794990' where id = 1;
 
 -- Actualizamos los Nros con funcion
-select cambiar_nro_tel_oficinas('+541152794690', 1);
-select * from oficinas;
+select actualizar_nro_tel_oficinas('+541152794690', 1);
 
-select cambiar_nro_tel_oficinas('+541156541849', 3);
-select * from oficinas;
+select actualizar_nro_tel_oficinas('+541156541849', 3);
+
+
+select listado_oficinas();
+
+select listado_logs_updates();
+
+
+
+
+/*
 
 -- Agregar Digitos con funcion
 select agregar_dig_nro_tel_oficinas('+54', 3);
@@ -591,4 +605,4 @@ select * from facturas_detalles;
 
 
 
-
+*/

@@ -6,6 +6,13 @@
  * ========= DML UPDATES =============
  */
 
+-- Eliminamos los Registros Actualizados de la Tabla
+delete from logs_updates;
+
+
+-- Alteramos la secuencia autoincrementable del id
+alter sequence id_sec_logs_upd restart with 1;
+
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------

@@ -57,15 +57,16 @@ select listado_logs_updates();
 
 
 
-
-/*
-
--- Agregar Digitos con funcion
-select agregar_dig_nro_tel_oficinas('+54', 3);
-
--- Depurar Numeros Telefonicos Automatico con Funcion
+-- Depurar Numeros Telefonicos 
 select depurar_nro_tel_oficinas();
-select * from oficinas;
+
+
+select listado_logs_updates();
+
+
+
+
+
 
 
 
@@ -73,13 +74,20 @@ select * from oficinas;
 
 -- Depurar Direcciones Automatico con funcion
 select depurar_dir_oficinas();
-select * from oficinas;
+
+select listado_logs_updates();
+
+select listado_oficinas();
+
 
 
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
+
+
+/*
 
 
 

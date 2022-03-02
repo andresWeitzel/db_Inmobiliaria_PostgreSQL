@@ -353,6 +353,62 @@ $$ language plpgsql;
 
 * Hipoteticamente que no tengamos registros, la función se ejecutaría pero sin mostrarnos nada, lógicamente
 
+</br>
+
+#### 4.0) Modelo de Función de Descripción de Registros de una Tabla
+#### (Esta función nos Enumera  los campos de la Tabla oficinas, indicando el tipo de dato y si es nuleable, este modelo aplica para el resto de las Tablas)
+
+```plpgsql
+
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- ===========================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA OFICINAS -------
+-- ===========================================================
+
+
+create or replace function descripcion_oficinas(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'oficinas') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;-- Por cada iteracion se guarda el registro completo
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+```
+
+* Ejecutando la función `select descripcion_oficinas();` obtenemos en la salida de la consola..
+
+```plpgsql
+(id,integer,NO)
+(nombre,"character varying",NO)
+(direccion,"character varying",NO)
+(nro_telefono,"character varying",NO)
+(email,"character varying",YES)
+```
 
 
 </br>
@@ -852,6 +908,7 @@ end;
 $$ language plpgsql;
 
 ```
+* Ejecutando la funcion `select depurar_nro_tel_oficinas()` obtenemos un mensaje de ok y ejecutando `select listado_oficinas()` veremos los cambios realizados
 
 
 

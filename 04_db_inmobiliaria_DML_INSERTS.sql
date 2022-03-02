@@ -74,8 +74,7 @@ alter sequence id_sec_logs_del restart with 1;
 -- ==================================
 
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'oficinas';
+select descripcion_oficinas();
 
 
 
@@ -107,6 +106,7 @@ select insertar_registros_oficinas(
 
 
 select listado_oficinas();
+
 select listado_logs_inserts();
 
 
@@ -149,6 +149,7 @@ select insertar_registros_oficinas_detalles(
 
 
 select listado_oficinas_detalles();
+
 select listado_logs_inserts();
 
 
@@ -181,11 +182,12 @@ select listado_logs_inserts();
 -- ,'NO_APLICA');
 
 
-select * from servicios_oficinas;
+select listado_servicios_oficinas();
 
 
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'servicios_oficinas';
+
+select descripcion_servicios_oficinas();
+
 
 
 select listado_oficinas();
@@ -247,10 +249,10 @@ select listado_logs_inserts();
 -- campos DATE -->Ej 2020/09/09
 
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'empleados';
+select descripcion_empleados();
 
-select * from empleados;
+
+select listado_empleados();
 
 select listado_oficinas();
 select listado_empleados();
@@ -395,10 +397,11 @@ select listado_logs_inserts();
 -- ================================================
 
 
-select * from propietarios_inmuebles;
+select listado_propietarios_inmuebles();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'propietarios_inmuebles';
+
+select descripcion_propietarios_inmuebles();
+
 
 
 select listado_propietarios_inmuebles();
@@ -446,10 +449,11 @@ select listado_logs_inserts();
 -- ================================================
 
 
-select * from inmuebles_descripciones;
+select listado_inmuebles_descripciones();
 
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'inmuebles_descripciones';
+
+select descripcion_inmuebles_descripciones();
+
 
 
 -- -------------------------------------------------
@@ -496,10 +500,11 @@ select listado_logs_inserts();
 -- ================================================
 
 
-select * from inmuebles_medidas;
+select listado_inmuebles_medidas();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'inmuebles_medidas';
+
+select descripcion_inmuebles_medidas();
+
 
 
 
@@ -552,10 +557,9 @@ select listado_logs_inserts();
 -- ENUM estado_inmueble ('VENDIDO','DISPONIBLE','NO_DISPONIBLE','FALTA_INSPECCION');
 
 
-select * from inmuebles;
+select listado_inmuebles();
 
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'inmuebles';
+select descripcion_inmuebles();
 
 
 
@@ -603,10 +607,9 @@ select listado_logs_inserts();
 -- ======= TABLA CLIENTES ===========
 -- ===================================
 
-select * from clientes;
+select listado_clientes();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'clientes';
+select descripcion_clientes();
 
 -- campos DATE -->Ej 2020/09/09
 
@@ -651,11 +654,10 @@ select listado_clientes();
 
 
 
-select * from citas_inmuebles;
+select listado_citas_inmuebles();
 
 
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'citas_inmuebles';
+select descripcion_citas_inmuebles();
 
 
 select listado_inmuebles();
@@ -708,10 +710,9 @@ select listado_logs_inserts();
 -- =============================================
 
 
-select * from inmuebles_marketing;
+select listado_inmuebles_marketing();
 
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'inmuebles_marketing';
+select descripcion_inmuebles_marketing();
 
 
 select insertar_registro_inmuebles_marketing(
@@ -751,10 +752,9 @@ select listado_inmuebles_marketing();
 
 
 
-select * from inspecciones_inmuebles;
+select listado_inspecciones_inmuebles();
 
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'inspecciones_inmuebles';
+select descripcion_inspecciones_inmuebles();
 
 
 
@@ -790,10 +790,10 @@ select listado_logs_inserts();
 
 
 
-select * from gerentes;
+select listado_gerentes();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'gerentes';
+select descripcion_gerentes();
+
 
 
 select listado_empleados();
@@ -828,10 +828,9 @@ select listado_logs_inserts();
 -- ======= TABLA ADMINISTRADORES ========
 -- ======================================
 
-select * from administradores;
+select listado_administradores();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'administradores';
+select descripcion_administradores();
 
 
 select listado_empleados();
@@ -865,10 +864,9 @@ select listado_logs_inserts();
 -- ======= TABLA VENDEDORES ========
 -- =================================
 
-select * from vendedores;
+select listado_vendedores();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'vendedores';
+select descripcion_vendedores();
 
 
 select listado_empleados();
@@ -909,10 +907,9 @@ select listado_logs_inserts();
 -- hora_venta time '09:00:07'
 
 
-select * from ventas;
+select listado_ventas();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'ventas';
+select descripcion_ventas();
 
 
 
@@ -954,10 +951,9 @@ select listado_logs_inserts();
 -- importe_total_compras_usd se considera la suma de todas las compras
 
 
-select * from compradores;
+select listado_compradores();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'compradores';
+select descripcion_compradores();
 
 
 select listado_clientes();
@@ -998,11 +994,9 @@ select listado_logs_inserts();
 -- hora_venta time '09:00:07'
 
 
-select * from facturas;
+select listado_facturas();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'facturas';
-
+select descripcion_facturas();
 
 select listado_ventas();
 select listado_inmuebles();
@@ -1022,7 +1016,7 @@ select insertar_registros_facturas(
 
 
 select listado_facturas();
-select listado_logs_inserts();s
+select listado_logs_inserts();
 
 
 
@@ -1043,11 +1037,9 @@ select listado_logs_inserts();s
 
 
 
-select * from facturas_detalles;
+select listado_facturas_detalles();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'facturas_detalles';
-
+select descripcion_facturas_detalles();
 
 select listado_ventas();
 select listado_inmuebles();

@@ -18,50 +18,59 @@ drop function if exists listado_logs_inserts() cascade;
 
 -- oficinas
 drop function if exists listado_oficinas() cascade;
+drop function if exists descripcion_oficinas() cascade;
 drop function if exists insertar_registro_oficinas() cascade;
 drop function if exists insertar_registros_oficinas() cascade;
 
 -- oficinas_detalles
 drop function if exists listado_oficinas_detalles() cascade;
+drop function if exists descripcion_oficinas_detalles() cascade;
 drop function if exists insertar_registro_oficinas_detalles() cascade;
 drop function if exists insertar_registros_oficinas_detalles() cascade;
 
 -- empleados
 drop function if exists listado_empleados() cascade;
+drop function if exists descripcion_empleados() cascade;
 drop function if exists insertar_registro_empleados() cascade;
 drop function if exists insertar_registros_empleados() cascade;
 
 -- propietarios_inmuebles
 drop function if exists listado_propietarios_inmuebles() cascade; 
+drop function if exists descripcion_propietarios_inmuebles() cascade;
 drop function if exists insertar_registro_propietarios_inmuebles() cascade;
 drop function if exists insertar_registros_propietarios_inmuebles() cascade;
 
 
 -- inmuebles_descripciones
 drop function if exists listado_inmuebles_descripciones() cascade;
+drop function if exists descripcion_inmuebles_descripciones() cascade;
 drop function if exists insertar_registro_inmuebles_descripciones() cascade;
 drop function if exists insertar_registros_inmuebles_descripciones() cascade;
 
 
 -- inmuebles_medidas
 drop function if exists listado_inmuebles_medidas() cascade;
+drop function if exists descripcion_inmuebles_medidas() cascade;
 drop function if exists insertar_registro_inmuebles_medidas() cascade;
 drop function if exists insertar_registros_inmuebles_medidas() cascade;
 
 
 -- inmuebles
 drop function if exists listado_inmuebles() cascade;
+drop function if exists descripcion_inmuebles() cascade;
 drop function if exists insertar_registro_inmuebles() cascade;
 drop function if exists insertar_registros_inmuebles() cascade;
 
 
 -- inmuebles_marketing
 drop function if exists listado_inmuebles_marketing() cascade;
+drop function if exists descripcion_inmuebles_marketing() cascade;
 drop function if exists insertar_registro_inmuebles_marketing() cascade;
 drop function if exists insertar_registros_inmuebles_marketing() cascade;
 
 -- inspecciones_inmuebles
 drop function if exists listado_inspecciones_inmuebles() cascade;
+drop function if exists descripcion_inspecciones_inmuebles() cascade;
 drop function if exists insertar_registro_inspecciones_inmuebles() cascade;
 drop function if exists insertar_registros_inspecciones_inmuebles() cascade;
 
@@ -69,12 +78,14 @@ drop function if exists insertar_registros_inspecciones_inmuebles() cascade;
 
 -- gerentes
 drop function if exists listado_gerentes() cascade;
+drop function if exists descripcion_gerentes() cascade;
 drop function if exists insertar_registro_gerentes() cascade;
 drop function if exists insertar_registros_gerentes() cascade;
 
 
 -- administradores
 drop function if exists listado_administradores() cascade;
+drop function if exists descripcion_administradores() cascade;
 drop function if exists insertar_registro_administradores() cascade;
 drop function if exists insertar_registros_administradores() cascade;
 
@@ -82,30 +93,35 @@ drop function if exists insertar_registros_administradores() cascade;
 
 -- vendedores
 drop function if exists listado_vendedores() cascade;
+drop function if exists descripcion_vendedores() cascade;
 drop function if exists insertar_registro_vendedores() cascade;
 drop function if exists insertar_registros_vendedores() cascade;
 
 
 -- ventas
 drop function if exists listado_ventas() cascade;
+drop function if exists descripcion_ventas() cascade;
 drop function if exists insertar_registro_ventas() cascade;
 drop function if exists insertar_registros_ventas() cascade;
 
 
 -- compradores
 drop function if exists listado_compradores() cascade;
+drop function if exists descripcion_compradores() cascade;
 drop function if exists insertar_registro_compradores() cascade;
 drop function if exists insertar_registros_compradores() cascade;
 
 
 -- facturas
 drop function if exists listado_facturas() cascade;
+drop function if exists descripcion_facturas() cascade;
 drop function if exists insertar_registro_facturas() cascade;
 drop function if exists insertar_registros_facturas() cascade;
 
 
 -- facturas_detalles
 drop function if exists listado_facturas_detalles() cascade;
+drop function if exists descripcion_facturas_detalles() cascade;
 drop function if exists insertar_registro_facturas_detalles() cascade;
 drop function if exists insertar_registros_facturas_detalles() cascade;
 
@@ -164,8 +180,46 @@ end;
 $$ language plpgsql;
 
 
--- https://www.postgresqltutorial.com/postgresql-uuid/
--- https://www.palomargc.com/posts/Introducci%C3%B3n-a-la-administraci%C3%B3n-de-PostgreSQL/
+
+
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- ===========================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA OFICINAS -------
+-- ===========================================================
+
+
+create or replace function descripcion_oficinas(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'oficinas') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;-- Por cada iteracion se guarda el registro completo
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
 
 
 -- -----------------------------------------------------------------------------
@@ -194,6 +248,9 @@ end;
 
 	
 $$ language plpgsql;
+
+
+
 
 -- --------------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------------
@@ -849,6 +906,46 @@ $$ language plpgsql;
 
 
 -- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- ====================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA OFICINAS_DETALLES -------
+-- ====================================================================
+
+
+create or replace function descripcion_oficinas_detalles(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'oficinas_detalles') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+-- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
 
 
@@ -1139,6 +1236,45 @@ begin
 	end loop;
 	return;
 	
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- ====================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA SERVICIOS_OFICINAS -------
+-- ====================================================================
+
+
+create or replace function descripcion_servicios_oficinas(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'servicios_oficinasn') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
 end;
 
 	
@@ -1881,6 +2017,46 @@ $$ language plpgsql;
 
 
 
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- ============================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA EMPLEADOS -------
+-- ============================================================
+
+
+create or replace function descripcion_empleados(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'empleados') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
 -- =======================================================================
 -- ----------- INSERCION DE 1 REGISTRO TABLA EMPLEADOS -------------------- 
 -- =======================================================================
@@ -2605,6 +2781,47 @@ $$ language plpgsql;
 
 
 
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA PROPIETARIOS_INMUEBLES -------
+-- =========================================================================
+
+
+create or replace function descripcion_propietarios_inmuebles(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'propietarios_inmuebles') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
 
@@ -2849,7 +3066,7 @@ $$ language plpgsql;
 -- -----------------------------------------------------------------------------
 
 -- =======================================================================
--- ----------- INSERCION DE 2 REGISTROS TABLA PROPIETARIOS_INMUEBLES ------------
+-- ----------- INSERCION DE 2 REGISTROS TABLA PROPIETARIOS_INMUEBLES -----
 -- =======================================================================
 
 
@@ -3298,6 +3515,47 @@ end;
 
 	
 $$ language plpgsql;
+
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA INMUEBLES_DESCRIPCIONES -------
+-- =========================================================================
+
+
+create or replace function descripcion_inmuebles_descripciones(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'inmuebles_descripciones') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
 
 
 
@@ -3993,6 +4251,48 @@ $$ language plpgsql;
 
 
 
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA INMUEBLES_MEDIDAS -------
+-- =========================================================================
+
+
+create or replace function descripcion_inmuebles_medidas(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'inmuebles_medidas') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
 
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
@@ -4669,6 +4969,47 @@ end;
 
 	
 $$ language plpgsql;
+
+
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA INMUEBLES -------
+-- =========================================================================
+
+
+create or replace function descripcion_inmuebles(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'inmuebles') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
 
 
 
@@ -5396,13 +5737,52 @@ $$ language plpgsql;
 
 
 
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- ===========================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA CLIENTES -------
+-- ===========================================================
+
+
+create or replace function descripcion_clientes(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'clientes') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
 
 -- =======================================================================
 -- ----------- INSERCION DE 1 REGISTRO TABLA CLIENTES -------------------
 -- =======================================================================
-
-
-
 
 
 select * from clientes;
@@ -6061,7 +6441,7 @@ $$ language plpgsql;
 
 
 -- ===================================
--- ======= TABLA CITAS_INMUEBLES ===========
+-- ======= TABLA CITAS_INMUEBLES =====
 -- ===================================
 
 
@@ -6100,6 +6480,49 @@ end;
 
 	
 $$ language plpgsql;
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA CITAS_INMUEBLES -------
+-- =========================================================================
+
+
+create or replace function descripcion_citas_inmuebles(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'citas_inmuebles') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
 
 
 
@@ -6798,6 +7221,49 @@ $$ language plpgsql;
 
 
 
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA INMUEBLES_MARKETING -------
+-- =========================================================================
+
+
+create or replace function descripcion_inmuebles_marketing(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'inmuebles_marketing') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
+
 
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
@@ -7485,6 +7951,48 @@ end;
 
 	
 $$ language plpgsql;
+
+
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA INSPECCIONES_INMUEBLES -------
+-- =========================================================================
+
+
+create or replace function descripcion_inspecciones_inmuebles(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'inspecciones_inmuebles') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
 
 
 
@@ -8225,6 +8733,49 @@ $$ language plpgsql;
 
 
 
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- ===========================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA GERENTES -------
+-- ===========================================================
+
+
+create or replace function descripcion_gerentes(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'gerentes') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
+
 
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
@@ -8913,6 +9464,49 @@ $$ language plpgsql;
 
 
 
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA PROPIETARIOS_INMUEBLES -------
+-- =========================================================================
+
+
+create or replace function descripcion_administradores(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'administradores') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
 -- -----------------------------------------------------------------------------
 -- -----------------------------------------------------------------------------
 
@@ -9580,6 +10174,48 @@ end;
 
 	
 $$ language plpgsql;
+
+
+
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA PROPIETARIOS_INMUEBLES -------
+-- =========================================================================
+
+
+create or replace function descripcion_vendedores(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'vendedores') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
 
 
 
@@ -10946,6 +11582,48 @@ $$ language plpgsql;
 
 
 
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA COMPRADORES -------
+-- =========================================================================
+
+
+create or replace function descripcion_compradores(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'compradores') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
+
+
+
 
 
 
@@ -11597,6 +12275,48 @@ end;
 
 	
 $$ language plpgsql;
+
+
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA FACTURAS -------
+-- =========================================================================
+
+
+create or replace function descripcion_facturas(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
+
 
 
 
@@ -12269,6 +12989,46 @@ end;
 
 	
 $$ language plpgsql;
+
+
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA FACTURAS_DETALLES -------
+-- =========================================================================
+
+
+create or replace function descripcion_facturas_detalles(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'facturas_detalles') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
+
 
 
 

@@ -259,7 +259,7 @@ select listado_oficinas();
 
 
 -- Cambiamos el Numero a traves del id
-create or replace function actualizar_nro_tel_oficinas(nro_tel_input varchar, id_input int ) returns void as $$
+create or replace function actualizar_nro_tel_oficinas(id_input int, nro_tel_input varchar) returns void as $$
 
 declare 
 
@@ -632,7 +632,7 @@ information_schema.columns where table_name = 'oficinas_detalles';
 
 
 -- Cambiamos la localidad a traves del id
-create or replace function actualizar_loc_oficinas_detalles(loc_input varchar, id_input int ) returns void as $$
+create or replace function actualizar_loc_oficinas_detalles(id_input int , loc_input varchar) returns void as $$
 
 declare 
 
@@ -796,136 +796,413 @@ $$ language plpgsql;
 
 
 
-
-
-
-
-/*
-
-
-
-
-
-
 -- --------- CAMPO TIPO_OFICINA --------------
 
 
-select * from oficinas_detalles;
+select listado_oficinas_detalles();
+
 
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'oficinas_detalles';
 
 
 
+
 -- Cambiamos el tipo de oficina enum
-create or replace function cambiar_tipo_of_oficinas_detalles(tipo_input tipo_oficina, id_input int) returns void as $$
+create or replace function actualizar_tipo_of_oficinas_detalles(id_input int, tipo_of_input tipo_oficina_enum) returns void as $$
 
 declare 
 
-id_anterior varchar := (select id from oficinas_detalles where id=id_input);
-tipo_anterior varchar := (select "tipo_oficina" from oficinas_detalles where id=id_input);
+id_anterior int := (select id from oficinas_detalles where id=id_input);
+tipo_of_anterior varchar := (select "tipo_oficina" from oficinas_detalles where id=id_input);
+
+
+
+-- TABLA LOGS_UPDATES
+
+uuid_registro_of_det uuid;
+nombre_tabla_of_det varchar := 'oficinas_detalles';
+campo_tabla_of_det varchar := 'tipo_oficina';
+accion_of_det varchar := 'update';
+fecha_of_det date ;
+hora_of_det time ;
+usuario_of_det varchar;
+usuario_sesion_of_det varchar;
+db_of_det varchar;
+db_version_of_det varchar;
+
+
+id_last_logs_upd int;
 
 
 begin 
 	
-	raise notice '---------------------------------------------------------------------';
-	raise notice '-- Modificación Campo "tipo_oficina" Tabla "oficinas_detalles" --';
-	raise notice '---------------------------------------------------------------------';
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
+						using hint='------- REVISAR EL RESGISTRO DE MODIFICACIÓN -------';
+										
+									
+	
+	elsif (
+		((tipo_of_input = 'EJECUTIVA') or (tipo_of_input = 'ESTANDAR') or (tipo_of_input = 'PEQUEÑA'))
+		and 
+		((id_input > 0) and (id_anterior > 0 ))
+		) then
+	
+	
+	
+	raise notice '---------------------------------------------------------------';
+	raise notice '-- Modificación  Campo "tipo_oficina" Tabla "oficinas_detalles" --';
+	raise notice '---------------------------------------------------------------';
 
 	raise notice '';
 	raise notice '-- Registro Anterior --';
 	raise notice '';
 
 	raise notice ' Id : %',  id_anterior;
-	raise notice ' Tipo Oficina : %', tipo_anterior;
-
-	update oficinas_detalles set tipo_oficina = tipo_input where id = id_input; 
+	raise notice 'Tipo Oficina : %', tipo_of_anterior;
 	
+	
+	update oficinas_detalles set tipo_oficina  = tipo_of_input where id = id_input;
+
 	raise notice '';
 	raise notice '';
 	raise notice '-- Registro Actual --';
 	raise notice '';
 
-	raise notice ' Id : %',  id_input;
-	raise notice ' Tipo Oficina : %', tipo_input;
+	raise notice ' Id : %',  id_input;	
+	raise notice 'Tipo Oficina : %', tipo_of_input;
 	
-
+	
 
 		raise notice ' ';
 	raise notice 'ok!';
 	raise notice ' ';
 
 
-end
+
+	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
+		raise notice '----------------------------------------------';
+	
+	
+		--------------------------------------- INSERCION REGISTRO logs_updates----------------------------------------
+	
+	
+		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
+		
+		(id_input , nombre_tabla_of_det, campo_tabla_of_det , accion_of_det);
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
+	
+		
+	
+		id_last_logs_upd  := (select max(id) from logs_updates);
+	
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_of_det := (select uuid_registro from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+		fecha_of_det := (select fecha from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+		
+		hora_of_det := (select hora from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	
+		usuario_of_det := (select usuario from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	
+		usuario_sesion_of_det := (select usuario_sesion from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	
+		db_of_det := (select db from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	 	
+		db_version_of_det := (select db_version from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Actualización --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_input ;
+		raise notice 'UUID Registro : %', uuid_registro_of_det;
+		raise notice 'Tabla : %', nombre_tabla_of_det;
+		raise notice 'Campo : %', campo_tabla_of_det;
+		raise notice 'Acción : %', accion_of_det;
+		raise notice 'Fecha : %', fecha_of_det;
+		raise notice 'Hora : %', hora_of_det;
+     	raise notice 'Usuario : %', usuario_of_det;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_of_det;
+        raise notice 'DB : %', db_of_det;
+        raise notice 'Versión DB : %', db_version_of_det;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN actualizar_tipo_of_oficinas_detalles() ====='
+						using hint = '------- actualizar_tipo_of_oficinas_detalles() ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
+
+
+
+
 
 
 
 -- --------- CAMPO SUPERFICIE_TOTAL --------------
 
 
-create or replace function cambiar_superficie_total_oficinas_detalles(sup_total_input decimal, id_input int) returns void as $$
+select listado_oficinas_detalles();
+
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'oficinas_detalles';
+
+
+
+
+create or replace function actualizar_sup_total_oficinas_detalles(id_input int, sup_total_input decimal) returns void as $$
 
 declare 
 
-id_anterior varchar := (select id from oficinas_detalles where id=id_input);
+id_anterior int := (select id from oficinas_detalles where id=id_input);
 sup_total_anterior varchar := (select superficie_total from oficinas_detalles where id=id_input);
+
+
+-- TABLA LOGS_UPDATES
+
+uuid_registro_of_det uuid;
+nombre_tabla_of_det varchar := 'oficinas_detalles';
+campo_tabla_of_det varchar := 'superficie_total';
+accion_of_det varchar := 'update';
+fecha_of_det date ;
+hora_of_det time ;
+usuario_of_det varchar;
+usuario_sesion_of_det varchar;
+db_of_det varchar;
+db_version_of_det varchar;
+
+
+id_last_logs_upd int;
 
 
 begin 
 	
-	raise notice '-------------------------------------------------------------------------';
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
+						using hint='------- REVISAR EL RESGISTRO DE MODIFICACIÓN -------';
+										
+									
+	
+	elsif (
+		((sup_total_input > 0.0) and (id_input > 0) and (id_anterior > 0 ))
+		) then
+	
+	
+	
+	raise notice '----------------------------------------------------------------------';
 	raise notice '-- Modificación  Campo "superficie_total" Tabla "oficinas_detalles" --';
-	raise notice '-------------------------------------------------------------------------';
+	raise notice '----------------------------------------------------------------------';
 
 	raise notice '';
 	raise notice '-- Registro Anterior --';
 	raise notice '';
 
 	raise notice ' Id : %',  id_anterior;
-	raise notice ' Superficie Total : %', sup_total_anterior;
-
-
-	update oficinas_detalles set superficie_total = sup_total_input where id = id_input; 
-
+	raise notice 'Superficie Total : %', sup_total_anterior;
 	
+	
+	update oficinas_detalles set superficie_total  = sup_total_input where id = id_input;
+
 	raise notice '';
 	raise notice '';
 	raise notice '-- Registro Actual --';
 	raise notice '';
 
-	raise notice ' Id : %',  id_input;
-	raise notice ' Superficie Total : %', sup_total_input;
+	raise notice ' Id : %',  id_input;	
+	raise notice 'Superficie Total : %', sup_total_input;
+	
+	
 
 		raise notice ' ';
 	raise notice 'ok!';
-	raise notice ' ';	
+	raise notice ' ';
+
+
 
 	
-end
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
+		raise notice '----------------------------------------------';
+	
+	
+		--------------------------------------- INSERCION REGISTRO logs_updates----------------------------------------
+	
+	
+		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
+		
+		(id_input , nombre_tabla_of_det, campo_tabla_of_det , accion_of_det);
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
+	
+		
+	
+		id_last_logs_upd  := (select max(id) from logs_updates);
+	
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_of_det := (select uuid_registro from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+		fecha_of_det := (select fecha from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+		
+		hora_of_det := (select hora from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	
+		usuario_of_det := (select usuario from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	
+		usuario_sesion_of_det := (select usuario_sesion from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	
+		db_of_det := (select db from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	 	
+		db_version_of_det := (select db_version from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Actualización --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_input ;
+		raise notice 'UUID Registro : %', uuid_registro_of_det;
+		raise notice 'Tabla : %', nombre_tabla_of_det;
+		raise notice 'Campo : %', campo_tabla_of_det;
+		raise notice 'Acción : %', accion_of_det;
+		raise notice 'Fecha : %', fecha_of_det;
+		raise notice 'Hora : %', hora_of_det;
+     	raise notice 'Usuario : %', usuario_of_det;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_of_det;
+        raise notice 'DB : %', db_of_det;
+        raise notice 'Versión DB : %', db_version_of_det;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN actualizar_sup_total_oficinas_detalles() ====='
+						using hint = '------- actualizar_sup_total_oficinas_detalles() ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
 
 
 
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
-
+-- ===================================
 -- ======= TABLA EMPLEADOS ===========
-
+-- ===================================
 
 
 -- --------- CAMPO NOMBRE Y CAMPO APELLIDO ---------------
 
-select * from empleados;
+select listado_empleados();
 
 -- Depuracionn general de ambos campos
-create or replace function depurar_nombres_apellidos_empleados() returns void as $$
+create or replace function depurar_nomb_apell_empleados() returns void as $$
 
-begin
+
+	
+declare 
+
+
+id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from empleados);
+	
+	if(
+	(id_anterior < 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		(id_anterior > 0)
+		) then
+
+
 	
 	raise notice '----------------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "nombre" y Campo "apellido" Tabla "empleados" --';
@@ -944,21 +1221,32 @@ begin
 	update empleados set apellido = replace(apellido, ' ', '');
 
 
-	
-	raise notice ' ';
-	raise notice 'ok!';
-	raise notice ' ';
 
-end
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN depurar_nomb_apell_empleados() ====='
+						using hint = '------- depurar_nomb_apell_empleados() ------- ';
+		
+	end if;
+	
+
+end;
+
+
+
 
 $$ language plpgsql;
 
 
 
 
+
+
+/*
 -- --------- CAMPO CUIL ---------------
 
-select * from empleados;
+select listado_empleados();
 
 -- actualizacion de cuil por id
 create or replace function cambiar_cuil_empleados(cuil_input varchar, id_input int) returns void as $$
@@ -1002,6 +1290,20 @@ begin
 	
 end
 $$ language plpgsql;
+
+
+*/
+
+
+
+
+
+
+
+
+
+/*
+
 
 
 

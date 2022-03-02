@@ -48,9 +48,9 @@ select listado_logs_updates();
 update oficinas set nro_telefono='+5491152794991' where id = 1;
 
 -- Actualizamos los Nros con funcion
-select actualizar_nro_tel_oficinas('0111152794690', 1);
+select actualizar_nro_tel_oficinas(1,'0111152794690');
 
-select actualizar_nro_tel_oficinas('+541156541844', 3);
+select actualizar_nro_tel_oficinas(3,'+541156541844');
 
 
 select listado_oficinas();
@@ -92,7 +92,7 @@ information_schema.columns where table_name = 'oficinas_detalles';
 
 
 -- Cambio de Localidad por funcion
-select actualizar_loc_oficinas_detalles('Tribunales', 1);
+select actualizar_loc_oficinas_detalles(1,'Tribunales');
 
 
 select listado_oficinas_detalles();
@@ -104,13 +104,59 @@ select listado_logs_updates();
 
 
 
+-- --------- CAMPO TIPO_OFICINA --------------
+
+
+select listado_oficinas_detalles();
+
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'oficinas_detalles';
+
+
+select actualizar_tipo_of_oficinas_detalles(3, 'PEQUEÑA');
 
 
 
+select listado_logs_updates();
 
 
 
+-- --------- CAMPO SUPERFICIE_TOTAL --------------
 
+
+select listado_oficinas_detalles();
+
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'oficinas_detalles';
+
+
+select actualizar_sup_total_oficinas_detalles(1 , 150);
+
+
+select listado_logs_updates();
+
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+-- ===================================
+-- ======= TABLA EMPLEADOS ===========
+-- ===================================
+
+
+
+-- --------- CAMPO NOMBRE Y CAMPO APELLIDO ---------------
+
+select listado_empleados();
+
+
+select column_name, data_type, is_nullable  from 
+information_schema.columns where table_name = 'oficinas_detalles';
+
+
+select depurar_nomb_apell_empleados();
 
 
 

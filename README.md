@@ -1,5 +1,10 @@
 # Proyecto db_inmobiliaria con PostgreSQL.
 
+</br>
+
+## Descripción 
+
+
 * En Este Proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos acerca de nua Inmobiliaria con el SGBD PostgreSQL.
 * El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiándome por las informaciones y características del mercado Inmobiliario en Argentina (valores, precios, medidas, léxico, etc).
 *  Las páginas de inmobiliaria más conocidas en las que me guíe son zonaprop, re/max y baigún.
@@ -143,12 +148,7 @@
   
   #### Sección 3) Programación de Bases de Datos con PL/pgSQL
   
-  - [ Paso 4) Funciones con PL/pgSQL .](#paso-3-funciones-con-plpgsql)
-
-
- #### Sección 3) Programación de Bases de Datos con PL/pgSQL
-  
-  - [ Paso 4) Funciones con PL/pgSQL .](#paso-3-funciones-con-plpgsql)
+  - [ Paso 4) Funciones con PL/pgSQL .](#paso-4-funciones-con-plpgsql)
 
 
 #### Sección 4) Uso y Manejo de GIT
@@ -572,6 +572,300 @@ $$ language plpgsql;
 
 
 </br>
+
+#### 4.2) Modelo de Función de Actualización de Registros en la DB
+#### (Esta función nos permite actualizar un Registro para la Tabla oficinas y otro para la Tabla logs_updates, la estructura de la función aplica para el resto de las tablas, se debe cambiar el nombre de la función, los parametros de la misma, las variables declaradas, las condiciones de inserción, los campos a insertar, etc.)
+
+```plpgsql
+
+
+create or replace function actualizar_registro_oficinas(id_input int, nombre_input varchar, dir_input varchar
+, nro_tel_input varchar, email_input varchar) returns void as $$
+
+declare 
+
+
+-- Registro Anterior
+ id_anterior varchar:= (select id from oficinas where id=id_input);
+ nombre_anterior varchar:= (select nombre from oficinas where id=id_input);
+ dir_anterior varchar := (select direccion from oficinas where id=id_input);
+ nro_tel_anterior varchar := (select nro_telefono from oficinas where id=id_input);
+ email_anterior varchar := (select email from oficinas where id=id_input);
+
+
+-- TABLA LOGS_UPDATES
+
+uuid_registro_of uuid;
+nombre_tabla_of varchar := 'oficinas';
+campo_tabla_of varchar := 'all';
+accion_of varchar := 'update';
+fecha_of date ;
+hora_of time ;
+usuario_of varchar;
+usuario_sesion_of varchar;
+db_of varchar;
+db_version_of varchar;
+
+
+id_last_logs_upd int;
+
+
+begin
+	
+	
+	
+	if(
+	(nombre_input = '') or (dir_input = '') or 
+	(nro_tel_input = '') or (email_input = '')
+	) then
+	
+		raise exception '===== NO SE PUEDE INGRESAR UN REGISTRO CON CAMPOS VACIOS ===== '
+						using hint='------- REVISAR LOS CAMPOS DE LA OFICINA -------';
+										
+									
+	
+	elsif (
+		(nombre_input <> '') and (dir_input <> '') and 
+		(nro_tel_input <> '') and (email_input <> '')
+		) then
+	
+	
+	raise notice '-----------------------------------------------------';
+	raise notice '-- Modificación de Todos los Campos Tabla "oficinas" --';
+	raise notice '-----------------------------------------------------';
+
+	raise notice '';
+	raise notice '-- Registro Anterior --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_anterior;
+	raise notice 'Nombre : %', nombre_anterior;
+	raise notice 'Dirección : %', dir_anterior;
+	raise notice 'Nro Telefono : %', nro_tel_anterior;
+	raise notice 'Email : %', email_anterior;
+	
+	update oficinas set nombre = nombre_input, direccion = dir_input
+	, nro_telefono = nro_tel_input, email = email_input where id = id_input;
+	
+	raise notice '';
+	raise notice '';
+	raise notice '-- Registro Actual --';
+	raise notice '';
+
+	raise notice ' Id : %',  id_input;
+	raise notice 'Nombre : %', nombre_input;
+	raise notice 'Dirección : %', dir_input;
+	raise notice 'Nro Telefono : %', nro_tel_input;
+	raise notice 'Email : %', email_input;
+
+	raise notice ' ';
+	raise notice 'ok!';
+	raise notice ' ';	
+
+
+
+	
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
+		raise notice '----------------------------------------------';
+	
+	
+		--------------------------------------- INSERCION REGISTRO LOGS_UPDATES----------------------------------------
+	
+	
+		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
+		
+		(id_input , nombre_tabla_of, campo_tabla_of , accion_of);
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO LOGS_UPDATES ----------------------------------------
+	
+	
+		id_last_logs_upd  := (select max(id) from logs_updates);
+	
+	
+	
+		-- Traemos los valores del Registro Actualizado
+		uuid_registro_of := (select uuid_registro from logs_updates
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas'));
+		
+		fecha_of := (select fecha from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas'));
+		
+		
+		hora_of := (select hora from logs_updates
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas'));
+		
+	
+		usuario_of := (select usuario from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas'));
+		
+	
+		usuario_sesion_of := (select usuario_sesion from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas'));
+		
+	
+		db_of := (select db from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas'));
+		
+	 	
+		db_version_of := (select db_version from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas'));
+		
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Actualización --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_input ;
+		raise notice 'UUID Registro : %', uuid_registro_of;
+		raise notice 'Tabla : %', nombre_tabla_of;
+		raise notice 'Acción : %', accion_of;
+		raise notice 'Fecha : %', fecha_of;
+		raise notice 'Hora : %', hora_of;
+     	raise notice 'Usuario : %', usuario_of;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
+        raise notice 'DB : %', db_of;
+        raise notice 'Versión DB : %', db_version_of;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN actualizar_registro_oficinas() ====='
+						using hint = '-------actualizar_registro_oficinas------- ';
+		
+	end if;
+	
+
+end;
+	
+$$ language plpgsql;
+
+
+```
+* A modo de simplificación no se anexan imagenes ni códigos redundantes, si se ejecuta esta función obtendríamos un resultado similar al presentado en las anteriores funciones
+* Como se mencionó, la idea de desarrollar funciones para cada operación es limitar el grado de libertad que el desarrollador tenga a la hora de manipular los datos de la base de datos y obtener registro de todo.
+* ES IMPORTANTE ACLARAR QUE LAS FUNCIONES DE DEPURACION DESARROLLADAS NO SE APLICA UN REGISTRO DE LOGS YA QUE NO SE CONSIGUIÓ OBTENER SIN PROBLEMAS LOS ID´S PUNTUALES DE LOS REGISTROS PUNTUALES QUE SE ACTUALIZAN CON UNA FUNCIÓN NATIVA DE POSTGRES, QUEDA A LA ESPERA DE REVISIÓN..
+* Función de depuración general de registros..
+```plpgsql
+
+
+-- ----------- DEPURACION GENERAL CAMPO NRO_TELEFONO --------------
+
+
+select listado_oficinas();
+
+
+-- Cambiamos el Numero a traves del id
+create or replace function depurar_nro_tel_oficinas() returns void as $$
+
+declare 
+
+-- TABLA OFICINAS
+id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from oficinas);
+	
+	if(
+	(id_anterior < 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		(id_anterior > 0)
+		) then
+	
+	
+	
+	raise notice '------------------------------------------------------------';
+	raise notice '-- Depuración del Campo "nro_telefono" Tabla "oficinas" --';
+	raise notice '------------------------------------------------------------';
+
+
+
+	-- Remplazamos todos los Patrones de Caracteristica de Buenos Aires (11)
+	--update oficinas set nro_telefono = replace (nro_telefono, '011 ', '11') returning id;
+
+	update oficinas set nro_telefono = replace (nro_telefono, '011', '11');
+
+	-- Si no está el +54 lo Agregamos
+	update oficinas set nro_telefono = replace (nro_telefono, '11 ', '+5411');
+
+	
+	-- Reemplazamos los +54911 a +5411 (9 es caracteristica de Celular)
+	update oficinas set nro_telefono = replace (nro_telefono, '+54911', '+5411');
+
+
+	-- Quitamos los guiones
+	update oficinas set nro_telefono = replace(nro_telefono, '-', ' ');
+	
+	
+	-- Quitamos los puntos
+	 update oficinas set nro_telefono = replace(nro_telefono, '.', ' ');
+	
+	
+		
+	-- Quitamos los espacios en Blanco
+	 update oficinas set nro_telefono = replace(nro_telefono, ' ', '');
+	
+
+	
+	
+	
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN depurar_nro_tel_oficinas() ====='
+						using hint = '-------actualizar_nro_tel_oficinas------- ';
+		
+	end if;
+	
+
+end;
+
+
+
+$$ language plpgsql;
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </br>
 </br>
 </br>

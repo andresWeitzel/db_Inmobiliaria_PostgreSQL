@@ -48,13 +48,15 @@ $$ language plpgsql;
 -- ---------------------------------------------------------------------------------
 
 
-
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
 
 
--- ======= TABLA OFICINAS ===========
+-- ===============================
+-- ======= TABLA OFICINAS ========
+-- ===============================
+
 
 select * from oficinas;
 
@@ -446,26 +448,8 @@ create or replace function depurar_nro_tel_oficinas() returns void as $$
 
 declare 
 
-
+-- TABLA OFICINAS
 id_anterior int;
-nro_tel_anterior varchar;
-
-
--- TABLA LOGS_UPDATES
-
-uuid_registro_of uuid;
-nombre_tabla_of varchar := 'oficinas';
-campo_tabla_of varchar := 'nro_telefono';
-accion_of varchar := 'update';
-fecha_of date ;
-hora_of time ;
-usuario_of varchar;
-usuario_sesion_of varchar;
-db_of varchar;
-db_version_of varchar;
-
-
-id_last_logs_upd int;
 
 
 
@@ -495,614 +479,39 @@ begin
 
 
 	-- Remplazamos todos los Patrones de Caracteristica de Buenos Aires (11)
-	update oficinas set nro_telefono = replace (nro_telefono, '011 ', '11');
+	--update oficinas set nro_telefono = replace (nro_telefono, '011 ', '11') returning id;
 
-	id_anterior := (select max(id) from oficinas);
-	nro_tel_anterior := (select nro_telefono from oficinas where id = id_anterior);
+	update oficinas set nro_telefono = replace (nro_telefono, '011', '11');
 
-	raise notice '';
-	raise notice '';
-	raise notice '-- Registro Actual --';
-	raise notice '';
-
-	raise notice ' Id : %',  id_anterior ;
-	raise notice 'Nro Telefono : %', nro_tel_anterior;
-
-	raise notice ' ';
-	raise notice 'ok!';
-	raise notice ' ';
-
-
-	
-	
-		raise notice '';
-		raise notice '----------------------------------------------';
-		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
-		raise notice '----------------------------------------------';
-	
-	
-		--------------------- INSERCION REGISTRO logs_updates-------------
-	
-	
-		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
-		
-		(id_anterior , nombre_tabla_of, campo_tabla_of , accion_of);
-	
-	
-		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
-	
-		
-	
-		id_last_logs_upd  := (select max(id) from logs_updates);
-	
-	
-		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		fecha_of := (select fecha from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-		hora_of := (select hora from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_of := (select usuario from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_sesion_of := (select usuario_sesion from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		db_of := (select db from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	 	
-		db_version_of := (select db_version from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-	 
-	 	
-	
-		raise notice '';
-		raise notice '';
-		raise notice '-- Registro de Actualización --';
-		raise notice '';
-
-		raise notice 'ID Registro: %' , id_anterior ;
-		raise notice 'UUID Registro : %', uuid_registro_of;
-		raise notice 'Tabla : %', nombre_tabla_of;
-		raise notice 'Campo : %', campo_tabla_of;
-		raise notice 'Acción : %', accion_of;
-		raise notice 'Fecha : %', fecha_of;
-		raise notice 'Hora : %', hora_of;
-     	raise notice 'Usuario : %', usuario_of;
-        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
-        raise notice 'DB : %', db_of;
-        raise notice 'Versión DB : %', db_version_of;
-	
-
-		raise notice ' ';
-		raise notice 'ok!';
-		raise notice ' ';	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
 	-- Si no está el +54 lo Agregamos
 	update oficinas set nro_telefono = replace (nro_telefono, '11 ', '+5411');
 
-	id_anterior := (select max(id) from oficinas);
-	nro_tel_anterior := (select nro_telefono from oficinas where id = id_anterior);
-
-	raise notice '';
-	raise notice '';
-	raise notice '-- Registro Actual --';
-	raise notice '';
-
-	raise notice ' Id : %',  id_anterior ;
-	raise notice 'Nro Telefono : %', nro_tel_anterior;
-
-	raise notice ' ';
-	raise notice 'ok!';
-	raise notice ' ';
-
-
-	
-	
-		raise notice '';
-		raise notice '----------------------------------------------';
-		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
-		raise notice '----------------------------------------------';
-	
-	
-		--------------------- INSERCION REGISTRO logs_updates-------------
-	
-	
-		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
-		
-		(id_anterior , nombre_tabla_of, campo_tabla_of , accion_of);
-	
-	
-		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
-	
-		
-	
-		id_last_logs_upd  := (select max(id) from logs_updates);
-	
-	
-		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		fecha_of := (select fecha from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-		hora_of := (select hora from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_of := (select usuario from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_sesion_of := (select usuario_sesion from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		db_of := (select db from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	 	
-		db_version_of := (select db_version from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-	 
-	 	
-	
-		raise notice '';
-		raise notice '';
-		raise notice '-- Registro de Actualización --';
-		raise notice '';
-
-		raise notice 'ID Registro: %' , id_anterior ;
-		raise notice 'UUID Registro : %', uuid_registro_of;
-		raise notice 'Tabla : %', nombre_tabla_of;
-		raise notice 'Campo : %', campo_tabla_of;
-		raise notice 'Acción : %', accion_of;
-		raise notice 'Fecha : %', fecha_of;
-		raise notice 'Hora : %', hora_of;
-     	raise notice 'Usuario : %', usuario_of;
-        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
-        raise notice 'DB : %', db_of;
-        raise notice 'Versión DB : %', db_version_of;
-	
-
-		raise notice ' ';
-		raise notice 'ok!';
-		raise notice ' ';	
-	
-	
-	
 	
 	-- Reemplazamos los +54911 a +5411 (9 es caracteristica de Celular)
 	update oficinas set nro_telefono = replace (nro_telefono, '+54911', '+5411');
 
 
-
-	id_anterior := (select max(id) from oficinas);
-	nro_tel_anterior := (select nro_telefono from oficinas where id = id_anterior);
-
-	raise notice '';
-	raise notice '';
-	raise notice '-- Registro Actual --';
-	raise notice '';
-
-	raise notice ' Id : %',  id_anterior ;
-	raise notice 'Nro Telefono : %', nro_tel_anterior;
-
-	raise notice ' ';
-	raise notice 'ok!';
-	raise notice ' ';
-
-
-	
-	
-		raise notice '';
-		raise notice '----------------------------------------------';
-		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
-		raise notice '----------------------------------------------';
-	
-	
-		--------------------- INSERCION REGISTRO logs_updates-------------
-	
-	
-		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
-		
-		(id_anterior , nombre_tabla_of, campo_tabla_of , accion_of);
-	
-	
-		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
-	
-		
-	
-		id_last_logs_upd  := (select max(id) from logs_updates);
-	
-	
-		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		fecha_of := (select fecha from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-		hora_of := (select hora from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_of := (select usuario from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_sesion_of := (select usuario_sesion from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		db_of := (select db from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	 	
-		db_version_of := (select db_version from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-	 
-	 	
-	
-		raise notice '';
-		raise notice '';
-		raise notice '-- Registro de Actualización --';
-		raise notice '';
-
-		raise notice 'ID Registro: %' , id_anterior ;
-		raise notice 'UUID Registro : %', uuid_registro_of;
-		raise notice 'Tabla : %', nombre_tabla_of;
-		raise notice 'Campo : %', campo_tabla_of;
-		raise notice 'Acción : %', accion_of;
-		raise notice 'Fecha : %', fecha_of;
-		raise notice 'Hora : %', hora_of;
-     	raise notice 'Usuario : %', usuario_of;
-        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
-        raise notice 'DB : %', db_of;
-        raise notice 'Versión DB : %', db_version_of;
-	
-
-		raise notice ' ';
-		raise notice 'ok!';
-		raise notice ' ';	
-	
-	
-	
-	
 	-- Quitamos los guiones
 	update oficinas set nro_telefono = replace(nro_telefono, '-', ' ');
-	
-	
-
-
-
-	id_anterior := (select max(id) from oficinas);
-	nro_tel_anterior := (select nro_telefono from oficinas where id = id_anterior);
-
-	raise notice '';
-	raise notice '';
-	raise notice '-- Registro Actual --';
-	raise notice '';
-
-	raise notice ' Id : %',  id_anterior ;
-	raise notice 'Nro Telefono : %', nro_tel_anterior;
-
-	raise notice ' ';
-	raise notice 'ok!';
-	raise notice ' ';
-
-
-	
-	
-		raise notice '';
-		raise notice '----------------------------------------------';
-		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
-		raise notice '----------------------------------------------';
-	
-	
-		--------------------- INSERCION REGISTRO logs_updates-------------
-	
-	
-		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
-		
-		(id_anterior , nombre_tabla_of, campo_tabla_of , accion_of);
-	
-	
-		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
-	
-		
-	
-		id_last_logs_upd  := (select max(id) from logs_updates);
-	
-	
-		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		fecha_of := (select fecha from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-		hora_of := (select hora from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_of := (select usuario from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_sesion_of := (select usuario_sesion from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		db_of := (select db from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	 	
-		db_version_of := (select db_version from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-	 
-	 	
-	
-		raise notice '';
-		raise notice '';
-		raise notice '-- Registro de Actualización --';
-		raise notice '';
-
-		raise notice 'ID Registro: %' , id_anterior ;
-		raise notice 'UUID Registro : %', uuid_registro_of;
-		raise notice 'Tabla : %', nombre_tabla_of;
-		raise notice 'Campo : %', campo_tabla_of;
-		raise notice 'Acción : %', accion_of;
-		raise notice 'Fecha : %', fecha_of;
-		raise notice 'Hora : %', hora_of;
-     	raise notice 'Usuario : %', usuario_of;
-        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
-        raise notice 'DB : %', db_of;
-        raise notice 'Versión DB : %', db_version_of;
-	
-
-		raise notice ' ';
-		raise notice 'ok!';
-		raise notice ' ';	
-	
-	
 	
 	
 	-- Quitamos los puntos
 	 update oficinas set nro_telefono = replace(nro_telefono, '.', ' ');
 	
 	
-	
-
-
-	id_anterior := (select max(id) from oficinas);
-	nro_tel_anterior := (select nro_telefono from oficinas where id = id_anterior);
-
-	raise notice '';
-	raise notice '';
-	raise notice '-- Registro Actual --';
-	raise notice '';
-
-	raise notice ' Id : %',  id_anterior ;
-	raise notice 'Nro Telefono : %', nro_tel_anterior;
-
-	raise notice ' ';
-	raise notice 'ok!';
-	raise notice ' ';
-
-
-	
-	
-		raise notice '';
-		raise notice '----------------------------------------------';
-		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
-		raise notice '----------------------------------------------';
-	
-	
-		--------------------- INSERCION REGISTRO logs_updates-------------
-	
-	
-		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
-		
-		(id_anterior , nombre_tabla_of, campo_tabla_of , accion_of);
-	
-	
-		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
-	
-		
-	
-		id_last_logs_upd  := (select max(id) from logs_updates);
-	
-	
-		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		fecha_of := (select fecha from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-		hora_of := (select hora from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_of := (select usuario from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_sesion_of := (select usuario_sesion from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		db_of := (select db from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	 	
-		db_version_of := (select db_version from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-	 
-	 	
-	
-		raise notice '';
-		raise notice '';
-		raise notice '-- Registro de Actualización --';
-		raise notice '';
-
-		raise notice 'ID Registro: %' , id_anterior ;
-		raise notice 'UUID Registro : %', uuid_registro_of;
-		raise notice 'Tabla : %', nombre_tabla_of;
-		raise notice 'Campo : %', campo_tabla_of;
-		raise notice 'Acción : %', accion_of;
-		raise notice 'Fecha : %', fecha_of;
-		raise notice 'Hora : %', hora_of;
-     	raise notice 'Usuario : %', usuario_of;
-        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
-        raise notice 'DB : %', db_of;
-        raise notice 'Versión DB : %', db_version_of;
-	
-
-		raise notice ' ';
-		raise notice 'ok!';
-		raise notice ' ';	
-	
-	
 		
 	-- Quitamos los espacios en Blanco
 	 update oficinas set nro_telefono = replace(nro_telefono, ' ', '');
 	
-	
-	
-	raise notice '';
-	raise notice '';
-	raise notice '-- Registro Actual --';
-	raise notice '';
-
-	raise notice ' Id : %',  id_anterior ;
-	raise notice 'Nro Telefono : %', nro_tel_anterior;
-
-	raise notice ' ';
-	raise notice 'ok!';
-	raise notice ' ';
-
 
 	
 	
-		raise notice '';
-		raise notice '----------------------------------------------';
-		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
-		raise notice '----------------------------------------------';
 	
-	
-		--------------------- INSERCION REGISTRO logs_updates-------------
-	
-	
-		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
-		
-		(id_anterior , nombre_tabla_of, campo_tabla_of , accion_of);
-	
-	
-		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
-	
-		
-	
-		id_last_logs_upd  := (select max(id) from logs_updates);
-	
-	
-		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		fecha_of := (select fecha from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-		hora_of := (select hora from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_of := (select usuario from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_sesion_of := (select usuario_sesion from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		db_of := (select db from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	 	
-		db_version_of := (select db_version from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-	 
-	 	
-	
-		raise notice '';
-		raise notice '';
-		raise notice '-- Registro de Actualización --';
-		raise notice '';
-
-		raise notice 'ID Registro: %' , id_anterior ;
-		raise notice 'UUID Registro : %', uuid_registro_of;
-		raise notice 'Tabla : %', nombre_tabla_of;
-		raise notice 'Campo : %', campo_tabla_of;
-		raise notice 'Acción : %', accion_of;
-		raise notice 'Fecha : %', fecha_of;
-		raise notice 'Hora : %', hora_of;
-     	raise notice 'Usuario : %', usuario_of;
-        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
-        raise notice 'DB : %', db_of;
-        raise notice 'Versión DB : %', db_version_of;
-	
-
 		raise notice ' ';
 		raise notice 'ok!';
 		raise notice ' ';	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 
 else
 	
@@ -1117,32 +526,6 @@ end;
 
 
 $$ language plpgsql;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1167,25 +550,6 @@ declare
 
 
 id_anterior int;
-dir_anterior varchar;
-
-
--- TABLA LOGS_UPDATES
-
-uuid_registro_of uuid;
-nombre_tabla_of varchar := 'oficinas';
-campo_tabla_of varchar := 'direccion';
-accion_of varchar := 'update';
-fecha_of date ;
-hora_of time ;
-usuario_of varchar;
-usuario_sesion_of varchar;
-db_of varchar;
-db_version_of varchar;
-
-
-id_last_logs_upd int;
-
 
 
 begin 
@@ -1218,302 +582,14 @@ begin
 
 
 
-	id_anterior := (select max(id) from oficinas);
-	dir_anterior := (select direccion from oficinas where id = id_anterior);
-
-	raise notice '';
-	raise notice '';
-	raise notice '-- Registro Actual --';
-	raise notice '';
-
-	raise notice ' Id : %',  id_anterior ;
-	raise notice ' Dirección : %', dir_anterior;
-
-	raise notice ' ';
-	raise notice 'ok!';
-	raise notice ' ';
-
-
-	
-	
-		raise notice '';
-		raise notice '----------------------------------------------';
-		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
-		raise notice '----------------------------------------------';
-	
-	
-		--------------------- INSERCION REGISTRO logs_updates-------------
-	
-	
-		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
-		
-		(id_anterior , nombre_tabla_of, campo_tabla_of , accion_of);
-	
-	
-		-------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
-	
-		
-	
-		id_last_logs_upd  := (select max(id) from logs_updates);
-	
-	
-		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		fecha_of := (select fecha from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-		hora_of := (select hora from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_of := (select usuario from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_sesion_of := (select usuario_sesion from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		db_of := (select db from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	 	
-		db_version_of := (select db_version from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-	 
-	 	
-	
-		raise notice '';
-		raise notice '';
-		raise notice '-- Registro de Actualización --';
-		raise notice '';
-
-		raise notice 'ID Registro: %' , id_anterior ;
-		raise notice 'UUID Registro : %', uuid_registro_of;
-		raise notice 'Tabla : %', nombre_tabla_of;
-		raise notice 'Campo : %', campo_tabla_of;
-		raise notice 'Acción : %', accion_of;
-		raise notice 'Fecha : %', fecha_of;
-		raise notice 'Hora : %', hora_of;
-     	raise notice 'Usuario : %', usuario_of;
-        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
-        raise notice 'DB : %', db_of;
-        raise notice 'Versión DB : %', db_version_of;
-	
-
-		raise notice ' ';
-		raise notice 'ok!';
-		raise notice ' ';	
-	
-	
-
-	
-
 	update oficinas set direccion = replace(direccion, 'N°', ' ');
 
 	
 	
-	
-	id_anterior := (select max(id) from oficinas);
-	dir_anterior := (select direccion from oficinas where id = id_anterior);
-
-	raise notice '';
-	raise notice '';
-	raise notice '-- Registro Actual --';
-	raise notice '';
-
-	raise notice ' Id : %',  id_anterior ;
-	raise notice ' Dirección : %', dir_anterior;
-
-	raise notice ' ';
-	raise notice 'ok!';
-	raise notice ' ';
+	update oficinas set direccion = replace(direccion, '/', '-');
 
 
 	
-	
-		raise notice '';
-		raise notice '----------------------------------------------';
-		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
-		raise notice '----------------------------------------------';
-	
-	
-		--------------------- INSERCION REGISTRO logs_updates-------------
-	
-	
-		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
-		
-		(id_anterior , nombre_tabla_of, campo_tabla_of , accion_of);
-	
-	
-		-------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
-	
-		
-	
-		id_last_logs_upd  := (select max(id) from logs_updates);
-	
-	
-		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		fecha_of := (select fecha from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-		hora_of := (select hora from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_of := (select usuario from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_sesion_of := (select usuario_sesion from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		db_of := (select db from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	 	
-		db_version_of := (select db_version from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-	 
-	 	
-	
-		raise notice '';
-		raise notice '';
-		raise notice '-- Registro de Actualización --';
-		raise notice '';
-
-		raise notice 'ID Registro: %' , id_anterior ;
-		raise notice 'UUID Registro : %', uuid_registro_of;
-		raise notice 'Tabla : %', nombre_tabla_of;
-		raise notice 'Campo : %', campo_tabla_of;
-		raise notice 'Acción : %', accion_of;
-		raise notice 'Fecha : %', fecha_of;
-		raise notice 'Hora : %', hora_of;
-     	raise notice 'Usuario : %', usuario_of;
-        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
-        raise notice 'DB : %', db_of;
-        raise notice 'Versión DB : %', db_version_of;
-	
-
-		raise notice ' ';
-		raise notice 'ok!';
-		raise notice ' ';	
-	
-	
-	
-		update oficinas set direccion = replace(direccion, '/', '-');
-
-
-	
-		
-	
-	id_anterior := (select max(id) from oficinas);
-	dir_anterior := (select direccion from oficinas where id = id_anterior);
-
-	raise notice '';
-	raise notice '';
-	raise notice '-- Registro Actual --';
-	raise notice '';
-
-	raise notice ' Id : %',  id_anterior ;
-	raise notice ' Dirección : %', dir_anterior;
-
-	raise notice ' ';
-	raise notice 'ok!';
-	raise notice ' ';
-
-
-	
-	
-		raise notice '';
-		raise notice '----------------------------------------------';
-		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
-		raise notice '----------------------------------------------';
-	
-	
-		--------------------- INSERCION REGISTRO logs_updates-------------
-	
-	
-		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
-		
-		(id_anterior , nombre_tabla_of, campo_tabla_of , accion_of);
-	
-	
-		-------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
-	
-		
-	
-		id_last_logs_upd  := (select max(id) from logs_updates);
-	
-	
-		-- Traemos los valores del Registro Insertado
-		uuid_registro_of := (select uuid_registro from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		fecha_of := (select fecha from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-		hora_of := (select hora from logs_updates 
-		where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_of := (select usuario from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		usuario_sesion_of := (select usuario_sesion from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	
-		db_of := (select db from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-	 	
-		db_version_of := (select db_version from logs_updates 
-			where (id = id_last_logs_upd) and (id_registro = id_anterior) and (nombre_tabla = 'oficinas'));
-		
-		
-	 
-	 	
-	
-		raise notice '';
-		raise notice '';
-		raise notice '-- Registro de Actualización --';
-		raise notice '';
-
-		raise notice 'ID Registro: %' , id_anterior ;
-		raise notice 'UUID Registro : %', uuid_registro_of;
-		raise notice 'Tabla : %', nombre_tabla_of;
-		raise notice 'Campo : %', campo_tabla_of;
-		raise notice 'Acción : %', accion_of;
-		raise notice 'Fecha : %', fecha_of;
-		raise notice 'Hora : %', hora_of;
-     	raise notice 'Usuario : %', usuario_of;
-        raise notice 'Sesión de Usuario : %', usuario_sesion_of;
-        raise notice 'DB : %', db_of;
-        raise notice 'Versión DB : %', db_version_of;
-	
-
-		raise notice ' ';
-		raise notice 'ok!';
-		raise notice ' ';	
-	
-	
-	
-
 
 
 
@@ -1536,70 +612,82 @@ $$ language plpgsql;
 
 
 
-/*
-
-
-
--- ----------- CAMPO DIRECCION --------------
-
-create or replace function depurar_dir_oficinas() returns void as $$
-
-begin
-	
-
-
-
-		raise notice ' ';
-	raise notice 'ok!';
-	raise notice ' ';
-	
-end
-
-$$ language plpgsql;
-
-
-
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
 
--- ======= TABLA OFICINAS_DETALLES ===========
-
+-- ========================================
+-- ======= TABLA OFICINAS_DETALLES ========
+-- ========================================
 
 -- --------- CAMPO LOCALIDAD --------------
 
-select * from oficinas_detalles;
+select listado_oficinas_detalles();
+
 
 select column_name, data_type, is_nullable from 
 information_schema.columns where table_name = 'oficinas_detalles';
 
 
+
+
 -- Cambiamos la localidad a traves del id
-create or replace function cambiar_loc_oficinas_detalles(loc_input varchar, id_input int ) returns void as $$
+create or replace function actualizar_loc_oficinas_detalles(loc_input varchar, id_input int ) returns void as $$
 
 declare 
 
-id_anterior varchar := (select id from oficinas_detalles where id=id_input);
+id_anterior int := (select id from oficinas_detalles where id=id_input);
 loc_anterior varchar := (select localidad from oficinas_detalles where id=id_input);
+
+
+-- TABLA LOGS_UPDATES
+
+uuid_registro_of_det uuid;
+nombre_tabla_of_det varchar := 'oficinas_detalles';
+campo_tabla_of_det varchar := 'localidad';
+accion_of_det varchar := 'update';
+fecha_of_det date ;
+hora_of_det time ;
+usuario_of_det varchar;
+usuario_sesion_of_det varchar;
+db_of_det varchar;
+db_version_of_det varchar;
+
+
+id_last_logs_upd int;
 
 
 begin 
 	
-	raise notice '------------------------------------------------------------------';
-	raise notice '-- Modificación Campo "localidad" Tabla "oficinas_detalles" --';
-	raise notice '------------------------------------------------------------------';
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
+						using hint='------- REVISAR EL RESGISTRO DE MODIFICACIÓN -------';
+										
+									
+	
+	elsif (
+		((loc_input <> '') and (id_input > 0) and (id_anterior > 0 ))
+		) then
+	
+	
+	
+	raise notice '---------------------------------------------------------------';
+	raise notice '-- Modificación  Campo "localidad" Tabla "oficinas_detalles" --';
+	raise notice '---------------------------------------------------------------';
 
 	raise notice '';
 	raise notice '-- Registro Anterior --';
 	raise notice '';
 
 	raise notice ' Id : %',  id_anterior;
-	raise notice 'Localidad : %', loc_anterior;
-
-
-
-	update oficinas_detalles set localidad = loc_input where id = id_input ;
-
+	raise notice 'localidad : %', loc_anterior;
+	
+	
+	update oficinas_detalles set localidad = loc_input where id = id_input;
 
 	raise notice '';
 	raise notice '';
@@ -1609,14 +697,112 @@ begin
 	raise notice ' Id : %',  id_input;
 	raise notice 'Localidad : %', loc_input;
 
-	
 		raise notice ' ';
 	raise notice 'ok!';
 	raise notice ' ';
+
+
+
 	
-end
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
+		raise notice '----------------------------------------------';
+	
+	
+		--------------------------------------- INSERCION REGISTRO logs_updates----------------------------------------
+	
+	
+		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
+		
+		(id_input , nombre_tabla_of_det, campo_tabla_of_det , accion_of_det);
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
+	
+		
+	
+		id_last_logs_upd  := (select max(id) from logs_updates);
+	
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_of_det := (select uuid_registro from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+		fecha_of_det := (select fecha from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+		
+		hora_of_det := (select hora from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	
+		usuario_of_det := (select usuario from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	
+		usuario_sesion_of_det := (select usuario_sesion from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	
+		db_of_det := (select db from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+	 	
+		db_version_of_det := (select db_version from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'oficinas_detalles'));
+		
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Actualización --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_input ;
+		raise notice 'UUID Registro : %', uuid_registro_of_det;
+		raise notice 'Tabla : %', nombre_tabla_of_det;
+		raise notice 'Campo : %', campo_tabla_of_det;
+		raise notice 'Acción : %', accion_of_det;
+		raise notice 'Fecha : %', fecha_of_det;
+		raise notice 'Hora : %', hora_of_det;
+     	raise notice 'Usuario : %', usuario_of_det;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_of_det;
+        raise notice 'DB : %', db_of_det;
+        raise notice 'Versión DB : %', db_version_of_det;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN actualizar_loc_oficinas_detalles() ====='
+						using hint = '------- actualizar_loc_oficinas_detalles() ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
+
+
+
+
+
+
+
+
+
+/*
+
+
 
 
 

@@ -17,7 +17,9 @@ alter sequence id_sec_logs_upd restart with 1;
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
--- ======= TABLA OFICINAS ===========
+-- ===============================
+-- ======= TABLA OFICINAS ========
+-- ===============================
 
 
 select * from oficinas;
@@ -43,12 +45,12 @@ select listado_logs_updates();
 -- --------- CAMPO NRO_TELEFONO --------------
 
 -- Actualizamos el Numero con sentencia
-update oficinas set nro_telefono='+5491152794990' where id = 1;
+update oficinas set nro_telefono='+5491152794991' where id = 1;
 
 -- Actualizamos los Nros con funcion
-select actualizar_nro_tel_oficinas('+541152794690', 1);
+select actualizar_nro_tel_oficinas('0111152794690', 1);
 
-select actualizar_nro_tel_oficinas('+541156541849', 3);
+select actualizar_nro_tel_oficinas('+541156541844', 3);
 
 
 select listado_oficinas();
@@ -56,17 +58,8 @@ select listado_oficinas();
 select listado_logs_updates();
 
 
-
 -- Depurar Numeros Telefonicos 
 select depurar_nro_tel_oficinas();
-
-
-select listado_logs_updates();
-
-
-
-
-
 
 
 
@@ -75,7 +68,7 @@ select listado_logs_updates();
 -- Depurar Direcciones Automatico con funcion
 select depurar_dir_oficinas();
 
-select listado_logs_updates();
+
 
 select listado_oficinas();
 
@@ -85,26 +78,48 @@ select listado_oficinas();
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
+-- ========================================
+-- ======= TABLA OFICINAS_DETALLES ========
+-- ========================================
+
+-- --------- CAMPO LOCALIDAD --------------
+
+select listado_oficinas_detalles();
+
+
+select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'oficinas_detalles';
+
+
+-- Cambio de Localidad por funcion
+select actualizar_loc_oficinas_detalles('Tribunales', 1);
+
+
+select listado_oficinas_detalles();
+
+
+select listado_logs_updates();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
 
 
 
--- ======= TABLA OFICINAS_DETALLES ===========
-
-select * from oficinas_detalles;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'oficinas_detalles';
-
-
-
--- ---------CAMPO LOCALIDAD--------------
-
--- Cambio de Localidad por funcion
-select cambiar_loc_oficinas_detalles('Tribunales', 1);
-select * from oficinas_detalles;
 
 
 -- -------- CAMPO TIPO_OFICINA  -------------

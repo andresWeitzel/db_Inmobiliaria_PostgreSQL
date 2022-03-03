@@ -5,7 +5,7 @@
 ## Descripción 
 
 
-* En Este Proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos acerca de nua Inmobiliaria con el SGBD PostgreSQL.
+* En Este Proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos acerca de una Inmobiliaria con el SGBD PostgreSQL.
 * El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiándome por las informaciones y características del mercado Inmobiliario en Argentina (valores, precios, medidas, léxico, etc).
 *  Las páginas de inmobiliaria más conocidas en las que me guíe son zonaprop, re/max y baigún.
 *  Para la gran mayoría de las medidas tomadas en inmuebles me guié en anuncios en MercadoLibre, ya que allí se detallan en mayor cantidad.
@@ -139,7 +139,7 @@
 
   - [ Paso 1) Configuración y Puesta en Marcha de la Base de Datos.](#paso-1-configuración-y-puesta-en-marcha-de-la-base-de-datos-db-inmobiliaria)
 
-  - [ Paso 2) Ejecución de los Archivos .SQL .](#paso-2-ejecución-dee-los-archivos-sql)
+  - [ Paso 2) Ejecución de los Archivos .SQL](#paso-2-ejecución-dee-los-archivos-.sql)
 
   #### Sección 2) Registros de Usuarios (Logs)
 
@@ -151,7 +151,7 @@
   - [ Paso 4) Funciones con PL/pgSQL .](#paso-4-funciones-con-plpgsql)
 
 
-#### Sección 4) Uso y Manejo de GIT
+#### Sección x) Uso y Manejo de GIT
 
 - [ Uso y Manejo de Git.](#uso-y-manejo-de-git)
  
@@ -165,7 +165,7 @@
 
 </br>
 
-### Paso 1) Configuración y Puesta en Marcha de la Base de Datos `db_inmuebles`
+### Paso 1) Configuración y Puesta en Marcha de la Base de Datos `db_inmobiliaria`
 #### (Primeramente deberás descargar el SGDB PostgreSQL , luego algún GDB como por ej. DBeaver y crear la db ).
 
 #### 1.1) Descarga de DBeaver
@@ -183,11 +183,12 @@
     * --> Nuevo
     * --> Database Connection, Siguiente.
     * --> Seleccionar el SGDB PostgreSQL, Siguiente.
+    * --> En el Host dejamos como aparece `localhost`
     * --> En Database dejamos como aparece `postgres`
-    * --> Seguidamente vamos a agregar una contraseña, en password escribimos `postgres`
     * --> El resto lo dejamos todo por defecto ( Host, Port, etc ).
-    * --> Finalizar, asegurarse que se haya creado la db con su configuración
+    * --> Finalizar, asegurarse que se haya creado la conexión a Postgres correctamente
     * --> Ya está la conexión configurada.
+
 
 
 
@@ -255,11 +256,11 @@
 
 
 ### Paso 3) Tablas y Tipos de Logs
-#### (Se desarrollan 3 Tablas Específicas para el almacenamiento de datos del Usuario/Administrador, las mismas son logs_inserts, logs_update , logs_delete).
+#### (Se desarrollan 3 Tablas Específicas para el almacenamiento de datos del Usuario/Administrador( logs_inserts, logs_update y logs_delete).
 
 </br>
 
-#### 3.0) Tipos de Campos de las Tablas
+#### 3.1) Tipos de Campos de las Tablas
 * Todas las Tablas de Logs seguirán la misma estructura y tipos de campos, se podría considerar que se aplica redundancia de información, pero se optó por modularizar los logs de esta forma, se podría crear solamente una tabla de logs y allí especificar que tipo de log se aplica.
 * La tabla Modelo es la siguiente..
 ```plpgsql
@@ -313,7 +314,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 </br>
 
-#### 4.0) Modelo de Función de Listado de Registros de una Tabla
+#### 4.1) Modelo de Función de Listado de Registros de una Tabla
 #### (Esta función nos Lista los Registros de la Tabla oficinas, pero la estructura de la función aplica para el resto de las tablas, solamente se debe cambiar el nombre de la función, setof, y la variable de tipo RECORD)
 
 ```plpgsql
@@ -355,7 +356,7 @@ $$ language plpgsql;
 
 </br>
 
-#### 4.0) Modelo de Función de Descripción de Registros de una Tabla
+#### 4.2) Modelo de Función de Descripción de Registros de una Tabla
 #### (Esta función nos Enumera  los campos de la Tabla oficinas, indicando el tipo de dato y si es nuleable, este modelo aplica para el resto de las Tablas)
 
 ```plpgsql
@@ -413,7 +414,7 @@ $$ language plpgsql;
 
 </br>
 
-#### 4.1) Modelo de Función de Inserción de Registros en la DB
+#### 4.3) Modelo de Función de Inserción de Registros en la DB
 #### (Esta función nos permite insertar un Registro para la Tabla oficinas y otro para la Tabla logs_inserts, la estructura de la función aplica para el resto de las tablas, se debe cambiar el nombre de la función, los parametros de la misma, las variables declaradas, las condiciones de inserción, los campos a insertar, etc.)
 
 ```plpgsql
@@ -629,7 +630,7 @@ $$ language plpgsql;
 
 </br>
 
-#### 4.2) Modelo de Función de Actualización de Registros en la DB
+#### 4.4) Modelo de Función de Actualización de Registros en la DB
 #### (Esta función nos permite actualizar un Registro para la Tabla oficinas y otro para la Tabla logs_updates, la estructura de la función aplica para el resto de las tablas, se debe cambiar el nombre de la función, los parametros de la misma, las variables declaradas, las condiciones de inserción, los campos a insertar, etc.)
 
 ```plpgsql
@@ -932,7 +933,7 @@ $$ language plpgsql;
 
 </br>
 
-## Sección 9) Uso y Manejo de Git.
+## Sección x) Uso y Manejo de Git.
 
 </br>
 

@@ -6,15 +6,6 @@
  * ========= DML UPDATES FUNCTIONS=============
  */
 
--- https://www.postgresqltutorial.com/postgresql-string-functions/
--- http://es.tldp.org/Postgresql-es/web/navegable/user/x2341.html
--- https://www.postgresql.org/docs/9.1/functions-string.html
--- https://microbuffer.wordpress.com/2011/04/12/funciones-con-strings-en-postgresql/
-
-
-
---Ultimo id select, ver funcion curval
---https://www.postgresql.org/docs/8.2/functions-sequence.html
 
 
 -- -----------------------------------------------------------------------------
@@ -58,10 +49,9 @@ $$ language plpgsql;
 -- ===============================
 
 
-select * from oficinas;
+select listado_oficinas();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'oficinas';
+select descripcion_oficinas();
 
 
 
@@ -76,7 +66,7 @@ declare
 
 
 -- Registro Anterior
- id_anterior varchar:= (select id from oficinas where id=id_input);
+ id_anterior int:= (select id from oficinas where id=id_input);
  nombre_anterior varchar:= (select nombre from oficinas where id=id_input);
  dir_anterior varchar := (select direccion from oficinas where id=id_input);
  nro_tel_anterior varchar := (select nro_telefono from oficinas where id=id_input);
@@ -105,6 +95,7 @@ begin
 	
 	
 	if(
+	(id_anterior <= 0) or (id_input <= 0) or
 	(nombre_input = '') or (dir_input = '') or 
 	(nro_tel_input = '') or (email_input = '')
 	) then
@@ -116,7 +107,8 @@ begin
 	
 	elsif (
 		(nombre_input <> '') and (dir_input <> '') and 
-		(nro_tel_input <> '') and (email_input <> '')
+		(nro_tel_input <> '') and (email_input <> '') and
+		(id_input > 0) and (id_anterior = id_input)
 		) then
 	
 	
@@ -233,8 +225,9 @@ begin
 
 else
 	
-	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN actualizar_registro_oficinas() ====='
-						using hint = '-------actualizar_registro_oficinas------- ';
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA ====='
+						using hint = '------- actualizar_registro_oficinas(id_input int, nombre_input varchar, dir_input varchar
+, nro_tel_input varchar, email_input varchar) ------- ';
 		
 	end if;
 	
@@ -263,7 +256,7 @@ create or replace function actualizar_nro_tel_oficinas(id_input int, nro_tel_inp
 
 declare 
 
-id_anterior varchar := (select id from oficinas where id=id_input);
+id_anterior int := (select id from oficinas where id=id_input);
 nro_tel_anterior varchar := (select nro_telefono from oficinas where id=id_input);
 
 
@@ -288,7 +281,9 @@ begin
 	
 	
 	if(
-	(nro_tel_input = '') or (id_input <= 0)
+	(id_input <= 0) or 
+	(id_anterior <= 0) or
+	(nro_tel_input = '')
 	) then
 	
 		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO CON CAMPOS VACIOS O QUE NO EXISTAN ===== '
@@ -297,7 +292,9 @@ begin
 									
 	
 	elsif (
-		(nro_tel_input <> '') and (id_input > 0)
+		(id_input > 0) and 
+		(id_anterior = id_input) and
+		(nro_tel_input <> '')
 		) then
 	
 	
@@ -410,8 +407,8 @@ begin
 
 else
 	
-	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN actualizar_nro_tel_oficinas() ====='
-						using hint = '-------actualizar_nro_tel_oficinas------- ';
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '-------actualizar_nro_tel_oficinas(id_input int, nro_tel_input varchar)------- ';
 		
 	end if;
 	
@@ -458,7 +455,7 @@ begin
 	id_anterior := (select max(id) from oficinas);
 	
 	if(
-	(id_anterior < 0)
+	(id_anterior <= 0)
 	) then
 	
 		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
@@ -515,8 +512,8 @@ begin
 
 else
 	
-	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN depurar_nro_tel_oficinas() ====='
-						using hint = '-------actualizar_nro_tel_oficinas------- ';
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '-------depurar_nro_tel_oficinas()------- ';
 		
 	end if;
 	
@@ -557,7 +554,7 @@ begin
 	id_anterior := (select max(id) from oficinas);
 	
 	if(
-	(id_anterior < 0)
+	(id_anterior <= 0)
 	) then
 	
 		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
@@ -595,7 +592,7 @@ begin
 
 else
 	
-	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN depurar_dir_oficinas() ====='
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
 						using hint = '-------depurar_dir_oficinas()------- ';
 		
 	end if;
@@ -625,8 +622,8 @@ $$ language plpgsql;
 select listado_oficinas_detalles();
 
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'oficinas_detalles';
+select descripcion_oficinas_detalles();
+
 
 
 
@@ -661,7 +658,8 @@ begin
 	
 	
 	if(
-	(id_anterior <= 0)
+	(id_anterior <= 0) or 
+	(id_input <= 0)
 	) then
 	
 		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
@@ -670,7 +668,9 @@ begin
 									
 	
 	elsif (
-		((loc_input <> '') and (id_input > 0) and (id_anterior > 0 ))
+		(loc_input <> '') and 
+		(id_input > 0) and 
+		(id_anterior = id_input)
 		) then
 	
 	
@@ -782,8 +782,8 @@ begin
 	
 else
 	
-	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN actualizar_loc_oficinas_detalles() ====='
-						using hint = '------- actualizar_loc_oficinas_detalles() ------- ';
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- actualizar_loc_oficinas_detalles(id_input int , loc_input varchar) ------- ';
 		
 	end if;
 	
@@ -798,13 +798,10 @@ $$ language plpgsql;
 
 -- --------- CAMPO TIPO_OFICINA --------------
 
-
 select listado_oficinas_detalles();
 
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'oficinas_detalles';
-
+select descripcion_oficinas_detalles();
 
 
 
@@ -850,7 +847,7 @@ begin
 	elsif (
 		((tipo_of_input = 'EJECUTIVA') or (tipo_of_input = 'ESTANDAR') or (tipo_of_input = 'PEQUEÑA'))
 		and 
-		((id_input > 0) and (id_anterior > 0 ))
+		((id_input > 0) and (id_anterior = id_input))
 		) then
 	
 	
@@ -966,8 +963,8 @@ begin
 
 else
 	
-	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN actualizar_tipo_of_oficinas_detalles() ====='
-						using hint = '------- actualizar_tipo_of_oficinas_detalles() ------- ';
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- actualizar_tipo_of_oficinas_detalles(id_input int, tipo_of_input tipo_oficina_enum) ------- ';
 		
 	end if;
 	
@@ -984,13 +981,10 @@ $$ language plpgsql;
 
 -- --------- CAMPO SUPERFICIE_TOTAL --------------
 
-
 select listado_oficinas_detalles();
 
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'oficinas_detalles';
-
+select descripcion_oficinas_detalles();
 
 
 
@@ -1032,7 +1026,9 @@ begin
 									
 	
 	elsif (
-		((sup_total_input > 0.0) and (id_input > 0) and (id_anterior > 0 ))
+		(sup_total_input > 0.0) and 
+		(id_input > 0) and 
+		(id_anterior = id_input)
 		) then
 	
 	
@@ -1148,8 +1144,8 @@ begin
 
 else
 	
-	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN actualizar_sup_total_oficinas_detalles() ====='
-						using hint = '------- actualizar_sup_total_oficinas_detalles() ------- ';
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- actualizar_sup_total_oficinas_detalles(id_input int, sup_total_input decimal) ------- ';
 		
 	end if;
 	
@@ -1190,7 +1186,7 @@ begin
 	id_anterior := (select max(id) from empleados);
 	
 	if(
-	(id_anterior < 0)
+	(id_anterior <= 0)
 	) then
 	
 		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
@@ -1221,11 +1217,13 @@ begin
 	update empleados set apellido = replace(apellido, ' ', '');
 
 
-
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
 
 else
 	
-	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN depurar_nomb_apell_empleados() ====='
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
 						using hint = '------- depurar_nomb_apell_empleados() ------- ';
 		
 	end if;
@@ -1243,21 +1241,57 @@ $$ language plpgsql;
 
 
 
-/*
+-- ------------------------------------
 -- --------- CAMPO CUIL ---------------
+-- ------------------------------------
+
 
 select listado_empleados();
 
 -- actualizacion de cuil por id
-create or replace function cambiar_cuil_empleados(cuil_input varchar, id_input int) returns void as $$
+create or replace function actualizar_cuil_empleados(id_input int, cuil_input varchar) returns void as $$
 
 declare 
 
-id_anterior varchar := (select id from empleados where id=id_input);
+id_anterior int := (select id from empleados where id=id_input);
 cuil_anterior varchar := (select cuil from empleados where id=id_input);
 
 
+-- TABLA LOGS_UPDATES
+
+uuid_registro_empl uuid;
+nombre_tabla_empl varchar := 'empleados';
+campo_tabla_empl varchar := 'cuil';
+accion_empl varchar := 'update';
+fecha_empl date ;
+hora_empl time ;
+usuario_empl varchar;
+usuario_sesion_empl varchar;
+db_empl varchar;
+db_version_empl varchar;
+
+
+id_last_logs_upd int;
+
+
 begin 
+	
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
+						using hint='------- REVISAR EL RESGISTRO DE MODIFICACIÓN -------';
+										
+									
+	
+	elsif (
+		((cuil_input <> '') and (id_input > 0) and (id_anterior = id_input))
+		) then
+	
+	
+	
 	
 	raise notice '--------------------------------------------------';
 	raise notice '-- Modificación  Campo "cuil" Tabla "empleados" --';
@@ -1288,21 +1322,104 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 	
-end
+
+	
+	
+		
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
+		raise notice '----------------------------------------------';
+	
+	
+		--------------------------------------- INSERCION REGISTRO logs_updates----------------------------------------
+	
+	
+		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
+		
+		(id_input , nombre_tabla_empl, campo_tabla_empl , accion_empl);
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
+	
+		
+	
+		id_last_logs_upd  := (select max(id) from logs_updates);
+	
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_empl := (select uuid_registro from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'empleados'));
+		
+		fecha_empl := (select fecha from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'empleados'));
+		
+		
+		hora_empl := (select hora from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'empleados'));
+		
+	
+		usuario_empl := (select usuario from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'empleados'));
+		
+	
+		usuario_sesion_empl := (select usuario_sesion from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'empleados'));
+		
+	
+		db_empl := (select db from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'empleados'));
+		
+	 	
+		db_version_empl := (select db_version from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'empleados'));
+		
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Actualización --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_input ;
+		raise notice 'UUID Registro : %', uuid_registro_empl;
+		raise notice 'Tabla : %', nombre_tabla_empl;
+		raise notice 'Campo : %', campo_tabla_empl;
+		raise notice 'Acción : %', accion_empl;
+		raise notice 'Fecha : %', fecha_empl;
+		raise notice 'Hora : %', hora_empl;
+     	raise notice 'Usuario : %', usuario_empl;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_empl;
+        raise notice 'DB : %', db_empl;
+        raise notice 'Versión DB : %', db_version_empl;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+	
+	
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- actualizar_cuil_empleados(id_input int, cuil_input varchar) ------- ';
+		
+	end if;
+	
+
+end;
+
 $$ language plpgsql;
 
 
-*/
 
 
 
-
-
-
-
-
-
-/*
 
 
 
@@ -1310,13 +1427,37 @@ $$ language plpgsql;
 
 -- --------- CAMPO DIRECCION ---------------
 
-select * from empleados;
+select listado_empleados();
+
+select descripcion_empleados();
+
 
 -- Depuracion general de direccion
 create or replace function depurar_direccion_empleados() returns void as $$
 
-begin
+declare
+
+id_anterior int;
+
+
+begin 
 	
+	id_anterior := (select max(id) from empleados);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		(id_anterior > 0)
+		) then
+
+
 	raise notice '------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "direccion" Tabla "empleados" --';
 	raise notice '------------------------------------------------------------';
@@ -1335,7 +1476,15 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 	
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_direccion_empleados() ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -1343,12 +1492,34 @@ $$ language plpgsql;
 
 -- --------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ---------------
 
-select * from empleados;
+select listado_empleados();
+
 
 -- Depuracion general de ambos campos
 create or replace function depurar_nro_telefonos_empleados() returns void as $$
 
-begin
+
+declare
+
+id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from empleados);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
 	
 	raise notice '-----------------------------------------------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "nro_telefono_principal" y Campo "nro_telefono_secundario" Tabla "empleados" --';
@@ -1387,9 +1558,20 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_nros_telefonos_empleados() ------- ';
+		
+	end if;
+	
+
 end;
 
 $$ language plpgsql;
+
+/*
+
 
 
 -- ---------------- CAMPO SALARIO_ANUAL --------------------

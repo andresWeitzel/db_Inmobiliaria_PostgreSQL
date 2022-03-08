@@ -22,10 +22,10 @@ alter sequence id_sec_logs_upd restart with 1;
 -- ===============================
 
 
-select * from oficinas;
+select listado_oficinas();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'oficinas';
+
+select descripcion_oficinas();
 
 
 
@@ -69,7 +69,6 @@ select depurar_nro_tel_oficinas();
 select depurar_dir_oficinas();
 
 
-
 select listado_oficinas();
 
 
@@ -87,8 +86,7 @@ select listado_oficinas();
 select listado_oficinas_detalles();
 
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'oficinas_detalles';
+select descripcion_oficinas_detalles();
 
 
 -- Cambio de Localidad por funcion
@@ -110,8 +108,8 @@ select listado_logs_updates();
 select listado_oficinas_detalles();
 
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'oficinas_detalles';
+select descripcion_oficinas_detalles();
+
 
 
 select actualizar_tipo_of_oficinas_detalles(3, 'PEQUEÑA');
@@ -128,8 +126,7 @@ select listado_logs_updates();
 select listado_oficinas_detalles();
 
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'oficinas_detalles';
+select descripcion_oficinas_detalles();
 
 
 select actualizar_sup_total_oficinas_detalles(1 , 150);
@@ -151,76 +148,49 @@ select listado_logs_updates();
 
 select listado_empleados();
 
-
-select column_name, data_type, is_nullable  from 
-information_schema.columns where table_name = 'oficinas_detalles';
+select descripcion_empleados();
 
 
 select depurar_nomb_apell_empleados();
 
 
+select listado_logs_updates();
 
-
-
-/*
-
-
-
-
-
--- -------- CAMPO TIPO_OFICINA  -------------
-
--- Cambio de Tipo de Oficina
-select cambiar_tipo_of_oficinas_detalles('ESTANDAR',2);
-select * from oficinas_detalles;
-
-
--- -------- CAMPO SUPERFICIE_TOTAL  -------------
-
--- Actualizamos la superficie_total
-select cambiar_superficie_total_oficinas_detalles(143.88, 1);
-select * from oficinas_detalles;
 
 -- ---------------------------------------------------------------------------
--- ---------------------------------------------------------------------------
-
-
--- ======= TABLA EMPLEADOS ===========
-
-select * from empleados;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'empleados';
-
-
-
--- -------- CAMPO NOMBRE Y CAMPO APELLIDO  -------------
-
--- Depuración general de ambos campos
-select depurar_nombres_apellidos_empleados();
-select * from empleados;
-
 
 
 -- --------  CAMPO CUIL -------------
 -- actualización cuil de empleados
-select cambiar_cuil_empleados('63-489671-5',1);
-select cambiar_cuil_empleados('72-409876546-0',3);
-select cambiar_cuil_empleados('74-17896537-2',6);
-select cambiar_cuil_empleados('48-33456733-9',7);
-select * from empleados;
+select actualizar_cuil_empleados(10,'63-489671-5');
+
+select actualizar_cuil_empleados(3,'373647671564');
+
+
+select listado_empleados();
+
+select listado_logs_updates();
 
 
 -- --------- CAMPO DIRECCION ------------
+
 --  Depuración Gral direccion de Empleados
 select depurar_direccion_empleados();
-select * from empleados;
+
+
+select listado_empleados();
+
 
 
 -- ---------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ---------------- 
 -- Depuración gral de ambos campos
 select depurar_nro_telefonos_empleados();
-select * from empleados; 
+
+
+select listado_empleados(); 
+
+
+/*
 
 
 -- ----------- CAMPO SALARIO_ANUAL -------------

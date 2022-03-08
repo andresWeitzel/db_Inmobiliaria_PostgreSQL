@@ -130,11 +130,11 @@
 
 ## Bibliografía Recomendada
 
--- https://www.postgresqltutorial.com/postgresql-string-functions/
--- http://es.tldp.org/Postgresql-es/web/navegable/user/x2341.html
--- https://www.postgresql.org/docs/9.1/functions-string.html
--- https://microbuffer.wordpress.com/2011/04/12/funciones-con-strings-en-postgresql/
--- https://www.postgresql.org/docs/8.2/functions-sequence.html
+* https://www.postgresqltutorial.com/postgresql-string-functions/
+* http://es.tldp.org/Postgresql-es/web/navegable/user/x2341.html
+* https://www.postgresql.org/docs/9.1/functions-string.html
+* https://microbuffer.wordpress.com/2011/04/12/funciones-con-strings-en-postgresql/
+* https://www.postgresql.org/docs/8.2/functions-sequence.html
 
 
 

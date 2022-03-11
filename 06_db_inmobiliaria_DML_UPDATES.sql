@@ -135,6 +135,26 @@ select actualizar_sup_total_oficinas_detalles(1 , 150);
 select listado_logs_updates();
 
 
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+-- =============================================
+-- ======= TABLA SERVICIOS_OFICINAS ===========
+-- =============================================
+
+
+-- --------- CAMPOS DESCRIPCION_SERVICIOS ---------------
+
+
+-- Depuracion general de descripcion_servicios
+select depurar_descripcion_servicios_oficinas();
+
+select listado_servicios_oficinas();
+
+
+
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
@@ -190,66 +210,75 @@ select depurar_nro_telefonos_empleados();
 select listado_empleados(); 
 
 
-/*
-
 
 -- ----------- CAMPO SALARIO_ANUAL -------------
 select depurar_salario_anual_empleados();
-select * from empleados;
+
+select listado_empleados(); 
+
 
 
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
+-- ==================================
 -- ======= TABLA CLIENTES ===========
+-- ==================================
 
+select listado_clientes(); 
 
-select * from clientes;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'clientes';
+select descripcion_clientes();
 
 
 -- ----------- CAMPO NOMBRE Y CAMPO APELLIDO -------------
+
 select depurar_nombres_apellidos_clientes();
-select * from clientes;
+
+select listado_clientes(); 
 
 
 
 -- -------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ------------
+
 select depurar_nro_telefonos_clientes();
-select * from clientes;
+
+
+select listado_clientes(); 
 
 
 
 -- -------- CAMPO DIRECCION  ------------
 select depurar_direccion_clientes();
-select * from clientes;
 
+select listado_clientes();
 
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
+-- ================================================
 -- ======= TABLA PROPIETARIOS_INMUEBLES ===========
+-- ================================================
 
+select listado_propietarios_inmuebles();
 
-select * from propietarios_inmuebles;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'propietarios_inmuebles';
-
+select descripcion_propietarios_inmuebles();
 
 -- -----------  CAMPO NOMBRE Y CAMPO APELLIDO -------------
+
 select depurar_nombres_apellidos_propietarios_inmuebles();
-select * from propietarios_inmuebles;
+
+select listado_propietarios_inmuebles();
 
 
 
 -- -------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ------------
+
 select depurar_nro_telefonos_propietarios_inmuebles();
-select * from propietarios_inmuebles;
+
+select listado_propietarios_inmuebles();
+
 
 
 -- -------- CAMPO DIRECCION ------------
@@ -264,59 +293,68 @@ select * from propietarios_inmuebles;
 -- ---------------------------------------------------------------------------
 
 
-
--- ======= TABLA INMUEBLES DESCRIPCIONES ===========
+-- ================================================
+-- ======= TABLA INMUEBLES DESCRIPCIONES ==========
+-- ================================================
 
 
 
 -- ----------- CAMPO SUPERFICIE_TOTAL Y CAMPO SUPERFICIE_CUBIERTA --------------------------
 
 
-select cambiar_superficie_total_cubierta_inmuebles_descripciones(278.0 , 195.34 , 1 );
-select * from inmuebles_descripciones;
+select actualizar_superficie_total_cubierta_inmuebles_descripciones(1 , 278.0 , 195.34);
+
+select listado_inmuebles_descripciones();
+
+select listado_logs_updates();
+
+
 
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
 
-
--- ======= TABLA INMUEBLES MEDIDAS ===========
+-- ================================================
+-- ======= TABLA INMUEBLES MEDIDAS ================
+-- ================================================
 
 
 
 -- ----------- CAMPO DORMITORIO --------------------------
 
 select depurar_dormitorio_inmuebles_medidas();
-select * from inmuebles_medidas;
+
+select listado_inmuebles_medidas();
 
 
 -- ----------- CAMPO SANITARIO --------------------------
 
 select depurar_sanitario_inmuebles_medidas();
-select * from inmuebles_medidas;
-
+select listado_inmuebles_medidas();
 
 
 -- --------- CAMPOS PATIO_JARDIN, COCHERA, BALCON ---------------
 
 -- Depuracion general de los campos
 select depurar_patio_jardin_cochera_balcon_inmuebles_medidas();
-select * from inmuebles_medidas;
+select listado_inmuebles_medidas();
+
 
 
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
-
+-- ===================================
 -- ======= TABLA INMUEBLES ===========
+-- ===================================
 
 
 -- --------- CAMPOS DESCRIPCION, TIPO ---------------
 
 select depurar_descripcion_tipo_inmuebles();
-select * from inmuebles;
+select listado_inmuebles();
 
 
 
@@ -325,7 +363,7 @@ select * from inmuebles;
 
 -- Depuracion general de direccion
 select depurar_direccion_ubicacion_inmuebles();
-select * from inmuebles;
+select listado_inmuebles();
 
 
 
@@ -335,8 +373,9 @@ select * from inmuebles;
 -- ---------------------------------------------------------------------------
 
 
-
--- ======= TABLA CITAS_INMUEBLES ===========
+-- ===================================
+-- ======= TABLA CITAS_INMUEBLES =====
+-- ===================================
 
 
 -- --------- CAMPOS DESCRIPCION_CITA ---------------
@@ -344,32 +383,17 @@ select * from inmuebles;
 
 -- Depuracion general de descripcion_cita
 select depurar_descripcion_cita_citas_inmuebles();
-select * from citas_inmuebles;
+select listado_citas_inmuebles();
 		
 
--- ---------------------------------------------------------------------------
--- ---------------------------------------------------------------------------
-
-
--- ======= TABLA SERVICIOS_INMUEBLES ===========
-
-
--- --------- CAMPOS DESCRIPCION_CITA ---------------
-
-
--- Depuracion general de descripcion_servicios
-select depurar_descripcion_servicios_inmuebles();
-select * from servicios_inmuebles;
-
-
 
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
-
-
--- ======= TABLA INSPECCIONES_INMUEBLES ===========
+-- =============================================
+-- ======= TABLA INSPECCIONES_INMUEBLES ========
+-- =============================================
 
 
 -- --------- CAMPO DESCRIPCION_INSPECCION ---------------
@@ -377,7 +401,7 @@ select * from servicios_inmuebles;
 
 -- Depuracion general de descripcion_inspeccion
 select depurar_descripcion_inspeccion_inspecciones_inmuebles();
-select * from inspecciones_inmuebles;
+select listado_inspecciones_inmuebles();
 
 
 
@@ -387,7 +411,7 @@ select * from inspecciones_inmuebles;
 
 -- Depuracion general de los campos
 select depurar_empresa_direccion_inspecciones_inmuebles();
-select * from inspecciones_inmuebles;
+select listado_inspecciones_inmuebles();
 
 
 
@@ -396,7 +420,7 @@ select * from inspecciones_inmuebles;
 
 -- Depuracion general de los campos
 select depurar_nro_tel_inspecciones_inmuebles();
-select * from inspecciones_inmuebles;
+select listado_inspecciones_inmuebles();
 
 
 
@@ -405,7 +429,7 @@ select * from inspecciones_inmuebles;
 
 -- Depuracion general del campo costo
 select  depurar_costo_inspecciones_inmuebles();
-select * from inspecciones_inmuebles;
+select listado_inspecciones_inmuebles();
 
 
 
@@ -413,8 +437,12 @@ select * from inspecciones_inmuebles;
 -- --------- CAMPO FECHA Y CAMPO HORA ---------------
 
 -- Modificacion del campo fecha y campo hora
-select  cambiar_fecha_hora_inspecciones_inmuebles(1,'2021-02-13','08:00:00');
-select * from inspecciones_inmuebles;
+select  actualizar_fecha_hora_inspecciones_inmuebles(1,'2021-02-13','08:00:00');
+select listado_inspecciones_inmuebles();
+select listado_logs_updates();
+
+
+
 
 
 
@@ -422,15 +450,17 @@ select * from inspecciones_inmuebles;
 -- ---------------------------------------------------------------------------
 
 
-
+-- =============================================
 -- ======= TABLA INMUEBLES_MARKETING ===========
+-- =============================================
 
 
 -- --------- CAMPO TIPO_ANUNCIO_PRINCIPAL Y CAMPO TIPO_ANUNCIO_SECUNDARIO ---------------
 
 -- Modificacion del campo tipo_anuncio_principal y campo tipo_anuncio_secundario
 select  depurar_tipo_anuncio_principal_secundario_inmuebles_marketing();
-select * from inmuebles_marketing;
+
+select listado_inmuebles_marketing();
 
 
 
@@ -440,7 +470,7 @@ select * from inmuebles_marketing;
 
 -- Modificacion del campo descripcion_anuncio
 select  depurar_descripcion_anuncio_inmuebles_marketing();
-select * from inmuebles_marketing;
+select listado_inmuebles_marketing();
 
 
 
@@ -448,16 +478,16 @@ select * from inmuebles_marketing;
 
 -- Modificacion del campo inversion_total
 select  depurar_inversion_total_inmuebles_marketing();
-select * from inmuebles_marketing;
-
+select listado_inmuebles_marketing();
 
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
 
-
+-- =========================================
 -- ======= TABLA ADMINISTRADORES ===========
+-- =========================================
 
 
 
@@ -465,7 +495,8 @@ select * from inmuebles_marketing;
 
 -- Modificacion del campo tipo_inmuebles
 select  depurar_tipo_inmuebles_administradores();
-select * from administradores;
+
+select listado_administradores();
 
 
 
@@ -473,11 +504,13 @@ select * from administradores;
 
 -- Modificacion del campo certificaciones
 select  depurar_certificaciones_administradores();
-select * from administradores;
+
+select listado_administradores();
 
 
 
 
+/*
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------

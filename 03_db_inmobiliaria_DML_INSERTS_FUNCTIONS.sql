@@ -74,6 +74,11 @@ drop function if exists descripcion_inspecciones_inmuebles() cascade;
 drop function if exists insertar_registro_inspecciones_inmuebles() cascade;
 drop function if exists insertar_registros_inspecciones_inmuebles() cascade;
 
+-- citas_inmuebles
+drop function if exists listado_citas_inmuebles() cascade;
+drop function if exists descripcion_citas_inmuebles() cascade;
+drop function if exists insertar_registro_citas_inmuebles() cascade;
+drop function if exists insertar_registros_citas_inmuebles() cascade;
 
 
 -- gerentes
@@ -298,7 +303,7 @@ $$ language plpgsql;
 -- ----------- INSERCION DE 1 REGISTRO TABLA OFICINAS ------------
 -- =======================================================================
 
-select * from oficinas ;
+select listado_oficinas();
 
 
 create or replace function insertar_registro_oficinas(
@@ -958,10 +963,9 @@ $$ language plpgsql;
 
 
 
-select * from oficinas_detalles;
+select listado_oficinas_detalles();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'oficinas_detalles';
+select descripcion_oficinas_detalles();
 
 
 
@@ -1295,12 +1299,9 @@ $$ language plpgsql;
 
 
 
-select * from servicios_oficinas;
+select listado_servicios_oficinas();
 
-
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'servicios_oficinas';
-
+select descripcion_servicios_oficinas();
 
 
 
@@ -1551,15 +1552,9 @@ $$ language plpgsql;
 -- =======================================================================
 
 
+select listado_servicios_oficinas();
 
-
-
-select * from servicios_oficinas;
-
-
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'servicios_oficinas';
-
+select descripcion_servicios_oficinas();
 
 
 
@@ -2061,6 +2056,12 @@ $$ language plpgsql;
 -- ----------- INSERCION DE 1 REGISTRO TABLA EMPLEADOS -------------------- 
 -- =======================================================================
 
+
+select listado_empleados();
+
+select descripcion_empleados();
+
+
 create or replace function insertar_registro_empleados(
 
 id_of_input int, nombre_input varchar, apellido_input varchar, edad_input int
@@ -2304,6 +2305,10 @@ $$ language plpgsql;
 -- ----------- INSERCION DE 2 REGISTROS TABLA EMPLEADOS -------------------- 
 -- =========================================================================
 
+
+select listado_empleados();
+
+select descripcion_empleados();
 
 
 create or replace function insertar_registros_empleados(
@@ -2831,7 +2836,10 @@ $$ language plpgsql;
 
 
 
-select * from propietarios_inmuebles;
+select listado_propietarios_inmuebles();
+
+select descripcion_propietarios_inmuebles();
+
 
 
 create or replace function insertar_registro_propietarios_inmuebles(
@@ -3071,7 +3079,10 @@ $$ language plpgsql;
 
 
 
-select * from propietarios_inmuebles;
+select listado_propietarios_inmuebles();
+
+select descripcion_propietarios_inmuebles();
+
 
 
 create or replace function insertar_registros_propietarios_inmuebles(
@@ -3572,7 +3583,9 @@ $$ language plpgsql;
 
 
 
-select * from inmuebles_descripciones;
+select listado_inmuebles_descripciones();
+select descripcion_inmuebles_descripciones();
+
 
 
 create or replace function insertar_registro_inmuebles_descripciones(
@@ -3809,7 +3822,8 @@ $$ language plpgsql;
 
 
 
-select * from inmuebles_descripciones;
+select listado_inmuebles_descripciones();
+select descripcion_inmuebles_descripciones();
 
 
 create or replace function insertar_registros_inmuebles_descripciones(
@@ -4307,11 +4321,8 @@ $$ language plpgsql;
 
 
 
-select * from inmuebles_medidas;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'inmuebles_medidas';
-
+select listado_inmuebles_medidas();
+select descripcion_inmuebles_medidas();
 
 
 create or replace function insertar_registro_inmuebles_medidas(
@@ -4541,11 +4552,9 @@ $$ language plpgsql;
 
 
 
-select * from inmuebles_medidas;
+select listado_inmuebles_medidas();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'inmuebles_medidas';
-
+select descripcion_inmuebles_medidas();
 
 
 create or replace function insertar_registros_inmuebles_medidas(
@@ -5026,11 +5035,9 @@ $$ language plpgsql;
 
 
 
-select * from inmuebles;
+select listado_inmuebles();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'inmuebles';
-
+select descripcion_inmuebles();
 
 
 
@@ -5279,10 +5286,9 @@ $$ language plpgsql;
 
 
 
-select * from inmuebles;
+select listado_inmuebles();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'inmuebles';
+select descripcion_inmuebles();
 
 
 
@@ -5785,11 +5791,9 @@ $$ language plpgsql;
 -- =======================================================================
 
 
-select * from clientes;
+select listado_clientes();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'clientes';
-
+select descripcion_clientes();
 
 
 
@@ -6033,6 +6037,9 @@ $$ language plpgsql;
 
 
 
+select listado_clientes();
+
+select descripcion_clientes();
 
 
 create or replace function insertar_registros_clientes(

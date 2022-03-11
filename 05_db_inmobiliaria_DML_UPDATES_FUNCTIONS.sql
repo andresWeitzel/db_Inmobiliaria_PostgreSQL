@@ -1158,6 +1158,92 @@ $$ language plpgsql;
 
 
 
+
+-- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
+
+
+
+-- =============================================
+-- ======= TABLA SERVICIOS_OFICINAS ===========
+-- =============================================
+
+
+-- --------- CAMPOS DESCRIPCION_SERVICIOS---------------
+
+
+select listado_servicios_oficinas();
+
+
+-- Depuracion general de descripcion_cita
+create or replace function depurar_descripcion_servicios_oficinas() returns void as $$
+
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from servicios_oficinas);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
+		
+	
+		
+	raise notice '----------------------------------------------------------------------------------';
+	raise notice '-- Depuración General Campo "descripcion_servicios" Tabla "servicios_inmuebles" --';
+	raise notice '----------------------------------------------------------------------------------';
+	
+
+		
+
+	-- Todas las palabras con su inicial en Mayuscula
+	update servicios_oficinas set descripcion_servicios = initcap(descripcion_servicios);
+	
+	update servicios_oficinas set descripcion_servicios = replace(descripcion_servicios,'-','');
+	
+	
+		
+	raise notice '';
+	raise notice 'ok!';
+	raise notice ' ';
+	
+
+
+	
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_descripcion_servicios_oficias()  ------- ';
+		
+	end if;
+	
+
+end;
+
+$$ language plpgsql;
+
+
+
+
+
+
+
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
@@ -1570,18 +1656,19 @@ end;
 
 $$ language plpgsql;
 
-/*
-
-
 
 -- ---------------- CAMPO SALARIO_ANUAL --------------------
 
-select * from empleados;
+select listado_empleados();
 
 -- Actualización del Salario Anual por años de antiguedad
 create or replace function depurar_salario_anual_empleados() returns void as $$
 
+
 declare
+
+	id_anterior int;
+
 	-- Aumentamos 3% a los empleados con 1 año de antiguedad
 	 primer_aumento decimal := 3.0/100;
 	
@@ -1598,6 +1685,21 @@ declare
 
 begin 
 	
+	id_anterior := (select max(id) from empleados);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
 	raise notice '-----------------------------------------------------------';
 	raise notice '-- Actualización Campo "salario_anual" Tabla "empleados" --';
 	raise notice '-----------------------------------------------------------';
@@ -1628,19 +1730,32 @@ begin
 
 
 	
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_salario_anual_empleados() ------- ';
+		
+	end if;
+	
+
 end;
 
 $$ language plpgsql;
 
 
 
+
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
-
+-- ==================================
 -- ======= TABLA CLIENTES ===========
+-- ==================================
 
-select * from clientes;
+select listado_clientes(); 
+
+select descripcion_clientes(); 
 
 
 -- --------- CAMPO NOMBRE Y CAMPO APELLIDO ---------------
@@ -1648,7 +1763,30 @@ select * from clientes;
 -- Depuracionn general de ambos campos
 create or replace function depurar_nombres_apellidos_clientes() returns void as $$
 
-begin
+
+declare
+
+	id_anterior int;
+
+
+
+begin 
+	
+	id_anterior := (select max(id) from clientes);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
 	
 	raise notice '---------------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "nombre" y Campo "Apellido" Tabla "clientes" --';
@@ -1669,7 +1807,15 @@ begin
 	raise notice ' ';
 
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_nombres_apellidos_clientes() ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -1678,12 +1824,38 @@ $$ language plpgsql;
 
 -- --------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ---------------
 
-select * from clientes;
+select listado_clientes(); 
+
+
 
 -- Depuracion general de ambos campos
 create or replace function depurar_nro_telefonos_clientes() returns void as $$
 
+
+declare
+
+	id_anterior int;
+
+
+
 begin 
+	
+	id_anterior := (select max(id) from clientes);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
 	
 	raise notice '----------------------------------------------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "nro_telefono_principal" y Campo "nro_telefono_secundario" Tabla "clientes" --';
@@ -1720,22 +1892,53 @@ begin
 	raise notice ' ';
 
 
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_nro_telefonos_clientes() ------- ';
+		
+	end if;
+	
+
 end;
 
 $$ language plpgsql;
 
 
 
-
 -- --------- CAMPO DIRECCION ---------------
 
 
-select * from clientes;
+select listado_clientes(); 
 
 -- Depuracion general de direccion
 create or replace function depurar_direccion_clientes() returns void as $$
 
-begin
+
+declare
+
+	id_anterior int;
+
+
+
+begin 
+	
+	id_anterior := (select max(id) from clientes);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
 	
 	raise notice '-----------------------------------------------------------';
 	raise notice '-- Depuración General Campo "direccion" Tabla "clientes" --';
@@ -1755,7 +1958,15 @@ begin
 	raise notice ' ';
 
 	
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_direccion_clientes() ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -1766,19 +1977,46 @@ $$ language plpgsql;
 -- ---------------------------------------------------------------------------
 
 
+-- ================================================
 -- ======= TABLA PROPIETARIOS_INMUEBLES ===========
+-- ================================================
 
 
 
 -- --------- CAMPO NOMBRE Y CAMPO APELLIDO ---------------
 
-select * from clientes;
+select listado_propietarios_inmuebles();
+
+select descripcion_propietarios_inmuebles();
 
 
 -- Depuracionn general de ambos campos
 create or replace function depurar_nombres_apellidos_propietarios_inmuebles() returns void as $$
 
-begin
+declare
+
+	id_anterior int;
+
+
+
+begin 
+	
+	id_anterior := (select max(id) from propietarios_inmuebles);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
 	
 	raise notice '-----------------------------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "nombre" y Campo "apellido" Tabla "propietarios_inmuebles" --';
@@ -1801,8 +2039,16 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_nombres_apellidos_propietarios_inmuebles() ------- ';
 		
-end
+	end if;
+	
+
+end;
+
 
 $$ language plpgsql;
 
@@ -1811,13 +2057,37 @@ $$ language plpgsql;
 
 -- --------- CAMPO NRO_TELEFONO_PRINCIPAL Y CAMPO NRO TELEFONO_SECUNDARIO ---------------
 
-select * from propietarios_inmuebles;
+select listado_propietarios_inmuebles();
+
+select descripcion_propietarios_inmuebles();
 
 
 -- Depuracion general de ambos campos
 create or replace function depurar_nro_telefonos_propietarios_inmuebles() returns void as $$
 
+declare
+
+	id_anterior int;
+
+
 begin 
+	
+	id_anterior := (select max(id) from propietarios_inmuebles);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
 	
 	
 	raise notice '------------------------------------------------------------------------------------------------------------------------';
@@ -1858,7 +2128,14 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 	
+else
 	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_nro_telefonos_propietarios_inmuebles() ------- ';
+		
+	end if;
+	
+
 end;
 
 $$ language plpgsql;
@@ -1868,12 +2145,37 @@ $$ language plpgsql;
 -- --------- CAMPO DIRECCION ---------------
 
 
-select * from propietarios_inmuebles;
+select listado_propietarios_inmuebles();
+
+
 
 -- Depuracion general de direccion
 create or replace function depurar_direccion_propietarios_inmuebles() returns void as $$
 
-begin
+
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from propietarios_inmuebles);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
 	
 	raise notice '-------------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "direccion" Tabla "propietarios_inmuebles" --';
@@ -1896,37 +2198,80 @@ begin
 	
 	
 	
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_direccion_propietarios_inmuebles() ------- ';
+		
+	end if;
+	
+
+end;
+
 
 $$ language plpgsql;
 
 
 
+
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
 
-
--- ======= TABLA INMUEBLES DESCRIPCIONES ===========
+-- ================================================
+-- ======= TABLA INMUEBLES DESCRIPCIONES ==========
+-- ================================================
 
 
 
 -- --------- CAMPO SUPERFICIE_TOTAL Y CAMPO SUPERFICIE_CUBIERTA---------------
 
-select * from inmuebles_descripciones;
+select listado_inmuebles_descripciones();
 
 -- Depuracion general de ambos campos
-create or replace function cambiar_superficie_total_cubierta_inmuebles_descripciones
-(sup_total_input decimal, sup_cubierta_input decimal, id_input int ) returns void as $$
+create or replace function actualizar_superficie_total_cubierta_inmuebles_descripciones
+(id_input int , sup_total_input decimal, sup_cubierta_input decimal) returns void as $$
 
 declare 
 
-id_anterior varchar := (select id from inmuebles_descripciones id where id=id_input);
+id_anterior int := (select id from inmuebles_descripciones id where id=id_input);
 sup_total_anterior varchar := (select superficie_total from inmuebles_descripciones id where id=id_input);
 sup_cubierta_anterior varchar := (select superficie_cubierta from inmuebles_descripciones id where id=id_input);
 
+-- TABLA LOGS_UPDATES
+
+uuid_registro_inm_descr uuid;
+nombre_tabla_inm_descr varchar := 'inmuebles_descripciones';
+campo_tabla_inm_descr varchar := 'superficie total/superficie cubierta';
+accion_inm_descr varchar := 'update';
+fecha_inm_descr date ;
+hora_inm_descr time ;
+usuario_inm_descr varchar;
+usuario_sesion_inm_descr varchar;
+db_inm_descr varchar;
+db_version_inm_descr varchar;
+
+
+id_last_logs_upd int;
+
+
 
 begin 
+
+	if(
+	((id_anterior <= 0) or (id_input <= 0) )
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0) and (id_input = id_anterior)
+		and (sup_total_input > 0.0) and (sup_cubierta_input > 0.0))
+		) then
 	
 	raise notice '---------------------------------------------------------------------------------------------------------';
 	raise notice '-- Modificación Campo "superficie_total" y Campo "superficie_cubierta" Tabla "inmuebles_descripciones" --';
@@ -1961,28 +2306,147 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
+
+
 	
-end
+	
+		
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
+		raise notice '----------------------------------------------';
+	
+	
+		--------------------------------------- INSERCION REGISTRO logs_updates----------------------------------------
+	
+	
+		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
+		
+		(id_input , nombre_tabla_inm_descr, campo_tabla_inm_descr , accion_inm_descr);
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
+	
+		
+	
+		id_last_logs_upd  := (select max(id) from logs_updates);
+	
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_inm_descr := (select uuid_registro from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inmuebles_descripciones'));
+		
+		fecha_inm_descr := (select fecha from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inmuebles_descripciones'));
+		
+		
+		hora_inm_descr := (select hora from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inmuebles_descripciones'));
+		
+	
+		usuario_inm_descr := (select usuario from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inmuebles_descripciones'));
+		
+	
+		usuario_sesion_inm_descr := (select usuario_sesion from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inmuebles_descripciones'));
+		
+	
+		db_inm_descr := (select db from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inmuebles_descripciones'));
+		
+	 	
+		db_version_inm_descr := (select db_version from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inmuebles_descripciones'));
+		
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Actualización --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_input ;
+		raise notice 'UUID Registro : %', uuid_registro_inm_descr;
+		raise notice 'Tabla : %', nombre_tabla_inm_descr;
+		raise notice 'Campo : %', campo_tabla_inm_descr;
+		raise notice 'Acción : %', accion_inm_descr;
+		raise notice 'Fecha : %', fecha_inm_descr;
+		raise notice 'Hora : %', hora_inm_descr;
+     	raise notice 'Usuario : %', usuario_inm_descr;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_inm_descr;
+        raise notice 'DB : %', db_inm_descr;
+        raise notice 'Versión DB : %', db_version_inm_descr;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+	
+
+	
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- actualizar_superficie_total_cubierta_inmuebles_descripciones
+(id_input int , sup_total_input decimal, sup_cubierta_input decimal) ------- ';
+		
+	end if;
+	
+
+end;
+
 
 $$ language plpgsql;
 
+
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
 
 
--- ======= TABLA INMUEBLES MEDIDAS ===========
+-- ================================================
+-- ======= TABLA INMUEBLES MEDIDAS ================
+-- ================================================
 
 
 
 -- --------- CAMPO DORMITORIO ---------------
 
-select * from inmuebles_medidas;
+select listado_inmuebles_medidas();
 
 -- Depuracion general del campo dormitorio
 create or replace function depurar_dormitorio_inmuebles_medidas() returns void as $$
 
-begin
+
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from inmuebles_medidas);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
 	
 	
 	
@@ -2004,21 +2468,52 @@ begin
 	raise notice ' ';
 	
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_dormitorio_inmuebles_medidas() ------- ';
+		
+	end if;
+	
+
+end;
+
 
 $$ language plpgsql;
 
 
 
-
 -- --------- CAMPO SANITARIO ---------------
 
-select * from inmuebles_medidas;
+select listado_inmuebles_medidas();
 
 -- Depuracion general de cambo dormitorio
 create or replace function depurar_sanitario_inmuebles_medidas() returns void as $$
 
-begin
+
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from inmuebles_medidas);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
 	
 	raise notice '---------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "sanitario" Tabla "inmuebles_medidas" --';
@@ -2036,7 +2531,16 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_sanitaro_inmuebles_medidas() ------- ';
+		
+	end if;
+	
+
+end;
+
 
 $$ language plpgsql;
 
@@ -2045,12 +2549,36 @@ $$ language plpgsql;
 
 -- --------- CAMPOS PATIO_JARDIN, COCHERA, BALCON ---------------
 
-select * from inmuebles_medidas;
+select listado_inmuebles_medidas();
 
 -- Depuracion general de los campos
 create or replace function depurar_patio_jardin_cochera_balcon_inmuebles_medidas() returns void as $$
 
-begin
+
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from inmuebles_medidas);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
+	
 	
 	raise notice '---------------------------------------------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "patio_jardin", Campo "cochera" y Campo "balcon" Tabla "inmuebles_medidas" --';
@@ -2068,31 +2596,66 @@ begin
 	raise notice ' ';
 
 	
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_patio_jardin_cochera_balcon_inmuebles_medidas() ------- ';
+		
+	end if;
+	
+
+end;
+
 
 $$ language plpgsql;
 
 
 
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
 
 
+-- ===================================
 -- ======= TABLA INMUEBLES ===========
+-- ===================================
 
 
 
 -- --------- CAMPOS DESCRIPCION, TIPO ---------------
 
-select * from inmuebles;
-
+select listado_citas_inmuebles();
 
 
 -- Depuracion general de los campos
 create or replace function depurar_descripcion_tipo_inmuebles() returns void as $$
 
-begin
+
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from inmuebles);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
+	
 	
 		
 	raise notice '-----------------------------------------------------------------------------';
@@ -2119,7 +2682,16 @@ begin
 	raise notice ' ';
 		
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_descripcion_tipo_inmuebles()  ------- ';
+		
+	end if;
+	
+
+end;
+
 
 $$ language plpgsql;
 
@@ -2129,12 +2701,34 @@ $$ language plpgsql;
 -- --------- CAMPOS DIRECCION, UBICACION ---------------
 
 
-select * from inmuebles;
+select listado_inmuebles();
 
 -- Depuracion general de direccion
 create or replace function depurar_direccion_ubicacion_inmuebles() returns void as $$
 
-begin
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from citas_inmuebles);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
 	
 		
 	raise notice '--------------------------------------------------------------------------------';
@@ -2157,30 +2751,66 @@ begin
 	raise notice ' ';
 	
 	
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_direccion_ubicacion_inmuebles()  ------- ';
+		
+	end if;
+	
+
+end;
+
+
 
 $$ language plpgsql;
 
 
 
 
+
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
 
 
--- ======= TABLA CITAS_INMUEBLES ===========
+-- ===================================
+-- ======= TABLA CITAS_INMUEBLES =====
+-- ===================================
+
 
 
 -- --------- CAMPOS DESCRIPCION_CITA ---------------
 
 
-select * from citas_inmuebles;
+select listado_citas_inmuebles();
 
 -- Depuracion general de descripcion_cita
 create or replace function depurar_descripcion_cita_citas_inmuebles() returns void as $$
 
-begin
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from citas_inmuebles);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
 		
 	raise notice '-------------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "descripcion_cita" Tabla "citas_inmuebles" --';
@@ -2197,7 +2827,16 @@ begin
 	
 
 	
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_descripcion_cita_citas_inmuebles()  ------- ';
+		
+	end if;
+	
+
+end;
+
 
 $$ language plpgsql;
 
@@ -2210,66 +2849,46 @@ $$ language plpgsql;
 -- ---------------------------------------------------------------------------
 
 
-
--- ======= TABLA SERVICIOS_INMUEBLES ===========
-
-
--- --------- CAMPOS DESCRIPCION_SERVICIOS---------------
-
-
-select * from servicios_inmuebles;
-
--- Depuracion general de descripcion_cita
-create or replace function depurar_descripcion_servicios_inmuebles() returns void as $$
-
-begin
-	
-		
-	raise notice '----------------------------------------------------------------------------------';
-	raise notice '-- Depuración General Campo "descripcion_servicios" Tabla "servicios_inmuebles" --';
-	raise notice '----------------------------------------------------------------------------------';
-	
-
-		
-
-	-- Todas las palabras con su inicial en Mayuscula
-	update servicios_inmuebles set descripcion_servicios = initcap(descripcion_servicios);
-	
-	update servicios_inmuebles set descripcion_servicios = replace(descripcion_servicios,'-','');
-	
-	
-		
-	raise notice '';
-	raise notice 'ok!';
-	raise notice ' ';
-	
-
-
-	
-end
-
-$$ language plpgsql;
-
-
-
-
--- ---------------------------------------------------------------------------
--- ---------------------------------------------------------------------------
-
-
-
--- ======= TABLA INSPECCIONES_INMUEBLES ===========
+-- =============================================
+-- ======= TABLA INSPECCIONES_INMUEBLES ========
+-- =============================================
 
 
 -- --------- CAMPO DESCRIPCION_INSPECCION ---------------
 
 
-select * from inspecciones_inmuebles;
+select listado_inspecciones_inmuebles();
+
+
 
 -- Depuracion general de descripcion_inspeccion
 create or replace function depurar_descripcion_inspeccion_inspecciones_inmuebles() returns void as $$
 
-begin
+
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from inspecciones_inmuebles);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
+		
 	
 		
 	raise notice '--------------------------------------------------------------------------------------';
@@ -2289,7 +2908,15 @@ begin
 	
 
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_descripcion_inspeccion_inspecciones_inmuebles()  ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -2297,13 +2924,36 @@ $$ language plpgsql;
 
 -- --------- CAMPOS EMPRESA, DIRECCION ---------------
 
-
-select * from inspecciones_inmuebles;
+select listado_inspecciones_inmuebles();
 
 -- Depuracion general de los campos
 create or replace function depurar_empresa_direccion_inspecciones_inmuebles() returns void as $$
 
-begin
+
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from inspecciones_inmuebles);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
+		
 
 	
 	
@@ -2329,7 +2979,15 @@ begin
 	raise notice ' ';
 	
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_empresa_direccion_inspecciones_inmuebles()  ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -2338,12 +2996,34 @@ $$ language plpgsql;
 -- --------- CAMPO NUMERO_TELEFONO ---------------
 
 
-select * from inspecciones_inmuebles;
+select listado_inspecciones_inmuebles();
 
 -- Depuracion general de los campos
 create or replace function depurar_nro_tel_inspecciones_inmuebles() returns void as $$
 
-begin
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from inspecciones_inmuebles);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
 		
 	raise notice '----------------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "nro_telefono" Tabla "inspecciones_inmuebles" --';
@@ -2360,7 +3040,15 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 	
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_nro_tel_inspecciones_inmuebles()  ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -2368,8 +3056,8 @@ $$ language plpgsql;
 
 -- --------- CAMPO COSTO ---------------
 
+select listado_inspecciones_inmuebles();
 
-select * from inspecciones_inmuebles;
 
 
 -- Depuracion general del campo costo
@@ -2378,9 +3066,28 @@ create or replace function depurar_costo_inspecciones_inmuebles() returns void a
 declare 
 	 aumento_depto decimal := 1.6/100;
 	 aumento_casa_ph decimal := 2.3/100;
-	
 
-begin
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from inspecciones_inmuebles);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+	
 
 			
 	raise notice '---------------------------------------------------------------------';
@@ -2408,7 +3115,15 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_costo_inspecciones_inmuebles()  ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -2417,11 +3132,11 @@ $$ language plpgsql;
 -- --------- CAMPO HORA Y CAMPO FECHA ---------------
 
 
-select * from inspecciones_inmuebles;
+select listado_inspecciones_inmuebles();
 
 
 -- Cambiar Hora y Fecha
-create or replace function cambiar_fecha_hora_inspecciones_inmuebles(id_input int, fecha_input date
+create or replace function actualizar_fecha_hora_inspecciones_inmuebles(id_input int, fecha_input date
 , hora_input time) returns void as $$
 
 declare 
@@ -2429,7 +3144,46 @@ declare
 	 fecha_anterior date:= (select fecha from inspecciones_inmuebles where id = id_input);
 	 hora_anterior time := (select hora from inspecciones_inmuebles where id = id_input);
 
-begin
+
+
+-- TABLA LOGS_UPDATES
+
+uuid_registro_insp_inm uuid;
+nombre_tabla_insp_inm varchar := 'inspecciones_inmuebles';
+campo_tabla_insp_inm varchar := 'fecha/hora';
+accion_insp_inm varchar := 'update';
+fecha_insp_inm date ;
+hora_insp_inm time ;
+usuario_insp_inm varchar;
+usuario_sesion_insp_inm varchar;
+db_insp_inm varchar;
+db_version_insp_inm varchar;
+
+
+id_last_logs_upd int;
+
+
+begin 
+	
+	
+	if(
+	(id_anterior <= 0) or 
+	(id_input <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
+						using hint='------- REVISAR EL RESGISTRO DE MODIFICACIÓN -------';
+										
+									
+	
+	elsif (
+		(id_anterior > 0) and 
+		(id_input > 0) and 
+		(id_anterior = id_input) and
+		((fecha_input <= current_date) or (fecha_input >= current_date)) and
+		((hora_input <= current_time) or (hora_input >= current_time))
+		) then
+	
 
 			
 	raise notice '----------------------------------------------------------------------------------';
@@ -2468,7 +3222,100 @@ begin
 	raise notice ' ';
 
 
-end
+
+
+	
+	
+		
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
+		raise notice '----------------------------------------------';
+	
+	
+		--------------------------------------- INSERCION REGISTRO logs_updates----------------------------------------
+	
+	
+		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
+		
+		(id_input , nombre_tabla_insp_inm , campo_tabla_insp_inm  , accion_insp_inm );
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
+	
+		
+	
+		id_last_logs_upd  := (select max(id) from logs_updates);
+	
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_insp_inm  := (select uuid_registro from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inspecciones_inmuebles'));
+		
+		fecha_insp_inm  := (select fecha from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inspecciones_inmuebles'));
+		
+		
+		hora_insp_inm  := (select hora from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inspecciones_inmuebles'));
+		
+	
+		usuario_insp_inm  := (select usuario from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inspecciones_inmuebles'));
+		
+	
+		usuario_sesion_insp_inm  := (select usuario_sesion from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inspecciones_inmuebles'));
+		
+	
+		db_insp_inm  := (select db from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inspecciones_inmuebles'));
+		
+	 	
+		db_version_insp_inm  := (select db_version from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'inspecciones_inmuebles'));
+		
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Actualización --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_input ;
+		raise notice 'UUID Registro : %', uuid_registro_insp_inm;
+		raise notice 'Tabla : %', nombre_tabla_insp_inm;
+		raise notice 'Campo : %', campo_tabla_insp_inm;
+		raise notice 'Acción : %', accion_insp_inm;
+		raise notice 'Fecha : %', fecha_insp_inm;
+		raise notice 'Hora : %', hora_insp_inm;
+     	raise notice 'Usuario : %', usuario_insp_inm;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_insp_inm;
+        raise notice 'DB : %', db_insp_inm;
+        raise notice 'Versión DB : %', db_version_insp_inm;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+	
+	
+	
+
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- cambiar_fecha_hora_inspecciones_inmuebles(id_input int, fecha_input date
+, hora_input time)  ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -2476,20 +3323,21 @@ $$ language plpgsql;
 
 
 
-
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
 
 
+-- =============================================
 -- ======= TABLA INMUEBLES_MARKETING ===========
+-- =============================================
 
 
 
 -- --------- CAMPO TIPO_ANUNCIO_PRINCIPAL Y CAMPO TIPO_ANUNCIO_SECUNDARIO ---------------
 
 
-select * from inmuebles_marketing;
+select listado_inmuebles_marketing();
 
 
 
@@ -2497,7 +3345,28 @@ select * from inmuebles_marketing;
 create or replace function depurar_tipo_anuncio_principal_secundario_inmuebles_marketing() returns void as $$
 	
 
-begin
+declare 
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from inmuebles_marketing);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
 
 			
 	raise notice '---------------------------------------------------------------------------------------------------------------------';
@@ -2520,7 +3389,15 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_tipo_anuncio_principal_secundario_inmuebles_marketing() ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -2530,15 +3407,35 @@ $$ language plpgsql;
 -- --------- CAMPO DESCRIPCION_ANUNCIO ---------------
 
 
-select * from inmuebles_marketing;
+select listado_inmuebles_marketing();
 
 
 
 -- Depuracion general del campo descripcion_anuncio
 create or replace function depurar_descripcion_anuncio_inmuebles_marketing() returns void as $$
 	
+declare 
 
-begin
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from inmuebles_marketing);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
 
 			
 	raise notice '--------------------------------------------------------------------------------';
@@ -2558,7 +3455,16 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_tipo_anuncio_principal_secundario_inmuebles_marketing() ------- ';
+		
+	end if;
+	
+
+end;
+
 
 $$ language plpgsql;
 
@@ -2568,7 +3474,7 @@ $$ language plpgsql;
 -- --------- CAMPO INVERSION_TOTAL ---------------
 
 
-select * from inmuebles_marketing;
+select listado_inmuebles_marketing();
 
 
 -- Depuracion general del campo inversion_total
@@ -2578,9 +3484,28 @@ declare
 	 aumento_google_ads decimal := 0.9/100;
 	 aumento_youtube decimal := 0.2/100;
 	 aumento_linkedin decimal := 0.14/100;
-	
 
-begin
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from inmuebles_marketing);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+
 
 			
 	raise notice '----------------------------------------------------------------------------';
@@ -2612,7 +3537,17 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_inversion_total_inmuebles_marketing() ------- ';
+		
+	end if;
+	
+
+end;
+
 
 $$ language plpgsql;
 
@@ -2625,22 +3560,44 @@ $$ language plpgsql;
 -- ---------------------------------------------------------------------------
 
 
-
+-- =========================================
 -- ======= TABLA ADMINISTRADORES ===========
+-- =========================================
 
 
 
 -- --------- CAMPO TIPO_INMUEBLE ---------------
 
 
-select * from administradores;
-
+select listado_administradores();
 
 -- Depuracion general del campo tipo_inmueble
 create or replace function depurar_tipo_inmuebles_administradores() returns void as $$
 	
 
-begin
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from administradores);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+
 
 			
 	raise notice '----------------------------------------------------------------------';
@@ -2659,7 +3616,16 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_tipo_inmuebles_administradores() ------- ';
+		
+	end if;
+	
+
+end;
+
 
 $$ language plpgsql;
 
@@ -2668,7 +3634,7 @@ $$ language plpgsql;
 -- --------- CAMPO CERTIFICACIONES ---------------
 
 
-select * from administradores;
+select listado_administradores();
 
 
 
@@ -2676,7 +3642,30 @@ select * from administradores;
 create or replace function depurar_certificaciones_administradores() returns void as $$
 	
 
-begin
+
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from administradores);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+
 
 			
 	raise notice '------------------------------------------------------------------------';
@@ -2703,11 +3692,20 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_certificaciones_administradores() ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
 
+/*
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------

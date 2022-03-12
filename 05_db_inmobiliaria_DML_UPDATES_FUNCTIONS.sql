@@ -3705,28 +3705,54 @@ end;
 $$ language plpgsql;
 
 
-/*
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
 
 
+-- ==================================
 -- ======= TABLA GERENTES ===========
-
+-- ==================================
 
 
 -- --------- CAMPO TITULO ---------------
 
 
-select * from gerentes;
+select listado_gerentes();
+
 
 
 -- Depuracion general del campo titulo
 create or replace function depurar_titulo_gerentes() returns void as $$
 	
 
-begin
+
+
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from gerentes);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+
+
 
 			
 	raise notice '--------------------------------------------------------';
@@ -3747,60 +3773,61 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_titulo_gerentes() ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
 
-
--- --------- CAMPO TITULO ---------------
-
-
-select * from gerentes;
-
-
--- Depuracion general del campo titulo
-create or replace function depurar_titulo_gerentes() returns void as $$
-	
-
-begin
-
-			
-	raise notice '--------------------------------------------------------';
-	raise notice '-- Depuración General Campo "titulo" Tabla "gerentes" --';
-	raise notice '--------------------------------------------------------';
-	
-
-
-	update gerentes set titulo = initcap(titulo); 
-	update gerentes set titulo = replace(titulo ,'Licenciado','Lic');
-	update gerentes set titulo = replace(titulo ,'Licenciada','Lic');
-	update gerentes set titulo = replace(titulo ,'Administración','Adm');
-
-	
-	
-
-	raise notice '';
-	raise notice 'ok!';
-	raise notice ' ';
-
-end
-
-$$ language plpgsql;
 
 
 
 -- --------- CAMPO BENEFICIOS ---------------
 
 
-select * from gerentes;
+select listado_gerentes();
+
 
 
 -- Depuracion general
 create or replace function depurar_beneficios_gerentes() returns void as $$
 	
 
-begin
+
+
+
+declare
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from gerentes);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+
+
+
 
 			
 	raise notice '------------------------------------------------------------';
@@ -3818,7 +3845,16 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_beneficios_gerentes() ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -3827,7 +3863,8 @@ $$ language plpgsql;
 -- --------- CAMPO RETRIBUCION_SALARIAL_ANUAL ---------------
 
 
-select * from gerentes;
+select listado_gerentes();
+
 
 
 -- Depuracion general
@@ -3838,9 +3875,31 @@ declare
 	primer_aumento decimal := 0.2/100;
 	 segundo_aumento decimal := 0.4/100;
 	 tercer_aumento decimal := 0.9/100;
-	
 
-begin
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from gerentes);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+
+
+
 
 			
 	raise notice '----------------------------------------------------------------------------';
@@ -3878,39 +3937,86 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_retribucion_salarial_anual_gerentes()
+ ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
 
 
 
--- ---------------------------------------------------------------------------
 
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 
-
+-- ====================================
 -- ======= TABLA VENDEDORES ===========
-
+-- ====================================
 
 
 -- --------- CAMPO CANTIDAD_VENTAS ---------------
 
 
-select * from vendedores;
+select listado_vendedores();
 
 
 
 -- Modificación campo cantidad_ventas
-create or replace function cambiar_cantidad_ventas_vendedores(id_input int, cant_ventas_input int) returns void as $$
+create or replace function actualizar_cantidad_ventas_vendedores(id_input int, cant_ventas_input int) returns void as $$
 
 declare 
 	 id_anterior int := (select id from vendedores where id = id_input );
 	 cant_ventas_anterior int  := (select cantidad_ventas from vendedores where id = id_input );
-	 	
 
-begin
 
+
+-- TABLA LOGS_UPDATES
+
+uuid_registro_vend uuid;
+nombre_tabla_vend varchar := 'vendedores';
+campo_tabla_vend varchar := 'cantidad_ventas';
+accion_vend varchar := 'update';
+fecha_vend date ;
+hora_vend time ;
+usuario_vend varchar;
+usuario_sesion_vend varchar;
+db_vend varchar;
+db_version_vend varchar;
+
+
+id_last_logs_upd int;
+
+
+begin 
+	
+	
+	if(
+	(id_anterior <= 0) or 
+	(id_input <= 0) or
+	(cant_ventas_input < 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
+						using hint='------- REVISAR EL RESGISTRO DE MODIFICACIÓN -------';
+										
+									
+	
+	elsif (
+		(id_anterior > 0) and 
+		(id_input > 0) and 
+		(id_anterior = id_input) and
+		(cant_ventas_input >= 0)
+		) then
+	
 			
 	raise notice '--------------------------------------------------------------';
 	raise notice '-- Modificación  Campo "cantidad_ventas" Tabla "vendedores" --';
@@ -3945,7 +4051,101 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+
+
+
+
+
+	
+	
+		
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
+		raise notice '----------------------------------------------';
+	
+	
+		--------------------------------------- INSERCION REGISTRO logs_updates----------------------------------------
+	
+	
+		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
+		
+		(id_input , nombre_tabla_vend , campo_tabla_vend  , accion_vend );
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
+	
+		
+	
+		id_last_logs_upd  := (select max(id) from logs_updates);
+	
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_vend  := (select uuid_registro from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'vendedores'));
+		
+		fecha_vend := (select fecha from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'vendedores'));
+		
+		
+		hora_vend  := (select hora from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'vendedores'));
+		
+	
+		usuario_vend  := (select usuario from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'vendedores'));
+		
+	
+		usuario_sesion_vend  := (select usuario_sesion from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'vendedores'));
+		
+	
+		db_vend  := (select db from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'vendedores'));
+		
+	 	
+		db_version_vend  := (select db_version from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'vendedores'));
+		
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Actualización --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_input ;
+		raise notice 'UUID Registro : %', uuid_registro_vend;
+		raise notice 'Tabla : %', nombre_tabla_vend;
+		raise notice 'Campo : %', campo_tabla_vend;
+		raise notice 'Acción : %', accion_vend;
+		raise notice 'Fecha : %', fecha_vend;
+		raise notice 'Hora : %', hora_vend;
+     	raise notice 'Usuario : %', usuario_vend;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_vend;
+        raise notice 'DB : %', db_vend;
+        raise notice 'Versión DB : %', db_version_vend;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+
+	
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- actualizar_cantidad_ventas_vendedores(id_input int, cant_ventas_input int)
+ ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -3954,7 +4154,7 @@ $$ language plpgsql;
 -- --------- CAMPO BONIFICACION_VENTAS ---------------
 
 
-select * from vendedores;
+select listado_vendedores();
 
 
 -- Depuracion general
@@ -3966,7 +4166,28 @@ declare
 	 segunda_bonif decimal := 2.21/100;
 	 tercera_bonif decimal := 3.41/100;
 
-begin
+
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from vendedores);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+
 
 			
 	raise notice '-----------------------------------------------------------------------';
@@ -4009,27 +4230,35 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_bonificacion_ventas_vendedores()
+ ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
 
 
-
-
 -- ---------------------------------------------------------------------------
-
 -- ---------------------------------------------------------------------------
 
 
+-- =====================================
 -- ======= TABLA COMPRADORES ===========
+-- =====================================
 
 
 
 -- --------- CAMPO DESCUENTO_CLIENTE_USD Y CAMPO BENEFICIOS_COMPRAS---------------
 
 
-select * from compradores;
+select listado_compradores();
 
 
 -- Depuracion general
@@ -4038,7 +4267,29 @@ create or replace function depurar_descuento_cliente_usd_beneficios_compras_comp
 declare 
 	 primer_desc decimal := 7/100;
 	 segundo_desc decimal := 10/100;
-begin
+	
+	id_anterior int;
+
+
+begin 
+	
+	id_anterior := (select max(id) from compradores);
+	
+	if(
+	(id_anterior <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE/N ACTUALIZAR UN/VARIOS REGISTRO/S QUE NO EXISTA/N ===== '
+						using hint='------- INGRESAR REGISTROS EN LA TABLA -------';
+										
+									
+	
+	elsif (
+		((id_anterior > 0))
+		) then
+
+
+
 
 			
 	raise notice '-------------------------------------------------------------------------------------------------------';
@@ -4053,25 +4304,38 @@ begin
 
 
 	update compradores set descuento_cliente_usd = 
-	(descuento_cliente_usd + (descuento_cliente_usd * primer_desc))  
-	where (cantidad_inmuebles_comprados = 1); 
+	(descuento_cliente_usd + 200)  
+	where (beneficios_compras like '%7%%'); 
 
-	update compradores set descuento_cliente_usd = 
-	(descuento_cliente_usd + (descuento_cliente_usd * segundo_desc))  
-	where (cantidad_inmuebles_comprados = 2); 
+		update compradores set descuento_cliente_usd = 
+	(descuento_cliente_usd + 700)  
+	where (beneficios_compras like '%10%%'); 
 
 	-- cambiamos los beneficios de compras
-	update compradores set beneficios_compras = 'Descuento del 15% en la Próxima Compra' where cantidad_inmuebles_comprados = 1;
-	update compradores set beneficios_compras = 'Descuento del 20% en la Próxima Compra' where cantidad_inmuebles_comprados = 2;
+	update compradores set beneficios_compras = 'Descuento del 15% en la Próxima Compra' where (beneficios_compras like '%7%%');
+	update compradores set beneficios_compras = 'Descuento del 20% en la Próxima Compra' where (beneficios_compras like '%10%%');  
 
 	update compradores set beneficios_compras = initcap(beneficios_compras);
+
 
 
 	raise notice '';
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+
+
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_descuento_cliente_usd_beneficios_compras_compradores()
+ ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -4082,11 +4346,13 @@ $$ language plpgsql;
 
 
 -- ---------------------------------------------------------------------------
-
 -- ---------------------------------------------------------------------------
 
 
+-- ================================
 -- ======= TABLA VENTAS ===========
+-- ================================
+
 
 
 
@@ -4094,12 +4360,12 @@ $$ language plpgsql;
 -- --------- CAMPO FECHA_VENTA Y CAMPO HORA_VENTA ---------------
 
 
-select * from ventas;
+select listado_ventas();
 
 
 
 -- Modificación campo fecha_venta y campo hora_venta
-create or replace function cambiar_fecha_hora_venta_ventas(id_input int, fecha_venta_input date, hora_venta_input time) returns void as $$
+create or replace function actualizar_fecha_hora_venta_ventas(id_input int, fecha_venta_input date, hora_venta_input time) returns void as $$
 
 declare 
 	 id_anterior int := (select id from ventas where id = id_input );
@@ -4107,7 +4373,47 @@ declare
 	 hora_venta_anterior time  := (select hora_venta from ventas where id = id_input );
 	 	
 
-begin
+
+
+-- TABLA LOGS_UPDATES
+
+uuid_registro_ventas uuid;
+nombre_tabla_ventas varchar := 'ventas';
+campo_tabla_ventas varchar := 'cantidad_ventas';
+accion_ventas varchar := 'update';
+fecha_ventas date ;
+hora_ventas time ;
+usuario_ventas varchar;
+usuario_sesion_ventas varchar;
+db_ventas varchar;
+db_version_ventas varchar;
+
+
+id_last_logs_upd int;
+
+
+begin 
+	
+	
+	if(
+	(id_anterior <= 0) or 
+	(id_input <= 0)
+	) then
+	
+		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
+						using hint='------- REVISAR EL RESGISTRO DE MODIFICACIÓN -------';
+										
+									
+	
+	elsif (
+		(id_anterior > 0) and 
+		(id_input > 0) and 
+		(id_anterior = id_input) and
+		((fecha_venta_input <= current_date) or (fecha_venta_input >= current_date)) and
+		((hora_venta_input <= current_time) or (hora_venta_input >= current_time))
+		) then
+	
+			
 
 			
 	raise notice '---------------------------------------------------------------------------';
@@ -4144,7 +4450,98 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+
+
+
+	
+		raise notice '';
+		raise notice '----------------------------------------------';
+		raise notice '-- Inserción de Registro Tabla "logs_updates" --';
+		raise notice '----------------------------------------------';
+	
+	
+		--------------------------------------- INSERCION REGISTRO logs_updates----------------------------------------
+	
+	
+		insert into logs_updates(id_registro, nombre_tabla , campo_tabla,  accion) values
+		
+		(id_input , nombre_tabla_ventas , campo_tabla_ventas  , accion_ventas );
+	
+	
+		--------------------------------------- FIN INSERCION REGISTRO logs_updates----------------------------------------
+	
+		
+	
+		id_last_logs_upd  := (select max(id) from logs_updates);
+	
+	
+		-- Traemos los valores del Registro Insertado
+		uuid_registro_ventas  := (select uuid_registro from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'ventas'));
+		
+		fecha_ventas := (select fecha from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'ventas'));
+		
+		
+		hora_ventas  := (select hora from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'ventas'));
+		
+	
+		usuario_ventas  := (select usuario from logs_updates 
+		where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'ventas'));
+		
+	
+		usuario_sesion_ventas  := (select usuario_sesion from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'ventas'));
+		
+	
+		db_ventas  := (select db from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'ventas'));
+		
+	 	
+		db_version_ventas  := (select db_version from logs_updates 
+			where (id = id_last_logs_upd) and (id_registro = id_input) and (nombre_tabla = 'ventas'));
+		
+		
+	 
+	 	
+	
+		raise notice '';
+		raise notice '';
+		raise notice '-- Registro de Actualización --';
+		raise notice '';
+
+		raise notice 'ID Registro: %' , id_input ;
+		raise notice 'UUID Registro : %', uuid_registro_ventas;
+		raise notice 'Tabla : %', nombre_tabla_ventas;
+		raise notice 'Campo : %', campo_tabla_ventas;
+		raise notice 'Acción : %', accion_ventas;
+		raise notice 'Fecha : %', fecha_ventas;
+		raise notice 'Hora : %', hora_ventas;
+     	raise notice 'Usuario : %', usuario_ventas;
+        raise notice 'Sesión de Usuario : %', usuario_sesion_ventas;
+        raise notice 'DB : %', db_ventas;
+        raise notice 'Versión DB : %', db_version_ventas;
+	
+
+		raise notice ' ';
+		raise notice 'ok!';
+		raise notice ' ';	
+
+	
+
+
+
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- actualizar_fecha_hora_venta_ventas(id_input int, fecha_venta_input date, hora_venta_input time)
+ ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -4155,14 +4552,14 @@ $$ language plpgsql;
 
 -- ---------------------------------------------------------------------------
 
-
+-- ==================================
 -- ======= TABLA FACTURAS ===========
-
+-- ==================================
 
 
 -- --------- CAMPO PRECIO_TOTAL_VENTA_USD ---------------
 
-select * from facturas;
+select listado_facturas();
 
 
 -- Depuracion general
@@ -4172,7 +4569,28 @@ declare
 	 impuesto_venta  decimal := 0.7/100;
 	 impuesto_agregado decimal := 0.6/100;
 
-begin
+
+	id_anterior int := (select max(id) from facturas);
+
+	
+	
+begin 
+	
+	
+	if(
+	(id_anterior <= 0) 
+	) then
+	
+		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
+						using hint='------- REVISAR EL RESGISTRO DE MODIFICACIÓN -------';
+										
+									
+	
+	elsif (
+		(id_anterior > 0)
+		) then
+	
+			
 
 			
 	raise notice '------------------------------------------------------------------------';
@@ -4196,7 +4614,16 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_precio_total_venta_usd_facturas()
+ ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -4208,23 +4635,45 @@ $$ language plpgsql;
 
 -- ---------------------------------------------------------------------------
 
-
--- ======= TABLA FACTURAS_DETALLES ===========
-
+-- ======================================
+-- ======= TABLA FACTURAS_DETALLES ======
+-- ======================================
 
 
 -- --------- CAMPO DESCRIPCION_FACTURA Y CAMPO DESCRIPCION_PAGO ---------------
 
-select * from facturas_detalles;
+select listado_facturas_detalles();
 
 
 -- Depuracion general
 create or replace function depurar_descripcion_factura_pago_facturas_detalles() returns void as $$
 	
 
-begin
+declare 
 
+		id_anterior int := (select max(id) from facturas_detalles);
+
+
+begin 
+	
+	
+	if(
+	(id_anterior <= 0) 
+	) 
+	then
+	
+		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
+						using hint='------- REVISAR EL RESGISTRO DE MODIFICACIÓN -------';
+										
+									
+	
+	elsif (
+		(id_anterior > 0)
+		) 
+		then
+	
 			
+		
 	raise notice '---------------------------------------------------------------------------------------------------------';
 	raise notice '-- Depuración General Campo "descripcion_factura" y Campo "descripcion_pago" Tabla "facturas_detalles" --';
 	raise notice '---------------------------------------------------------------------------------------------------------';
@@ -4237,11 +4686,21 @@ begin
 	
 	update facturas_detalles set descripcion_pago = replace(descripcion_pago ,'1 Sólo','1');
 	
+
 	raise notice '';
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_descripcion_factura_pago_facturas_detalles()
+ ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -4252,7 +4711,7 @@ $$ language plpgsql;
 -- --------- CAMPO VALOR_INMUEBLE_USD---------------
 
 
-select * from facturas_detalles;
+select listado_facturas_detalles();
 
 
 -- Depuracion general
@@ -4261,7 +4720,26 @@ create or replace function depurar_valor_inmueble_usd_facturas_detalles() return
 declare 
 	 aumento_valor decimal := 7.88/100;
 
-begin
+		id_anterior int := (select max(id) from facturas_detalles);
+
+
+begin 
+	
+	
+	if(
+	(id_anterior <= 0) 
+	) 
+	then
+	
+		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
+						using hint='------- REVISAR EL RESGISTRO DE MODIFICACIÓN -------';
+										
+									
+	
+	elsif (
+		(id_anterior > 0)
+		) 
+		then
 
 			
 	raise notice '-----------------------------------------------------------------------------';
@@ -4281,7 +4759,16 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_valor_inmueble_usd_facturas_detalles()
+ ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
 
@@ -4291,7 +4778,7 @@ $$ language plpgsql;
 -- --------- CAMPO COSTO_ASOCIADO_USD Y CAMPO IMPUESTOS_ASOCIADOS_USD---------------
 
 
-select * from facturas_detalles;
+select listado_facturas_detalles();
 
 
 -- Depuracion general
@@ -4300,8 +4787,26 @@ create or replace function depurar_costo_impuestos_asociados_usd_facturas_detall
 declare 
 	 aumento_costos decimal := 7.88/100;
 	 aumento_impuestos decimal := 9.12/100;
+	id_anterior int := (select max(id) from facturas_detalles);
 
-begin
+
+begin 
+	
+	
+	if(
+	(id_anterior <= 0) 
+	) 
+	then
+	
+		raise exception '===== NO SE PUEDE ACTUALIZAR UN REGISTRO VACIO O INEXISTENTE ===== '
+						using hint='------- REVISAR EL RESGISTRO DE MODIFICACIÓN -------';
+										
+									
+	
+	elsif (
+		(id_anterior > 0)
+		) 
+		then
 
 			
 	raise notice '---------------------------------------------------------------------------------------------------------------';
@@ -4324,7 +4829,21 @@ begin
 	raise notice 'ok!';
 	raise notice ' ';
 
-end
+else
+	
+	raise exception '===== SE DEBEN AGREGAR TODOS LOS VALORES DEL REGISTRO PARA LA FUNCIÓN ====='
+						using hint = '------- depurar_costo_impuestos_asociados_usd_facturas_detalles()
+ ------- ';
+		
+	end if;
+	
+
+end;
 
 $$ language plpgsql;
-*/
+
+
+
+
+
+

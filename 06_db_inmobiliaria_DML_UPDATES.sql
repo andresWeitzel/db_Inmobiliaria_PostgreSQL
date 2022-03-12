@@ -510,14 +510,15 @@ select listado_administradores();
 
 
 
-/*
+
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
 
-
+-- ==================================
 -- ======= TABLA GERENTES ===========
+-- ==================================
 
 
 
@@ -525,7 +526,7 @@ select listado_administradores();
 
 -- Depuracion general del campo titulo
 select depurar_titulo_gerentes();
-select * from gerentes;
+select listado_gerentes();
 
 
 
@@ -533,7 +534,8 @@ select * from gerentes;
 
 -- Depuracion general
 select depurar_beneficios_gerentes();
-select * from gerentes;
+select listado_gerentes();
+
 
 
 
@@ -542,16 +544,19 @@ select * from gerentes;
 
 -- Depuracion general
 select depurar_retribucion_salarial_anual_gerentes();
-select * from gerentes;
+select listado_gerentes();
+
 
 	
 
 -- ---------------------------------------------------------------------------
-
 -- ---------------------------------------------------------------------------
 
 
+-- ====================================
 -- ======= TABLA VENDEDORES ===========
+-- ====================================
+
 
 
 
@@ -559,9 +564,9 @@ select * from gerentes;
 
 
 -- Modificacion cantidad_ventas
-select cambiar_cantidad_ventas_vendedores(1, 1);
-select * from vendedores;
-
+select actualizar_cantidad_ventas_vendedores(1, 1);
+select listado_vendedores();
+select listado_logs_updates();
 
 
 
@@ -569,19 +574,20 @@ select * from vendedores;
 
 -- Depuracion general
 select depurar_bonificacion_ventas_vendedores();
-select * from vendedores;
+select listado_vendedores();
+
 
 	
 
 
 
--- ---------------------------------------------------------------------------
 
 -- ---------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 
-
+-- =====================================
 -- ======= TABLA COMPRADORES ===========
-
+-- =====================================
 
 
 -- --------- CAMPO DESCUENTO_CLIENTE_USD Y CAMPO BENEFICIOS_COMPRAS---------------
@@ -589,38 +595,27 @@ select * from vendedores;
 -- Depuracion general
 select depurar_descuento_cliente_usd_beneficios_compras_compradores();
 
-select * from compradores;
+select listado_compradores();
 
 
 
 
 
 -- ---------------------------------------------------------------------------
-
 -- ---------------------------------------------------------------------------
 
-
+-- ================================
 -- ======= TABLA VENTAS ===========
-
-
-
--- --------- CAMPO DETALLE_VENTA---------------
-
--- Depuracion general
-select depurar_detalle_ventas_ventas();
-
-select * from ventas;
-
+-- ================================
 
 
 
 -- --------- CAMPO FECHA_VENTA Y CAMPO HORA_VENTA ---------------
 
 -- Modificación campo fecha_venta y campo hora_venta
-select cambiar_fecha_hora_venta_ventas(1, '2020-12-22', '09:00:00');
-select * from ventas;
-
-
+select actualizar_fecha_hora_venta_ventas(1, '2020-12-22', '09:00:00');
+select listado_ventas();
+select listado_logs_updates();
 
 
 
@@ -629,8 +624,10 @@ select * from ventas;
 -- ---------------------------------------------------------------------------
 
 
+-- ================================
+-- ======= TABLA FACTURAS =========
+-- ================================
 
--- ======= TABLA FACTURAS ===========
 
 
 
@@ -639,7 +636,7 @@ select * from ventas;
 
 -- Depuracion general
 select depurar_precio_total_venta_usd_facturas();
-select * from facturas;
+select listado_facturas();
 
 
 
@@ -650,8 +647,9 @@ select * from facturas;
 
 -- ---------------------------------------------------------------------------
 
-
+-- ===========================================
 -- ======= TABLA FACTURAS_DETALLES ===========
+-- ===========================================
 
 
 
@@ -660,7 +658,7 @@ select * from facturas;
 -- Depuracion general
 select depurar_descripcion_factura_pago_facturas_detalles();
 
-select * from facturas_detalles;
+select listado_facturas_detalles();
 
 
 
@@ -670,7 +668,7 @@ select * from facturas_detalles;
 -- Depuracion general
 select depurar_valor_inmueble_usd_facturas_detalles();
 
-select * from facturas_detalles;
+select listado_facturas_detalles();
 
 
 
@@ -680,8 +678,8 @@ select * from facturas_detalles;
 -- Depuracion general
 select depurar_costo_impuestos_asociados_usd_facturas_detalles();
 
-select * from facturas_detalles;
+select listado_facturas_detalles();
 
 
 
-*/
+

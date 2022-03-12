@@ -6546,12 +6546,10 @@ $$ language plpgsql;
 
 
 
-select * from citas_inmuebles;
+select listado_citas_inmuebles();
 
 
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'citas_inmuebles';
-
+select descripcion_citas_inmuebles();
 
 
 
@@ -6787,13 +6785,10 @@ $$ language plpgsql;
 
 
 
+select listado_citas_inmuebles();
 
 
-select * from citas_inmuebles;
-
-
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'citas_inmuebles';
+select descripcion_citas_inmuebles();
 
 
 
@@ -7283,12 +7278,10 @@ $$ language plpgsql;
 
 
 
-select * from inmuebles_marketing;
+select listado_inmuebles_marketing();
 
 
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'inmuebles_marketing';
-
+select descripcion_inmuebles_marketing();
 
 
 
@@ -7524,15 +7517,10 @@ $$ language plpgsql;
 -- =======================================================================
 
 
+select listado_inmuebles_marketing();
 
 
-
-select * from inmuebles_marketing;
-
-
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'inmuebles_marketing';
-
+select descripcion_inmuebles_marketing();
 
 
 
@@ -8016,12 +8004,10 @@ $$ language plpgsql;
 
 
 
-select * from inspecciones_inmuebles;
+select listado_inspecciones_inmuebles();
 
 
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'inspecciones_inmuebles';
-
+select descripcion_inspecciones_inmuebles();
 
 
 
@@ -8275,12 +8261,11 @@ $$ language plpgsql;
 
 
 
+select listado_inspecciones_inmuebles();
 
-select * from inspecciones_inmuebles;
 
+select descripcion_inspecciones_inmuebles();
 
-select column_name, data_type, is_nullable from
-information_schema.columns where table_name = 'inspecciones_inmuebles';
 
 
 
@@ -8795,11 +8780,9 @@ $$ language plpgsql;
 
 
 
-select * from gerentes;
+select listado_gerentes();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'gerentes';
-
+select descripcion_gerentes();
 
 
 
@@ -9043,10 +9026,10 @@ $$ language plpgsql;
 
 
 
-select * from gerentes;
+select listado_gerentes();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'gerentes';
+select descripcion_gerentes();
+
 
 
 
@@ -9476,7 +9459,7 @@ $$ language plpgsql;
 -- --------------------------------------------------------------------------------
 
 -- =========================================================================
--- ----------- SELECT DESCRIPCION DE LA TABLA PROPIETARIOS_INMUEBLES -------
+-- ----------- SELECT DESCRIPCION DE LA TABLA ADMINISTRADORES -------
 -- =========================================================================
 
 
@@ -9521,13 +9504,9 @@ $$ language plpgsql;
 -- ----------- INSERCION DE 1 REGISTRO TABLA ADMINISTRADORES ----------
 -- ===========================================================================
 
-select * from administradores;
+select listado_administradores();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'administradores';
-
-
-
+select descripcion_administradores();
 
 
 
@@ -9757,13 +9736,11 @@ $$ language plpgsql;
 -- ----------- INSERCION DE 2 REGISTROS TABLA ADMINISTRADORES ----------
 -- ===========================================================================
 
-select * from administradores;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'administradores';
 
 
+select listado_administradores();
 
+select descripcion_administradores();
 
 
 
@@ -10189,7 +10166,7 @@ $$ language plpgsql;
 -- --------------------------------------------------------------------------------
 
 -- =========================================================================
--- ----------- SELECT DESCRIPCION DE LA TABLA PROPIETARIOS_INMUEBLES -------
+-- ----------- SELECT DESCRIPCION DE LA TABLA VENDEDORES ----------------
 -- =========================================================================
 
 
@@ -10236,10 +10213,9 @@ $$ language plpgsql;
 -- ===============================================================
 
 
-select * from vendedores;
+select listado_vendedores();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'vendedores';
+select descripcion_vendedores();
 
 
 
@@ -10473,10 +10449,10 @@ $$ language plpgsql;
 -- ===============================================================
 
 
-select * from vendedores;
+select listado_vendedores();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'vendedores';
+select descripcion_vendedores();
+
 
 
 
@@ -10905,6 +10881,43 @@ end;
 $$ language plpgsql;
 
 
+-- -----------------------------------------------------------------------------
+-- --------------------------------------------------------------------------------
+
+-- =========================================================================
+-- ----------- SELECT DESCRIPCION DE LA TABLA VENTAS ----------------
+-- =========================================================================
+
+
+create or replace function descripcion_ventas(out campo varchar, out tip_dato varchar, out nuleable varchar) 
+returns setof  RECORD as $$
+
+declare
+
+registro_actual RECORD;
+
+begin 
+		
+	
+
+for registro_actual in (select column_name, data_type, is_nullable from 
+information_schema.columns where table_name = 'ventas') loop
+	
+	campo := registro_actual.column_name;
+	tip_dato := registro_actual.data_type;
+	nuleable := registro_actual.is_nullable;
+
+
+		return next;
+	end loop;
+	return;
+
+end;
+
+	
+$$ language plpgsql;
+
+
 
 
 
@@ -11150,12 +11163,10 @@ $$ language plpgsql;
 -- ===============================================================
 
 
-select * from ventas;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'ventas';
+select listado_ventas();
 
 
+select descripcion_ventas();
 
 
 
@@ -11643,11 +11654,9 @@ $$ language plpgsql;
 -- ===============================================================
 
 
-select * from compradores;
+select listado_compradores();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'compradores';
-
+select descripcion_compradores();
 
 
 create or replace function insertar_registro_compradores(
@@ -11866,11 +11875,9 @@ $$ language plpgsql;
 -- ----------- INSERCION DE 2 REGISTROS TABLA COMPRADORES ----------
 -- ===============================================================
 
+select listado_compradores();
 
-select * from compradores;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'compradores';
+select descripcion_compradores();
 
 
 
@@ -12340,11 +12347,9 @@ $$ language plpgsql;
 
 
 
-select * from facturas;
+select listado_facturas();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'facturas';
-
+select descripcion_facturas();
 
 
 
@@ -12571,11 +12576,9 @@ $$ language plpgsql;
 -- ===============================================================
 
 
+select listado_facturas();
 
-select * from facturas;
-
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'facturas';
+select descripcion_facturas();
 
 
 
@@ -13052,10 +13055,9 @@ $$ language plpgsql;
 
 
 
-select * from facturas_detalles;
+select listado_facturas_detalles();
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'facturas_detalles';
+select descripcion_facturas_detalles();
 
 
 
@@ -13305,10 +13307,10 @@ $$ language plpgsql;
 
 
 
-select * from facturas_detalles;
 
-select column_name, data_type, is_nullable from 
-information_schema.columns where table_name = 'facturas_detalles';
+select listado_facturas_detalles();
+
+select descripcion_facturas_detalles();
 
 
 

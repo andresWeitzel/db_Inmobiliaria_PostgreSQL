@@ -5,7 +5,7 @@
 ## Descripción 
 
 
-* En Este Proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos acerca de una Inmobiliaria con el SGBD PostgreSQL.
+* En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos acerca de una Inmobiliaria con el SGBD PostgreSQL.
 * El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiándome por las informaciones y características del mercado Inmobiliario en Argentina (valores, precios, medidas, léxico, etc).
 *  Las páginas de inmobiliaria más conocidas en las que me guíe son zonaprop, re/max y baigún.
 *  Para la gran mayoría de las medidas tomadas en inmuebles me guié en anuncios en MercadoLibre, ya que allí se detallan en mayor cantidad.
@@ -15,7 +15,7 @@
 
 ## Descripción Técnica
 
-* Para este proyecto se aplica un Diseño Normalizado, se separan las tablas que contengan varios campos y se aplica la convención de nombres, tanto para tablas, campos, registros, funciones, etc.
+* Se aplica un Diseño Normalizado, se separan las tablas que contengan varios campos y se aplica la convención de nombres, tanto para tablas, campos, registros, funciones, etc.
 * Para el Modelado se aplican relaciones de Uno a Uno y relaciones de Uno a Varios. Posteriormente a esta descripción se anexa el DER de la db junto con la descripción de Relaciones de Tablas.
 * Dentro de la Creación y Desarrollo de la sección DDL(Data Definition Language) se aplican todas las Restricciones/ CONSTRAINT correspondientes para cada uno de los campos desarrollados, las mismas incluyen los tipos UNIQUE, se aplican los PRIMARY KEY Y FOREIGN KEY  para la relación de tablas, además de los tipos CHECKS para comprobación de valores de campos.
 * Dentro de la sección del DML(Data Manipulation Language) se comienza con la Programación de la Base de Datos, generando funciones que nos permitan insertar, actualizazr y eliminar registros de la forma requerida y deseada. Sigo el mismo patrón de inserción para cada registro, se agregan los datos a cada tabla y por cada registro insertado se agrega la información del Usuario y de la db en tablas de tipo logs no temporales( INSERTS, UPDATES, DELETES ) 
@@ -148,9 +148,9 @@
 
   #### Sección 1) Configuración de la Base de Datos
 
-  - [ Paso 1) Configuración y Puesta en Marcha de la Base de Datos.](#paso-1-configuración-y-puesta-en-marcha-de-la-base-de-datos-db-inmobiliaria)
+  - [ Paso 1) Configuración y Puesta en Marcha de la Base de Datos.](#paso-1-configuración-y-puesta-en-marcha-de-la-base-de-datos-db_inmobiliaria)
 
-  - [ Paso 2) Ejecución de los Archivos .SQL](#paso-2-ejecución-dee-los-archivos-.sql)
+  - [ Paso 2) Ejecución de los Archivos .SQL](#paso-2-ejecución-de-los-archivos-.sql)
 
   #### Sección 2) Registros de Usuarios (Logs)
 
@@ -162,10 +162,14 @@
   - [ Paso 4) Funciones con PL/pgSQL .](#paso-4-funciones-con-plpgsql)
 
 
-#### Sección x) Uso y Manejo de GIT
+#### Sección 4) Uso y Manejo de GIT
 
-- [ Uso y Manejo de Git.](#uso-y-manejo-de-git)
+- [ Paso 5) Descarga y Configuración de Git](#paso-5-descarga-y-configuración-de-git)
+
+- [ Paso 6) Subir el proyecto al repositorio de github desde la consola de git](#paso-6-subir-el-proyecto-al-repositorio-de-github-desde-la-consola-de-git)
  
+- [Paso 7) Actualización del repositorio del proyecto desde la consola de GIT](#paso-7-actualización-del-repositorio-del-proyecto-desde-la-consola-de-GIT)
+  
 
   
 
@@ -935,74 +939,81 @@ $$ language plpgsql;
 
 
 
-</br>
-</br>
-</br>
-</br>
-  
 
 
+
+
+
+
+
+
+
+
+
 </br>
 
-## Sección x) Uso y Manejo de Git.
+
+## Sección 4) Uso y Manejo de Git.
 
 </br>
 
-### Uso y Manejo de Git
-### Descarga de Git
+### Paso 5) Descarga y Configuración de Git
+
+#### 5.1) Descarga de Git
 * Nos dirigimos a https://git-scm.com/downloads y descargamos el versionador
 * Como toda aplicacion siguiente.... siguiente....
 * IMPORTANTE:NO TENER DBEAVER ABIERTO DURANTE LA INSTALACION, SINO NO RECONOCE EL PATH
 
-### Abrir una Consola de Git (Git Bash) desde Windows
+#### 5.2) Abrir una Consola de Git (Git Bash) desde Windows
 * --> Escribimos Git Bash desde el Buscador de Windows
 * --> Desde la consola escribimos el comando cd seguidamente de la ruta del proyecto
 * --> Tenemos que tener la ruta del Proyecto y pegarla en el Git Bash
 * --> Una vez dentro del Proyecto podremos hacer uso de Git
 
+</br>
 
-### Subir el proyecto al repositorio de github desde la consola de git 
+### Paso 6) Subir el proyecto al repositorio de github desde la consola de git 
 
-#### 1)Creamos un nuevo repositorio en GitHub.
+#### 6.1) Creamos un nuevo repositorio en GitHub.
 
-#### 2)Inicializamos nuestro repositorio local .git desde la terminal.
+#### 6.2) Inicializamos nuestro repositorio local .git desde la terminal.
 * git init
 
-#### 3)Agregamos lo desarrollado a nuestro repo local desde la terminal.
+#### 6.3) Agregamos lo desarrollado a nuestro repo local desde la terminal.
 * git add *
 
-#### 4)Agregamos lo que tenemos en nuestro repo local al área de Trabajo desde la terminal.
+#### 6.4) Agregamos lo que tenemos en nuestro repo local al área de Trabajo desde la terminal.
 * git commit -m "agrega un comentario entre comillas"
 
-#### 5)Le indicamos a git donde se va a almacenar nuestro proyecto(fijate en tu repositorio de github cual es el enlace de tu proyecto(esta en code)).
+#### 6.5)  Le indicamos a git donde se va a almacenar nuestro proyecto(fijate en tu repositorio de github cual es el enlace de tu proyecto(esta en code)).
 * git remote add origin https://github.com/andresWeitzel/db_Inmobiliaria_PostgreSQL
 
-#### 6)Subimos nuestro proyecto.
+#### 6.6) Subimos nuestro proyecto.
 * git push -u origin master
 
 
 </br>
 
 
-### Actualización del repositorio del proyecto desde la consola de GIT
+### Paso 7) Actualización del repositorio del proyecto desde la consola de GIT
 
-#### 1)Visualizamos las modificaciones realizadas en local
+#### 7.1) Visualizamos las modificaciones realizadas en local
 * git status
 
-#### 2)Agregamos lo modificado al area de trabajo
+#### 7.2) Agregamos lo modificado al area de trabajo
 * git add *
 
-#### 3)Confirmamos las modificaciones realizadas
+#### 7.3) Confirmamos las modificaciones realizadas
 * git commit -m "tu commit entre comillas"
 
-#### 4)Sincronizamos y traemos todos los cambios del repositorio remoto a la rama en la que estemos trabajando actualmente.
+#### 7.4) Sincronizamos y traemos todos los cambios del repositorio remoto a la rama en la que estemos trabajando actualmente.
 ##### (SOLO SI SE REALIZARON CAMBIOS DESDE OTRA LADO, ej: en github u/o/y un equipo de trabajo)
 * git pull https://github.com/andresWeitzel/db_Inmobiliaria_PostgreSQL
 
-#### 5)Enviamos todos los cambios locales al repo en github
+#### 7.5) Enviamos todos los cambios locales al repo en github
 * git push https://github.com/andresWeitzel/db_Inmobiliaria_PostgreSQL
 
-#### 6) En casos extremos pisamos todo el repositorio
+#### 7.6) En casos extremos pisamos todo el repositorio
 * git push -f --set-upstream origin master
 
 

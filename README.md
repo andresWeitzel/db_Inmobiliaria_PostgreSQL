@@ -2,19 +2,58 @@
 <img src="./documentacion/db_inmobiliaria_DER_02.png" style="width: 100%; height: 80%"/>
 
 # Proyecto db_inmobiliaria con PostgreSQL.
-
-</br>
-
-## Descripción 
+En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos acerca de una Inmobiliaria con el SGBD PostgreSQL.
 
 
-* En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos acerca de una Inmobiliaria con el SGBD PostgreSQL.
+<br>
+
+## Índice 📜
+
+<details>
+ <summary> Ver </summary>
+ 
+ <br>
+ 
+### Sección 1) Descripción, Tecnologías y Dependencias 
+
+ - [1.0) Descripción del Proyecto.](#10-descripción-)
+ - [1.1) Ejecución del Proyecto.](#11-ejecución-del-proyecto-)
+ - [1.2) Tecnologías.](#12-tecnologías-)
+
+  
+### Sección 2) Endpoints y Recursos 
+ 
+ - [2.0) EndPoints.](#endpoints-)
+ - [2.1) Recursos y Servicios.](#recursos-y-servicios-)
+  
+  
+### Sección 3) Prueba de Funcionalidad y Referencias
+ 
+ - [3.0) Prueba de Funcionalidad.](#30-prueba-de-funcionalidad-)
+ - [3.1) Referencias.](#31-referencias-)
+
+<br>
+
+</details>
+
+
+
+<br>
+
+## Sección 1) Descripción, Tecnologías y Dependencias 
+
+
+### 1.0) Descripción [🔝](#índice-) 
+
+<details>
+  <summary>Ver</summary>
+ 
+ <br>
+ 
 * El Desarrollo surgió a partir de una pequeña db a modo de ejemplo de un pdf, el mismo me orientó en la estructura relación-entidad de la db con PostgreSql para una inmobiliaria. Todo el desarrollo fue creado desde cero y guiándome por las informaciones y características del mercado Inmobiliario en Argentina (valores, precios, medidas, léxico, etc).
 *  Las páginas de inmobiliaria más conocidas en las que me guíe son zonaprop, re/max y baigún.
 *  Para la gran mayoría de las medidas tomadas en inmuebles me guié en anuncios en MercadoLibre, ya que allí se detallan en mayor cantidad.
 *  Se incluye el pdf guía del proyecto dentro de la documentacion.
-
-</br>
 
 ## Descripción Técnica
 
@@ -24,7 +63,113 @@
 * Dentro de la sección del DML(Data Manipulation Language) se comienza con la Programación de la Base de Datos, generando funciones que nos permitan insertar, actualizazr y eliminar registros de la forma requerida y deseada. Sigo el mismo patrón de inserción para cada registro, se agregan los datos a cada tabla y por cada registro insertado se agrega la información del Usuario y de la db en tablas de tipo logs no temporales( INSERTS, UPDATES, DELETES ) 
 * La Creación de las Funciones y la Ejecución de las Mismas se desarrollan en Archivos separados
 * Se aplica un Nivel de Seguridad de Respaldo con la creación de tablas y funciones para almacenar todos los cambios que se generen en la Base de Datos. Es evidente que se podría generar tablas temporales o trabajar con el propio sistema de log de PostgreSql, pero se aplica una administración a Nivel más Bajo de esta db y se crean estas tablas por gusto y manejo. Cabe aclarar que las funciones que se desarrollaron se aplican siempre que se borre, actualice o agregue un registro y se almacena dicha información en tablas individuales
-* El Proyecto está separado por varios archivos .sql enumerados para facilitar la comprensión del desarrollo y la ejecución de los mismos.
+* El Proyecto está separado por varios archivos .sql enumerados para facilitar la comprensión del desarrollo y la ejecución de los mismos.	
+
+<br>
+
+</details>
+
+
+### 1.1) Ejecución del Proyecto [🔝](#índice-)
+
+<details>
+  <summary>Ver</summary>
+  
+ <br>  
+  
+
+
+</br>
+
+
+### 1.1.0) Descarga
+#### (Primeramente deberás descargar el SGDB PostgreSQL , luego algún GDB como por ej. DBeaver y crear la db ).
+
+* [Descargar DBeaver](https://dbeaver.io/)
+* Ejecutar e Instalar (Siguiente, Siguiente).
+* [Descargar PostgreSQL](https://www.postgresql.org/download/)
+* Ejecutar e Instalar (Siguiente, Siguiente).
+
+
+#### 1.1.1) Configuración de PostgreSQL en DBeaver (Conexión a PostgreSQL).
+* Click sobre la Pestaña Archivo.
+    * --> Nuevo
+    * --> Database Connection, Siguiente.
+    * --> Seleccionar el SGDB PostgreSQL, Siguiente.
+    * --> En el Host dejamos como aparece `localhost`
+    * --> En Database dejamos como aparece `postgres`
+    * --> El resto lo dejamos todo por defecto ( Host, Port, etc ).
+    * --> Finalizar, asegurarse que se haya creado la conexión a Postgres correctamente
+    * --> Ya está la conexión configurada.
+
+
+
+
+#### 1.1.2) Creación de la Base de Datos `db_inmobiliaria` en la Conexión de PostgreSQL
+#### ( En DBeaver tuve problemas al incluir código sql para la creación de la db, así que vamos a crear la db manualmente)
+* Una vez realizado el paso anterior, se debería haber desplegado la Conexión PostgreSQL, sino desplagar para visualizar 
+*  Click Der sobre la conexión creada `postgres`
+    * --> Crear, Base de Datos
+    * --> En Database Name colocamos `db_inmobiliaria`.
+    * --> En owner Seleccionamos postgres o dejarlo seleccionado por defecto.
+    * --> Template database vacío.
+    * --> En Encoding Seleccionamos UTF8 o dejarlo seleccionado por defecto.
+    * --> Tablespace pg_default o dejarlo seleccionado por defecto.
+    * --> Aceptar, ya está la db creada.
+
+
+#### 1.1.3) Creación de una Conexión Independiente de la Base de Datos `db_inmobiliaria`
+* Ya tenemos creada la conexión con Postgres y nuestra base de datos, ahora podemos crear una conexión independiente para su uso, cuestión de comodidad
+* Click sobre la Pestaña Archivo.
+    * --> Nuevo
+    * --> Database Connection, Siguiente.
+    * --> Seleccionar el SGDB PostgreSQL, Siguiente.
+    * --> En Database escribimos nuestra db creada `db_inmobiliaria`
+    * --> Seguidamente vamos a agregar una contraseña, en password escribimos `postgres`
+    * --> El resto lo dejamos todo por defecto ( Host, Port, etc ).
+    * --> Finalizar, asegurarse que se haya creado la db con su configuración
+    * --> Ya está la conexión configurada.
+    * --> IMPORTANTE : Lo único configurable es `Database: db_inmobiliaria` y `Contraseña:postgres`
+
+
+</br>
+
+### 1.1.4) Ejecución de los Archivos `.SQL`
+#### (Vamos a trabajar con los Archivos sql dentro de DBeaver, los mismos están enumerados para su orden de ejecución).
+
+#### 2.1) Importamos los Archivos SQL a DBeaver
+* Click sobre Archivo (Barra Superior)
+    * --> Buscar Archivo Denominado..
+    * --> Seleccionas los .sql y Open.
+    * --> Listo
+ 
+
+#### 1.1.5) Orden de Ejecución de los Scripts
+* Cada uno de los Archivos están enumerados para que se realice el orden de ejecución correspondiente.
+
+* 01_db_inmobiliaria_DDL.sql
+* 02_db_inmobiliaria_DDL_LOGS.sql
+* 03_db_inmobiliaria_DML_INSERTS_FUNCTIONS.sql
+* 04_db_inmobiliaria_DML_INSERTS.sql
+* 05_db_inmobiliaria_DML_UPDATES_FUNCTIONS.sql
+* 06_db_inmobiliaria_DML_UPDATES.sql
+* 07_db_inmobiliaria_DML_DELETE_FUNCTIONS.sql
+* 08_db_inmobiliaria_DML_DELETE.sql
+* 09_db_inmobiliaria_DML_QUERIES.sql
+
+
+<br>
+
+</details>
+
+
+
+
+
+
+
+
+
 
 
 </br>
@@ -176,95 +321,6 @@
 
   
 
-
-</br>
-
-## Sección 1) Configuración de la Base de Datos
-
-</br>
-
-### Paso 1) Configuración y Puesta en Marcha de la Base de Datos `db_inmobiliaria`
-#### (Primeramente deberás descargar el SGDB PostgreSQL , luego algún GDB como por ej. DBeaver y crear la db ).
-
-#### 1.1) Descarga de DBeaver
-* https://dbeaver.io/
-* Descargar, Ejecutar e Instalar (Siguiente, Siguiente).
-
-
-#### 1.2) Descarga de PostgreSQL
-*  https://www.postgresql.org/download/
-*  Descargar, Ejecutar e Instalar (Siguiente, Siguiente).
-
-
-#### 1.3) Configuración de PostgreSQL en DBeaver (Conexión a PostgreSQL).
-* Click sobre la Pestaña Archivo.
-    * --> Nuevo
-    * --> Database Connection, Siguiente.
-    * --> Seleccionar el SGDB PostgreSQL, Siguiente.
-    * --> En el Host dejamos como aparece `localhost`
-    * --> En Database dejamos como aparece `postgres`
-    * --> El resto lo dejamos todo por defecto ( Host, Port, etc ).
-    * --> Finalizar, asegurarse que se haya creado la conexión a Postgres correctamente
-    * --> Ya está la conexión configurada.
-
-
-
-
-#### 1.4) Creación de la Base de Datos `db_inmobiliaria` en la Conexión de PostgreSQL
-#### ( En DBeaver tuve problemas al incluir código sql para la creación de la db, así que vamos a crear la db manualmente)
-* Una vez realizado el paso anterior, se debería haber desplegado la Conexión PostgreSQL, sino desplagar para visualizar 
-*  Click Der sobre la conexión creada `postgres`
-    * --> Crear, Base de Datos
-    * --> En Database Name colocamos `db_inmobiliaria`.
-    * --> En owner Seleccionamos postgres o dejarlo seleccionado por defecto.
-    * --> Template database vacío.
-    * --> En Encoding Seleccionamos UTF8 o dejarlo seleccionado por defecto.
-    * --> Tablespace pg_default o dejarlo seleccionado por defecto.
-    * --> Aceptar, ya está la db creada.
-
-
-#### 1.5) Creación de una Conexión Independiente de la Base de Datos `db_inmobiliaria`
-* Ya tenemos creada la conexión con Postgres y nuestra base de datos, ahora podemos crear una conexión independiente para su uso, cuestión de comodidad
-* Click sobre la Pestaña Archivo.
-    * --> Nuevo
-    * --> Database Connection, Siguiente.
-    * --> Seleccionar el SGDB PostgreSQL, Siguiente.
-    * --> En Database escribimos nuestra db creada `db_inmobiliaria`
-    * --> Seguidamente vamos a agregar una contraseña, en password escribimos `postgres`
-    * --> El resto lo dejamos todo por defecto ( Host, Port, etc ).
-    * --> Finalizar, asegurarse que se haya creado la db con su configuración
-    * --> Ya está la conexión configurada.
-    * --> IMPORTANTE : Lo único configurable es `Database: db_inmobiliaria` y `Contraseña:postgres`
-
-
-</br>
-
-### Paso 2) Ejecución de los Archivos `.SQL`
-#### (Vamos a trabajar con los Archivos sql dentro de DBeaver, los mismos están enumerados para su orden de ejecución).
-
-#### 2.1) Importamos los Archivos SQL a DBeaver
-* Click sobre Archivo (Barra Superior)
-    * --> Buscar Archivo Denominado..
-    * --> Seleccionas los .sql y Open.
-    * --> Listo
- 
-
-#### 2.2) Orden de Ejecución de los Scripts
-* Cada uno de los Archivos están enumerados para que se realice el orden de ejecución correspondiente.
-
-* 01_db_inmobiliaria_DDL.sql
-* 02_db_inmobiliaria_DDL_LOGS.sql
-* 03_db_inmobiliaria_DML_INSERTS_FUNCTIONS.sql
-* 04_db_inmobiliaria_DML_INSERTS.sql
-* 05_db_inmobiliaria_DML_UPDATES_FUNCTIONS.sql
-* 06_db_inmobiliaria_DML_UPDATES.sql
-* 07_db_inmobiliaria_DML_DELETE_FUNCTIONS.sql
-* 08_db_inmobiliaria_DML_DELETE.sql
-* 09_db_inmobiliaria_DML_QUERIES.sql
-
-
-
-</br>
 
 ## Sección 2) Programación de Bases de Datos con PL/pgSQL
   

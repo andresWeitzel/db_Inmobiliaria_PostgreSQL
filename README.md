@@ -1,3 +1,6 @@
+<img src="./documentacion/db_inmobiliaria_DER_01.png" style="width: 100%; height: 80%"/>
+<img src="./documentacion/db_inmobiliaria_DER_02.png" style="width: 100%; height: 80%"/>
+
 # Proyecto db_inmobiliaria con PostgreSQL.
 
 </br>

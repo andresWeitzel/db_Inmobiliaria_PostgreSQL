@@ -293,8 +293,17 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 ![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/relacionDeTablas.png)
 
 
+#### SP listado de empleados	
+<img src="./documentacion/img/funcionListado.png" style="width: 100%; height: 80%"/>
 	
-	
+#### SP inserción de logs de transacciones	
+<img src="./documentacion/img/logs_inserts.png" style="width: 100%; height: 80%"/>	
+
+#### Resultados de inserción	
+<img src="./documentacion/img/resultadoFuncion.png" style="width: 100%; height: 80%"/>	
+		
+
+* Se acota doc gráfica. Visualizar el resto de las funcionalidades.
 	
 <br>
 

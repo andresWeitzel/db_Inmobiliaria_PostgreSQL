@@ -82,8 +82,7 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 </br>
 
 
-### 1.1.0) Descarga
-#### (Primeramente deberás descargar el SGDB PostgreSQL , luego algún GDB como por ej. DBeaver y crear la db ).
+#### 1.1.0) Descarga
 
 * [Descargar DBeaver](https://dbeaver.io/)
 * Ejecutar e Instalar (Siguiente, Siguiente).
@@ -134,10 +133,10 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 
 </br>
 
-### 1.1.4) Ejecución de los Archivos `.SQL`
+#### 1.1.4) Ejecución de los Archivos `.SQL`
 #### (Vamos a trabajar con los Archivos sql dentro de DBeaver, los mismos están enumerados para su orden de ejecución).
 
-#### 2.1) Importamos los Archivos SQL a DBeaver
+#### Importamos los Archivos SQL a DBeaver
 * Click sobre Archivo (Barra Superior)
     * --> Buscar Archivo Denominado..
     * --> Seleccionas los .sql y Open.

@@ -235,7 +235,7 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 </details>
 
 
-### 1.3) Relaciones de Tablas [🔝](#índice-)
+### 1.4) Restricciones de Tablas [🔝](#índice-)
 
 <details>
   <summary>Ver</summary>

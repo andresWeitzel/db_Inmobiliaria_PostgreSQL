@@ -292,6 +292,10 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 
 ![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/relacionDeTablas.png)
 
+
+	
+	
+	
 <br>
 
 </details>

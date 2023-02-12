@@ -14,23 +14,18 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
  
  <br>
  
-### Sección 1) Descripción, Tecnologías y Dependencias 
+### Sección 1) Descripción, Tecnologías y Ejecución
 
  - [1.0) Descripción del Proyecto.](#10-descripción-)
  - [1.1) Ejecución del Proyecto.](#11-ejecución-del-proyecto-)
  - [1.2) Tecnologías.](#12-tecnologías-)
-
-  
-### Sección 2) Endpoints y Recursos 
+ - [1.3) Relaciones de Tablas.](#13-relaciones-de-tablas-)	
  
- - [2.0) EndPoints.](#endpoints-)
- - [2.1) Recursos y Servicios.](#recursos-y-servicios-)
   
-  
-### Sección 3) Prueba de Funcionalidad y Referencias
+### Sección 2) Prueba de Funcionalidad y Referencias
  
- - [3.0) Prueba de Funcionalidad.](#30-prueba-de-funcionalidad-)
- - [3.1) Referencias.](#31-referencias-)
+ - [2.0) Prueba de Funcionalidad.](#20-prueba-de-funcionalidad-)
+ - [2.1) Referencias.](#21-referencias-)
 
 <br>
 
@@ -40,7 +35,7 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 
 <br>
 
-## Sección 1) Descripción, Tecnologías y Dependencias 
+## Sección 1) Descripción, Tecnologías y Ejecución 
 
 
 ### 1.0) Descripción [🔝](#índice-) 
@@ -163,29 +158,35 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 
 
 
+### 1.2) Tecnologías [🔝](#índice-)
+
+<details>
+  <summary>Ver</summary>
+ 
+ <br>
+
+	
+| **Tecnologías Empleadas** | **Versión** | **Finalidad** |               
+| ------------- | ------------- | ------------- |
+| PostgreSQL | 13.4  | SGDB  |
+| DBeaver | 21.1  | Gestor de Base de Datos | 
+| Git Bash | 2.29.1  | Control de Versiones |
+| CMD | 10 | Manipular los Servicios de Postgres mediante linea de comandos | 
+
+	
+<br>
+
+</details>
 
 
 
+### 1.3) Relaciones de Tablas [🔝](#índice-)
 
-
-
-
-
-</br>
-
-#### Diagrama Entidad Relación  `db_inmobiliaria`
-
-![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/db_inmobiliaria_DER_01.png)
-
-![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/db_inmobiliaria_DER_02.png)
-
-
-* DBeaver implementa la Notación IDEF1X para el Diagrama Entidad Relación. En la documentación que anexa DBeaver(https://dbeaver.com/docs/wiki/ER-Diagrams/) no está del todo claro la relación que implementa. Investigando sobre las mismas, se puede concluir que la Relación Diamante y Círculo entre línea Punteada se declara como relaciónes Opcionales. Por ende debajo de la siguiente Imagen está detallado las Relaciones entre Entidades.
-
-![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/relacionDeTablas.png)
-
-</br>
-
+<details>
+  <summary>Ver</summary>
+ 
+ <br>
+	
 
 #### Tabla Descriptiva Entidad-Relación Uno a Varios (1:N).
 
@@ -244,36 +245,44 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 | facturas_detalles | FK id_factura UNIQUE | 
 
 
-</br>
+<br>
 
-<hr>
-
-## Más Información
-
-</br>
+</details>
 
 
-| **Tecnologías Empleadas** | **Versión** | **Finalidad** |               
-| ------------- | ------------- | ------------- |
-| PostgreSQL | 13.4  | SGDB  |
-| DBeaver | 21.1  | Gestor de Base de Datos | 
-| Git Bash | 2.29.1  | Control de Versiones |
-| CMD | 10 | Manipular los Servicios de Postgres mediante linea de comandos | 
-
-</br>
+<br>
 
 
-## Descarga y Documentacion de las Tecnologías Empleadas:
+## Sección 2) Prueba de Funcionalidad y Referencias
 
-</br>
 
-| **Tecnologías** | **Descarga** | **Documentación** |               
-| ------------- | ------------- | ------------- |
-| Git Bash |  https://git-scm.com/downloads |   https://git-scm.com/docs |
-| PostgreSQL |  https://www.postgresql.org/download/  | https://www.postgresql.org/docs/current/tutorial.html  |
-| DBeaver | https://dbeaver.io/download/  | https://github.com/dbeaver/dbeaver/wiki | 
+### 2.0) Prueba de Funcionalidad [🔝](#índice-)
 
-</br>
+<details>
+ <summary>Ver</summary>
+
+
+#### Diagrama Entidad Relación  `db_inmobiliaria`
+
+![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/db_inmobiliaria_DER_01.png)
+
+![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/db_inmobiliaria_DER_02.png)
+
+
+* DBeaver implementa la Notación IDEF1X para el Diagrama Entidad Relación. En la documentación que anexa DBeaver(https://dbeaver.com/docs/wiki/ER-Diagrams/) no está del todo claro la relación que implementa. Investigando sobre las mismas, se puede concluir que la Relación Diamante y Círculo entre línea Punteada se declara como relaciónes Opcionales. Por ende debajo de la siguiente Imagen está detallado las Relaciones entre Entidades.
+
+![Index app](https://github.com/andresWeitzel/Administracion_Gestion_BasesDeDatos_PostgreSQL/blob/master/documentacion/relacionDeTablas.png)
+
+<br>
+
+</details>
+
+
+### 2.1) Referencias [🔝](#índice-)
+
+<details>
+ <summary>Ver</summary>
+
 
 ## Bibliografía Recomendada
 
@@ -285,8 +294,23 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 
 
 
+</details>
 
-<hr>
+<br>
+
+
+
+
+
+<br>
+
+<br>
+
+### `Siguiente sección en proceso de actualización` 
+
+<details>
+ <summary>Ver</summary>
+  
 
 ## `Documentación y Guía Del Proyecto`
 #### (Esta Documentación y Guía que Desarrollé es para la Creación, Configuración, Manejo, Etc de la Base de Datos `db_inmobiliaria` con PostgreSQL en DBeaver. Como así también para el Desarrollo de este Proyecto, Aplicaciones del Código, Programación de Base de Datos con el Lenguaje PL/pgSQL, Manejo de los Posibles Errores que pudiesen surgir, Manejo de Git, Consideraciones y Declaraciones del Proyecto, etc. Recomiendo Leerla y Realizar todo paso a paso como se indica en la misma, cualquier aporte o sugerencia, informar al respecto).
@@ -988,26 +1012,6 @@ $$ language plpgsql;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </br>
 
 
@@ -1075,7 +1079,9 @@ $$ language plpgsql;
 * git push -f --set-upstream origin master
 
 
-</br>
+<br>
+
+</details>
 
 
 

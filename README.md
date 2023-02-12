@@ -19,7 +19,8 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
  - [1.0) Descripción del Proyecto.](#10-descripción-)
  - [1.1) Ejecución del Proyecto.](#11-ejecución-del-proyecto-)
  - [1.2) Tecnologías.](#12-tecnologías-)
- - [1.3) Relaciones de Tablas.](#13-relaciones-de-tablas-)	
+ - [1.3) Relaciones de Tablas.](#13-relaciones-de-tablas-)
+ - [1.4) Restricciones de Tablas.](#14-restricciones-de-tablas-)
  
   
 ### Sección 2) Prueba de Funcionalidad y Referencias
@@ -229,6 +230,19 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 * Declarando las FK como Unique en las relaciones de Tablas nos aseguramos qué NO exista duplicidad.
 
 
+<br>
+
+</details>
+
+
+### 1.3) Relaciones de Tablas [🔝](#índice-)
+
+<details>
+  <summary>Ver</summary>
+ 
+ <br>
+	
+
 #### Restricciones de tipo CHECK UNIQUE para relación (1:1)
 
 | **Tabla** | **Campo** |               
@@ -243,11 +257,16 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 | vendedores | FK id_empleado UNIQUE |
 | facturas  | FK id_venta UNIQUE
 | facturas_detalles | FK id_factura UNIQUE | 
+	
+	
+* Existen otras restricciones, visualizar DDL.	
 
 
 <br>
 
 </details>
+
+
 
 
 <br>

@@ -88,11 +88,6 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
   
  <br>  
   
-
-
-</br>
-
-
 #### 1.1.0) Descarga
 
 * [Descargar DBeaver](https://dbeaver.io/)

@@ -33,13 +33,11 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
  - [3.0) Tablas y tipos de logs.](#30-tablas-y-tipos-de-logs-)
      - [3.0.0) Tipos de Campos](#300-tipos-de-campos-)
  - [3.1) Funciones con PLpgSQL.](#31-funciones-con-plpgsql-)
-     - [3.1.1) Modelo de Función de Listado de Registros de una Tabla.](#311-modelo-de-función-de-listado-de-registros-de-una-tabla)
+     - [3.1.1) Listado de Registros de una Tabla.](#311-modelo-de-función-de-listado-de-registros-de-una-tabla)
+     - [3.1.2) Descripción de Registros de una Tabla.](#312-modelo-de-función-de-descripción-de-registros-de-una-tabla)	
+     - [3.1.3) Inserción de Registros en la db.](#313-modelo-de-función-de-inserción-de-registros-en-la-db)
+     - [3.1.4) Actualización de Registros en la db.](#314-modelo-de-función-de-actualización-de-registros-en-la-db)
 	
-3.1.2) Modelo de Función de Descripción de Registros de una Tabla
-3.1.3) Modelo de Función de Inserción de Registros en la DB
-3.1.4) Modelo de Función de Actualización de Registros en la DB
-
-
 <br>
 
 </details>
@@ -1011,113 +1009,6 @@ $$ language plpgsql;
 * Ejecutando la funcion `select depurar_nro_tel_oficinas()` obtenemos un mensaje de ok y ejecutando `select listado_oficinas()` veremos los cambios realizados
 
 
-
-
-<br>
-
-</details>
-
-
-
-
-
-
-
-<br>
-
-<br>
-
-### `Siguiente sección en proceso de actualización` 
-
-<details>
- <summary>Ver</summary>
-  
-
-  - [ Paso 4) Funciones con PL/pgSQL .](#paso-4-funciones-con-plpgsql)
-
-
-#### Sección 4) Uso y Manejo de GIT
-
-- [ Paso 5) Descarga y Configuración de Git](#paso-5-descarga-y-configuración-de-git)
-
-- [ Paso 6) Subir el proyecto al repositorio de github desde la consola de git](#paso-6-subir-el-proyecto-al-repositorio-de-github-desde-la-consola-de-git)
- 
-- [Paso 7) Actualización del repositorio del proyecto desde la consola de GIT](#paso-7-actualización-del-repositorio-del-proyecto-desde-la-consola-de-GIT)
-  
-
-  
-
-</br>
-
-
-
-
-### Paso 4) Funciones con PLpgSQL
-#### (
-
-
-## Sección 4) Uso y Manejo de Git.
-
-</br>
-
-### Paso 5) Descarga y Configuración de Git
-
-#### 5.1) Descarga de Git
-* Nos dirigimos a https://git-scm.com/downloads y descargamos el versionador
-* Como toda aplicacion siguiente.... siguiente....
-* IMPORTANTE:NO TENER DBEAVER ABIERTO DURANTE LA INSTALACION, SINO NO RECONOCE EL PATH
-
-#### 5.2) Abrir una Consola de Git (Git Bash) desde Windows
-* --> Escribimos Git Bash desde el Buscador de Windows
-* --> Desde la consola escribimos el comando cd seguidamente de la ruta del proyecto
-* --> Tenemos que tener la ruta del Proyecto y pegarla en el Git Bash
-* --> Una vez dentro del Proyecto podremos hacer uso de Git
-
-</br>
-
-### Paso 6) Subir el proyecto al repositorio de github desde la consola de git 
-
-#### 6.1) Creamos un nuevo repositorio en GitHub.
-
-#### 6.2) Inicializamos nuestro repositorio local .git desde la terminal.
-* git init
-
-#### 6.3) Agregamos lo desarrollado a nuestro repo local desde la terminal.
-* git add *
-
-#### 6.4) Agregamos lo que tenemos en nuestro repo local al área de Trabajo desde la terminal.
-* git commit -m "agrega un comentario entre comillas"
-
-#### 6.5)  Le indicamos a git donde se va a almacenar nuestro proyecto(fijate en tu repositorio de github cual es el enlace de tu proyecto(esta en code)).
-* git remote add origin https://github.com/andresWeitzel/db_Inmobiliaria_PostgreSQL
-
-#### 6.6) Subimos nuestro proyecto.
-* git push -u origin master
-
-
-</br>
-
-
-### Paso 7) Actualización del repositorio del proyecto desde la consola de GIT
-
-#### 7.1) Visualizamos las modificaciones realizadas en local
-* git status
-
-#### 7.2) Agregamos lo modificado al area de trabajo
-* git add *
-
-#### 7.3) Confirmamos las modificaciones realizadas
-* git commit -m "tu commit entre comillas"
-
-#### 7.4) Sincronizamos y traemos todos los cambios del repositorio remoto a la rama en la que estemos trabajando actualmente.
-##### (SOLO SI SE REALIZARON CAMBIOS DESDE OTRA LADO, ej: en github u/o/y un equipo de trabajo)
-* git pull https://github.com/andresWeitzel/db_Inmobiliaria_PostgreSQL
-
-#### 7.5) Enviamos todos los cambios locales al repo en github
-* git push https://github.com/andresWeitzel/db_Inmobiliaria_PostgreSQL
-
-#### 7.6) En casos extremos pisamos todo el repositorio
-* git push -f --set-upstream origin master
 
 
 <br>

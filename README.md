@@ -27,6 +27,18 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
  
  - [2.0) Prueba de Funcionalidad.](#20-prueba-de-funcionalidad-)
  - [2.1) Referencias.](#21-referencias-)
+	
+### Sección 3) Arquitectura
+ 
+ - [3.0) Tablas y tipos de logs.](#30-tablas-y-tipos-de-logs-)
+     - [3.0.0) Tipos de Campos](#300-tipos-de-campos-)
+ - [3.1) Funciones con PLpgSQL.](#31-funciones-con-plpgsql-)
+     - [3.1.1) Modelo de Función de Listado de Registros de una Tabla.](#311-modelo-de-función-de-listado-de-registros-de-una-tabla)
+	
+3.1.2) Modelo de Función de Descripción de Registros de una Tabla
+3.1.3) Modelo de Función de Inserción de Registros en la DB
+3.1.4) Modelo de Función de Actualización de Registros en la DB
+
 
 <br>
 
@@ -330,63 +342,22 @@ En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarroll
 
 
 
-
 <br>
 
-<br>
 
-### `Siguiente sección en proceso de actualización` 
+## Sección 3) Arquitectura
+
+
+### 3.0) Tablas y tipos de logs [🔝](#índice-)
 
 <details>
  <summary>Ver</summary>
-  
 
-## `Documentación y Guía Del Proyecto`
-#### (Esta Documentación y Guía que Desarrollé es para la Creación, Configuración, Manejo, Etc de la Base de Datos `db_inmobiliaria` con PostgreSQL en DBeaver. Como así también para el Desarrollo de este Proyecto, Aplicaciones del Código, Programación de Base de Datos con el Lenguaje PL/pgSQL, Manejo de los Posibles Errores que pudiesen surgir, Manejo de Git, Consideraciones y Declaraciones del Proyecto, etc. Recomiendo Leerla y Realizar todo paso a paso como se indica en la misma, cualquier aporte o sugerencia, informar al respecto).
-
-## Indice
-
-  #### Sección 1) Configuración de la Base de Datos
-
-  - [ Paso 1) Configuración y Puesta en Marcha de la Base de Datos.](#paso-1-configuración-y-puesta-en-marcha-de-la-base-de-datos-db_inmobiliaria)
-
-  - [ Paso 2) Ejecución de los Archivos .SQL](#paso-2-ejecución-de-los-archivos-.sql)
-
-  #### Sección 2) Registros de Usuarios (Logs)
-
-   - [ Paso 3) Tablas y Tipos de Logs .](#paso-3-tablas-y-tipos-de-logs)
-  
-  
-  #### Sección 3) Programación de Bases de Datos con PL/pgSQL
-  
-  - [ Paso 4) Funciones con PL/pgSQL .](#paso-4-funciones-con-plpgsql)
-
-
-#### Sección 4) Uso y Manejo de GIT
-
-- [ Paso 5) Descarga y Configuración de Git](#paso-5-descarga-y-configuración-de-git)
-
-- [ Paso 6) Subir el proyecto al repositorio de github desde la consola de git](#paso-6-subir-el-proyecto-al-repositorio-de-github-desde-la-consola-de-git)
- 
-- [Paso 7) Actualización del repositorio del proyecto desde la consola de GIT](#paso-7-actualización-del-repositorio-del-proyecto-desde-la-consola-de-GIT)
-  
-
-  
-
-
-## Sección 2) Programación de Bases de Datos con PL/pgSQL
-  
-
-</br>
-
-
-
-### Paso 3) Tablas y Tipos de Logs
 #### (Se desarrollan 3 Tablas Específicas para el almacenamiento de datos del Usuario/Administrador( logs_inserts, logs_update y logs_delete).
 
 </br>
 
-#### 3.1) Tipos de Campos de las Tablas
+#### 3.0.0) Tipos de Campos 
 * Todas las Tablas de Logs seguirán la misma estructura y tipos de campos, se podría considerar que se aplica redundancia de información, pero se optó por modularizar los logs de esta forma, se podría crear solamente una tabla de logs y allí especificar que tipo de log se aplica.
 * La tabla Modelo es la siguiente..
 ```plpgsql
@@ -422,25 +393,25 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 ![Index app](https://github.com/andresWeitzel/Graphics/blob/master/Proyectos/db_Inmobiliaria/logs_inserts.png)
 
 
+* Se acota doc gráfica. Visualizar el resto de las funcionalidades.
+	
+<br>
 
+</details>
+
+
+
+
+
+### 3.1) Funciones con PLpgSQL [🔝](#índice-)
+
+<details>
+ <summary>Ver</summary>
+Se desarrollan funciones que nos permitan realizar las operaciones requeridas en la base de datos (INSERTS, UPDATES, DELETES, ETC)).
 
 </br>
 
-## Sección 3) Programación de Bases de Datos con PL/pgSQL
-  
-
-</br>
-
-
-
-
-
-### Paso 4) Funciones con PLpgSQL
-#### (Se desarrollan funciones que nos permitan realizar las operaciones requeridas en la base de datos (INSERTS, UPDATES, DELETES, ETC)).
-
-</br>
-
-#### 4.1) Modelo de Función de Listado de Registros de una Tabla
+#### 3.1.1) Modelo de Función de Listado de Registros de una Tabla
 #### (Esta función nos Lista los Registros de la Tabla oficinas, pero la estructura de la función aplica para el resto de las tablas, solamente se debe cambiar el nombre de la función, setof, y la variable de tipo RECORD)
 
 ```plpgsql
@@ -482,7 +453,8 @@ $$ language plpgsql;
 
 </br>
 
-#### 4.2) Modelo de Función de Descripción de Registros de una Tabla
+
+#### 3.1.2) Modelo de Función de Descripción de Registros de una Tabla
 #### (Esta función nos Enumera  los campos de la Tabla oficinas, indicando el tipo de dato y si es nuleable, este modelo aplica para el resto de las Tablas)
 
 ```plpgsql
@@ -540,7 +512,7 @@ $$ language plpgsql;
 
 </br>
 
-#### 4.3) Modelo de Función de Inserción de Registros en la DB
+#### 3.1.3) Modelo de Función de Inserción de Registros en la DB
 #### (Esta función nos permite insertar un Registro para la Tabla oficinas y otro para la Tabla logs_inserts, la estructura de la función aplica para el resto de las tablas, se debe cambiar el nombre de la función, los parametros de la misma, las variables declaradas, las condiciones de inserción, los campos a insertar, etc.)
 
 ```plpgsql
@@ -756,7 +728,8 @@ $$ language plpgsql;
 
 </br>
 
-#### 4.4) Modelo de Función de Actualización de Registros en la DB
+
+#### 3.1.4) Modelo de Función de Actualización de Registros en la DB
 #### (Esta función nos permite actualizar un Registro para la Tabla oficinas y otro para la Tabla logs_updates, la estructura de la función aplica para el resto de las tablas, se debe cambiar el nombre de la función, los parametros de la misma, las variables declaradas, las condiciones de inserción, los campos a insertar, etc.)
 
 ```plpgsql
@@ -1040,8 +1013,47 @@ $$ language plpgsql;
 
 
 
+<br>
+
+</details>
+
+
+
+
+
+
+
+<br>
+
+<br>
+
+### `Siguiente sección en proceso de actualización` 
+
+<details>
+ <summary>Ver</summary>
+  
+
+  - [ Paso 4) Funciones con PL/pgSQL .](#paso-4-funciones-con-plpgsql)
+
+
+#### Sección 4) Uso y Manejo de GIT
+
+- [ Paso 5) Descarga y Configuración de Git](#paso-5-descarga-y-configuración-de-git)
+
+- [ Paso 6) Subir el proyecto al repositorio de github desde la consola de git](#paso-6-subir-el-proyecto-al-repositorio-de-github-desde-la-consola-de-git)
+ 
+- [Paso 7) Actualización del repositorio del proyecto desde la consola de GIT](#paso-7-actualización-del-repositorio-del-proyecto-desde-la-consola-de-GIT)
+  
+
+  
 
 </br>
+
+
+
+
+### Paso 4) Funciones con PLpgSQL
+#### (
 
 
 ## Sección 4) Uso y Manejo de Git.

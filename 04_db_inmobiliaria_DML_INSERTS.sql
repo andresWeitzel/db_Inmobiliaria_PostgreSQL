@@ -6,6 +6,9 @@
  * ========= DML INSERTS =============
  */
 
+/*
+Add records from prop_inm https://github.com/andresWeitzel/db_inmobiliaria_microservicios_postgres
+*/
 
 
 -- Eliminamos todos los registros de las tablas
@@ -80,7 +83,7 @@ select descripcion_oficinas();
 
 
 -- ------------------------------------------------------
--- ----------- INSERCIÓN DE 1 REGISTRO ------------------
+-- ----------- INSERCIÃ“N DE 1 REGISTRO ------------------
 -- ------------------------------------------------------
 
 select insertar_registro_oficinas(
@@ -88,18 +91,18 @@ select insertar_registro_oficinas(
 );
 
 select insertar_registro_oficinas(
-'Edificio Torre Alem' , 'Alem Leandro Niceforo N°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
+'Edificio Torre Alem' , 'Alem Leandro Niceforo NÂ°955 - Piso 13' , '11 61147000' , 'inmobiliariaDuckson@gmail.com'
 );
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- ----------- INSERCIÃ“N DE 2 REGISTROS ------------
 -- -------------------------------------------------
 
 
 select insertar_registros_oficinas(
 'Oficina Comercial Principal' , 'Callao 255, Centro / Microcentro' , '11 5653-1799' , 'inmobiliariaDuckson@gmail.com'
-,'Oficina de Gestión Le Bluen' , 'Av. Corrientes 445 Microcentro' , '11 3343-7729' , 'inmobiliariaDuckson@gmail.com'
+,'Oficina de GestiÃ³n Le Bluen' , 'Av. Corrientes 445 Microcentro' , '11 3343-7729' , 'inmobiliariaDuckson@gmail.com'
 );
 
 
@@ -127,7 +130,7 @@ select listado_logs_inserts();
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- ----------- INSERCIÃ“N DE 1 REGISTRO ------------
 -- -------------------------------------------------
 
 
@@ -137,7 +140,7 @@ select insertar_registros_oficinas_detalles(
 );
 
 select insertar_registros_oficinas_detalles(
-2 , 'Belgrano' , 'PEQUEÑA' , 'PROPIA' , 35.0 , 1 , 1 , 35 
+2 , 'Belgrano' , 'PEQUEÃ‘A' , 'PROPIA' , 35.0 , 1 , 1 , 35 
 , 'www.inmobiliariaDuckson-torre-Alem.com.ar'
 );
 
@@ -194,20 +197,20 @@ select listado_oficinas();
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- ----------- INSERCIÃ“N DE 1 REGISTRO ------------
 -- -------------------------------------------------
 
 
 select insertar_registro_servicios_oficinas(
 1 , 'LOCALES_OFICINAS_TERRENOS' , 'NO_APLICA' , 'PROFESIONAL' 
-, 'ALQUILERES_CUENTAS' , 'La Oficina San Vicente maneja servicios de tipo comercial, tasaccional y de administración'
+, 'ALQUILERES_CUENTAS' , 'La Oficina San Vicente maneja servicios de tipo comercial, tasaccional y de administraciÃ³n'
 );
 
 
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- ----------- INSERCIÃ“N DE 2 REGISTROS ------------
 -- -------------------------------------------------
 
 
@@ -263,7 +266,7 @@ select listado_logs_inserts();
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- ----------- INSERCIÃ“N DE 1 REGISTRO ------------
 -- -------------------------------------------------
 
 select insertar_registro_empleados(1, 'Juan', 'Levbier', 22, '1994-1-2'
@@ -275,7 +278,7 @@ select insertar_registro_empleados(1, 'Juan', 'Levbier', 22, '1994-1-2'
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- ----------- INSERCIÃ“N DE 2 REGISTROS ------------
 -- -------------------------------------------------
 
 
@@ -294,7 +297,7 @@ select insertar_registros_empleados(
 
 -- Oficina 1 (Torre San Vicente)
 select insertar_registros_empleados(
- 1 , 'José', 'bastituta', 34, '1988-09-07', 'DNI', '409876546'
+ 1 , 'JosÃ©', 'bastituta', 34, '1988-09-07', 'DNI', '409876546'
 , '12409876546-0', 'San Acrosio 15781', '1157670000', '+5491157670000'
 , 'joseBastituta_88@gmail.com', 'Agente Inmobiliario(Vendedor)', 1
 , '2020/07/12', 65000
@@ -358,17 +361,17 @@ select insertar_registros_empleados(
 
 
 
--- Oficina 4 (Oficinas de Gestión Le Bluen)
+-- Oficina 4 (Oficinas de GestiÃ³n Le Bluen)
 select insertar_registros_empleados(
 4,'Marcos', 'Norwey', 39, '1967/10/06', 'DNI', '27888651', '22-27888651-5'
-, 'Entre Ríos 222', '1176874567', '1176874567', 'MarcosNorWorkllo@gmail.com'
+, 'Entre RÃ­os 222', '1176874567', '1176874567', 'MarcosNorWorkllo@gmail.com'
 , 'Gerente', 6, '2015-3-1', 46000
 , 4, 'Micaela', 'Fernandez', 24, '1997-03-02', 'DNI', '299765234', '19-299765234-2'
 , 'Av. Acoyte 33', '+5491136547766', '+5491136547766', 'micaela.fernandez.97@gmail.com'
 , 'Administradora', 1, '2020/04/09', 44000
 );
 
--- Oficina 4 (Oficinas de Gestión Le Bluen)
+-- Oficina 4 (Oficinas de GestiÃ³n Le Bluen)
 select insertar_registros_empleados(
 4, 'Antonio', 'Torres', 26, '1995/4/16', 'DNI', '38223344', '19-38223344-1'
 , 'Azul 12', '+54911987365', '-', 'antonioJose_cabj@gmail.com', 'Administrador', 3
@@ -413,7 +416,7 @@ select listado_logs_inserts();
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- ----------- INSERCIÃ“N DE 1 REGISTRO ------------
 -- -------------------------------------------------
 
  select insertar_registro_propietarios_inmuebles(
@@ -423,7 +426,7 @@ select listado_logs_inserts();
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- ----------- INSERCIÃ“N DE 2 REGISTROS ------------
 -- -------------------------------------------------
 
  select insertar_registros_propietarios_inmuebles(
@@ -457,10 +460,10 @@ select descripcion_inmuebles_descripciones();
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- ----------- INSERCIÃ“N DE 1 REGISTRO ------------
 -- -------------------------------------------------
 
--- EJ. 254.8m^2, 198.9m^2,  4 ambientes, 3 dormis, 2 sanitarios, 1 patio, 1 cochera, 1 balcon, 50 años antiguedad
+-- EJ. 254.8m^2, 198.9m^2,  4 ambientes, 3 dormis, 2 sanitarios, 1 patio, 1 cochera, 1 balcon, 50 aÃ±os antiguedad
 
 select insertar_registro_inmuebles_descripciones(
 265.8, 198.9 , 4, 3, 2, 1, 1, 1, 50 
@@ -469,7 +472,7 @@ select insertar_registro_inmuebles_descripciones(
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- ----------- INSERCIÃ“N DE 2 REGISTROS ------------
 -- -------------------------------------------------
 
 select insertar_registros_inmuebles_descripciones(
@@ -510,7 +513,7 @@ select descripcion_inmuebles_medidas();
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- ----------- INSERCIÃ“N DE 1 REGISTRO ------------
 -- -------------------------------------------------
 
 -- EJ dormitorio: Dormitorio01: 23 x 2,9 | Dormitorio 2: 43 x 1,9
@@ -518,19 +521,19 @@ select descripcion_inmuebles_medidas();
 
 select insertar_registro_inmuebles_medidas(
 '17.0 x 5.9' , '6.0 x 4.0' , 'Dormitorio1: 5.0 x 5.0 | Dormitorio2: 7.0 x 4.0 | Dormitorio3: 6.0 x 6.0'
-, 'Baño1: 2.0 x 1.4 | Baño2: 1.67 x 1.89' , '6.0 x 7.56' , '3.0 x 3.66' , '1.0 x 1.23'
+, 'BaÃ±o1: 2.0 x 1.4 | BaÃ±o2: 1.67 x 1.89' , '6.0 x 7.56' , '3.0 x 3.66' , '1.0 x 1.23'
 );
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- ----------- INSERCIÃ“N DE 2 REGISTROS ------------
 -- -------------------------------------------------
 
 select insertar_registros_inmuebles_medidas(
 '6.0 x 3.5' , '4.0 x 2.0' , 'Dormitorio1: 2.0 x 1.66 | Dormitorio2: 3.0 x 2.0 | Dormitorio3: 2.0 x 1.4 | 
 Dormitorio4: 1.3 x 1.2', '1.88 x 2.20' , '-' , '2.77 x 1.02' , '-'
 ,'2.34 x 1.89' , '2.02 x 2.66' , 'Dormitorio1: 2.45 x 2.09 | Dormitorio2: 2.03 x 1.88 | Dormitorio3: 1.89 x 1.20'
-, 'Baño1: 1.50 x 1.04 | Baño2: 1.90 x 1.3' , '1.34 x 1.88' , '-' , '1.33 x 1.22'
+, 'BaÃ±o1: 1.50 x 1.04 | BaÃ±o2: 1.90 x 1.3' , '1.34 x 1.88' , '-' , '1.33 x 1.22'
 );
 
 
@@ -565,7 +568,7 @@ select descripcion_inmuebles();
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- ----------- INSERCIÃ“N DE 1 REGISTRO ------------
 -- -------------------------------------------------
 
 select listado_propietarios_inmuebles();
@@ -574,13 +577,13 @@ select listado_inmuebles_descripciones();
 select listado_oficinas();
 
 select insertar_registros_inmuebles(
-1, 1, 1, 1, 'PH de 4 Ambientes, 3 dormis, 2 baños, Amplio Espacio,jardin y balcon, Sin Expensas, Lujoso'
+1, 1, 1, 1, 'PH de 4 Ambientes, 3 dormis, 2 baÃ±os, Amplio Espacio,jardin y balcon, Sin Expensas, Lujoso'
 , 'PH/Casa','DISPONIBLE', 177.000, 'San Cristobla 456', 'Palermo'
 , 'www.avisosAlInstante.com.ar'
 );
 
 select insertar_registros_inmuebles(
-2, 2, 2, 2,  'Casa 3 Ambientes, 4 Dormitorios, 1 baño y Cochera', 'Casa','VENDIDO'
+2, 2, 2, 2,  'Casa 3 Ambientes, 4 Dormitorios, 1 baÃ±o y Cochera', 'Casa','VENDIDO'
 , 168.000, 'Aristobulo del Valle 608 ', 'Belgrano', 'www.avisosAlInstante.com.ar'
 , 3, 3, 3, 3 , 'Departamento de 2 Ambientes', 'Departamento','VENDIDO'
 , 110.000, 'Av. Corrientes', 'Caballito', 'www.avisosAlInstante.com.ar'
@@ -615,7 +618,7 @@ select descripcion_clientes();
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- ----------- INSERCIÃ“N DE 1 REGISTRO ------------
 -- -------------------------------------------------
 select insertar_registro_clientes(
 'Rodrigo', 'Bustamante', 29, '1991/11/02', 'DNI', '36879254'
@@ -624,7 +627,7 @@ select insertar_registro_clientes(
 );
 
 select insertar_registros_clientes(
-'Marcela', 'Pérez', 31, '1989/12/12', 'DNI', '33895854', 'Av. Callao 213'
+'Marcela', 'PÃ©rez', 31, '1989/12/12', 'DNI', '33895854', 'Av. Callao 213'
 , '+5491143534456', '+5491143534456', 'marcela_perez@gmail.com', '2020/03/06'
 ,'Jaime', 'Rodriguez', 48, '1977-02-16', 'DNI', '29937852', 'Av. La Pampa 218'
 , '+5491183675544', '+5491183675544', 'jaime.CL_la@gmail.com', '2020/11/23'
@@ -665,7 +668,7 @@ select listado_empleados();
 select listado_clientes();
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 1 REGISTRO ------------
+-- ----------- INSERCIÃ“N DE 1 REGISTRO ------------
 -- -------------------------------------------------
 
 
@@ -677,7 +680,7 @@ select insertar_registro_citas_inmuebles(
 
 
 -- -------------------------------------------------
--- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- ----------- INSERCIÃ“N DE 2 REGISTROS ------------
 -- -------------------------------------------------
 
 select insertar_registros_citas_inmuebles(
@@ -716,13 +719,13 @@ select descripcion_inmuebles_marketing();
 
 
 select insertar_registro_inmuebles_marketing(
-1, 'GOOGLE' , 'TWITTER' , 'Posicionamiento SEO de nuestra página en google y uso de Redes Sociales, se cotiza por visitas'
+1, 'GOOGLE' , 'TWITTER' , 'Posicionamiento SEO de nuestra pÃ¡gina en google y uso de Redes Sociales, se cotiza por visitas'
 , 2000
 );
 
 select insertar_registros_inmuebles_marketing(
-2 , 'Google Ads', 'Linkedin', 'Sección Ventas en Inmuebles', 5000
-, 3 , 'Google Ads', '-', 'Sección Ventas en Inmuebles', 3000
+2 , 'Google Ads', 'Linkedin', 'SecciÃ³n Ventas en Inmuebles', 5000
+, 3 , 'Google Ads', '-', 'SecciÃ³n Ventas en Inmuebles', 3000
 );
 
 
@@ -800,16 +803,16 @@ select listado_empleados();
 
 
 select insertar_registro_gerentes(
-2 , 'Contador Público Universitario', 12, 'Planeamiento Eficiente, Ejecución Eficaz, Rendimiento'
+2 , 'Contador PÃºblico Universitario', 12, 'Planeamiento Eficiente, EjecuciÃ³n Eficaz, Rendimiento'
 ,'Home Office 2 veces x sem, 35% Descuento Pack Viajes, Planes de Ahorro Viviendas', 32000
 );
 
 
 select insertar_registros_gerentes(
-4 , 'Licenciado en Administración', 5.6, 'Organización, Gestión, Desempeño'
+4 , 'Licenciado en AdministraciÃ³n', 5.6, 'OrganizaciÃ³n, GestiÃ³n, DesempeÃ±o'
 ,'Horarios Flexibles, 35% Descuento Pack Viajes', 42000
-, 8 , 'Licenciada en Marketing', 7.0, 'Ventas, Publicidad, Coordinación'
-,'Horarios Flexibles y Días Extras de Descanso, 40% Descuento Pack Viajes', 35000
+, 8 , 'Licenciada en Marketing', 7.0, 'Ventas, Publicidad, CoordinaciÃ³n'
+,'Horarios Flexibles y DÃ­as Extras de Descanso, 40% Descuento Pack Viajes', 35000
 );
 
 
@@ -836,15 +839,15 @@ select descripcion_administradores();
 select listado_empleados();
 
 select insertar_registro_administradores(
-1 , 'Departamento', 'Cert. Habilidades Aministrativas, Cert. Nivel 2 en Aministración de Cuentas'
-, 'Alto', 'Liderazgo y Negociación'
+1 , 'Departamento', 'Cert. Habilidades Aministrativas, Cert. Nivel 2 en AministraciÃ³n de Cuentas'
+, 'Alto', 'Liderazgo y NegociaciÃ³n'
 );
 
 select insertar_registros_administradores(
-5, 'Casa', 'Cert. Administración Viviendas, Cert. Tecnologías Digital, Cert. Servicios de Aministración'
-,'Medio', 'Recursos Tecnológicos, Comunicación y Planificación'
-, 9, 'Departamento-Casa', 'Cert. Gestión Avanzada en Inmuebles, Cert. Especialista Apoyo Administrativo, 
-Cert. Aministración de Oficinas', 'Alto', 'Alta Flexibilidad, Marketing Digital y Planificación'
+5, 'Casa', 'Cert. AdministraciÃ³n Viviendas, Cert. TecnologÃ­as Digital, Cert. Servicios de AministraciÃ³n'
+,'Medio', 'Recursos TecnolÃ³gicos, ComunicaciÃ³n y PlanificaciÃ³n'
+, 9, 'Departamento-Casa', 'Cert. GestiÃ³n Avanzada en Inmuebles, Cert. Especialista Apoyo Administrativo, 
+Cert. AministraciÃ³n de Oficinas', 'Alto', 'Alta Flexibilidad, Marketing Digital y PlanificaciÃ³n'
 );
 
 
@@ -874,13 +877,13 @@ select listado_empleados();
 
 
 select insertar_registro_vendedores(
-1, 3, 20000 , 'Excelente', 'Departamento', 'Confianza, Dominio de Venta, Desarrollo Linguístico'
+1, 3, 20000 , 'Excelente', 'Departamento', 'Confianza, Dominio de Venta, Desarrollo LinguÃ­stico'
 );
 
 
 select insertar_registros_vendedores(
-4, 0, 0 , 'Sin Ventas' , 'Casa' , 'Ambición, Comercialización, Determinación'
-, 8, 2, 10000 , 'Buena', 'Departamento-Casa', 'Comunicación Eficaz, Creatividad, Convicción'
+4, 0, 0 , 'Sin Ventas' , 'Casa' , 'AmbiciÃ³n, ComercializaciÃ³n, DeterminaciÃ³n'
+, 8, 2, 10000 , 'Buena', 'Departamento-Casa', 'ComunicaciÃ³n Eficaz, Creatividad, ConvicciÃ³n'
 );
 
 
@@ -962,13 +965,13 @@ select listado_inmuebles();
 
 
 select insertar_registro_compradores(
-1, 1 ,'Descuento del 7% en la Próxima Compra', 200
+1, 1 ,'Descuento del 7% en la PrÃ³xima Compra', 200
 );
 
 
 select insertar_registros_compradores(
- 2, 2, 'Descuento del 10% en la Próxima Compra',200
- , 3, 3, 'Descuento del 10% en la Próxima Compra',200
+ 2, 2, 'Descuento del 10% en la PrÃ³xima Compra',200
+ , 3, 3, 'Descuento del 10% en la PrÃ³xima Compra',200
 );
 
 
@@ -1048,14 +1051,14 @@ select listado_facturas();
 
 select insertar_registro_facturas_detalles(
  1, 'A', 'Venta de Inmueble Tipo Departamento de 2 Ambientes Zona Caballito'
- , 177000, 800, 200, 'EFECTIVO', 'Se efectuó la compra en 1 sólo Pago'
+ , 177000, 800, 200, 'EFECTIVO', 'Se efectuÃ³ la compra en 1 sÃ³lo Pago'
 );
 
 select insertar_registros_facturas_detalles(
  2, 'A', 'Venta de Inmueble Tipo Casa de 3 Ambientes Zona Belgrano'
- , 170000, 1600, 400, 'CHEQUE', 'Se efectuó la compra a Pagar en 3 Pagos'
+ , 170000, 1600, 400, 'CHEQUE', 'Se efectuÃ³ la compra a Pagar en 3 Pagos'
  , 3, 'A', 'Venta del Departamento de 2 Ambientes en Caballito'
- , 170000, 1600, 400, 'EFECTIVO', 'Se efectuó la compra a Pagar en 2 Pagos'
+ , 170000, 1600, 400, 'EFECTIVO', 'Se efectuÃ³ la compra a Pagar en 2 Pagos'
  );
 
 

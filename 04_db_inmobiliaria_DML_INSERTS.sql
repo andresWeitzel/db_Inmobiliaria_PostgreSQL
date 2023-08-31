@@ -102,15 +102,15 @@ select insertar_registros_oficinas(
 ,'Oficina de Gestión Le Bluen' , 'Av. Corrientes 445 Microcentro' , '11 3343-7729' , 'inmobiliariaDuckson@gmail.com'
 );
 
-
+select insertar_registros_oficinas(
+'Oficina Comercial Puan' , 'Puan 128, Caballito' , '11 8893-0093' , 'inmobiliariaDuckson@gmail.com'
+,'Oficina Comercial Recoleta' , 'Agüero 2247, C1425EHW CABA' , '8392-1123' , 'inmobiliariaDuckson@gmail.com'
+);
 
 
 select listado_oficinas();
 
 select listado_logs_inserts();
-
-
-
 
 
 -- ---------------------------------------------------------------------------
@@ -137,13 +137,30 @@ select insertar_registros_oficinas_detalles(
 );
 
 select insertar_registros_oficinas_detalles(
-2 , 'Belgrano' , 'PEQUEÑA' , 'PROPIA' , 35.0 , 1 , 1 , 35 
+2 , 'Belgrano' , 'PEQUEÑA' , 'PROPIA' , 35.45 , 1 , 1 , 35 
 , 'www.inmobiliariaDuckson-torre-Alem.com.ar'
 );
 
 select insertar_registros_oficinas_detalles(
-3 , 'Balvanera' , 'ESTANDAR' , 'PROPIA' , 60.0 , 2 , 4 , 22 
+3 , 'Balvanera' , 'ESTANDAR' , 'PROPIA' , 60.20 , 2 , 4 , 22 
 , 'www.inmobiliariaDuckson-oficina-principal.com.ar'
+);
+
+
+select insertar_registros_oficinas_detalles(
+4 , 'Microcentro' , 'PEQUEÑA' , 'PROPIA' , 43.12 , 1 , 2 , 18 
+, 'www.inmobiliariaDuckson-gestion-le-bluen.com.ar'
+);
+
+
+select insertar_registros_oficinas_detalles(
+5 , 'Caballito' , 'ESTANDAR' , 'ALQUILADA' , 72.89 , 3 , 2 , 22 
+, 'www.inmobiliariaDuckson-oficina-comercial01.com.ar'
+);
+
+select insertar_registros_oficinas_detalles(
+6 , 'Recoleta' , 'EJECUTIVA' , 'ALQUILADA' , 167.88 , 2 , 2 , 25 
+, 'www.inmobiliariaDuckson-oficina-comercial02.com.ar'
 );
 
 
@@ -184,11 +201,7 @@ select listado_logs_inserts();
 
 select listado_servicios_oficinas();
 
-
-
 select descripcion_servicios_oficinas();
-
-
 
 select listado_oficinas();
 
@@ -204,8 +217,6 @@ select insertar_registro_servicios_oficinas(
 );
 
 
-
-
 -- -------------------------------------------------
 -- ----------- INSERCIÓN DE 2 REGISTROS ------------
 -- -------------------------------------------------
@@ -216,6 +227,18 @@ select insertar_registros_servicios_oficinas(
 , 'ALQUILERES_CUENTAS' , 'Esta Oficina Aplica para todos los Servicios Disponibles'
 , 3 , 'LOCALES_OFICINAS_TERRENOS' , 'NO_APLICA' , 'NO_APLICA' 
 , 'NO_APLICA' , 'La Oficina Comercial Principal solo maneja servicios de tipo Comercial'
+);
+
+select insertar_registros_servicios_oficinas(
+4 , 'OFICINAS' , 'DEPARTAMENTOS' , 'PROFESIONAL' , 'ALQUILERES' 
+, 'La responsabilidad tiene implicancia en servicios no comerciales'
+, 5 , 'LOCALES_OFICINAS_TERRENOS' , 'DEPARTAMENTOS_CASAS_TERRENOS' , 'PROFESIONAL_JUDICIAL' 
+,'ALQUILERES_CUENTAS', 'Aplica para todos los servicios propios y externos'
+);
+
+select insertar_registro_servicios_oficinas(
+6 , 'LOCALES' , 'TERRENOS' , 'PROFESIONAL' , 'ALQUILERES' 
+, 'Se gestionan servicios de tipo tasaccional y de administración'
 );
 
 

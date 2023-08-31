@@ -1,0 +1,33 @@
+{
+	"folders": {},
+	"connections": {
+		"postgres-jdbc-18a4bf07ab0-53386a71b1627eda": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "db_inmobiliaria",
+			"save-password": true,
+			"configuration": {
+				"host": "localhost",
+				"port": "5432",
+				"database": "db_inmobiliaria",
+				"url": "jdbc:postgresql://localhost:5432/db_inmobiliaria",
+				"configurationType": "MANUAL",
+				"home": "postgresql-x64-13",
+				"type": "dev",
+				"provider-properties": {},
+				"auth-model": "native"
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"auto-close-transactions": false
+		}
+	}
+}

@@ -217,6 +217,8 @@ select insertar_registro_servicios_oficinas(
 );
 
 
+
+
 -- -------------------------------------------------
 -- ----------- INSERCIÓN DE 2 REGISTROS ------------
 -- -------------------------------------------------
@@ -247,13 +249,6 @@ select listado_servicios_oficinas();
 select listado_logs_inserts();
 
 
-
-
-
-
-
-
-
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------
 
@@ -281,7 +276,6 @@ select listado_oficinas();
 select listado_empleados();
 
 select listado_logs_inserts();
-
 
 
 
@@ -328,9 +322,6 @@ select insertar_registros_empleados(
 );
 
 
-
-
-
 --Oficina 2 (Edificio Torre Alem)
 select insertar_registros_empleados(
 2, 'Damian', 'gutierrez', 39, '1978-09-14', 'DNI', '33869556', '20-33869556-3'
@@ -350,11 +341,6 @@ select insertar_registros_empleados(
 , 'Av. Figueroa Alcorta 22', '1145639987', '-', 'c.gustamante@gmail.com'
 , 'Administrador', 2, '2019/12/02', 57000
 );
-
-
-
-
-
 
 
 -- Oficina 3 (Oficina Comercial Principal)
@@ -378,9 +364,6 @@ select insertar_registros_empleados(
 );
 
 
-
-
-
 -- Oficina 4 (Oficinas de Gestión Le Bluen)
 select insertar_registros_empleados(
 4,'Marcos', 'Norwey', 39, '1967/10/06', 'DNI', '27888651', '22-27888651-5'
@@ -400,6 +383,20 @@ select insertar_registros_empleados(
 , 'Castro Barros 937', '118765541', '-', 'ramonFarias@gmail.com'
 , 'Administrador', 5, '2015/06/12', 80000
 );
+
+
+-- Oficina 5 (Oficina Comercial Puan)
+select insertar_registros_empleados(
+5,'Ramiro', 'Martinez', 34, '1964/09/22', 'DNI', '29087621', '10-29087621-1'
+, 'Av, Juan Bautista Alberdi 1909', '1189278211', '1189278211', 'ramiro_mart9382@gmail.com'
+, 'Gerente', 4, '2017-8-22', 78000
+, 5, 'Anibal', 'Perez', 43, '1956/07/18', 'DNI', '22873663', '11-22873663-4'
+, 'San cardolia 112', '+5491187389933', '-', 'anibal_ejecutivo873@gmail.com'
+, 'Gerente', 8, '2013/02/22', 120000
+);
+
+
+
 
 select listado_oficinas();
 select listado_empleados();
@@ -453,11 +450,36 @@ select listado_logs_inserts();
 'Marcela', 'Sanchez', 49, '1971/12/08', 'DNI', '4298762543', 'San AZUL 222'
 , '+5491173654378', '-', 'marcelaSanchez222@gmail.com',
 'Guillermo', 'Zulenski', 65, '1955/10/09', 'DNI', '35897677', 'Av. Calloa 879'
-, '+5491156788', '+5491156788', 'zulenskiVentas2019@gmail.com'
+, '+5491156788344', '+5491156788344', 'zulenskiVentas2019@gmail.com'
 );
+
+-- -------------------------------------------------
+-- ----------- INSERCIÓN DE 2 REGISTROS ------------
+-- -------------------------------------------------
+
+ select insertar_registros_propietarios_inmuebles(
+'Jose', 'Alberti', 37, '1968/02/12', 'DNI', '24789674', 'Av. Juan Bautista Alberdi 889'
+, '+5491182949933', '+5491182949933', 'jose.alberti.propiedades_alberti@gmail.com',
+'Richard', 'March', 32, '1975/04/02', 'DNI', '31876228', 'San cayetano 1123'
+, '+5491178397766', '-', 'richard-march-uk.88932@gmail.com'
+);
+
+
+ select insertar_registros_propietarios_inmuebles(
+'Sofía', 'Perez', 29, '1993/11/21', 'DNI', '39876654', 'Sam coronel ramirez 1890'
+, '+5491183739900', '-', 'sofia_perez_grtyu@gmail.com',
+'Marcos', 'Bustamante', 55, '1963/08/01', 'DNI', '28976334', 'Av. Corrientes 1892'
+, '+5491188939938', '-', 'marcos-bustamante-cap-fed-982@gmail.com'
+);
+
+
+
 
 select listado_propietarios_inmuebles();
 select listado_logs_inserts();
+
+
+
 
 -- ---------------------------------------------------------------------------
 -- ---------------------------------------------------------------------------

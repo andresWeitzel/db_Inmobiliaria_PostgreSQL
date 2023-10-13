@@ -2,7 +2,9 @@
 <img src="./documentacion/db_inmobiliaria_DER_02.png" style="width: 100%; height: 80%"/>
 
 # Proyecto db_inmobiliaria con PostgreSQL.
-En este proyecto se pone en práctica el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de una Base de Datos acerca de una Inmobiliaria con el SGBD PostgreSQL.
+Proyecto para la administración de Inmobiliaria aplicando el Diseño, Modelado, Creación, Desarrollo, Programación, Gestión y Administración de base de datos con el SGBD PostgreSQL.
+
+* [Playlist Prueba de Funcionalidad](https://www.youtube.com/playlist?list=PLCl11UFjHurDfP4fqQf8Yxm_x7-wOn4_P)
 
 
 <br>
